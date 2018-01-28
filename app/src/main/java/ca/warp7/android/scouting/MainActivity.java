@@ -182,15 +182,8 @@ public class MainActivity extends AppCompatActivity
         // Start Auto Activity
 
         Intent intent;
-        intent = new Intent(this, AutoScoutActivity.class);
+        intent = new Intent(this, TimedScoutingActivity.class);
         startActivity(intent);
 
-        /*Intent intent;
-        intent = new Intent("com.google.zxing.client.android.ENCODE");
-
-        intent.putExtra("Encode.ACTION","com.google.zxing.client.android.ENCODE");
-
-        intent.putExtra("Encode.ENCODE_DATA", "Hello World");
-        startActivity(intent);*/
     }
 }
