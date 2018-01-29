@@ -14,4 +14,11 @@
     <string name="pref_root">ca.warp7.android.scouting</string>
     <string name="pref_scout_name">ca.warp7.android.scouting.scout_name</string>
     <string name="pref_board_path">Warp7/board/board.json</string>
+    <string name="menu_close">Exit Scouting</string>
+    <string name="menu_undo">Undo</string>
+    <string name="menu_prev">Previous</string>
+    <string name="menu_next">Next</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

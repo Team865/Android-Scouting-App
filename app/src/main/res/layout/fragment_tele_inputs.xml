@@ -1,0 +1,88 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ca.warp7.android.scouting.TeleInputs">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="155dp"
+            android:layout_height="100dp"
+            android:text="Exchange"
+            android:textAllCaps="false"
+            android:textSize="30sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/button3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button3" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="155dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:text="Opponent Switch"
+            android:textAllCaps="false"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="@+id/button6"
+            app:layout_constraintTop_toBottomOf="@+id/button6" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="155dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:text="Scale"
+            android:textAllCaps="false"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="@+id/button2"
+            app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="155dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="32dp"
+            android:text="Intake"
+            android:textAllCaps="false"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toStartOf="@+id/button5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="155dp"
+            android:layout_height="100dp"
+            android:text="Alliance Switch"
+            android:textAllCaps="false"
+            android:textSize="30sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/toggleButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/toggleButton" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton"
+            android:layout_width="155dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:text="ToggleButton"
+            android:textAllCaps="false"
+            android:textOff="Start Defense"
+            android:textOn="End Defense"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toStartOf="@+id/button6"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button3" />
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

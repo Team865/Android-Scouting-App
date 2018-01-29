@@ -15,24 +15,28 @@
         <!--app:showAsAction="never"/>-->
 
     <item
+        android:id="@+id/menu_close"
         android:icon="@drawable/ic_close_black"
-        android:title="End Now"
+        android:title="@string/menu_close"
         app:showAsAction="always" />
 
 
     <item
+        android:id="@+id/menu_undo"
         android:icon="@drawable/ic_undo_black"
-        android:title="Undo"
+        android:title="@string/menu_undo"
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/menu_prev"
         android:icon="@drawable/ic_arrow_back_black"
-        android:title="Previous"
+        android:title="@string/menu_prev"
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/menu_next"
         android:icon="@drawable/ic_arrow_forward_black"
-        android:title="Next"
+        android:title="@string/menu_next"
         app:showAsAction="always" />
 
 

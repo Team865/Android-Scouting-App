@@ -1,16 +1,41 @@
 package ca.warp7.android.scouting;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 public class TimedScoutingActivity extends AppCompatActivity {
 
     ActionBar actionBar;
+    int section_id;
+
+    // Input screens
+
+    AutoInputs ai;
+    TeleInputs ti;
+
+    private void exitAction(){
+        new AlertDialog.Builder(this)
+                .setTitle("Really End Match?")
+                .setMessage("You will lose all entered data")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        TimedScoutingActivity.super.onBackPressed();
+                    }
+                }).create().show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +57,24 @@ public class TimedScoutingActivity extends AppCompatActivity {
             actionBar.setSubtitle("0:00");
         }
 
+        // Set up the fragments
+
+        ai = new AutoInputs();
+        ti = new TeleInputs();
+
+        section_id = 0;
+
+        if(findViewById(R.id.input_frame)!= null){
+            if (savedInstanceState != null) {
+                return;
+            }
+            ai.setArguments(getIntent().getExtras());
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.input_frame, ai).commit();
+        }
+
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -41,6 +84,49 @@ public class TimedScoutingActivity extends AppCompatActivity {
     }
 
     public void onBackPressed(){
-        Toast.makeText(this, "Back pressed",Toast.LENGTH_SHORT).show();
+        exitAction();
+    }
+
+    private void updateContentSet(){
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        if(section_id == 0) {
+            transaction.replace(R.id.input_frame, ai);
+            actionBar.setTitle("Autonomous");
+        } else if (section_id == 1){
+            transaction.replace(R.id.input_frame, ti);
+            actionBar.setTitle("Tele-Op");
+        }
+
+        transaction.commit();
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_close:
+                exitAction();
+                return true;
+            case R.id.menu_undo:
+                Toast.makeText(this, "Undo pressed",Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_prev:
+                if(section_id > 0){
+                    section_id -= 1;
+                    updateContentSet();
+                }
+                return true;
+            case R.id.menu_next:
+                if(section_id < 1){
+                    section_id += 1;
+                    updateContentSet();
+                }
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
