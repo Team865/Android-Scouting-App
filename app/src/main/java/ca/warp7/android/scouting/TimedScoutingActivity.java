@@ -2,32 +2,28 @@ package ca.warp7.android.scouting;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class TimedScoutingActivity extends AppCompatActivity {
+public class TimedScoutingActivity
+        extends AppCompatActivity {
+
 
     ActionBar actionBar;
     int section_id;
 
     // Input screens
-
-    AutoInputs ai;
-    TeleInputs ti;
-    EndGameInputs ei;
-
-    CountDownTimer cdt;
+    AutoInputs autoInputs;
+    TeleInputs teleInputs;
+    EndGameInputs endGameInputs;
 
 
     private void exitAction(){
@@ -39,14 +35,15 @@ public class TimedScoutingActivity extends AppCompatActivity {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        cdt.cancel();
                         TimedScoutingActivity.super.onBackPressed();
                     }
                 }).create().show();
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timed_scouting);
 
@@ -67,9 +64,9 @@ public class TimedScoutingActivity extends AppCompatActivity {
 
         // Set up the fragments
 
-        ai = new AutoInputs();
-        ti = new TeleInputs();
-        ei = new EndGameInputs();
+        autoInputs = new AutoInputs();
+        teleInputs = new TeleInputs();
+        endGameInputs = new EndGameInputs();
 
         section_id = 0;
 
@@ -77,36 +74,14 @@ public class TimedScoutingActivity extends AppCompatActivity {
             if (savedInstanceState != null) {
                 return;
             }
-            ai.setArguments(getIntent().getExtras());
+            autoInputs.setArguments(getIntent().getExtras());
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.input_frame, ai).commit();
+                    .add(R.id.input_frame, autoInputs).commit();
         }
-
-
-        // Timer code, ignore for now
-        /*cdt = new CountDownTimer(150000, 1000){
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-                long s = (150000 - millisUntilFinished) / 1000;
-
-                long r = s % 60;
-
-                getSupportActionBar().setSubtitle(s / 60 + ":" + (r < 10 ? "0":"") + r);
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        };
-
-        cdt.start();*/
-
-
+        // Add start timer code here
     }
+
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -114,28 +89,31 @@ public class TimedScoutingActivity extends AppCompatActivity {
         return true;
     }
 
+
     public void onBackPressed(){
         exitAction();
     }
+
 
     private void updateContentSet(){
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if(section_id == 0) {
-            transaction.replace(R.id.input_frame, ai);
+            transaction.replace(R.id.input_frame, autoInputs);
             actionBar.setTitle("Autonomous");
         } else if (section_id == 1){
-            transaction.replace(R.id.input_frame, ti);
+            transaction.replace(R.id.input_frame, teleInputs);
             actionBar.setTitle("Tele-Op");
         } else if (section_id == 2){
-            transaction.replace(R.id.input_frame, ei);
+            transaction.replace(R.id.input_frame, endGameInputs);
             actionBar.setTitle("Endgame");
         }
 
         transaction.commit();
 
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -157,8 +135,8 @@ public class TimedScoutingActivity extends AppCompatActivity {
                     section_id += 1;
                     updateContentSet();
                 }
-
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

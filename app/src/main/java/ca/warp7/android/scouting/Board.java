@@ -1,5 +1,6 @@
 package ca.warp7.android.scouting;
 
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -7,19 +8,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-/**
- * Created on 2018-01-26.
- * Reader of JSON file
- */
 
-public class Board {
+class Board {
 
 
     private int boardId;
     private String boardName;
     private int[] boardMatches;
 
-    public int getBoardId() {
+    int getBoardId() {
         return boardId;
     }
 

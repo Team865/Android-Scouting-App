@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Scouting</string>
+
     <string name="hint_match">Match #</string>
     <string name="hint_team">Team #</string>
     <string name="alliance_red">Red  Alliance</string>
@@ -9,19 +10,17 @@
     <string name="verify_match_info">Verify Match/Team Info</string>
     <string name="incorrect_match_data">The info you entered is not on the match schedule</string>
     <string name="verify_match_proceed">Proceed Anyways</string>
-    <string name="title_activity_auto_scouting">AutoScoutingActivity</string>
-    <string name="temp_board">Board Red 1</string>
-    <string name="pref_root">ca.warp7.android.scouting</string>
-    <string name="pref_scout_name">ca.warp7.android.scouting.scout_name</string>
-    <string name="pref_board_path">Warp7/board/board.json</string>
+
     <string name="menu_close">Exit Scouting</string>
     <string name="menu_undo">Undo</string>
     <string name="menu_prev">Previous</string>
     <string name="menu_next">Next</string>
-    
+
     <string-array name="success_choices">
         <item>None</item>
         <item>Attempt</item>
         <item>Success</item>
     </string-array>
+
+    <!--TODO Separate into two files-->
 </resources>

@@ -12,7 +12,6 @@ public class TeleInputs extends Fragment {
 
 
     public TeleInputs() {
-        // Required empty public constructor
     }
 
 

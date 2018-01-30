@@ -1,5 +1,6 @@
 package ca.warp7.android.scouting;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity
 
         ActionBar actionBar = getSupportActionBar();
 
-        if(actionBar != null){
+        if (actionBar != null) {
             actionBar.setTitle("Board " + board.getBoardName());
         }
 
@@ -69,9 +70,9 @@ public class MainActivity extends AppCompatActivity
         // Set up auto fill from preferences
 
         SharedPreferences prefs;
-        prefs = this.getSharedPreferences(getString(R.string.pref_root), MODE_PRIVATE);
+        prefs = this.getSharedPreferences(SharedUtils.ROOT_DOMAIN, MODE_PRIVATE);
 
-        nameField.setText(prefs.getString(getString(R.string.pref_scout_name), ""));
+        nameField.setText(prefs.getString(SharedUtils.SAVE_SCOUT_NAME, ""));
 
         // Ensure input UI states
 
@@ -128,22 +129,22 @@ public class MainActivity extends AppCompatActivity
         boolean m_empty = m.isEmpty();
         boolean t_empty = t.isEmpty();
 
-        if(!m_empty) {
+        if (!m_empty) {
             matchHint.setVisibility(View.VISIBLE);
         } else {
             matchHint.setVisibility(View.INVISIBLE);
         }
 
-        if(!t_empty) {
+        if (!t_empty) {
             teamHint.setVisibility(View.VISIBLE);
         } else {
             teamHint.setVisibility(View.INVISIBLE);
         }
 
-        if(!(n_empty || m_empty || t_empty)){
+        if (!(n_empty || m_empty || t_empty)) {
 
             verifier.setEnabled(true);
-            if(doesMatchExist(m, t)){
+            if (doesMatchExist(m, t)) {
                 mismatchWarning.setVisibility(View.INVISIBLE);
                 verifier.setText(R.string.verify_match_info);
                 verifier.setTextColor(0xFF000000);
@@ -171,11 +172,11 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
 
         SharedPreferences prefs;
-        prefs = this.getSharedPreferences(getString(R.string.pref_root), MODE_PRIVATE);
+        prefs = this.getSharedPreferences(SharedUtils.ROOT_DOMAIN, MODE_PRIVATE);
 
         SharedPreferences.Editor editor = prefs.edit();
 
-        editor.putString(getString(R.string.pref_scout_name), nameField.getText().toString());
+        editor.putString(SharedUtils.SAVE_SCOUT_NAME, nameField.getText().toString());
 
         editor.apply();
 
@@ -183,6 +184,18 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent;
         intent = new Intent(this, TimedScoutingActivity.class);
+
+        intent.putExtra(SharedUtils.MSG_BOARD_ID, board.getBoardId());
+
+        intent.putExtra(SharedUtils.MSG_MATCH_NUMBER,
+                Integer.parseInt(matchField.getText().toString()));
+
+        intent.putExtra(SharedUtils.MSG_TEAM_NUMBER,
+                Integer.parseInt(teamField.getText().toString()));
+
+        intent.putExtra(SharedUtils.MSG_SCOUT_NAME,
+                nameField.getText().toString());
+
         startActivity(intent);
 
     }

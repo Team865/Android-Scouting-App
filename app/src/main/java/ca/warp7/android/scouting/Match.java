@@ -1,5 +1,6 @@
 package ca.warp7.android.scouting;
 
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,10 +8,6 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
 
-/**
- * Created on 2018-01-24.
- * The Data model for the app
- */
 
 public class Match {
 
@@ -41,7 +38,7 @@ public class Match {
     private int id;
     private int match = 0;
     private int team = 0;
-    private int critid = 0;
+    private int boardId = 0;
     private String name = "";
     private String alliance = "";
     private String comments = "";
@@ -76,7 +73,7 @@ public class Match {
         this.name = sections[4];
 
         this.id = parseHex32(sections[5].substring(0, 8));
-        this.critid = parseHex32(sections[5].substring(8, 16));
+        this.boardId = parseHex32(sections[5].substring(8, 16));
         this.timestamp = parseHex32(sections[5].substring(16, 24));
 
         for (int i = 0; i < sections[6].length() / 4; i++) {
@@ -100,7 +97,7 @@ public class Match {
         StringBuilder sb = new StringBuilder();
 
         sb.append("id:\t\t0x").append(Integer.toHexString(id));
-        sb.append("\ncriteria id:\t0x").append(Integer.toHexString(critid));
+        sb.append("\nboard id:\t0x").append(Integer.toHexString(boardId));
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT-5"));
@@ -147,7 +144,7 @@ public class Match {
         StringBuilder sb = new StringBuilder();
         sb.append(toHeadDataString()).append("_");
 
-        sb.append(formatHex(id, 8)).append(formatHex(critid, 8));
+        sb.append(formatHex(id, 8)).append(formatHex(boardId, 8));
         sb.append(formatHex(timestamp, 8)).append("_");
 
         for (MatchData i : data) {
