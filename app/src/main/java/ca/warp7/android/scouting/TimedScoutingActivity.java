@@ -2,6 +2,7 @@ package ca.warp7.android.scouting;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.CountDownTimer;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class TimedScoutingActivity extends AppCompatActivity {
@@ -22,6 +25,10 @@ public class TimedScoutingActivity extends AppCompatActivity {
 
     AutoInputs ai;
     TeleInputs ti;
+    EndGameInputs ei;
+
+    CountDownTimer cdt;
+
 
     private void exitAction(){
         new AlertDialog.Builder(this)
@@ -32,6 +39,7 @@ public class TimedScoutingActivity extends AppCompatActivity {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        cdt.cancel();
                         TimedScoutingActivity.super.onBackPressed();
                     }
                 }).create().show();
@@ -61,6 +69,7 @@ public class TimedScoutingActivity extends AppCompatActivity {
 
         ai = new AutoInputs();
         ti = new TeleInputs();
+        ei = new EndGameInputs();
 
         section_id = 0;
 
@@ -73,6 +82,28 @@ public class TimedScoutingActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.input_frame, ai).commit();
         }
+
+
+        // Timer code, ignore for now
+        /*cdt = new CountDownTimer(150000, 1000){
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                long s = (150000 - millisUntilFinished) / 1000;
+
+                long r = s % 60;
+
+                getSupportActionBar().setSubtitle(s / 60 + ":" + (r < 10 ? "0":"") + r);
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };
+
+        cdt.start();*/
 
 
     }
@@ -97,6 +128,9 @@ public class TimedScoutingActivity extends AppCompatActivity {
         } else if (section_id == 1){
             transaction.replace(R.id.input_frame, ti);
             actionBar.setTitle("Tele-Op");
+        } else if (section_id == 2){
+            transaction.replace(R.id.input_frame, ei);
+            actionBar.setTitle("Endgame");
         }
 
         transaction.commit();
@@ -119,7 +153,7 @@ public class TimedScoutingActivity extends AppCompatActivity {
                 }
                 return true;
             case R.id.menu_next:
-                if(section_id < 1){
+                if(section_id < 2){
                     section_id += 1;
                     updateContentSet();
                 }

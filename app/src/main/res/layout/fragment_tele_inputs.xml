@@ -12,67 +12,33 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/button5"
-            android:layout_width="155dp"
+            android:id="@+id/intake_button"
+            android:layout_width="160dp"
             android:layout_height="100dp"
-            android:text="Exchange"
-            android:textAllCaps="false"
-            android:textSize="30sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/button3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button3" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="155dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="8dp"
-            android:text="Opponent Switch"
-            android:textAllCaps="false"
-            android:textSize="30sp"
-            app:layout_constraintStart_toStartOf="@+id/button6"
-            app:layout_constraintTop_toBottomOf="@+id/button6" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="155dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="8dp"
-            android:text="Scale"
-            android:textAllCaps="false"
-            android:textSize="30sp"
-            app:layout_constraintStart_toStartOf="@+id/button2"
-            app:layout_constraintTop_toBottomOf="@+id/button2" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="155dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:text="Intake"
             android:textAllCaps="false"
             android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@+id/button5"
+            app:layout_constraintEnd_toStartOf="@+id/exchange_button"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button6"
-            android:layout_width="155dp"
+            android:id="@+id/exchange_button"
+            android:layout_width="160dp"
             android:layout_height="100dp"
-            android:text="Alliance Switch"
+            android:text="Exchange"
             android:textAllCaps="false"
             android:textSize="30sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/toggleButton"
+            app:layout_constraintBaseline_toBaselineOf="@+id/intake_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/toggleButton" />
+            app:layout_constraintStart_toEndOf="@+id/intake_button" />
 
         <ToggleButton
-            android:id="@+id/toggleButton"
-            android:layout_width="155dp"
+            android:id="@+id/defense_toggle"
+            android:layout_width="160dp"
             android:layout_height="100dp"
             android:layout_marginTop="8dp"
             android:text="ToggleButton"
@@ -80,9 +46,44 @@
             android:textOff="Start Defense"
             android:textOn="End Defense"
             android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@+id/button6"
+            app:layout_constraintEnd_toStartOf="@+id/aswitch_button"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button3" />
+            app:layout_constraintTop_toBottomOf="@+id/intake_button" />
+
+        <Button
+            android:id="@+id/aswitch_button"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:text="Alliance Switch"
+            android:textAllCaps="false"
+            android:textSize="30sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/defense_toggle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/defense_toggle" />
+
+        <Button
+            android:id="@+id/oswitch_button"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:text="Opponent Switch"
+            android:textAllCaps="false"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="@+id/aswitch_button"
+            app:layout_constraintTop_toBottomOf="@+id/aswitch_button" />
+
+        <Button
+            android:id="@+id/scale_button"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:text="Scale"
+            android:textAllCaps="false"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="@+id/oswitch_button"
+            app:layout_constraintTop_toBottomOf="@+id/oswitch_button" />
+
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

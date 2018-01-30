@@ -12,82 +12,82 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/button"
-            android:layout_width="155dp"
+            android:id="@+id/switch_success_button"
+            android:layout_width="160dp"
             android:layout_height="100dp"
             android:text="Switch\nSuccess"
             android:textAllCaps="false"
             android:textSize="30sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/button12"
+            app:layout_constraintBaseline_toBaselineOf="@+id/switch_attempt_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button12" />
+            app:layout_constraintStart_toEndOf="@+id/switch_attempt_button" />
 
         <Button
-            android:id="@+id/button8"
-            android:layout_width="155dp"
+            android:id="@+id/scale_success_button"
+            android:layout_width="160dp"
             android:layout_height="100dp"
             android:text="Scale\nSuccess"
             android:textAllCaps="false"
             android:textSize="30sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/button10"
+            app:layout_constraintBaseline_toBaselineOf="@+id/scale_attempt_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button10" />
+            app:layout_constraintStart_toEndOf="@+id/scale_attempt_button" />
 
         <Button
-            android:id="@+id/button9"
-            android:layout_width="155dp"
+            android:id="@+id/exchange_success_button"
+            android:layout_width="160dp"
             android:layout_height="100dp"
             android:text="Exchange\nSuccess"
             android:textAllCaps="false"
             android:textSize="30sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/button11"
+            app:layout_constraintBaseline_toBaselineOf="@+id/exchange_attempt_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button11" />
+            app:layout_constraintStart_toEndOf="@+id/exchange_attempt_button" />
 
         <Button
-            android:id="@+id/button10"
-            android:layout_width="155dp"
+            android:id="@+id/scale_attempt_button"
+            android:layout_width="160dp"
             android:layout_height="100dp"
             android:layout_marginTop="96dp"
             android:text="Scale \nAttempt"
             android:textAllCaps="false"
             android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@+id/button8"
+            app:layout_constraintEnd_toStartOf="@+id/scale_success_button"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button11"
-            android:layout_width="155dp"
+            android:id="@+id/exchange_attempt_button"
+            android:layout_width="160dp"
             android:layout_height="100dp"
             android:layout_marginTop="16dp"
             android:text="Exchange\nAttempt"
             android:textAllCaps="false"
             android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@+id/button9"
+            app:layout_constraintEnd_toStartOf="@+id/exchange_success_button"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button12" />
+            app:layout_constraintTop_toBottomOf="@+id/switch_attempt_button" />
 
         <Button
-            android:id="@+id/button12"
-            android:layout_width="155dp"
+            android:id="@+id/switch_attempt_button"
+            android:layout_width="160dp"
             android:layout_height="100dp"
             android:layout_marginTop="16dp"
             android:text="Switch\nAttempt"
             android:textAllCaps="false"
             android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@+id/button"
+            app:layout_constraintEnd_toStartOf="@+id/switch_success_button"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button10" />
+            app:layout_constraintTop_toBottomOf="@+id/scale_attempt_button" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/cross_line_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
