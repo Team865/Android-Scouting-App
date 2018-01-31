@@ -45,7 +45,9 @@ public class MainActivity extends AppCompatActivity
 
         //Create the Board object
 
-        board = new Board(SharedUtils.getBoardFile());
+        //TODO ask permissions if it's not there
+
+        board = new Board();
 
         // Set up the action bar
 
@@ -70,9 +72,9 @@ public class MainActivity extends AppCompatActivity
         // Set up auto fill from preferences
 
         SharedPreferences prefs;
-        prefs = this.getSharedPreferences(SharedUtils.ROOT_DOMAIN, MODE_PRIVATE);
+        prefs = this.getSharedPreferences(Shared.ROOT_DOMAIN, MODE_PRIVATE);
 
-        nameField.setText(prefs.getString(SharedUtils.SAVE_SCOUT_NAME, ""));
+        nameField.setText(prefs.getString(Shared.SAVE_SCOUT_NAME, ""));
 
         // Ensure input UI states
 
@@ -172,11 +174,11 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
 
         SharedPreferences prefs;
-        prefs = this.getSharedPreferences(SharedUtils.ROOT_DOMAIN, MODE_PRIVATE);
+        prefs = this.getSharedPreferences(Shared.ROOT_DOMAIN, MODE_PRIVATE);
 
         SharedPreferences.Editor editor = prefs.edit();
 
-        editor.putString(SharedUtils.SAVE_SCOUT_NAME, nameField.getText().toString());
+        editor.putString(Shared.SAVE_SCOUT_NAME, nameField.getText().toString());
 
         editor.apply();
 
@@ -185,15 +187,15 @@ public class MainActivity extends AppCompatActivity
         Intent intent;
         intent = new Intent(this, TimedScoutingActivity.class);
 
-        intent.putExtra(SharedUtils.MSG_BOARD_ID, board.getBoardId());
+        intent.putExtra(Shared.MSG_BOARD_ID, board.getBoardId());
 
-        intent.putExtra(SharedUtils.MSG_MATCH_NUMBER,
+        intent.putExtra(Shared.MSG_MATCH_NUMBER,
                 Integer.parseInt(matchField.getText().toString()));
 
-        intent.putExtra(SharedUtils.MSG_TEAM_NUMBER,
+        intent.putExtra(Shared.MSG_TEAM_NUMBER,
                 Integer.parseInt(teamField.getText().toString()));
 
-        intent.putExtra(SharedUtils.MSG_SCOUT_NAME,
+        intent.putExtra(Shared.MSG_SCOUT_NAME,
                 nameField.getText().toString());
 
         startActivity(intent);

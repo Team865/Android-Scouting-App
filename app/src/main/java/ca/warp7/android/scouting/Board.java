@@ -1,6 +1,9 @@
 package ca.warp7.android.scouting;
 
 
+import android.os.Environment;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -26,14 +29,27 @@ class Board {
 
     boolean matchDoesExist(int m, int t) {
 
-        return t == (m < boardMatches.length && m >= 0 ? boardMatches[m] : -1);
+        return boardMatches != null &&
+                t == (m < boardMatches.length && m >= 0 ? boardMatches[m] : -1);
     }
 
-    Board(File filePath) {
+    Board() {
 
         String json = "";
 
         try {
+
+            // TODO Add to ensure file permissions, right now it must be explicitly allowed in Settings
+            // Maybe have to in another class?
+            File root = Environment.getExternalStorageDirectory();
+            File filePath = new File(root, Shared.BOARD_PATH);
+
+            if (!filePath.exists()){
+                if(!filePath.mkdirs()){
+                    Log.e("io", "Directory not created");
+                }
+            }
+
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();

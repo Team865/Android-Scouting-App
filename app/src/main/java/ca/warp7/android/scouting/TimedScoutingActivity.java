@@ -2,8 +2,8 @@ package ca.warp7.android.scouting;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,12 +18,14 @@ public class TimedScoutingActivity
 
 
     ActionBar actionBar;
-    int section_id;
+    int section_id = 0;
 
-    // Input screens
+    // Input fragment screens
     AutoInputs autoInputs;
     TeleInputs teleInputs;
     EndGameInputs endGameInputs;
+
+    Match matchData;
 
 
     private void exitAction(){
@@ -57,10 +59,23 @@ public class TimedScoutingActivity
 
         actionBar = getSupportActionBar();
 
+        // TODO actually show the title based on what fragment is shown
+
         if(actionBar != null){
             actionBar.setTitle("Autonomous");
-            actionBar.setSubtitle("0:00");
+            //actionBar.setSubtitle("0:00");
         }
+
+        // Get the match info from the intent
+
+        Intent intent = getIntent();
+
+        int boardId = intent.getIntExtra(Shared.MSG_BOARD_ID, 0);
+        int matchNumber = intent.getIntExtra(Shared.MSG_MATCH_NUMBER, -1);
+        int teamNumber = intent.getIntExtra(Shared.MSG_TEAM_NUMBER, -1);
+        String scoutName = intent.getStringExtra(Shared.MSG_SCOUT_NAME);
+
+        //Toast.makeText(this, boardId + scoutName + matchNumber + teamNumber, Toast.LENGTH_LONG).show();
 
         // Set up the fragments
 
@@ -68,7 +83,7 @@ public class TimedScoutingActivity
         teleInputs = new TeleInputs();
         endGameInputs = new EndGameInputs();
 
-        section_id = 0;
+        // Set the frame view to contain the fragments
 
         if(findViewById(R.id.input_frame)!= null){
             if (savedInstanceState != null) {
@@ -104,10 +119,10 @@ public class TimedScoutingActivity
             actionBar.setTitle("Autonomous");
         } else if (section_id == 1){
             transaction.replace(R.id.input_frame, teleInputs);
-            actionBar.setTitle("Tele-Op");
+            actionBar.setTitle("Tele Op");
         } else if (section_id == 2){
             transaction.replace(R.id.input_frame, endGameInputs);
-            actionBar.setTitle("Endgame");
+            actionBar.setTitle("End Game");
         }
 
         transaction.commit();
@@ -119,10 +134,13 @@ public class TimedScoutingActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_close:
-                exitAction();
+                //exitAction();
+                Intent intent;
+                intent = new Intent(this, DataOutputActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.menu_undo:
-                Toast.makeText(this, "Undo pressed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Undo pressed", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.menu_prev:
                 if(section_id > 0){

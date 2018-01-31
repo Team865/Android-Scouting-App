@@ -18,7 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TimedScoutingActivity" android:immersive="true"/>
+        <activity
+            android:name=".TimedScoutingActivity"
+            android:immersive="true" />
+        <activity android:name=".DataOutputActivity"></activity>
     </application>
 
 </manifest>
