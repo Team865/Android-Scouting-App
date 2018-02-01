@@ -187,8 +187,6 @@ public class MainActivity extends AppCompatActivity
         Intent intent;
         intent = new Intent(this, TimedScoutingActivity.class);
 
-        intent.putExtra(Shared.MSG_BOARD_ID, board.getBoardId());
-
         intent.putExtra(Shared.MSG_MATCH_NUMBER,
                 Integer.parseInt(matchField.getText().toString()));
 

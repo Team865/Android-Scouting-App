@@ -1,5 +1,6 @@
 package ca.warp7.android.scouting;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,8 +31,14 @@ public class DataOutputActivity extends AppCompatActivity {
             actionBar.setTitle("Submit Match Data");
         }
 
-        dataView = findViewById(R.id.data_display);
 
-        dataView.setText("Match:    23\nTeam:     865\nScouter:  Yu\nBoard:    Red 1 (2017)\nBoard #:  0x00022e09\nStart:    01-31 17:08\ndata:\n(15, 3) \n\n\ncomments:\nHello World");
+        Intent intent = getIntent();
+
+        String print = intent.getStringExtra(Shared.MSG_PRINT_DATA);
+
+        dataView = findViewById(R.id.data_display);
+        dataView.setText(print);
+
+
     }
 }

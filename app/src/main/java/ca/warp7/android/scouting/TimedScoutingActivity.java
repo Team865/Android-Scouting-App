@@ -25,13 +25,13 @@ public class TimedScoutingActivity
     TeleInputs teleInputs;
     EndGameInputs endGameInputs;
 
-    Match matchData;
+    Match match;
 
 
     private void exitAction(){
         new AlertDialog.Builder(this)
                 .setTitle("Really End Match?")
-                .setMessage("You will lose all entered data")
+                .setMessage("You will lose all data")
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
 
@@ -70,12 +70,20 @@ public class TimedScoutingActivity
 
         Intent intent = getIntent();
 
-        int boardId = intent.getIntExtra(Shared.MSG_BOARD_ID, 0);
         int matchNumber = intent.getIntExtra(Shared.MSG_MATCH_NUMBER, -1);
         int teamNumber = intent.getIntExtra(Shared.MSG_TEAM_NUMBER, -1);
         String scoutName = intent.getStringExtra(Shared.MSG_SCOUT_NAME);
 
-        //Toast.makeText(this, boardId + scoutName + matchNumber + teamNumber, Toast.LENGTH_LONG).show();
+        match = new Match(matchNumber, teamNumber, scoutName);
+        match.start();
+        match.pushElapsed(5);
+        match.pushElapsed(5);
+        match.pushElapsed(6);
+        match.pushElapsed(45);
+        match.pushState(9, 42);
+        match.pushState(9, 43);
+        match.pushState(13, 49);
+        match.comment("Hello World by" + scoutName);
 
         // Set up the fragments
 
@@ -137,6 +145,7 @@ public class TimedScoutingActivity
                 //exitAction();
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
+                intent.putExtra(Shared.MSG_PRINT_DATA, match.format());
                 startActivity(intent);
                 return true;
             case R.id.menu_undo:

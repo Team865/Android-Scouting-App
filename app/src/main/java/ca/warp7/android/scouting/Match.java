@@ -7,22 +7,23 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 
-public class Match {
+class Match {
+
+
 
     class MatchData {
         private int typeIndex;
         private int value;
-        private int undoFlag;
+        private int undoFlag = 0;
 
         MatchData(int typeIndex, int value) {
             this.typeIndex = typeIndex;
             this.value = value;
-            this.undoFlag = 0;
         }
 
-        void undo() {undoFlag = 1;}
+        void undoFlagOn() {undoFlag = 1;}
 
-        void redo() {undoFlag = 0;}
+        void undoFlagOff() {undoFlag = 0;}
 
         void setValue(int value) {this.value = value;}
 
@@ -31,22 +32,23 @@ public class Match {
         int getValue() {return value;}
 
 
-        boolean getUndoFlag(){return undoFlag != 0;}
+        boolean isUndone(){return undoFlag != 0;}
 
-        // Convert into max 16 bit long int
+        // Convert into max 16 bit int
 
-        int toIntValue() {return typeIndex << 9 | undoFlag << 8 | value;}
+        int toIntValue() {return undoFlag << 15 | typeIndex << 8 | value;}
     }
 
 
     // Basic variables for each match
 
-    private int boardId;
     private int matchNumber;
     private int teamNumber;
     private String scoutName;
 
-    private String boardName;
+    // Board
+
+    private Board board;
 
 
     // The time when match started
@@ -64,112 +66,15 @@ public class Match {
     private ArrayList<MatchData> data = new ArrayList<MatchData>();
 
 
-    public Match(int boardId,
-                 String boardName,
-                 int matchNumber,
-                 int teamNumber,
-                 String scoutName) {
+    Match(int matchNumber, int teamNumber, String scoutName) {
 
-        this.boardId = boardId;
         this.matchNumber = matchNumber;
         this.teamNumber = teamNumber;
         this.scoutName = scoutName;
-        this.boardName = boardName;
 
+        board = new Board();
     }
 
-    // Methods for setting data
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    public void start() {
-        this.timestamp = (int) (System.currentTimeMillis() / 1000);
-    }
-
-    public void pushState(int index, int value) {
-        for (MatchData md : data){
-            if(md.getIndex() == index){
-                md.setValue(value);
-                return;
-            }
-        }
-        data.add(new MatchData(index, value));
-    }
-
-    public void pushElapsed(int index){
-        int elapsed = (int) (System.currentTimeMillis() / 1000) - timestamp;
-        data.add(new MatchData(index, elapsed));
-    }
-
-    // Methods for generating strings
-
-    private String getHeader() {
-        return matchNumber + "_" + teamNumber + "_" + scoutName;
-    }
-
-    private String getDataCode() {
-        StringBuilder sb = new StringBuilder();
-        sb
-                .append(Shared.formatHex(timestamp, 8)).append(":")
-                .append(Shared.formatHex(boardId,8)).append(":");
-
-        for (MatchData md : data)
-            sb.append(Shared.formatHex(md.toIntValue(), 4));
-
-        sb.append(":");
-
-        for (char ch : comments.toCharArray())
-            sb.append(Integer.toHexString((int) ch));
-
-        return sb.toString();
-    }
-
-    public String encode() {
-        return getHeader() + "_" + getDataCode();
-    }
-
-    public String format() {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm", Locale.CANADA);
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
-        StringBuilder sb = new StringBuilder();
-        sb
-                .append('\n')
-                .append(Shared.formatLeftByLength("Match:", 10, " "))
-                .append(matchNumber)
-                .append('\n')
-                .append(Shared.formatLeftByLength("Team:", 10, " "))
-                .append(teamNumber)
-                .append('\n')
-                .append(Shared.formatLeftByLength("Scouter:", 10, " "))
-                .append(scoutName)
-                .append('\n')
-                .append(Shared.formatLeftByLength("Board:", 10, " "))
-                .append(boardName)
-                .append('\n')
-                .append(Shared.formatLeftByLength("Board #:", 10, " "))
-                .append("0x")
-                .append(Shared.formatHex(boardId, 8))
-                .append('\n')
-                .append(Shared.formatLeftByLength("Start:", 10, " "))
-                .append(sdf.format(new Date(timestamp * 1000L)))
-                .append("\ndata:\n\n");
-
-        for (MatchData md : data){
-            sb.append("(").append(md.getIndex()).append(", ").append(md.getValue()).append(") ");
-            if(md.getUndoFlag())
-                sb.append("[Undo]");
-            sb.append('\n');
-        }
-
-        sb.append("\ncomments:\n").append(comments);
-
-        return sb.toString();
-    }
-
-    // TODO Comment Encoder
 
     /*public Match(String d){
         String[] sections = d.split("_");
@@ -193,5 +98,105 @@ public class Match {
         }
         comments = sb.toString();
     }*/
+
+
+    // Methods for setting data
+
+    void comment(String comments) {
+        this.comments = comments;
+    }
+
+    void start() {
+        this.timestamp = (int) (System.currentTimeMillis() / 1000);
+    }
+
+    void pushState(int index, int value) {
+        if (index < 0 || index > 127)
+            return;
+        for (MatchData md : data){
+            if(md.getIndex() == index){
+                md.setValue(value);
+                return;
+            }
+        }
+        data.add(new MatchData(index, value));
+    }
+
+    void pushElapsed(int index){
+        int elapsed = (int) (System.currentTimeMillis() / 1000) - timestamp;
+        MatchData md = new MatchData(index, elapsed);
+        data.add(md);
+    }
+
+    // Methods for generating strings
+
+    private String getHeader() {
+        return matchNumber + "_" + teamNumber + "_" + scoutName;
+    }
+
+    private String getDataCode() {
+        StringBuilder sb = new StringBuilder();
+        sb
+                .append(Shared.formatHex(timestamp, 8)).append("_")
+                .append(Shared.formatHex(board.getBoardId(),8)).append("_");
+
+        for (char ch : comments.toCharArray())
+            sb.append(Integer.toHexString((int) ch));
+
+        sb.append("_");
+
+        for (MatchData md : data)
+            sb.append(Shared.formatHex(md.toIntValue(), 4));
+
+        return sb.toString();
+    }
+
+    String encode() {
+        return getHeader() + "_" + getDataCode();
+    }
+
+    String format() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm", Locale.CANADA);
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+        StringBuilder sb = new StringBuilder();
+        sb
+                .append(Shared.formatLeftByLength("Starting", 10, " "))
+                .append(sdf.format(new Date(timestamp * 1000L)))
+                .append('\n')
+                .append(Shared.formatLeftByLength("Match", 10, " "))
+                .append(matchNumber)
+                .append('\n')
+                .append(Shared.formatLeftByLength("Team", 10, " "))
+                .append(teamNumber)
+                .append('\n')
+                .append(Shared.formatLeftByLength("Scouter", 10, " "))
+                .append(scoutName)
+                .append('\n')
+                .append(Shared.formatLeftByLength("Board", 10, " "))
+                .append(board.getBoardName())
+                .append('\n')
+                .append(Shared.formatLeftByLength("Board #", 10, " "))
+                .append("0x")
+                .append(Shared.formatHex(board.getBoardId(), 8))
+                .append("\nData:\n\n");
+
+        for (MatchData md : data)
+            sb
+                    .append("(")
+                    .append(md.getIndex())
+                    .append(", ")
+                    .append(md.getValue())
+                    .append(") ")
+                    .append(md.isUndone()?"[Undo]" : "")
+                    .append('\n');
+
+
+        sb.append("\nComments:").append(comments);
+
+        sb.append("\n\n\nEncoded\n\n\"").append(encode()).append("\"");
+
+        return sb.toString();
+    }
 
 }
