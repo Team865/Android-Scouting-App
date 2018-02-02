@@ -28,21 +28,6 @@ public class TimedScoutingActivity
     Match match;
 
 
-    private void exitAction(){
-        new AlertDialog.Builder(this)
-                .setTitle("Really End Match?")
-                .setMessage("You will lose all data")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        TimedScoutingActivity.super.onBackPressed();
-                    }
-                }).create().show();
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -76,14 +61,14 @@ public class TimedScoutingActivity
 
         match = new Match(matchNumber, teamNumber, scoutName);
         match.start();
-        match.pushElapsed(5);
+        /*match.pushElapsed(5);
         match.pushElapsed(5);
         match.pushElapsed(6);
         match.pushElapsed(45);
         match.pushState(9, 42);
         match.pushState(9, 43);
         match.pushState(13, 49);
-        match.comment("Hello World by" + scoutName);
+        match.comment("Hello World by " + scoutName);*/
 
         // Set up the fragments
 
@@ -106,6 +91,38 @@ public class TimedScoutingActivity
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_close:
+                Intent intent;
+                intent = new Intent(this, DataOutputActivity.class);
+                intent.putExtra(Shared.MSG_PRINT_DATA, match.format());
+                intent.putExtra(Shared.MSG_ENCODE_DATA, match.encode());
+                startActivity(intent);
+                return true;
+            case R.id.menu_undo:
+                Toast.makeText(this, "Undo pressed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_prev:
+                if(section_id > 0){
+                    section_id -= 1;
+                    updateContentSet();
+                }
+                return true;
+            case R.id.menu_next:
+                if(section_id < 2){
+                    section_id += 1;
+                    updateContentSet();
+                }
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.timed_scouting_bar, menu);
@@ -114,7 +131,17 @@ public class TimedScoutingActivity
 
 
     public void onBackPressed(){
-        exitAction();
+        new AlertDialog.Builder(this)
+                .setTitle("Really End Match?")
+                .setMessage("You will lose all data")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        TimedScoutingActivity.super.onBackPressed();
+                    }
+                }).create().show();
     }
 
 
@@ -137,35 +164,11 @@ public class TimedScoutingActivity
 
     }
 
+    void pushState(int index, int value) {
+        match.pushState(index, value);
+    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_close:
-                //exitAction();
-                Intent intent;
-                intent = new Intent(this, DataOutputActivity.class);
-                intent.putExtra(Shared.MSG_PRINT_DATA, match.format());
-                startActivity(intent);
-                return true;
-            case R.id.menu_undo:
-                Toast.makeText(this, "Undo pressed", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu_prev:
-                if(section_id > 0){
-                    section_id -= 1;
-                    updateContentSet();
-                }
-                return true;
-            case R.id.menu_next:
-                if(section_id < 2){
-                    section_id += 1;
-                    updateContentSet();
-                }
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    void pushElapsed(int index){
+        match.pushElapsed(index);
     }
 }

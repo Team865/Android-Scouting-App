@@ -194,7 +194,7 @@ class Match {
 
         sb.append("\nComments:").append(comments);
 
-        sb.append("\n\n\nEncoded\n\n\"").append(encode()).append("\"");
+        //sb.append("\n\n\nEncoded\n\n\"").append(encode()).append("\"");
 
         return sb.toString();
     }

@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 
 public class DataOutputActivity extends AppCompatActivity {
@@ -40,5 +41,15 @@ public class DataOutputActivity extends AppCompatActivity {
         dataView.setText(print);
 
 
+    }
+
+    public void onSendSMSClicked(View view){
+        String encoded = getIntent().getStringExtra(Shared.MSG_ENCODE_DATA);
+
+        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+        sendIntent.putExtra("sms_body", encoded);
+
+        sendIntent.setType("vnd.android-dir/mms-sms");
+        startActivity(sendIntent);
     }
 }

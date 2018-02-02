@@ -30,6 +30,7 @@ public class EndGameInputs extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         rampSpinner = (Spinner) view.findViewById(R.id.ramp_spinner);
         climbSpinner = (Spinner) view.findViewById(R.id.climb_spinner);
