@@ -60,7 +60,6 @@ public class TimedScoutingActivity
         String scoutName = intent.getStringExtra(Static.MSG_SCOUT_NAME);
 
         match = new Match(matchNumber, teamNumber, scoutName);
-        match.start();
 
         // TODO Default Data Values
         pushState(Static.AUTO_ROBOT_CROSS_LINE, 0);

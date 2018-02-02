@@ -53,16 +53,22 @@ public class AutoInputs extends Fragment
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+
             case R.id.scale_attempt_button:
                 activity.pushElapsed(Static.AUTO_SCALE_ATTEMPT);
+
             case R.id.scale_success_button:
                 activity.pushElapsed(Static.AUTO_SCALE_SUCCESS);
+
             case R.id.switch_attempt_button:
                 activity.pushElapsed(Static.AUTO_SWITCH_ATTEMPT);
+
             case R.id.switch_success_button:
                 activity.pushElapsed(Static.AUTO_SWITCH_SUCCESS);
+
             case R.id.exchange_attempt_button:
                 activity.pushElapsed(Static.AUTO_EXCHANGE_ATTEMPT);
+
             case R.id.exchange_success_button:
                 activity.pushElapsed(Static.AUTO_EXCHANGE_ATTEMPT);
             default:

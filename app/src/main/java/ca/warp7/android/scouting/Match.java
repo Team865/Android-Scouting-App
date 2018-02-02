@@ -9,7 +9,7 @@ import java.util.TimeZone;
 
 class Match {
 
-
+//TODO move the formatting of individual data into MatchData
 
     class MatchData {
         private int typeIndex;
@@ -60,6 +60,10 @@ class Match {
 
     private String comments = "";
 
+    // Time store
+
+    private int lastRecordedTime = -1;
+
 
     // Data values
 
@@ -73,6 +77,7 @@ class Match {
         this.scoutName = scoutName;
 
         board = new Board();
+        timestamp = (int) (System.currentTimeMillis() / 1000);
     }
 
 
@@ -106,9 +111,6 @@ class Match {
         this.comments = comments;
     }
 
-    void start() {
-        this.timestamp = (int) (System.currentTimeMillis() / 1000);
-    }
 
     void pushState(int index, int value) {
         if (index < 0 || index > 127)
@@ -122,11 +124,16 @@ class Match {
         data.add(new MatchData(index, value));
     }
 
+
     void pushElapsed(int index){
         int elapsed = (int) (System.currentTimeMillis() / 1000) - timestamp;
-        MatchData md = new MatchData(index, elapsed);
-        data.add(md);
+        if (elapsed != lastRecordedTime && elapsed < Static.MATCH_LENGTH) {
+            MatchData md = new MatchData(index, elapsed);
+            data.add(md);
+            lastRecordedTime = elapsed;
+        }
     }
+
 
     // Methods for generating strings
 

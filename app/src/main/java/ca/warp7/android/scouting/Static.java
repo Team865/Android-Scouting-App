@@ -42,6 +42,7 @@ class Static {
     static final int END_SWITCH = 22;
     static final int END_SCALE = 23;
 
+    static final int MATCH_LENGTH = 150;
  
 
     static String formatRightByLength(String s, int digits, String replacer){
