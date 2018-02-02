@@ -35,7 +35,7 @@ public class DataOutputActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String print = intent.getStringExtra(Shared.MSG_PRINT_DATA);
+        String print = intent.getStringExtra(Static.MSG_PRINT_DATA);
 
         dataView = findViewById(R.id.data_display);
         dataView.setText(print);
@@ -44,7 +44,7 @@ public class DataOutputActivity extends AppCompatActivity {
     }
 
     public void onSendSMSClicked(View view){
-        String encoded = getIntent().getStringExtra(Shared.MSG_ENCODE_DATA);
+        String encoded = getIntent().getStringExtra(Static.MSG_ENCODE_DATA);
 
         Intent sendIntent = new Intent(Intent.ACTION_VIEW);
         sendIntent.putExtra("sms_body", encoded);

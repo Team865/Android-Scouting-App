@@ -42,7 +42,7 @@ class Board {
             // TODO Add to ensure file permissions, right now it must be explicitly allowed in Settings
             // Maybe have to in another class?
             File root = Environment.getExternalStorageDirectory();
-            File filePath = new File(root, Shared.BOARD_PATH);
+            File filePath = new File(root, Static.BOARD_PATH);
 
             if (!filePath.exists()){
                 if(!filePath.mkdirs()){

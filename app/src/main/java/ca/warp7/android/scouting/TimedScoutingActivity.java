@@ -55,20 +55,15 @@ public class TimedScoutingActivity
 
         Intent intent = getIntent();
 
-        int matchNumber = intent.getIntExtra(Shared.MSG_MATCH_NUMBER, -1);
-        int teamNumber = intent.getIntExtra(Shared.MSG_TEAM_NUMBER, -1);
-        String scoutName = intent.getStringExtra(Shared.MSG_SCOUT_NAME);
+        int matchNumber = intent.getIntExtra(Static.MSG_MATCH_NUMBER, -1);
+        int teamNumber = intent.getIntExtra(Static.MSG_TEAM_NUMBER, -1);
+        String scoutName = intent.getStringExtra(Static.MSG_SCOUT_NAME);
 
         match = new Match(matchNumber, teamNumber, scoutName);
         match.start();
-        /*match.pushElapsed(5);
-        match.pushElapsed(5);
-        match.pushElapsed(6);
-        match.pushElapsed(45);
-        match.pushState(9, 42);
-        match.pushState(9, 43);
-        match.pushState(13, 49);
-        match.comment("Hello World by " + scoutName);*/
+
+        // TODO Default Data Values
+        pushState(Static.AUTO_ROBOT_CROSS_LINE, 0);
 
         // Set up the fragments
 
@@ -97,8 +92,8 @@ public class TimedScoutingActivity
             case R.id.menu_close:
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
-                intent.putExtra(Shared.MSG_PRINT_DATA, match.format());
-                intent.putExtra(Shared.MSG_ENCODE_DATA, match.encode());
+                intent.putExtra(Static.MSG_PRINT_DATA, match.format());
+                intent.putExtra(Static.MSG_ENCODE_DATA, match.encode());
                 startActivity(intent);
                 return true;
             case R.id.menu_undo:

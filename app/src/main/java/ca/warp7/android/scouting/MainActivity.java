@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity
 
         if (actionBar != null) {
             actionBar.setTitle("Board " + board.getBoardName());
+            actionBar.setSubtitle(R.string.app_version_text);
         }
 
         // Get the rest of the UI
@@ -72,9 +73,9 @@ public class MainActivity extends AppCompatActivity
         // Set up auto fill from preferences
 
         SharedPreferences prefs;
-        prefs = this.getSharedPreferences(Shared.ROOT_DOMAIN, MODE_PRIVATE);
+        prefs = this.getSharedPreferences(Static.ROOT_DOMAIN, MODE_PRIVATE);
 
-        nameField.setText(prefs.getString(Shared.SAVE_SCOUT_NAME, ""));
+        nameField.setText(prefs.getString(Static.SAVE_SCOUT_NAME, ""));
 
         // Ensure input UI states
 
@@ -174,11 +175,11 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
 
         SharedPreferences prefs;
-        prefs = this.getSharedPreferences(Shared.ROOT_DOMAIN, MODE_PRIVATE);
+        prefs = this.getSharedPreferences(Static.ROOT_DOMAIN, MODE_PRIVATE);
 
         SharedPreferences.Editor editor = prefs.edit();
 
-        editor.putString(Shared.SAVE_SCOUT_NAME, nameField.getText().toString());
+        editor.putString(Static.SAVE_SCOUT_NAME, nameField.getText().toString());
 
         editor.apply();
 
@@ -187,13 +188,13 @@ public class MainActivity extends AppCompatActivity
         Intent intent;
         intent = new Intent(this, TimedScoutingActivity.class);
 
-        intent.putExtra(Shared.MSG_MATCH_NUMBER,
+        intent.putExtra(Static.MSG_MATCH_NUMBER,
                 Integer.parseInt(matchField.getText().toString()));
 
-        intent.putExtra(Shared.MSG_TEAM_NUMBER,
+        intent.putExtra(Static.MSG_TEAM_NUMBER,
                 Integer.parseInt(teamField.getText().toString()));
 
-        intent.putExtra(Shared.MSG_SCOUT_NAME,
+        intent.putExtra(Static.MSG_SCOUT_NAME,
                 nameField.getText().toString());
 
         startActivity(intent);

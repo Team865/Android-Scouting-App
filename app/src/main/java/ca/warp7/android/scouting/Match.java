@@ -83,8 +83,8 @@ class Match {
         this.scoutName = sections[4];
 
         //TODO change index
-        this.boardId = Shared.parseHex32(sections[5].substring(8, 16));
-        this.timestamp = Shared.parseHex32(sections[5].substring(16, 24));
+        this.boardId = Static.parseHex32(sections[5].substring(8, 16));
+        this.timestamp = Static.parseHex32(sections[5].substring(16, 24));
 
         for (int i = 0; i < sections[6].length() / 4; i++) {
             String ivs = sections[6].substring(i * 4, i * 4 + 4);
@@ -137,8 +137,8 @@ class Match {
     private String getDataCode() {
         StringBuilder sb = new StringBuilder();
         sb
-                .append(Shared.formatHex(timestamp, 8)).append("_")
-                .append(Shared.formatHex(board.getBoardId(),8)).append("_");
+                .append(Static.formatHex(timestamp, 8)).append("_")
+                .append(Static.formatHex(board.getBoardId(),8)).append("_");
 
         for (char ch : comments.toCharArray())
             sb.append(Integer.toHexString((int) ch));
@@ -146,7 +146,7 @@ class Match {
         sb.append("_");
 
         for (MatchData md : data)
-            sb.append(Shared.formatHex(md.toIntValue(), 4));
+            sb.append(Static.formatHex(md.toIntValue(), 4));
 
         return sb.toString();
     }
@@ -161,24 +161,24 @@ class Match {
         sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
         StringBuilder sb = new StringBuilder();
         sb
-                .append(Shared.formatLeftByLength("Starting", 10, " "))
+                .append(Static.formatLeftByLength("Starting", 10, " "))
                 .append(sdf.format(new Date(timestamp * 1000L)))
                 .append('\n')
-                .append(Shared.formatLeftByLength("Match", 10, " "))
+                .append(Static.formatLeftByLength("Match", 10, " "))
                 .append(matchNumber)
                 .append('\n')
-                .append(Shared.formatLeftByLength("Team", 10, " "))
+                .append(Static.formatLeftByLength("Team", 10, " "))
                 .append(teamNumber)
                 .append('\n')
-                .append(Shared.formatLeftByLength("Scouter", 10, " "))
+                .append(Static.formatLeftByLength("Scouter", 10, " "))
                 .append(scoutName)
                 .append('\n')
-                .append(Shared.formatLeftByLength("Board", 10, " "))
+                .append(Static.formatLeftByLength("Board", 10, " "))
                 .append(board.getBoardName())
                 .append('\n')
-                .append(Shared.formatLeftByLength("Board #", 10, " "))
-                .append("0x")
-                .append(Shared.formatHex(board.getBoardId(), 8))
+                .append(Static.formatLeftByLength("Board #", 10, " "))
+                .append("0x-")
+                .append(Static.formatHex(board.getBoardId(), 8))
                 .append("\nData:\n\n");
 
         for (MatchData md : data)
@@ -194,7 +194,7 @@ class Match {
 
         sb.append("\nComments:").append(comments);
 
-        //sb.append("\n\n\nEncoded\n\n\"").append(encode()).append("\"");
+        sb.append("\n\n\nEncoded\n\n\"").append(encode()).append("\"");
 
         return sb.toString();
     }
