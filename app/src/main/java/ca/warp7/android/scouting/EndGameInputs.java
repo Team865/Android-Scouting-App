@@ -7,14 +7,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 
 
-public class EndGameInputs extends Fragment {
+public class EndGameInputs extends Fragment
+    implements SeekBar.OnSeekBarChangeListener, AdapterView.OnItemSelectedListener {
 
     Spinner rampSpinner;
     Spinner climbSpinner;
+    TimedScoutingActivity activity;
 
 
     public EndGameInputs() {
@@ -32,6 +36,8 @@ public class EndGameInputs extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        activity = (TimedScoutingActivity) getActivity();
+
         rampSpinner = (Spinner) view.findViewById(R.id.ramp_spinner);
         climbSpinner = (Spinner) view.findViewById(R.id.climb_spinner);
 
@@ -42,6 +48,73 @@ public class EndGameInputs extends Fragment {
 
         rampSpinner.setAdapter(adapter);
         climbSpinner.setAdapter(adapter);
+
+        ((SeekBar) view.findViewById(R.id.attachment_seek)).setOnSeekBarChangeListener(this);
+        ((SeekBar) view.findViewById(R.id.climb_speed_seek)).setOnSeekBarChangeListener(this);
+        ((SeekBar) view.findViewById(R.id.intake_speed_seek)).setOnSeekBarChangeListener(this);
+        ((SeekBar) view.findViewById(R.id.intake_consistency_seek)).setOnSeekBarChangeListener(this);
+        ((SeekBar) view.findViewById(R.id.exchange_seek)).setOnSeekBarChangeListener(this);
+        ((SeekBar) view.findViewById(R.id.switch_seek)).setOnSeekBarChangeListener(this);
+        ((SeekBar) view.findViewById(R.id.scale_seek)).setOnSeekBarChangeListener(this);
+
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+        switch (seekBar.getId()){
+
+            case R.id.attachment_seek:
+                activity.pushState(Static.END_ATTACHMENT, progress);
+                break;
+
+            case R.id.climb_speed_seek:
+                activity.pushState(Static.END_CLIMB_SPEED, progress);
+                break;
+
+            case R.id.intake_speed_seek:
+                activity.pushState(Static.END_INTAKE_SPEED, progress);
+                break;
+
+            case R.id.intake_consistency_seek:
+                activity.pushState(Static.END_INTAKE_CONSISTENCY, progress);
+                break;
+
+            case R.id.exchange_seek:
+                activity.pushState(Static.END_EXCHANGE, progress);
+                break;
+
+            case R.id.switch_seek:
+                activity.pushState(Static.END_SWITCH, progress);
+                break;
+
+            case R.id.scale_seek:
+                activity.pushState(Static.END_SCALE, progress);
+                break;
+
+            default:
+
+        }
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }

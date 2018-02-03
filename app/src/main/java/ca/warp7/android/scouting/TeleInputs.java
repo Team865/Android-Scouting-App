@@ -55,18 +55,23 @@ public class TeleInputs extends Fragment
 
             case R.id.intake_button:
                 activity.pushElapsed(Static.TELE_INTAKE);
+                break;
 
             case R.id.exchange_button:
                 activity.pushElapsed(Static.TELE_EXCHANGE);
+                break;
 
             case R.id.aswitch_button:
                 activity.pushElapsed(Static.TELE_ALLIANCE_SWITCH);
+                break;
 
             case R.id.oswitch_button:
                 activity.pushElapsed(Static.TELE_OPPONENT_SWITCH);
+                break;
 
             case R.id.scale_button:
                 activity.pushElapsed(Static.TELE_SCALE);
+                break;
 
             default:
         }
