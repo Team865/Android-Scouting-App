@@ -23,6 +23,7 @@ import android.widget.ToggleButton;
 public class MainActivity extends AppCompatActivity
         implements CompoundButton.OnCheckedChangeListener, TextWatcher, View.OnClickListener {
 
+    //TODO make sure name does not contain underscores
 
     private EditText nameField, matchField, teamField;
     private ToggleButton allianceToggle;
@@ -195,7 +196,7 @@ public class MainActivity extends AppCompatActivity
                 Integer.parseInt(teamField.getText().toString()));
 
         intent.putExtra(Static.MSG_SCOUT_NAME,
-                nameField.getText().toString());
+                nameField.getText().toString().replaceAll("_", ""));
 
         startActivity(intent);
 

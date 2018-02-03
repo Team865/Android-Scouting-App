@@ -58,7 +58,7 @@ class Match {
 
     // Comments by the scout
 
-    private String comments = "";
+    //private String comments = "";
 
     // Time store
 
@@ -80,36 +80,11 @@ class Match {
         timestamp = (int) (System.currentTimeMillis() / 1000);
     }
 
-
-    /*public Match(String d){
-        String[] sections = d.split("_");
-        this.match = Integer.parseInt(sections[1]);
-        this.team = Integer.parseInt(sections[2]);
-        this.scoutName = sections[4];
-
-        //TODO change index
-        this.boardId = Static.parseHex32(sections[5].substring(8, 16));
-        this.timestamp = Static.parseHex32(sections[5].substring(16, 24));
-
-        for (int i = 0; i < sections[6].length() / 4; i++) {
-            String ivs = sections[6].substring(i * 4, i * 4 + 4);
-            addData(Integer.parseInt(ivs.substring(0,2), 16), Integer.parseInt(ivs.substring(2,4), 16));
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for (int j = 0; j < sections[7].length(); j += 2) {
-            String str = sections[7].substring(j, j + 2);
-            sb.append((char) Integer.parseInt(str, 16));
-        }
-        comments = sb.toString();
-    }*/
-
-
     // Methods for setting data
 
-    void comment(String comments) {
+    /*void comment(String comments) {
         this.comments = comments;
-    }
+    }*/
 
 
     void pushState(int index, int value) {
@@ -147,13 +122,13 @@ class Match {
                 .append(Static.formatHex(timestamp, 8)).append("_")
                 .append(Static.formatHex(board.getBoardId(),8)).append("_");
 
-        for (char ch : comments.toCharArray())
-            sb.append(Integer.toHexString((int) ch));
+        for (MatchData md : data)
+            sb.append(Static.formatHex(md.toIntValue(), 4));
 
         sb.append("_");
 
-        for (MatchData md : data)
-            sb.append(Static.formatHex(md.toIntValue(), 4));
+        /*for (char ch : comments.toCharArray())
+            sb.append(Integer.toHexString((int) ch));*/
 
         return sb.toString();
     }
@@ -199,9 +174,9 @@ class Match {
                     .append('\n');
 
 
-        sb.append("\nComments:").append(comments);
+        //sb.append("\nComments:").append(comments);
 
-        sb.append("\n\n\nEncoded\n\n\"").append(encode()).append("\"");
+        //sb.append("\n\n\nEncoded\n\n\"").append(encode()).append("\"");
 
         return sb.toString();
     }

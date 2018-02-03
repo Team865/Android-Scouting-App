@@ -88,6 +88,7 @@ public class TimedScoutingActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.menu_close:
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
@@ -95,15 +96,18 @@ public class TimedScoutingActivity
                 intent.putExtra(Static.MSG_ENCODE_DATA, match.encode());
                 startActivity(intent);
                 return true;
+
             case R.id.menu_undo:
-                Toast.makeText(this, "Undo pressed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Undo pressed (It does nothing for now) ", Toast.LENGTH_LONG).show();
                 return true;
+
             case R.id.menu_prev:
                 if(section_id > 0){
                     section_id -= 1;
                     updateContentSet();
                 }
                 return true;
+
             case R.id.menu_next:
                 if(section_id < 2){
                     section_id += 1;
