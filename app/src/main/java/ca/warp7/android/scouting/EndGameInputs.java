@@ -25,12 +25,14 @@ public class EndGameInputs extends Fragment
         // Required empty public constructor
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_end_game_inputs, container, false);
     }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -48,6 +50,9 @@ public class EndGameInputs extends Fragment
 
         rampSpinner.setAdapter(adapter);
         climbSpinner.setAdapter(adapter);
+
+        rampSpinner.setOnItemSelectedListener(this);
+        climbSpinner.setOnItemSelectedListener(this);
 
         ((SeekBar) view.findViewById(R.id.attachment_seek)).setOnSeekBarChangeListener(this);
         ((SeekBar) view.findViewById(R.id.climb_speed_seek)).setOnSeekBarChangeListener(this);
@@ -110,6 +115,16 @@ public class EndGameInputs extends Fragment
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        String item = parent.getItemAtPosition(position).toString();
+
+        int data = item.equals("Success")? 2 : (item.equals("Attempt")? 1 : 0);
+
+        if (parent.getId() == R.id.ramp_spinner)
+            activity.pushState(Static.END_RAMP, data);
+
+        else if (parent.getId() == R.id.climb_spinner)
+            activity.pushState(Static.END_CLIMB, data);
 
     }
 

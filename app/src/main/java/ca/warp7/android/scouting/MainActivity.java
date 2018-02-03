@@ -1,10 +1,15 @@
 package ca.warp7.android.scouting;
 
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,8 +28,8 @@ import android.widget.ToggleButton;
 public class MainActivity extends AppCompatActivity
         implements CompoundButton.OnCheckedChangeListener, TextWatcher, View.OnClickListener {
 
-    //TODO make sure name does not contain underscores
 
+    private static final int MY_PERMISSIONS_REQUEST_FILES = 0;
     private EditText nameField, matchField, teamField;
     private ToggleButton allianceToggle;
     private TextView mismatchWarning, matchHint, teamHint;
@@ -44,20 +49,18 @@ public class MainActivity extends AppCompatActivity
         Toolbar myToolBar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolBar);
 
-        //Create the Board object
+        // Ask for File Permissions
 
-        //TODO ask permissions if it's not there
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
 
-        board = new Board();
-
-        // Set up the action bar
-
-        ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar != null) {
-            actionBar.setTitle("Board " + board.getBoardName());
-            actionBar.setSubtitle(R.string.app_version_text);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_FILES);
         }
+
+        initBoard();
 
         // Get the rest of the UI
 
@@ -93,24 +96,38 @@ public class MainActivity extends AppCompatActivity
         teamField.addTextChangedListener(this);
         matchStartButton.setOnClickListener(this);
 
-
-    }
-
-    private boolean doesMatchExist(String m, String t) {
-        return board.matchDoesExist(Integer.parseInt(m) - 1, Integer.parseInt(t));
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         matchStartButton.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
+
         View view = this.getCurrentFocus();
+
         if (view != null && verifier.isChecked()) {
+
             InputMethodManager imm = (InputMethodManager)
                     getSystemService(Context.INPUT_METHOD_SERVICE);
+
             if (imm != null) {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
+
             view.clearFocus();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_FILES: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    initBoard();
+                }
+            }
         }
     }
 
@@ -148,17 +165,22 @@ public class MainActivity extends AppCompatActivity
         if (!(n_empty || m_empty || t_empty)) {
 
             verifier.setEnabled(true);
+
             if (doesMatchExist(m, t)) {
+
                 mismatchWarning.setVisibility(View.INVISIBLE);
                 verifier.setText(R.string.verify_match_info);
                 verifier.setTextColor(0xFF000000);
                 matchStartButton.setTextColor(getResources().getColor(R.color.colorAccent));
+
             } else {
+
                 mismatchWarning.setVisibility(View.VISIBLE);
                 verifier.setText(R.string.verify_match_proceed);
                 verifier.setTextColor(0xFFFF0000);
                 matchStartButton.setTextColor(0xFFFF0000);
                 verifier.setChecked(false);
+
             }
 
         } else {
@@ -200,5 +222,25 @@ public class MainActivity extends AppCompatActivity
 
         startActivity(intent);
 
+    }
+
+
+    private boolean doesMatchExist(String m, String t) {
+        return board.matchDoesExist(Integer.parseInt(m) - 1, Integer.parseInt(t));
+    }
+
+    private void initBoard(){
+        //Create the Board object
+
+        board = new Board();
+
+        // Set up the action bar
+
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setTitle("Board " + board.getBoardName());
+            actionBar.setSubtitle(R.string.app_version_text);
+        }
     }
 }

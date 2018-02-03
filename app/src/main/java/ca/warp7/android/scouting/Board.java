@@ -2,7 +2,6 @@ package ca.warp7.android.scouting;
 
 
 import android.os.Environment;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,7 +34,7 @@ class Board {
 
     Board() {
 
-        String json = "";
+        String json;
 
         try {
 
@@ -43,12 +42,6 @@ class Board {
             // Maybe have to in another class?
             File root = Environment.getExternalStorageDirectory();
             File filePath = new File(root, Static.BOARD_PATH);
-
-            if (!filePath.exists()){
-                if(!filePath.mkdirs()){
-                    Log.e("io", "Directory not created");
-                }
-            }
 
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             StringBuilder sb = new StringBuilder();

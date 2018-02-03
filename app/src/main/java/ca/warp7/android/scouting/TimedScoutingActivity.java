@@ -61,8 +61,18 @@ public class TimedScoutingActivity
 
         match = new Match(matchNumber, teamNumber, scoutName);
 
-        // TODO Default Data Values
         pushState(Static.AUTO_ROBOT_CROSS_LINE, 0);
+
+        pushState(Static.END_RAMP, 0);
+        pushState(Static.END_CLIMB, 0);
+
+        pushState(Static.END_ATTACHMENT, 3);
+        pushState(Static.END_CLIMB_SPEED, 3);
+        pushState(Static.END_INTAKE_SPEED, 3);
+        pushState(Static.END_INTAKE_CONSISTENCY, 3);
+        pushState(Static.END_EXCHANGE, 3);
+        pushState(Static.END_SWITCH, 3);
+        pushState(Static.END_SCALE, 3);
 
         // Set up the fragments
 

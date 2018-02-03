@@ -28,14 +28,12 @@ public class DataOutputActivity extends AppCompatActivity {
 
         // Set the toolbar to be the default action bar
 
-        Toolbar myToolBar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolBar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolBar);
 
         // Set up the action bar
 
         ActionBar actionBar = getSupportActionBar();
-
-        // TODO actually show the title based on what fragment is shown
 
         if (actionBar != null) {
             actionBar.setTitle("Submit Match Data");
@@ -76,7 +74,7 @@ public class DataOutputActivity extends AppCompatActivity {
 
         input.setInputType(InputType.TYPE_CLASS_TEXT |
                 InputType.TYPE_TEXT_FLAG_MULTI_LINE |
-                InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
+                InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
         input.setText(comments);
 

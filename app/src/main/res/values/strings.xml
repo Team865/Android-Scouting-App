@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Scouting</string>
-    <string name="app_version_text">Warp7 Match Scouting 0.0.1</string>
+    <string name="app_version_text">Warp7 - Scouting 0.1a</string>
 
     <string name="hint_match">Match #</string>
     <string name="hint_team">Team #</string>
@@ -22,6 +22,4 @@
         <item>Attempt</item>
         <item>Success</item>
     </string-array>
-
-    <!--TODO Separate into two files-->
 </resources>

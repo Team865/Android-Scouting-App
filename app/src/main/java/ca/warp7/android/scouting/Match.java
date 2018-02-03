@@ -165,11 +165,13 @@ class Match {
 
         for (MatchData md : data)
             sb
-                    .append("(")
-                    .append(md.getIndex())
+                    .append("\t(")
+                    .append(Static.formatRightByLength(String.valueOf(md.getIndex()),
+                            3, " "))
                     .append(", ")
-                    .append(md.getValue())
-                    .append(") ")
+                    .append(Static.formatRightByLength(String.valueOf(md.getValue()),
+                            3, " "))
+                    .append(")")
                     .append(md.isUndone()?"[Undo]" : "")
                     .append('\n');
 

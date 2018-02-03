@@ -3,7 +3,6 @@
     package="ca.warp7.android.scouting">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="false"
@@ -22,7 +21,7 @@
         <activity
             android:name=".TimedScoutingActivity"
             android:immersive="true" />
-        <activity android:name=".DataOutputActivity"></activity>
+        <activity android:name=".DataOutputActivity" />
     </application>
 
 </manifest>
