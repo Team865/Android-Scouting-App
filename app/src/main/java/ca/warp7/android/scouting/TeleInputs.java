@@ -2,11 +2,13 @@ package ca.warp7.android.scouting;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
@@ -75,6 +77,17 @@ public class TeleInputs extends Fragment
 
             default:
         }
+
+        final Button b = getView().findViewById(v.getId());
+        b.setTextColor(0xFFFFFFFF);
+        b.setBackgroundColor(0xFF3F51B5);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                b.setBackgroundResource(android.R.drawable.btn_default_small);
+                b.setTextColor(0xFF000000);
+            }
+        }, 100);
     }
 
     @Override

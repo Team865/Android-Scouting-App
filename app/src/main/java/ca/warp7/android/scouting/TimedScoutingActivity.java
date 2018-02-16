@@ -111,6 +111,18 @@ public class TimedScoutingActivity
             String d = String.format(Locale.CANADA,
                     "%02d:%02d", duration / 60, duration % 60);
             actionBar.setSubtitle(d);
+
+            Toolbar tb = (Toolbar) findViewById(R.id.my_toolbar);
+
+            if(duration <= 15){
+                tb.setSubtitleTextColor(0xFFFFBB33);
+            } else if (duration <= 120) {
+                tb.setSubtitleTextColor(0xFF008800);
+            } else if (duration < 150){
+                tb.setSubtitleTextColor(0xFFFFBB33);
+            } else {
+                tb.setSubtitleTextColor(0xFFFF0000);
+            }
             duration++;
             if (duration <= Static.MATCH_LENGTH){
                 handler.postDelayed(durationUpdater, 1000);
@@ -183,18 +195,12 @@ public class TimedScoutingActivity
 
         if(section_id == 0) {
             transaction.replace(R.id.input_frame, autoInputs);
-            ((Toolbar) findViewById(R.id.my_toolbar)).
-                    setBackgroundColor(getResources().getColor((R.color.colorPrimary)));
             actionBar.setTitle("Autonomous");
         } else if (section_id == 1){
             transaction.replace(R.id.input_frame, teleInputs);
-            ((Toolbar) findViewById(R.id.my_toolbar)).
-                    setBackgroundColor(getResources().getColor((R.color.colorAccent)));
             actionBar.setTitle("Tele Op");
         } else if (section_id == 2){
             transaction.replace(R.id.input_frame, endGameInputs);
-            ((Toolbar) findViewById(R.id.my_toolbar)).
-                    setBackgroundColor(getResources().getColor((R.color.colorPrimary)));
             actionBar.setTitle("End Game");
         }
 
@@ -207,6 +213,6 @@ public class TimedScoutingActivity
     }
 
     void pushElapsed(int index){
-        match.pushElapsed(index);
+        match.pushElapsed(index, this);
     }
 }

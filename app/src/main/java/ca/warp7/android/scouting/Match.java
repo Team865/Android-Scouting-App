@@ -1,5 +1,8 @@
 package ca.warp7.android.scouting;
 
+import android.content.Context;
+import android.os.Vibrator;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -100,12 +103,15 @@ class Match {
     }
 
 
-    void pushElapsed(int index){
+    void pushElapsed(int index, TimedScoutingActivity activity){
         int elapsed = (int) (System.currentTimeMillis() / 1000) - timestamp;
         if (elapsed != lastRecordedTime && elapsed < Static.MATCH_LENGTH) {
             MatchData md = new MatchData(index, elapsed);
             data.add(md);
             lastRecordedTime = elapsed;
+
+            ((Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE))
+                    .vibrate(50);
         }
     }
 

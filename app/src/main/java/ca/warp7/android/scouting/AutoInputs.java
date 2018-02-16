@@ -23,8 +23,6 @@ public class AutoInputs extends Fragment
     CheckBox lineCheck;
     TimedScoutingActivity activity;
 
-    int counter = 0;
-
 
     public AutoInputs(){
     }
@@ -56,8 +54,6 @@ public class AutoInputs extends Fragment
         view.findViewById(R.id.exchange_attempt_button).setOnClickListener(this);
         view.findViewById(R.id.exchange_success_button).setOnClickListener(this);
 
-        counter = 0;
-
     }
 
     @Override
@@ -66,65 +62,41 @@ public class AutoInputs extends Fragment
 
             case R.id.scale_attempt_button:
                 activity.pushElapsed(Static.AUTO_SCALE_ATTEMPT);
-                getView().findViewById(R.id.msg_top).setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        getView().findViewById(R.id.msg_top).setVisibility(View.INVISIBLE);
-                    }
-                }, 1000);
-
                 break;
 
             case R.id.scale_success_button:
                 activity.pushElapsed(Static.AUTO_SCALE_SUCCESS);
-                getView().findViewById(R.id.msg_buttom).setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        getView().findViewById(R.id.msg_buttom).setVisibility(View.INVISIBLE);
-                    }
-                }, 1000);
                 break;
 
             case R.id.switch_attempt_button:
                 activity.pushElapsed(Static.AUTO_SWITCH_ATTEMPT);
-                Toast.makeText(activity, "Switch Attempt at x minutes x seconds",
-                        Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.switch_success_button:
                 activity.pushElapsed(Static.AUTO_SWITCH_SUCCESS);
-                final Button b = getView().findViewById(R.id.switch_success_button);
-                b.setTextColor(0xFFFFFFFF);
-                b.setBackgroundColor(0xFF3F51B5);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        b.setBackgroundResource(android.R.drawable.btn_default);
-                        b.setTextColor(0xFF000000);
-                    }
-                }, 500);
                 break;
 
             case R.id.exchange_attempt_button:
                 activity.pushElapsed(Static.AUTO_EXCHANGE_ATTEMPT);
-                ((Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE))
-                        .vibrate(40);
                 break;
 
             case R.id.exchange_success_button:
                 activity.pushElapsed(Static.AUTO_EXCHANGE_ATTEMPT);
-                counter++;
-                ((Button) getView().findViewById(R.id.exchange_success_button))
-                        .setText("Exchange Success \n" + counter);
-                ((Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE))
-                        .vibrate(15);
                 break;
 
             default:
-
         }
+
+        final Button b = getView().findViewById(v.getId());
+        b.setTextColor(0xFFFFFFFF);
+        b.setBackgroundColor(0xFF3F51B5);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                b.setBackgroundResource(android.R.drawable.btn_default_small);
+                b.setTextColor(0xFF000000);
+            }
+        }, 100);
     }
 
     @Override

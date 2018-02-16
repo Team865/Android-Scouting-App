@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity
         myToolBar.setTitleTextColor(0xFFFFFFFF);
         myToolBar.setSubtitleTextColor(0xFFFFFFFF);
 
-        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
-
         // Ask for File Permissions
 
         if (ContextCompat.checkSelfPermission(this,

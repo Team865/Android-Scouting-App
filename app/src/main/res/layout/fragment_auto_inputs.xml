@@ -63,11 +63,11 @@
 
         <Button
             android:id="@+id/exchange_success_button"
-            android:layout_width="149dp"
+            android:layout_width="150dp"
             android:layout_height="100dp"
-            android:text="Exchange Success \n 0"
+            android:text="Exchange Success"
             android:textAllCaps="false"
-            android:textSize="18sp"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/exchange_attempt_button"
