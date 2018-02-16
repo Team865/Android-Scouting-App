@@ -9,13 +9,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/msg_top"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="Scale Attempt at x minutes and x seconds"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/msg_buttom"
+            android:layout_width="360dp"
+            android:layout_height="0dp"
+            android:background="@color/colorAccent"
+            android:text="Scale Success at x minute x seconds"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <Button
             android:id="@+id/switch_success_button"
-            android:layout_width="160dp"
+            android:layout_width="150dp"
             android:layout_height="100dp"
             android:text="Switch\nSuccess"
             android:textAllCaps="false"
-            android:textSize="30sp"
+            android:textSize="26sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/switch_attempt_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -23,11 +51,11 @@
 
         <Button
             android:id="@+id/scale_success_button"
-            android:layout_width="160dp"
+            android:layout_width="150dp"
             android:layout_height="100dp"
             android:text="Scale\nSuccess"
             android:textAllCaps="false"
-            android:textSize="30sp"
+            android:textSize="26sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/scale_attempt_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -35,24 +63,24 @@
 
         <Button
             android:id="@+id/exchange_success_button"
-            android:layout_width="160dp"
+            android:layout_width="149dp"
             android:layout_height="100dp"
-            android:text="Exchange\nSuccess"
+            android:text="Exchange Success \n 0"
             android:textAllCaps="false"
-            android:textSize="30sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/exchange_attempt_button"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/exchange_attempt_button" />
+            app:layout_constraintStart_toEndOf="@+id/exchange_attempt_button"
+            app:layout_constraintTop_toTopOf="@+id/exchange_attempt_button" />
 
         <Button
             android:id="@+id/scale_attempt_button"
-            android:layout_width="160dp"
+            android:layout_width="150dp"
             android:layout_height="100dp"
             android:layout_marginTop="96dp"
             android:text="Scale \nAttempt"
             android:textAllCaps="false"
-            android:textSize="30sp"
+            android:textSize="26sp"
             app:layout_constraintEnd_toStartOf="@+id/scale_success_button"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,12 +88,12 @@
 
         <Button
             android:id="@+id/exchange_attempt_button"
-            android:layout_width="160dp"
+            android:layout_width="150dp"
             android:layout_height="100dp"
             android:layout_marginTop="16dp"
             android:text="Exchange\nAttempt"
             android:textAllCaps="false"
-            android:textSize="30sp"
+            android:textSize="26sp"
             app:layout_constraintEnd_toStartOf="@+id/exchange_success_button"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,12 +101,12 @@
 
         <Button
             android:id="@+id/switch_attempt_button"
-            android:layout_width="160dp"
+            android:layout_width="150dp"
             android:layout_height="100dp"
             android:layout_marginTop="16dp"
             android:text="Switch\nAttempt"
             android:textAllCaps="false"
-            android:textSize="30sp"
+            android:textSize="26sp"
             app:layout_constraintEnd_toStartOf="@+id/switch_success_button"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,10 +118,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="Robot Crossed Line"
-            android:textSize="30sp"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>
