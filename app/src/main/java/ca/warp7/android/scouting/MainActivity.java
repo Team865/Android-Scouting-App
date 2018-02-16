@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar myToolBar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolBar);
+        myToolBar.setTitleTextColor(0xFFFFFFFF);
+        myToolBar.setSubtitleTextColor(0xFFFFFFFF);
+
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         // Ask for File Permissions
 

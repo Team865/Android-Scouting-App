@@ -118,6 +118,8 @@ public class AutoInputs extends Fragment
                 counter++;
                 ((Button) getView().findViewById(R.id.exchange_success_button))
                         .setText("Exchange Success \n" + counter);
+                ((Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE))
+                        .vibrate(15);
                 break;
 
             default:

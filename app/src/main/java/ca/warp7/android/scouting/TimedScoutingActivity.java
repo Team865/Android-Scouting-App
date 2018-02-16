@@ -3,7 +3,9 @@ package ca.warp7.android.scouting;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 public class TimedScoutingActivity
         extends AppCompatActivity {
@@ -27,6 +31,9 @@ public class TimedScoutingActivity
 
     Match match;
 
+    int duration;
+    Handler handler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +46,6 @@ public class TimedScoutingActivity
         Toolbar myToolBar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolBar);
 
-
         // Set up the action bar
 
         actionBar = getSupportActionBar();
@@ -48,7 +54,6 @@ public class TimedScoutingActivity
 
         if(actionBar != null){
             actionBar.setTitle("Autonomous");
-            //actionBar.setSubtitle("0:00");
         }
 
         // Get the match info from the intent
@@ -91,8 +96,27 @@ public class TimedScoutingActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.input_frame, autoInputs).commit();
         }
-        // Add start timer code here
+
+        // Starts the timer
+
+        duration = 0;
+        handler = new Handler();
+        durationUpdater.run();
+
     }
+
+    Runnable durationUpdater = new Runnable() {
+        @Override
+        public void run() {
+            String d = String.format(Locale.CANADA,
+                    "%02d:%02d", duration / 60, duration % 60);
+            actionBar.setSubtitle(d);
+            duration++;
+            if (duration <= Static.MATCH_LENGTH){
+                handler.postDelayed(durationUpdater, 1000);
+            }
+        }
+    };
 
 
     @Override
@@ -159,12 +183,18 @@ public class TimedScoutingActivity
 
         if(section_id == 0) {
             transaction.replace(R.id.input_frame, autoInputs);
+            ((Toolbar) findViewById(R.id.my_toolbar)).
+                    setBackgroundColor(getResources().getColor((R.color.colorPrimary)));
             actionBar.setTitle("Autonomous");
         } else if (section_id == 1){
             transaction.replace(R.id.input_frame, teleInputs);
+            ((Toolbar) findViewById(R.id.my_toolbar)).
+                    setBackgroundColor(getResources().getColor((R.color.colorAccent)));
             actionBar.setTitle("Tele Op");
         } else if (section_id == 2){
             transaction.replace(R.id.input_frame, endGameInputs);
+            ((Toolbar) findViewById(R.id.my_toolbar)).
+                    setBackgroundColor(getResources().getColor((R.color.colorPrimary)));
             actionBar.setTitle("End Game");
         }
 
