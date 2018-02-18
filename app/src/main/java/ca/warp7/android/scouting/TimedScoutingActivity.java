@@ -166,6 +166,7 @@ public class TimedScoutingActivity
     }
 
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.scouting_menu, menu);
@@ -173,6 +174,7 @@ public class TimedScoutingActivity
     }
 
 
+    @Override
     public void onBackPressed(){
         new AlertDialog.Builder(this)
                 .setTitle("Really End Match?")

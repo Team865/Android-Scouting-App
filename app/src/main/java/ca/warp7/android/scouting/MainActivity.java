@@ -306,7 +306,8 @@ public class MainActivity
         }
 
         Intent intent;
-        intent = new Intent(this, TimedScoutingActivity.class);
+        intent = new Intent(this, ScoutingActivity.class);
+        //intent = new Intent(this, TimedScoutingActivity.class);
 
         intent.putExtra(Static.MSG_MATCH_NUMBER,
                 Integer.parseInt(matchField.getText().toString()));
