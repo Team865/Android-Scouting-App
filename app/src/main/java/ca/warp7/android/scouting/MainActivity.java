@@ -1,7 +1,9 @@
 package ca.warp7.android.scouting;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -15,6 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -42,6 +47,8 @@ public class MainActivity extends AppCompatActivity
     private Button matchStartButton;
 
     private Board board;
+
+    private Specs.Index index;
 
 
     @Override
@@ -86,7 +93,7 @@ public class MainActivity extends AppCompatActivity
     private void setUpSpecs(){
 
         File root = Specs.getSpecsRoot();
-        File indexFile = new File(Specs.getSpecsRoot(), "specs/index.json");
+        File indexFile = new File(Specs.getSpecsRoot(), "index.json");
 
         if (!indexFile.exists()){
             try{
@@ -107,6 +114,19 @@ public class MainActivity extends AppCompatActivity
             }catch (IOException e){
                 e.printStackTrace();
             }
+        }
+
+        index = new Specs.Index(indexFile);
+
+        if(!index.getNames().isEmpty()){
+            loadSpecsFromName(index.getNames().get(0));
+        }
+    }
+
+    private void loadSpecsFromName(String name){
+        if(index != null && index.getNames().contains(name)){
+            Specs specs = Specs.setActiveSpecs(index.getFileByName(name));
+            getSupportActionBar().setTitle(specs.getBoardName());
         }
     }
 
@@ -143,10 +163,40 @@ public class MainActivity extends AppCompatActivity
 
         // Set up the action bar
 
-        ActionBar actionBar = getSupportActionBar();
+        /*ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
             actionBar.setTitle("Board " + board.getBoardName());
+        }*/
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.specs_selector_bar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.select_specs:
+
+                final String[] specs = index.getNames().toArray(new String[0]);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                builder.setTitle("Select your board");
+
+                builder.setItems(specs, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        loadSpecsFromName(specs[which]);
+                    }
+                });
+                builder.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

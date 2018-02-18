@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 class Specs {
 
-    class Index {
+    static final class Index {
 
         private ArrayList<String> files = new ArrayList<>();
 
@@ -56,37 +56,25 @@ class Specs {
         }
     }
 
+    static final class DataConstant {
 
-    class DataConstant {
+        private static final String
+                C_ID = "id",
+                C_LOG = "log",
+                C_LABEL = "display",
+                C_TYPE = "type",
+                C_MAX = "max",
+                C_CHOICES = "choices",
 
-        private static final String C_ID = "id";
-
-        private static final String C_LOG = "log";
-
-        private static final String C_LABEL = "display";
-
-        private static final String C_TYPE = "type";
-
-        private static final String C_MIN = "min";
-
-        private static final String C_MAX = "max";
-
-        private static final String C_CHOICES = "choices";
+                T_TIME = "time",
+                T_CHOICE = "choice",
+                T_RATING = "rating";
 
 
-        private static final String T_TIME = "time";
-
-        private static final String T_CHOICE = "choice";
-
-        private static final String T_RATING = "rating";
-
-
-        static final int TIME = 0;
-
-        static final int CHOICE = 1;
-
-        static final int RATING = 2;
-
+        static final int
+                TIME = 0,
+                CHOICE = 1,
+                RATING = 2;
 
 
         final int index;
@@ -98,8 +86,6 @@ class Specs {
         final String label;
 
         final int type;
-
-        final int min;
 
         final int max;
 
@@ -115,8 +101,6 @@ class Specs {
             label = data.has(C_LABEL) ? data.getString(C_LABEL) : "$" + id;
 
             type = data.has(C_TYPE) ? toIntegerType(data.getString(C_TYPE)) : -1;
-
-            min = data.has(C_MIN) ? data.getInt(C_MIN) : -1;
 
             max = data.has(C_MAX) ? data.getInt(C_MAX) : -1;
 
@@ -153,10 +137,6 @@ class Specs {
             return type;
         }
 
-        public int getMin() {
-            return min;
-        }
-
         public int getMax() {
             return max;
         }
@@ -187,6 +167,12 @@ class Specs {
         return -1;
     }
 
+    static File getSpecsRoot(){
+        File r = new File(Environment.getExternalStorageDirectory(), SPECS_ROOT);
+        r.mkdirs();
+        return r;
+    }
+
     private static String readFile(File f) throws IOException{
         BufferedReader br = new BufferedReader(new FileReader(f));
         StringBuilder sb = new StringBuilder();
@@ -205,28 +191,29 @@ class Specs {
 
     private static final String SPECS_ROOT = "Warp7/specs/";
 
-    private static final String ID = "board_id";
+    private static final String
+            ID  = "id",
+            BOARD_NAME = "board",
+            ALLIANCE = "alliance",
+            EVENT = "event",
+            TIMER = "timer",
+            MATCH_SCHEDULE = "schedule",
+            LAYOUT = "layout",
+            CONSTANTS = "data";
 
-    private static final String BOARD_NAME = "board_name";
 
-    private static final String MATCH_SCHEDULE = "board_matches";
-
-    private static final String CONSTANTS = "board_constants";
-
-    private static Specs activeSpecs;
+    private static Specs activeSpecs = null;
 
 
-    static File getSpecsRoot(){
-        File r = new File(Environment.getExternalStorageDirectory(), SPECS_ROOT);
-        r.mkdirs();
-        return r;
+    static boolean hasActiveSpecs(){
+        return activeSpecs != null;
     }
 
     static Specs getActiveSpecs(){
         return activeSpecs;
     }
 
-    static Specs createActiveSpecs(String filename){
+    static Specs setActiveSpecs(String filename){
         try{
 
            activeSpecs = new Specs(readFile(new File(getSpecsRoot(), filename)));
@@ -235,12 +222,9 @@ class Specs {
 
            e.printStackTrace();
            activeSpecs = null;
-
         }
-
         return activeSpecs;
     }
-
 
     private int specsId;
     private String boardName;
@@ -249,7 +233,7 @@ class Specs {
     private ArrayList<DataConstant> dataConstants = new ArrayList<>();
 
 
-    Specs(String json) throws JSONException{
+    private Specs(String json) throws JSONException{
 
         JSONObject specsObject = new JSONObject(json);
 
@@ -278,13 +262,21 @@ class Specs {
 
     }
 
-    boolean hasMatchSchedule(){
+    private boolean hasMatchSchedule(){
         return !matchSchedule.isEmpty();
     }
 
-    boolean matchExistsInSchedule(int m, int t){
+    private boolean matchExistsInSchedule(int m, int t){
         return hasMatchSchedule() &&
                 t == (m < matchSchedule.size() && m >= 0 ? matchSchedule.get(m) : -1);
+    }
+
+    int getSpecsId(){
+        return specsId;
+    }
+
+    public String getBoardName() {
+        return boardName;
     }
 
 }
