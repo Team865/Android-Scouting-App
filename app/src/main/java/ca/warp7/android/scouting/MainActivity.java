@@ -1,11 +1,11 @@
 package ca.warp7.android.scouting;
 
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -22,7 +22,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.ToggleButton;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 
 public class MainActivity extends AppCompatActivity
@@ -30,8 +35,8 @@ public class MainActivity extends AppCompatActivity
 
 
     private static final int MY_PERMISSIONS_REQUEST_FILES = 0;
+
     private EditText nameField, matchField, teamField;
-    private ToggleButton allianceToggle;
     private TextView mismatchWarning, matchHint, teamHint;
     private CheckBox verifier;
     private Button matchStartButton;
@@ -44,13 +49,68 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Set the toolbar to be the default action bar
+        // Set up UI and event listeners
 
-        Toolbar myToolBar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolBar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolBar);
-        myToolBar.setTitleTextColor(0xFFFFFFFF);
-        myToolBar.setSubtitleTextColor(0xFFFFFFFF);
 
+        nameField = findViewById(R.id.name_and_initial);
+        matchHint = findViewById(R.id.match_hint);
+        matchField = findViewById(R.id.match_number);
+        teamHint = findViewById(R.id.team_hint);
+        teamField = findViewById(R.id.team_number);
+        mismatchWarning = findViewById(R.id.mismatch_warning);
+        verifier = findViewById(R.id.verify_check);
+        matchStartButton = findViewById(R.id.match_start_button);
+
+        verifier.setOnCheckedChangeListener(this);
+
+        nameField.addTextChangedListener(this);
+        matchField.addTextChangedListener(this);
+        teamField.addTextChangedListener(this);
+
+        matchStartButton.setOnClickListener(this);
+
+        // Set up miscellaneous tasks
+
+        ensurePermissions();
+        initBoard();
+        loadFromPreferences();
+        setUpSpecs();
+    }
+
+    /**
+     * Set up the specs directory by copying from the asset folder
+     * if the file is not already there
+     */
+    private void setUpSpecs(){
+
+        File root = Specs.getSpecsRoot();
+        File indexFile = new File(Specs.getSpecsRoot(), "specs/index.json");
+
+        if (!indexFile.exists()){
+            try{
+                AssetManager am = getAssets();
+                for(String fn : am.list("specs")){
+
+                    InputStream in = am.open("specs/" + fn);
+                    byte[] buffer = new byte[in.available()];
+                    in.read(buffer);
+                    in.close();
+
+                    File f = new File(root, fn);
+                    OutputStream out = new FileOutputStream(f);
+                    out.write(buffer);
+                    out.close();
+
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void ensurePermissions(){
         // Ask for File Permissions
 
         if (ContextCompat.checkSelfPermission(this,
@@ -61,43 +121,33 @@ public class MainActivity extends AppCompatActivity
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     MY_PERMISSIONS_REQUEST_FILES);
         }
+    }
 
-        initBoard();
-
-        // Get the rest of the UI
-
-        nameField = (EditText) findViewById(R.id.name_and_initial);
-        matchHint = (TextView) findViewById(R.id.match_hint);
-        matchField = (EditText) findViewById(R.id.match_number);
-        teamHint = (TextView) findViewById(R.id.team_hint);
-        teamField = (EditText) findViewById(R.id.team_number);
-        allianceToggle = (ToggleButton) findViewById(R.id.alliance_toggle);
-        mismatchWarning = (TextView) findViewById(R.id.mismatch_warning);
-        verifier = (CheckBox) findViewById(R.id.verify_check);
-        matchStartButton = (Button) findViewById(R.id.match_start_button);
-
+    private void loadFromPreferences(){
         // Set up auto fill from preferences
 
         SharedPreferences prefs;
         prefs = this.getSharedPreferences(Static.ROOT_DOMAIN, MODE_PRIVATE);
 
         nameField.setText(prefs.getString(Static.SAVE_SCOUT_NAME, ""));
+    }
 
-        // Ensure input UI states
+    private boolean matchDoesExist(String m, String t) {
+        return board.matchDoesExist(Integer.parseInt(m) - 1, Integer.parseInt(t));
+    }
 
-        verifier.setChecked(false);
-        verifier.setEnabled(false);
-        mismatchWarning.setVisibility(View.INVISIBLE);
-        matchStartButton.setVisibility(View.INVISIBLE);
+    private void initBoard(){
+        //Create the Board object
 
-        // Add Event Listeners
+        board = new Board();
 
-        verifier.setOnCheckedChangeListener(this);
-        nameField.addTextChangedListener(this);
-        matchField.addTextChangedListener(this);
-        teamField.addTextChangedListener(this);
-        matchStartButton.setOnClickListener(this);
+        // Set up the action bar
 
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setTitle("Board " + board.getBoardName());
+        }
     }
 
     @Override
@@ -168,19 +218,19 @@ public class MainActivity extends AppCompatActivity
 
             verifier.setEnabled(true);
 
-            if (doesMatchExist(m, t)) {
+            if (matchDoesExist(m, t)) {
 
                 mismatchWarning.setVisibility(View.INVISIBLE);
                 verifier.setText(R.string.verify_match_info);
                 verifier.setTextColor(0xFF000000);
-                matchStartButton.setTextColor(getResources().getColor(R.color.colorAccent));
+                //matchStartButton.setTextColor(getResources().getColor(R.color.colorAccent));
 
             } else {
 
                 mismatchWarning.setVisibility(View.VISIBLE);
                 verifier.setText(R.string.verify_match_proceed);
                 verifier.setTextColor(0xFFFF0000);
-                matchStartButton.setTextColor(0xFFFF0000);
+                //matchStartButton.setTextColor(0xFFFF0000);
                 verifier.setChecked(false);
 
             }
@@ -190,7 +240,7 @@ public class MainActivity extends AppCompatActivity
             verifier.setText(R.string.verify_match_info);
             verifier.setEnabled(false);
             verifier.setTextColor(0xFF000000);
-            matchStartButton.setTextColor(getResources().getColor(R.color.colorAccent));
+            //matchStartButton.setTextColor(getResources().getColor(R.color.colorAccent));
             verifier.setChecked(false);
         }
 
@@ -224,25 +274,5 @@ public class MainActivity extends AppCompatActivity
 
         startActivity(intent);
 
-    }
-
-
-    private boolean doesMatchExist(String m, String t) {
-        return board.matchDoesExist(Integer.parseInt(m) - 1, Integer.parseInt(t));
-    }
-
-    private void initBoard(){
-        //Create the Board object
-
-        board = new Board();
-
-        // Set up the action bar
-
-        ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar != null) {
-            actionBar.setTitle("Board " + board.getBoardName());
-            actionBar.setSubtitle(R.string.app_version_text);
-        }
     }
 }

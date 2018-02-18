@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">Scouting</string>
-    <string name="app_version_text">Warp7 - Scouting 0.1</string>
+    <string name="app_version_text">Warp7 - Scouting 0.2a</string>
 
     <string name="hint_match">Match #</string>
     <string name="hint_team">Team #</string>
     <string name="alliance_red">Red  Alliance</string>
     <string name="alliance_blue">Blue Alliance</string>
     <string name="hint_name">Name</string>
-    <string name="start_match">Start</string>
-    <string name="verify_match_info">Verify Match/Team Info</string>
+    <string name="start_match">Start Match</string>
+    <string name="verify_match_info">Verify Match and Team Info</string>
     <string name="incorrect_match_data">The info you entered is not on the match schedule</string>
     <string name="verify_match_proceed">Proceed Anyways</string>
 

@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.model;
+package ca.warp7.android.scouting;
 
 import android.os.Environment;
 
@@ -13,11 +13,49 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Data Model for the scouting specs templates
+ * Data Model for reading files with constants
  * Can be used as a singleton
  */
 
 class Specs {
+
+    class Index {
+
+        private ArrayList<String> files = new ArrayList<>();
+
+        ArrayList<String> names = new ArrayList<>();
+
+        ArrayList<String> identifiers = new ArrayList<>();
+
+
+        Index(File file){
+            try {
+                JSONObject index = new JSONObject(readFile(file));
+
+                JSONArray files = index.getJSONArray("files");
+                JSONArray names = index.getJSONArray("names");
+                JSONArray ids = index.getJSONArray("identifiers");
+
+                for(int i = 0; i < ids.length(); i++){
+                    this.files.add(files.getString(i));
+                    this.names.add(names.getString(i));
+                    this.identifiers.add(ids.getString(i));
+                }
+
+            } catch (IOException | JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        public ArrayList<String> getNames() {
+            return names;
+        }
+
+        public String getFileByName(String name) {
+            return files.get(names.indexOf(name));
+        }
+    }
+
 
     class DataConstant {
 
@@ -67,7 +105,7 @@ class Specs {
 
         final String[] choices;
 
-        public DataConstant(int index, JSONObject data) throws JSONException {
+        DataConstant(int index, JSONObject data) throws JSONException {
 
             this.index = index;
             this.id = data.getString(C_ID);
@@ -149,6 +187,21 @@ class Specs {
         return -1;
     }
 
+    private static String readFile(File f) throws IOException{
+        BufferedReader br = new BufferedReader(new FileReader(f));
+        StringBuilder sb = new StringBuilder();
+
+        String line = br.readLine();
+
+        while (line != null) {
+            sb.append(line);
+            line = br.readLine();
+        }
+
+        br.close();
+        return sb.toString();
+    }
+
 
     private static final String SPECS_ROOT = "Warp7/specs/";
 
@@ -163,23 +216,10 @@ class Specs {
     private static Specs activeSpecs;
 
 
-    private static File getSpecsRoot(){
-        return new File(Environment.getExternalStorageDirectory(), SPECS_ROOT);
-    }
-
-    private static ArrayList<String> getFilesInSpecsRoot(){
-        File root = getSpecsRoot();
-        root.mkdirs();
-
-        File[] specPaths = root.listFiles();
-
-        ArrayList<String> fileNames = new ArrayList<>();
-
-        for(File path : specPaths)
-            if (path.isFile())
-                fileNames.add(path.getName());
-
-        return fileNames;
+    static File getSpecsRoot(){
+        File r = new File(Environment.getExternalStorageDirectory(), SPECS_ROOT);
+        r.mkdirs();
+        return r;
     }
 
     static Specs getActiveSpecs(){
@@ -188,24 +228,16 @@ class Specs {
 
     static Specs createActiveSpecs(String filename){
         try{
-           BufferedReader br;
-           br = new BufferedReader(new FileReader(new File(getSpecsRoot(), filename)));
-           StringBuilder sb = new StringBuilder();
 
-           String line = br.readLine();
-
-           while (line != null) {
-               sb.append(line);
-               line = br.readLine();
-           }
-
-           br.close();
-           activeSpecs = new Specs(sb.toString());
+           activeSpecs = new Specs(readFile(new File(getSpecsRoot(), filename)));
 
         } catch (IOException | JSONException e){
+
            e.printStackTrace();
            activeSpecs = null;
+
         }
+
         return activeSpecs;
     }
 
