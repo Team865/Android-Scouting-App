@@ -205,15 +205,15 @@ class Specs {
     private static Specs activeSpecs = null;
 
 
-    static boolean hasActiveSpecs(){
+    static boolean hasInstance(){
         return activeSpecs != null;
     }
 
-    static Specs getActiveSpecs(){
+    static Specs getInstance(){
         return activeSpecs;
     }
 
-    static Specs setActiveSpecs(String filename){
+    static Specs setInstance(String filename){
         try{
 
            activeSpecs = new Specs(readFile(new File(getSpecsRoot(), filename)));
@@ -228,6 +228,7 @@ class Specs {
 
     private int specsId;
     private String boardName;
+    private String event;
 
     private ArrayList<Integer> matchSchedule = new ArrayList<>();
     private ArrayList<DataConstant> dataConstants = new ArrayList<>();
@@ -239,6 +240,12 @@ class Specs {
 
         specsId = parseHex32(specsObject.getString(ID));
         boardName = specsObject.getString(BOARD_NAME);
+
+        if(specsObject.has(EVENT)){
+            event = specsObject.getString(EVENT);
+        } else {
+            event = "";
+        }
 
         if(specsObject.has(MATCH_SCHEDULE)){
             JSONArray schedule = specsObject.getJSONArray(MATCH_SCHEDULE);
@@ -262,11 +269,11 @@ class Specs {
 
     }
 
-    private boolean hasMatchSchedule(){
+    boolean hasMatchSchedule(){
         return !matchSchedule.isEmpty();
     }
 
-    private boolean matchExistsInSchedule(int m, int t){
+    boolean matchExistsInSchedule(int m, int t){
         return hasMatchSchedule() &&
                 t == (m < matchSchedule.size() && m >= 0 ? matchSchedule.get(m) : -1);
     }
@@ -275,8 +282,12 @@ class Specs {
         return specsId;
     }
 
-    public String getBoardName() {
+    String getBoardName() {
         return boardName;
+    }
+
+    String getEvent(){
+        return event.isEmpty() ? "Event not specified" : event;
     }
 
 }

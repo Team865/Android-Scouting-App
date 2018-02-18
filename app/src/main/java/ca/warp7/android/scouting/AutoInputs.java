@@ -77,7 +77,7 @@ public class AutoInputs extends Fragment
                 break;
 
             case R.id.exchange_success_button:
-                activity.pushElapsed(Static.AUTO_EXCHANGE_ATTEMPT);
+                activity.pushElapsed(Static.AUTO_EXCHANGE_SUCCESS);
                 break;
 
             default:

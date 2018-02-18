@@ -29,6 +29,7 @@ public class DataOutputActivity extends AppCompatActivity {
         // Set the toolbar to be the default action bar
 
         Toolbar myToolBar = findViewById(R.id.my_toolbar);
+        myToolBar.setNavigationIcon(R.mipmap.ic_launcher_round);
         setSupportActionBar(myToolBar);
 
         // Set up the action bar

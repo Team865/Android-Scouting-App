@@ -35,8 +35,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 
-public class MainActivity extends AppCompatActivity
-        implements CompoundButton.OnCheckedChangeListener, TextWatcher, View.OnClickListener {
+public class MainActivity
+
+        extends AppCompatActivity
+
+        implements
+        CompoundButton.OnCheckedChangeListener,
+        TextWatcher,
+        View.OnClickListener {
 
 
     private static final int MY_PERMISSIONS_REQUEST_FILES = 0;
@@ -46,9 +52,7 @@ public class MainActivity extends AppCompatActivity
     private CheckBox verifier;
     private Button matchStartButton;
 
-    private Board board;
-
-    private Specs.Index index;
+    private Specs.Index specsIndex;
 
 
     @Override
@@ -59,6 +63,7 @@ public class MainActivity extends AppCompatActivity
         // Set up UI and event listeners
 
         Toolbar myToolBar = findViewById(R.id.my_toolbar);
+        myToolBar.setNavigationIcon(R.mipmap.ic_launcher_round);
         setSupportActionBar(myToolBar);
 
         nameField = findViewById(R.id.name_and_initial);
@@ -81,7 +86,6 @@ public class MainActivity extends AppCompatActivity
         // Set up miscellaneous tasks
 
         ensurePermissions();
-        initBoard();
         loadFromPreferences();
         setUpSpecs();
     }
@@ -116,17 +120,22 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        index = new Specs.Index(indexFile);
+        specsIndex = new Specs.Index(indexFile);
 
-        if(!index.getNames().isEmpty()){
-            loadSpecsFromName(index.getNames().get(0));
+        if(!specsIndex.getNames().isEmpty()){
+            loadSpecsFromName(specsIndex.getNames().get(0));
         }
     }
 
     private void loadSpecsFromName(String name){
-        if(index != null && index.getNames().contains(name)){
-            Specs specs = Specs.setActiveSpecs(index.getFileByName(name));
-            getSupportActionBar().setTitle(specs.getBoardName());
+        if(specsIndex != null && specsIndex.getNames().contains(name)){
+            Specs specs = Specs.setInstance(specsIndex.getFileByName(name));
+            ActionBar ab = getSupportActionBar();
+            if(ab != null){
+                ab.setTitle("Board " + specs.getBoardName());
+                ab.setSubtitle(specs.getEvent());
+            }
+            updateTextFieldState();
         }
     }
 
@@ -153,26 +162,58 @@ public class MainActivity extends AppCompatActivity
     }
 
     private boolean matchDoesExist(String m, String t) {
-        return board.matchDoesExist(Integer.parseInt(m) - 1, Integer.parseInt(t));
+        return Specs.getInstance().matchExistsInSchedule
+                (Integer.parseInt(m) - 1, Integer.parseInt(t));
     }
 
-    private void initBoard(){
-        //Create the Board object
+    private void updateTextFieldState(){
+        String n = nameField.getText().toString();
+        String m = matchField.getText().toString();
+        String t = teamField.getText().toString();
 
-        board = new Board();
+        boolean n_empty = n.isEmpty();
+        boolean m_empty = m.isEmpty();
+        boolean t_empty = t.isEmpty();
 
-        // Set up the action bar
+        matchHint.setVisibility(!m_empty ? View.VISIBLE : View.INVISIBLE);
+        teamHint.setVisibility(!t_empty ? View.VISIBLE : View.INVISIBLE);
 
-        /*ActionBar actionBar = getSupportActionBar();
+        if (!(n_empty || m_empty || t_empty)) {
 
-        if (actionBar != null) {
-            actionBar.setTitle("Board " + board.getBoardName());
-        }*/
+            verifier.setEnabled(true);
+
+            if(Specs.getInstance().hasMatchSchedule()) {
+                if (matchDoesExist(m, t)) {
+
+                    mismatchWarning.setVisibility(View.INVISIBLE);
+                    verifier.setText(R.string.verify_match_info);
+                    verifier.setTextColor(0xFF000000);
+
+                } else {
+                    mismatchWarning.setText(R.string.schedule_mismatch);
+                    mismatchWarning.setVisibility(View.VISIBLE);
+                    verifier.setText(R.string.verify_match_proceed);
+                    verifier.setTextColor(0xFFFF0000);
+                    verifier.setChecked(false);
+
+                }
+            } else {
+                mismatchWarning.setText(R.string.schedule_does_not_exist);
+                mismatchWarning.setVisibility(View.VISIBLE);
+            }
+
+        } else {
+            mismatchWarning.setVisibility(View.INVISIBLE);
+            verifier.setText(R.string.verify_match_info);
+            verifier.setEnabled(false);
+            verifier.setTextColor(0xFF000000);
+            verifier.setChecked(false);
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.specs_selector_bar, menu);
+        inflater.inflate(R.menu.specs_selector_menu, menu);
         return true;
     }
 
@@ -181,7 +222,7 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.select_specs:
 
-                final String[] specs = index.getNames().toArray(new String[0]);
+                final String[] specs = specsIndex.getNames().toArray(new String[0]);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -227,7 +268,7 @@ public class MainActivity extends AppCompatActivity
             case MY_PERMISSIONS_REQUEST_FILES: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initBoard();
+                    setUpSpecs();
                 }
             }
         }
@@ -243,57 +284,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void afterTextChanged(Editable editable) {
-
-        String n = nameField.getText().toString();
-        String m = matchField.getText().toString();
-        String t = teamField.getText().toString();
-
-        boolean n_empty = n.isEmpty();
-        boolean m_empty = m.isEmpty();
-        boolean t_empty = t.isEmpty();
-
-        if (!m_empty) {
-            matchHint.setVisibility(View.VISIBLE);
-        } else {
-            matchHint.setVisibility(View.INVISIBLE);
-        }
-
-        if (!t_empty) {
-            teamHint.setVisibility(View.VISIBLE);
-        } else {
-            teamHint.setVisibility(View.INVISIBLE);
-        }
-
-        if (!(n_empty || m_empty || t_empty)) {
-
-            verifier.setEnabled(true);
-
-            if (matchDoesExist(m, t)) {
-
-                mismatchWarning.setVisibility(View.INVISIBLE);
-                verifier.setText(R.string.verify_match_info);
-                verifier.setTextColor(0xFF000000);
-                //matchStartButton.setTextColor(getResources().getColor(R.color.colorAccent));
-
-            } else {
-
-                mismatchWarning.setVisibility(View.VISIBLE);
-                verifier.setText(R.string.verify_match_proceed);
-                verifier.setTextColor(0xFFFF0000);
-                //matchStartButton.setTextColor(0xFFFF0000);
-                verifier.setChecked(false);
-
-            }
-
-        } else {
-            mismatchWarning.setVisibility(View.INVISIBLE);
-            verifier.setText(R.string.verify_match_info);
-            verifier.setEnabled(false);
-            verifier.setTextColor(0xFF000000);
-            //matchStartButton.setTextColor(getResources().getColor(R.color.colorAccent));
-            verifier.setChecked(false);
-        }
-
+        updateTextFieldState();
     }
 
     @Override
@@ -309,6 +300,10 @@ public class MainActivity extends AppCompatActivity
         editor.apply();
 
         // Start Auto Activity
+
+        if(!Specs.hasInstance()){
+            return;
+        }
 
         Intent intent;
         intent = new Intent(this, TimedScoutingActivity.class);

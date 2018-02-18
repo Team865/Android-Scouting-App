@@ -3,7 +3,6 @@ package ca.warp7.android.scouting;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
@@ -169,7 +168,7 @@ public class TimedScoutingActivity
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.timed_scouting_bar, menu);
+        inflater.inflate(R.menu.scouting_menu, menu);
         return true;
     }
 

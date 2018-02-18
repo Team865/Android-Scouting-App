@@ -16,26 +16,26 @@
 
     <item
         android:id="@+id/menu_close"
-        android:icon="@drawable/ic_send_black"
+        android:icon="@drawable/ic_send"
         android:title="@string/menu_close"
         app:showAsAction="always" />
 
 
     <item
         android:id="@+id/menu_undo"
-        android:icon="@drawable/ic_undo_black"
+        android:icon="@drawable/ic_undo"
         android:title="@string/menu_undo"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_prev"
-        android:icon="@drawable/ic_arrow_back_black"
+        android:icon="@drawable/ic_arrow_back"
         android:title="@string/menu_prev"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_next"
-        android:icon="@drawable/ic_arrow_forward_black"
+        android:icon="@drawable/ic_arrow_forward"
         android:title="@string/menu_next"
         app:showAsAction="always" />
 

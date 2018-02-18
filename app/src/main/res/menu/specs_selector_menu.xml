@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/select_specs"
-        android:icon="@drawable/ic_folder_open_white_24dp"
+        android:icon="@drawable/ic_folder_open"
         android:title="Select Specs"
         app:showAsAction="always" />
 </menu>
