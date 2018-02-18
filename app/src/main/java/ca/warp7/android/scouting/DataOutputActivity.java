@@ -37,7 +37,7 @@ public class DataOutputActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
-            actionBar.setTitle("Send Match Data");
+            actionBar.setTitle("Send Data");
         }
 
 
