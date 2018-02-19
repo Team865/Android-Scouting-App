@@ -6,5 +6,8 @@
 
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#3F51B5</color>
+    <!--<color name="colorAccent">#3F51B5</color>-->
+
+    <color name="colorAccent">#3c5c94</color>
+    <!--<color name="colorAccent">#5a8ade</color>-->
 </resources>

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -48,7 +49,7 @@ public class MainActivity
     private static final int MY_PERMISSIONS_REQUEST_FILES = 0;
 
     private EditText nameField, matchField, teamField;
-    private TextView mismatchWarning, matchHint, teamHint;
+    private TextView mismatchWarning;
     private CheckBox verifier;
     private Button matchStartButton;
 
@@ -67,9 +68,7 @@ public class MainActivity
         setSupportActionBar(myToolBar);
 
         nameField = findViewById(R.id.name_and_initial);
-        matchHint = findViewById(R.id.match_hint);
         matchField = findViewById(R.id.match_number);
-        teamHint = findViewById(R.id.team_hint);
         teamField = findViewById(R.id.team_number);
         mismatchWarning = findViewById(R.id.mismatch_warning);
         verifier = findViewById(R.id.verify_check);
@@ -175,8 +174,14 @@ public class MainActivity
         boolean m_empty = m.isEmpty();
         boolean t_empty = t.isEmpty();
 
-        matchHint.setVisibility(!m_empty ? View.VISIBLE : View.INVISIBLE);
-        teamHint.setVisibility(!t_empty ? View.VISIBLE : View.INVISIBLE);
+        findViewById(R.id.name_hint)
+                .setVisibility(!n_empty ? View.VISIBLE : View.INVISIBLE);
+        findViewById(R.id.match_hint)
+                .setVisibility(!m_empty ? View.VISIBLE : View.INVISIBLE);
+        findViewById(R.id.team_hint)
+                .setVisibility(!t_empty ? View.VISIBLE : View.INVISIBLE);
+
+
 
         if (!(n_empty || m_empty || t_empty)) {
 
@@ -293,9 +298,11 @@ public class MainActivity
         SharedPreferences prefs;
         prefs = this.getSharedPreferences(Static.ROOT_DOMAIN, MODE_PRIVATE);
 
+        String name = nameField.getText().toString().replaceAll("_", "");
+
         SharedPreferences.Editor editor = prefs.edit();
 
-        editor.putString(Static.SAVE_SCOUT_NAME, nameField.getText().toString());
+        editor.putString(Static.SAVE_SCOUT_NAME, name);
 
         editor.apply();
 
@@ -306,8 +313,8 @@ public class MainActivity
         }
 
         Intent intent;
-        intent = new Intent(this, ScoutingActivity.class);
-        //intent = new Intent(this, TimedScoutingActivity.class);
+        intent = new Intent(this,
+                name.startsWith("nv") ? ScoutingActivity.class : TimedScoutingActivity.class);
 
         intent.putExtra(Static.MSG_MATCH_NUMBER,
                 Integer.parseInt(matchField.getText().toString()));
@@ -315,8 +322,7 @@ public class MainActivity
         intent.putExtra(Static.MSG_TEAM_NUMBER,
                 Integer.parseInt(teamField.getText().toString()));
 
-        intent.putExtra(Static.MSG_SCOUT_NAME,
-                nameField.getText().toString().replaceAll("_", ""));
+        intent.putExtra(Static.MSG_SCOUT_NAME, name);
 
         startActivity(intent);
 

@@ -31,6 +31,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
 
+        <TextView
+            android:id="@+id/name_hint"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hint_name"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintBaseline_toBaselineOf="@+id/name_and_initial"
+            app:layout_constraintStart_toStartOf="@+id/name_and_initial"
+            android:layout_marginLeft="8dp" />
+
         <EditText
             android:id="@+id/name_and_initial"
             android:layout_width="wrap_content"
@@ -51,17 +65,15 @@
 
         <TextView
             android:id="@+id/match_hint"
-            android:layout_width="60dp"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:text="@string/hint_match"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             android:visibility="invisible"
             app:layout_constraintBaseline_toBaselineOf="@+id/match_number"
-            app:layout_constraintStart_toStartOf="@+id/match_number"
-            android:layout_marginLeft="8dp" />
+            app:layout_constraintStart_toStartOf="@+id/name_hint" />
 
         <EditText
             android:id="@+id/match_number"
@@ -83,7 +95,7 @@
 
         <TextView
             android:id="@+id/team_hint"
-            android:layout_width="60dp"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:text="@string/hint_team"
             android:textAlignment="center"
@@ -143,13 +155,14 @@
 
         <Button
             android:id="@+id/match_start_button"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@string/start_match"
             android:textAllCaps="false"
-            android:textColor="@color/colorAccent"
             android:textSize="24sp"
+            android:typeface="sans"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

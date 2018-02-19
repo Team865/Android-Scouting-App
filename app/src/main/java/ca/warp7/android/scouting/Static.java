@@ -62,8 +62,4 @@ class Static {
     static String formatHex(int n, int digits){
         return Static.formatRightByLength(Integer.toHexString(n), digits, "0");
     }
-
-    static int parseHex32(String h) {
-        return Integer.parseInt(h.substring(0, 4), 16) * 65536 + Integer.parseInt(h.substring(4, 8), 16);
-    }
 }

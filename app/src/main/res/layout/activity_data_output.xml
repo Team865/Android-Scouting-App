@@ -51,12 +51,13 @@
 
     <Button
         android:id="@+id/button"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onSendQRClicked"
         android:text="Submit QR Code"
         android:textAllCaps="false"
-        android:textColor="@color/colorAccent"
+        android:typeface="sans"
         app:layout_constraintBaseline_toBaselineOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -70,6 +71,7 @@
         android:onClick="onCommentClicked"
         android:text="Edit Comments"
         android:textAllCaps="false"
+        android:typeface="sans"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button"
         app:layout_constraintHorizontal_bias="0.5"

@@ -37,7 +37,7 @@ public class DataOutputActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
-            actionBar.setTitle("Send Data");
+            actionBar.setTitle(R.string.data_title);
         }
 
 

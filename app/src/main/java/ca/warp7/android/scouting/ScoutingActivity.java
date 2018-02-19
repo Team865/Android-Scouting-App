@@ -32,7 +32,7 @@ public class ScoutingActivity extends AppCompatActivity {
 
     void updateStatus(String message) {
         statusBanner.setText(message);
-        statusBanner.setBackgroundResource(R.color.colorAccent);
+        /*statusBanner.setBackgroundResource(R.color.colorAccent);
         statusBanner.setTextColor(getResources().getColor(android.R.color.white));
 
         handler.postDelayed(new Runnable() {
@@ -42,7 +42,7 @@ public class ScoutingActivity extends AppCompatActivity {
                 statusBanner.setTextColor(getResources()
                         .getColor(android.R.color.tab_indicator_text));
             }
-        }, 500);
+        }, 500);*/
     }
 
     void makeLayout(){
