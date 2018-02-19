@@ -12,26 +12,64 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class ScoutingActivity extends AppCompatActivity {
 
     ActionBar actionBar;
+    TextView statusBanner;
 
     int timer;
     Handler handler;
 
     Specs specs;
+    int currentLayout;
+
+    void updateStatus(String message) {
+        statusBanner.setText(message);
+        statusBanner.setBackgroundResource(R.color.colorAccent);
+        statusBanner.setTextColor(getResources().getColor(android.R.color.white));
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                statusBanner.setBackgroundResource(android.R.color.white);
+                statusBanner.setTextColor(getResources()
+                        .getColor(android.R.color.tab_indicator_text));
+            }
+        }, 500);
+    }
+
+    void makeLayout(){
+        ArrayList<Specs.Layout> layouts = specs.getLayouts();
+
+        if (layouts.isEmpty() || currentLayout < 0 || currentLayout >= layouts.size()) {
+            return;
+        }
+
+        Specs.Layout layout = layouts.get(currentLayout);
+
+        updateStatus(layout.getTitle());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scouting);
 
-        Toolbar myToolBar = (Toolbar) findViewById(R.id.my_toolbar);
+        handler = new Handler();
+
+        Toolbar myToolBar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolBar);
 
-        actionBar = getSupportActionBar();//actionBar.setSubtitle("Autonomous");
+        actionBar = getSupportActionBar();
+
+        statusBanner = findViewById(R.id.status_banner);
 
         specs = Specs.getInstance();
 
@@ -40,7 +78,9 @@ public class ScoutingActivity extends AppCompatActivity {
             return;
         }
 
-        handler = new Handler();
+        currentLayout = 0;
+        makeLayout();
+
         timerUpdater.run();
 
     }
@@ -54,20 +94,25 @@ public class ScoutingActivity extends AppCompatActivity {
 
             Toolbar tb = (Toolbar) findViewById(R.id.my_toolbar);
 
-            String d = String.valueOf(timer <= 15 ? 15 - timer : 150 - timer);
+            String d = "⏱ " + String.valueOf(timer <= 15 ? 15 - timer : 150 - timer);
 
             actionBar.setTitle(d);
 
             if(timer <= 15){
                 tb.setTitleTextColor(0xFFDDAA33);
-            } else if (timer <= 120) {
+            }
+            else if (timer <= 120) {
                 tb.setTitleTextColor(0xFF008800);
-            } else if (timer < 150){
+            }
+            else if (timer < 150){
                 tb.setTitleTextColor(0xFFDDAA33);
-            } else {
+            }
+            else {
                 tb.setTitleTextColor(0xFFFF0000);
             }
+
             timer++;
+
             if (timer <= specs.getTimer()){
                 handler.postDelayed(timerUpdater, 1000);
             }
@@ -95,20 +140,22 @@ public class ScoutingActivity extends AppCompatActivity {
 
             case R.id.menu_undo:
                 Toast.makeText(this,
-                        "Undo pressed (It does nothing for now) ",
+                        "Undo pressed (It does nothing) ",
                         Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.menu_prev:
-                Toast.makeText(this,
-                        "Prev pressed (It does nothing for now) ",
-                        Toast.LENGTH_SHORT).show();
+                if (currentLayout > 0){
+                    currentLayout--;
+                    makeLayout();
+                }
                 return true;
 
             case R.id.menu_next:
-                Toast.makeText(this,
-                        "Next pressed (It does nothing for now) ",
-                        Toast.LENGTH_SHORT).show();
+                if (currentLayout < specs.getLayouts().size() - 1){
+                    currentLayout++;
+                    makeLayout();
+                }
                 return true;
 
             default:

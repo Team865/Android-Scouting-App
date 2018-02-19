@@ -17,44 +17,7 @@ import java.util.ArrayList;
  * Can be used as a singleton
  */
 
-class Specs {
-
-    static final class Index {
-
-        private ArrayList<String> files = new ArrayList<>();
-
-        ArrayList<String> names = new ArrayList<>();
-
-        ArrayList<String> identifiers = new ArrayList<>();
-
-
-        Index(File file){
-            try {
-                JSONObject index = new JSONObject(readFile(file));
-
-                JSONArray files = index.getJSONArray("files");
-                JSONArray names = index.getJSONArray("names");
-                JSONArray ids = index.getJSONArray("identifiers");
-
-                for(int i = 0; i < ids.length(); i++){
-                    this.files.add(files.getString(i));
-                    this.names.add(names.getString(i));
-                    this.identifiers.add(ids.getString(i));
-                }
-
-            } catch (IOException | JSONException e){
-                e.printStackTrace();
-            }
-        }
-
-        public ArrayList<String> getNames() {
-            return names;
-        }
-
-        public String getFileByName(String name) {
-            return files.get(names.indexOf(name));
-        }
-    }
+final class Specs {
 
     static final class DataConstant {
 
@@ -147,6 +110,56 @@ class Specs {
 
     }
 
+    static final class Index {
+
+        private ArrayList<String> files = new ArrayList<>();
+
+        ArrayList<String> names = new ArrayList<>();
+
+        ArrayList<String> identifiers = new ArrayList<>();
+
+
+        Index(File file){
+            try {
+                JSONObject index = new JSONObject(readFile(file));
+
+                JSONArray files = index.getJSONArray("files");
+                JSONArray names = index.getJSONArray("names");
+                JSONArray ids = index.getJSONArray("identifiers");
+
+                for(int i = 0; i < ids.length(); i++){
+                    this.files.add(files.getString(i));
+                    this.names.add(names.getString(i));
+                    this.identifiers.add(ids.getString(i));
+                }
+
+            } catch (IOException | JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        public ArrayList<String> getNames() {
+            return names;
+        }
+
+        public String getFileByName(String name) {
+            return files.get(names.indexOf(name));
+        }
+    }
+
+    static final class Layout{
+
+        String title;
+
+        public Layout(JSONObject data) throws JSONException {
+            title = data.getString("title");
+        }
+
+        public String getTitle() {
+            return title;
+        }
+    }
+
     private static int parseHex32(String h) {
         return Integer.parseInt(h.substring(0, 4), 16) << 16
                 + Integer.parseInt(h.substring(4, 8), 16);
@@ -233,37 +246,40 @@ class Specs {
 
     private ArrayList<Integer> matchSchedule = new ArrayList<>();
     private ArrayList<DataConstant> dataConstants = new ArrayList<>();
+    private ArrayList<Layout> layouts = new ArrayList<>();
 
 
     private Specs(String json) throws JSONException{
 
-        JSONObject specsObject = new JSONObject(json);
+        JSONObject specs_json = new JSONObject(json);
 
-        specsId = parseHex32(specsObject.getString(ID));
-        boardName = specsObject.getString(BOARD_NAME);
+        specsId = parseHex32(specs_json.getString(ID));
+        boardName = specs_json.getString(BOARD_NAME);
 
-        event = specsObject.has(EVENT) ? specsObject.getString(EVENT) : "";
-        timer = specsObject.has(TIMER) ? specsObject.getInt(TIMER) : 150;
+        event = specs_json.has(EVENT) ? specs_json.getString(EVENT) : "";
+        timer = specs_json.has(TIMER) ? specs_json.getInt(TIMER) : 150;
 
-        if(specsObject.has(MATCH_SCHEDULE)){
-            JSONArray schedule = specsObject.getJSONArray(MATCH_SCHEDULE);
-
-            matchSchedule.clear();
-
+        if(specs_json.has(MATCH_SCHEDULE)){
+            JSONArray schedule = specs_json.getJSONArray(MATCH_SCHEDULE);
             for(int i = 0; i < schedule.length(); i++) {
                 matchSchedule.add(schedule.getInt(i));
             }
         }
 
-        if(specsObject.has(CONSTANTS)){
-            JSONArray constants = specsObject.getJSONArray(CONSTANTS);
-
-            dataConstants.clear();
-
+        if(specs_json.has(CONSTANTS)){
+            JSONArray constants = specs_json.getJSONArray(CONSTANTS);
             for (int i = 0; i < constants.length(); i++){
                 dataConstants.add(new DataConstant(i, constants.getJSONObject(i)));
             }
         }
+
+        if(specs_json.has(LAYOUT)){
+            JSONArray layoutsArray = specs_json.getJSONArray(LAYOUT);
+            for (int i = 0; i < layoutsArray.length(); i++){
+                layouts.add(new Layout(layoutsArray.getJSONObject(i)));
+            }
+        }
+
 
     }
 
@@ -288,8 +304,15 @@ class Specs {
         return event.isEmpty() ? "No Event" : event;
     }
 
-    public int getTimer() {
+    int getTimer() {
         return timer;
     }
 
+    DataConstant getDataConstantById(int id){
+        return dataConstants.get(id);
+    }
+
+    ArrayList<Layout> getLayouts() {
+        return layouts;
+    }
 }
