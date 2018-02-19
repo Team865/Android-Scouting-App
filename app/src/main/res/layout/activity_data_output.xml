@@ -42,7 +42,6 @@
                 android:layout_height="match_parent"
                 android:fontFamily="monospace"
                 android:isScrollContainer="false"
-                android:textColor="@android:color/black"
                 android:textIsSelectable="true"
                 android:textSize="14sp"
                 tools:layout_editor_absoluteX="0dp"

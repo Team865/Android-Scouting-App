@@ -12,6 +12,8 @@
     <string name="schedule_mismatch">This match is not found  on the schedule</string>
     <string name="schedule_does_not_exist">A match schedule has not been provided</string>
     <string name="verify_match_proceed">Proceed Anyways</string>
+    <string name="exit_confirmation">Exit Scouting?</string>
+    <string name="exit_confirmation_body">All data entered will be lost. Scan the QR code to save it to a computer.</string>
 
     <string name="menu_close">Exit Scouting</string>
     <string name="menu_undo">Undo</string>

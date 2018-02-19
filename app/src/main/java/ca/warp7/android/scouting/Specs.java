@@ -229,6 +229,7 @@ class Specs {
     private int specsId;
     private String boardName;
     private String event;
+    private int timer;
 
     private ArrayList<Integer> matchSchedule = new ArrayList<>();
     private ArrayList<DataConstant> dataConstants = new ArrayList<>();
@@ -241,11 +242,8 @@ class Specs {
         specsId = parseHex32(specsObject.getString(ID));
         boardName = specsObject.getString(BOARD_NAME);
 
-        if(specsObject.has(EVENT)){
-            event = specsObject.getString(EVENT);
-        } else {
-            event = "";
-        }
+        event = specsObject.has(EVENT) ? specsObject.getString(EVENT) : "";
+        timer = specsObject.has(TIMER) ? specsObject.getInt(TIMER) : 150;
 
         if(specsObject.has(MATCH_SCHEDULE)){
             JSONArray schedule = specsObject.getJSONArray(MATCH_SCHEDULE);
@@ -287,7 +285,11 @@ class Specs {
     }
 
     String getEvent(){
-        return event.isEmpty() ? "Event not specified" : event;
+        return event.isEmpty() ? "No Event" : event;
+    }
+
+    public int getTimer() {
+        return timer;
     }
 
 }
