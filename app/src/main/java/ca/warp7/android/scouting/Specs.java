@@ -1,6 +1,7 @@
 package ca.warp7.android.scouting;
 
 import android.os.Environment;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -161,7 +162,7 @@ final class Specs {
     }
 
     private static int parseHex32(String h) {
-        return Integer.parseInt(h.substring(0, 4), 16) << 16
+        return Integer.parseInt(h.substring(0, 4), 16) * 65536
                 + Integer.parseInt(h.substring(4, 8), 16);
     }
 
@@ -239,9 +240,10 @@ final class Specs {
         return activeSpecs;
     }
 
-    private int specsId;
+    private String specsId;
     private String boardName;
     private String event;
+
     private int timer;
 
     private ArrayList<Integer> matchSchedule = new ArrayList<>();
@@ -253,7 +255,7 @@ final class Specs {
 
         JSONObject specs_json = new JSONObject(json);
 
-        specsId = parseHex32(specs_json.getString(ID));
+        specsId = specs_json.getString(ID);
         boardName = specs_json.getString(BOARD_NAME);
 
         event = specs_json.has(EVENT) ? specs_json.getString(EVENT) : "";
@@ -292,7 +294,7 @@ final class Specs {
                 t == (m < matchSchedule.size() && m >= 0 ? matchSchedule.get(m) : -1);
     }
 
-    int getSpecsId(){
+    String getSpecsId(){
         return specsId;
     }
 

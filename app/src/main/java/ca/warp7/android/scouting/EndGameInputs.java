@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 
-
+@Deprecated
 public class EndGameInputs extends Fragment
     implements SeekBar.OnSeekBarChangeListener, AdapterView.OnItemSelectedListener {
 

@@ -1,6 +1,6 @@
 package ca.warp7.android.scouting;
 
-
+@Deprecated
 class Static {
 
     static final String BOARD_PATH = "Warp7/board/board.json";

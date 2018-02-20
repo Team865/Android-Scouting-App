@@ -9,10 +9,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-
+@Deprecated
 class Match {
-
-//TODO move the formatting of individual data into MatchData
 
     class MatchData {
         private int typeIndex;
@@ -58,11 +56,6 @@ class Match {
 
     private int timestamp = 0;
 
-
-    // Comments by the scout
-
-    //private String comments = "";
-
     // Time store
 
     private int lastRecordedTime = -1;
@@ -84,10 +77,6 @@ class Match {
     }
 
     // Methods for setting data
-
-    /*void comment(String comments) {
-        this.comments = comments;
-    }*/
 
 
     void pushState(int index, int value) {
@@ -132,9 +121,6 @@ class Match {
             sb.append(Static.formatHex(md.toIntValue(), 4));
 
         sb.append("_");
-
-        /*for (char ch : comments.toCharArray())
-            sb.append(Integer.toHexString((int) ch));*/
 
         return sb.toString();
     }

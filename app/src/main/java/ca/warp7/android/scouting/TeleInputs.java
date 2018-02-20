@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
-
+@Deprecated
 public class TeleInputs extends Fragment
     implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 

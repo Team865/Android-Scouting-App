@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-
+@Deprecated
 public class AutoInputs extends Fragment
     implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 

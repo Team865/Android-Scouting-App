@@ -14,6 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,8 @@ public class ScoutingActivity extends AppCompatActivity {
     ActionBar actionBar;
     TextView statusBanner;
 
+    TableLayout inputTable;
+
     int timer;
     Handler handler;
 
@@ -32,17 +36,6 @@ public class ScoutingActivity extends AppCompatActivity {
 
     void updateStatus(String message) {
         statusBanner.setText(message);
-        /*statusBanner.setBackgroundResource(R.color.colorAccent);
-        statusBanner.setTextColor(getResources().getColor(android.R.color.white));
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                statusBanner.setBackgroundResource(android.R.color.white);
-                statusBanner.setTextColor(getResources()
-                        .getColor(android.R.color.tab_indicator_text));
-            }
-        }, 500);*/
     }
 
     void makeLayout(){
@@ -55,6 +48,12 @@ public class ScoutingActivity extends AppCompatActivity {
         Specs.Layout layout = layouts.get(currentLayout);
 
         updateStatus(layout.getTitle());
+
+        layoutInputTable(layout);
+    }
+
+    void layoutInputTable(Specs.Layout layout){
+        inputTable.removeAllViews();
     }
 
     @Override
@@ -70,6 +69,7 @@ public class ScoutingActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
 
         statusBanner = findViewById(R.id.status_banner);
+        inputTable = (TableLayout) findViewById(R.id.input_table);
 
         specs = Specs.getInstance();
 
@@ -133,8 +133,9 @@ public class ScoutingActivity extends AppCompatActivity {
             case R.id.menu_close:
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
-                intent.putExtra(Static.MSG_PRINT_DATA, "No data");
-                intent.putExtra(Static.MSG_ENCODE_DATA, "_");
+                intent.putExtra(Static.MSG_PRINT_DATA, "No data @ " +
+                        specs.getSpecsId());
+                intent.putExtra(Static.MSG_ENCODE_DATA, "???");
                 startActivity(intent);
                 return true;
 
