@@ -41,8 +41,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:isScrollContainer="false"
+                android:textColor="@android:color/black"
                 android:textIsSelectable="true"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:typeface="monospace"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="302dp" />

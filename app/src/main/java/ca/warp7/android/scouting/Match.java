@@ -63,7 +63,7 @@ class Match {
 
     // Data values
 
-    private ArrayList<MatchData> data = new ArrayList<MatchData>();
+    private ArrayList<MatchData> data = new ArrayList<>();
 
 
     Match(int matchNumber, int teamNumber, String scoutName) {

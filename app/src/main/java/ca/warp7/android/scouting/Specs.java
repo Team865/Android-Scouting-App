@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Data Model for reading files with constants
@@ -30,7 +31,7 @@ final class Specs {
                 C_MAX = "max",
                 C_CHOICES = "choices",
 
-                T_TIME = "time",
+                T_TIME = "timestamp",
                 T_CHOICE = "choice",
                 T_RATING = "rating";
 
@@ -109,6 +110,26 @@ final class Specs {
             return choices;
         }
 
+        public String formatValue(int v){
+            switch (type){
+                case TIME:
+                    return String.format(Locale.CANADA,"%dm %02ds",
+                            v / 60, v % 60);
+
+                case CHOICE:
+                    if (v >= 0 && v < choices.length){
+                        return "<" + choices[v] + ">";
+                    }
+                    return String.valueOf(v);
+
+                case RATING:
+                    return v + " out of " + max;
+
+                default:
+                    return String.valueOf(v);
+            }
+        }
+
     }
 
     static final class Index {
@@ -167,7 +188,6 @@ final class Specs {
     }
 
     private static int toIntegerType(String type){
-
         switch (type) {
             case DataConstant.T_TIME:
                 return DataConstant.TIME;
@@ -243,6 +263,7 @@ final class Specs {
     private String specsId;
     private String boardName;
     private String event;
+    private String alliance;
 
     private int timer;
 
@@ -260,6 +281,7 @@ final class Specs {
 
         event = specs_json.has(EVENT) ? specs_json.getString(EVENT) : "";
         timer = specs_json.has(TIMER) ? specs_json.getInt(TIMER) : 150;
+        alliance = specs_json.has(ALLIANCE) ? specs_json.getString(ALLIANCE) : "N";
 
         if(specs_json.has(MATCH_SCHEDULE)){
             JSONArray schedule = specs_json.getJSONArray(MATCH_SCHEDULE);
@@ -310,11 +332,19 @@ final class Specs {
         return timer;
     }
 
-    DataConstant getDataConstantById(int id){
+    DataConstant getDataConstantByIndex(int id){
         return dataConstants.get(id);
+    }
+
+    boolean hasIndexInConstants(int id){
+        return id >= 0 && id < dataConstants.size();
     }
 
     ArrayList<Layout> getLayouts() {
         return layouts;
+    }
+
+    String getAlliance(){
+        return alliance;
     }
 }

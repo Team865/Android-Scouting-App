@@ -25,7 +25,6 @@ public class ScoutingActivity extends AppCompatActivity {
 
     ActionBar actionBar;
     TextView statusBanner;
-
     TableLayout inputTable;
 
     int timer;
@@ -33,6 +32,8 @@ public class ScoutingActivity extends AppCompatActivity {
 
     Specs specs;
     int currentLayout;
+
+    Encoder encoder;
 
     void updateStatus(String message) {
         statusBanner.setText(message);
@@ -80,6 +81,15 @@ public class ScoutingActivity extends AppCompatActivity {
 
         currentLayout = 0;
         makeLayout();
+
+        Intent intent = getIntent();
+        int matchNumber = intent.getIntExtra(Static.MSG_MATCH_NUMBER, -1);
+        int teamNumber = intent.getIntExtra(Static.MSG_TEAM_NUMBER, -1);
+        String scoutName = intent.getStringExtra(Static.MSG_SCOUT_NAME);
+
+        encoder = new Encoder(matchNumber, teamNumber, scoutName);
+        encoder.push(1,3);
+        encoder.push(18,3);
 
         timerUpdater.run();
 
@@ -133,9 +143,8 @@ public class ScoutingActivity extends AppCompatActivity {
             case R.id.menu_close:
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
-                intent.putExtra(Static.MSG_PRINT_DATA, "No data @ " +
-                        specs.getSpecsId());
-                intent.putExtra(Static.MSG_ENCODE_DATA, "???");
+                intent.putExtra(Static.MSG_PRINT_DATA, encoder.format());
+                intent.putExtra(Static.MSG_ENCODE_DATA, encoder.encode());
                 startActivity(intent);
                 return true;
 
