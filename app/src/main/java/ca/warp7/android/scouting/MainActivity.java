@@ -155,9 +155,9 @@ public class MainActivity
         // Set up auto fill from preferences
 
         SharedPreferences prefs;
-        prefs = this.getSharedPreferences(Static.ROOT_DOMAIN, MODE_PRIVATE);
+        prefs = this.getSharedPreferences(ID.ROOT_DOMAIN, MODE_PRIVATE);
 
-        nameField.setText(prefs.getString(Static.SAVE_SCOUT_NAME, ""));
+        nameField.setText(prefs.getString(ID.SAVE_SCOUT_NAME, ""));
     }
 
     private boolean matchDoesExist(String m, String t) {
@@ -296,13 +296,13 @@ public class MainActivity
     public void onClick(View v) {
 
         SharedPreferences prefs;
-        prefs = this.getSharedPreferences(Static.ROOT_DOMAIN, MODE_PRIVATE);
+        prefs = this.getSharedPreferences(ID.ROOT_DOMAIN, MODE_PRIVATE);
 
         String name = nameField.getText().toString().replaceAll("_", "");
 
         SharedPreferences.Editor editor = prefs.edit();
 
-        editor.putString(Static.SAVE_SCOUT_NAME, name);
+        editor.putString(ID.SAVE_SCOUT_NAME, name);
 
         editor.apply();
 
@@ -316,13 +316,13 @@ public class MainActivity
         intent = new Intent(this,
                 name.startsWith("nv") ? ScoutingActivity.class : TimedScoutingActivity.class);
 
-        intent.putExtra(Static.MSG_MATCH_NUMBER,
+        intent.putExtra(ID.MSG_MATCH_NUMBER,
                 Integer.parseInt(matchField.getText().toString()));
 
-        intent.putExtra(Static.MSG_TEAM_NUMBER,
+        intent.putExtra(ID.MSG_TEAM_NUMBER,
                 Integer.parseInt(teamField.getText().toString()));
 
-        intent.putExtra(Static.MSG_SCOUT_NAME, name);
+        intent.putExtra(ID.MSG_SCOUT_NAME, name);
 
         startActivity(intent);
 

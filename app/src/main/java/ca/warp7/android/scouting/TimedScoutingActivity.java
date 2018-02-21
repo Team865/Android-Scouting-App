@@ -60,9 +60,9 @@ public class TimedScoutingActivity
 
         Intent intent = getIntent();
 
-        int matchNumber = intent.getIntExtra(Static.MSG_MATCH_NUMBER, -1);
-        int teamNumber = intent.getIntExtra(Static.MSG_TEAM_NUMBER, -1);
-        String scoutName = intent.getStringExtra(Static.MSG_SCOUT_NAME);
+        int matchNumber = intent.getIntExtra(ID.MSG_MATCH_NUMBER, -1);
+        int teamNumber = intent.getIntExtra(ID.MSG_TEAM_NUMBER, -1);
+        String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
 
         match = new Match(matchNumber, teamNumber, scoutName);
 
@@ -138,8 +138,8 @@ public class TimedScoutingActivity
             case R.id.menu_close:
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
-                intent.putExtra(Static.MSG_PRINT_DATA, match.format());
-                intent.putExtra(Static.MSG_ENCODE_DATA, match.encode());
+                intent.putExtra(ID.MSG_PRINT_DATA, match.format());
+                intent.putExtra(ID.MSG_ENCODE_DATA, match.encode());
                 startActivity(intent);
                 return true;
 

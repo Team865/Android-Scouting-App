@@ -43,8 +43,8 @@ public class DataOutputActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        print = intent.getStringExtra(Static.MSG_PRINT_DATA);
-        encoded = getIntent().getStringExtra(Static.MSG_ENCODE_DATA);
+        print = intent.getStringExtra(ID.MSG_PRINT_DATA);
+        encoded = getIntent().getStringExtra(ID.MSG_ENCODE_DATA);
 
         dataView = findViewById(R.id.data_display);
         dataView.setText(print);
