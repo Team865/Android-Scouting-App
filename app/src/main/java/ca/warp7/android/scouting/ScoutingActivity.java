@@ -3,6 +3,7 @@ package ca.warp7.android.scouting;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -55,6 +57,30 @@ public class ScoutingActivity extends AppCompatActivity {
 
     void layoutInputTable(Specs.Layout layout){
         inputTable.removeAllViews();
+
+
+        for(int i = 0; i < 6; i++){
+            TableRow tr = new TableRow(this);
+            tr.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.FILL_PARENT));
+
+            TextView textview = new Button(this);
+        /*textview.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));*/
+
+            textview.setText("Hello");
+
+
+            TextView textview2 = new Button(this);
+            textview2.setText("Hello " + i);
+
+
+            tr.addView(textview);
+            tr.addView(textview2);
+
+
+            inputTable.addView(tr);
+        }
     }
 
     @Override
@@ -109,13 +135,13 @@ public class ScoutingActivity extends AppCompatActivity {
             actionBar.setTitle(d);
 
             if(timer <= 15){
-                tb.setTitleTextColor(0xFFDDAA33);
+                tb.setTitleTextColor(0xFFCC9900);
             }
             else if (timer <= 120) {
-                tb.setTitleTextColor(0xFF008800);
+                tb.setTitleTextColor(0xFF009933);
             }
             else if (timer < 150){
-                tb.setTitleTextColor(0xFFDDAA33);
+                tb.setTitleTextColor(0xFFFF9900);
             }
             else {
                 tb.setTitleTextColor(0xFFFF0000);
