@@ -20,13 +20,9 @@
         android:id="@+id/status_banner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
-        android:paddingBottom="2dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:paddingStart="4dp"
         android:textAlignment="center"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
@@ -35,11 +31,12 @@
         android:id="@+id/input_table"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:stretchColumns="*"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status_banner"
-        android:stretchColumns="*">
+        app:layout_constraintTop_toBottomOf="@+id/status_banner">
 
         <TextView
             android:id="@+id/textView"

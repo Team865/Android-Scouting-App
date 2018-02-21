@@ -91,6 +91,7 @@ public class ScoutingActivity extends AppCompatActivity {
         handler = new Handler();
 
         Toolbar myToolBar = findViewById(R.id.my_toolbar);
+        myToolBar.setNavigationIcon(R.drawable.ic_close);
         setSupportActionBar(myToolBar);
 
         actionBar = getSupportActionBar();
@@ -165,6 +166,10 @@ public class ScoutingActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+            case android.R.id.home:
+                onBackPressed();
+                return true;
 
             case R.id.menu_close:
                 Intent intent;
