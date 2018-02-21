@@ -194,7 +194,7 @@ final class Encoder {
                 Specs.DataConstant dc = specs.getDataConstantByIndex(t);
                 sb
                         .append(formatLeft(dc.getLogTitle(), 23, " "))
-                        .append(formatLeft(dc.formatValue(d.getValue()), 14, " "));
+                        .append(formatLeft(dc.format(d.getValue()), 14, " "));
             } else {
                 sb
                         .append(formatLeft(String.valueOf(t), 23, " "))

@@ -5,7 +5,7 @@ class Static {
 
     static final String BOARD_PATH = "Warp7/board/board.json";
 
-    static final String MSG_SCOUT_NAME = "ca.warp7.android.scouting.msg.scout_name";
+/*    static final String MSG_SCOUT_NAME = "ca.warp7.android.scouting.msg.scout_name";
     static final String MSG_TEAM_NUMBER = "ca.warp7.android.scouting.msg.team_number";
     static final String MSG_MATCH_NUMBER = "ca.warp7.android.scouting.msg.match_number";
 
@@ -13,7 +13,7 @@ class Static {
     static final String MSG_ENCODE_DATA = "ca.warp7.android.scouting.msg.encode_data";
 
     static final String SAVE_SCOUT_NAME = "ca.warp7.android.scouting.save.scout_name";
-    static final String ROOT_DOMAIN = "ca.warp7.android.scouting";
+    static final String ROOT_DOMAIN = "ca.warp7.android.scouting";*/
     
     static final int AUTO_ROBOT_CROSS_LINE = 0;
     static final int AUTO_ROBOT_CROSS_TIME = 1;

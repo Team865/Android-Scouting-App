@@ -1,7 +1,6 @@
 package ca.warp7.android.scouting;
 
 import android.os.Environment;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,17 +28,44 @@ final class Specs {
                 C_LABEL = "display",
                 C_TYPE = "type",
                 C_MAX = "max",
-                C_CHOICES = "choices",
+                C_CHOICES = "choices";
 
+        private static final String
                 T_TIME = "timestamp",
                 T_CHOICE = "choice",
-                T_RATING = "rating";
+                T_RATING = "rating",
+                T_CHECKBOX = "checkbox",
+                T_DURATION = "duration";
 
 
         static final int
                 TIME = 0,
                 CHOICE = 1,
-                RATING = 2;
+                RATING = 2,
+                CHECKBOX = 3,
+                DURATION = 4;
+
+
+        private static int toIntegerType(String type){
+            switch (type) {
+                case DataConstant.T_TIME:
+                    return DataConstant.TIME;
+
+                case DataConstant.T_CHOICE:
+                    return DataConstant.CHOICE;
+
+                case DataConstant.T_RATING:
+                    return DataConstant.RATING;
+
+                case DataConstant.T_CHECKBOX:
+                    return DataConstant.CHECKBOX;
+
+                case DataConstant.T_DURATION:
+                    return DataConstant.DURATION;
+                default:
+                        return -1;
+            }
+        }
 
 
         final int index;
@@ -55,6 +81,7 @@ final class Specs {
         final int max;
 
         final String[] choices;
+
 
         DataConstant(int index, JSONObject data) throws JSONException {
 
@@ -82,48 +109,50 @@ final class Specs {
             }
         }
 
-        public int getIndex() {
+        int getIndex() {
             return index;
         }
 
-        public String getId() {
+        String getId() {
             return id;
         }
 
-        public String getLogTitle() {
+        String getLogTitle() {
             return logTitle;
         }
 
-        public String getLabel() {
+        String getLabel() {
             return label;
         }
 
-        public int getType() {
+        int getType() {
             return type;
         }
 
-        public int getMax() {
+        int getMax() {
             return max;
         }
 
-        public String[] getChoices() {
+        String[] getChoices() {
             return choices;
         }
 
-        public String formatValue(int v){
+        String format(int v){
             switch (type){
                 case TIME:
+                case DURATION:
                     return String.format(Locale.CANADA,"%dm %02ds",
                             v / 60, v % 60);
 
                 case CHOICE:
-                    if (v >= 0 && v < choices.length){
-                        return "<" + choices[v] + ">";
-                    }
-                    return String.valueOf(v);
+                    return v >= 0 && v < choices.length ?
+                            "<" + choices[v] + ">" : String.valueOf(v);
 
                 case RATING:
                     return v + " out of " + max;
+
+                case CHECKBOX:
+                    return v != 0? "True" : "False";
 
                 default:
                     return String.valueOf(v);
@@ -187,20 +216,6 @@ final class Specs {
                 + Integer.parseInt(h.substring(4, 8), 16);
     }
 
-    private static int toIntegerType(String type){
-        switch (type) {
-            case DataConstant.T_TIME:
-                return DataConstant.TIME;
-
-            case DataConstant.T_CHOICE:
-                return DataConstant.CHOICE;
-
-            case DataConstant.T_RATING:
-                return DataConstant.RATING;
-        }
-        return -1;
-    }
-
     static File getSpecsRoot(){
         File r = new File(Environment.getExternalStorageDirectory(), SPECS_ROOT);
         r.mkdirs();
@@ -259,6 +274,7 @@ final class Specs {
         }
         return activeSpecs;
     }
+
 
     private String specsId;
     private String boardName;
