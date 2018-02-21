@@ -216,6 +216,7 @@ public class MainActivity
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.specs_selector_menu, menu);
@@ -225,7 +226,7 @@ public class MainActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.select_specs:
+            case R.id.menu_select_specs:
 
                 final String[] specs = specsIndex.getNames().toArray(new String[0]);
 

@@ -9,6 +9,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -46,9 +49,37 @@ public class DataOutputActivity extends AppCompatActivity {
         print = intent.getStringExtra(ID.MSG_PRINT_DATA);
         encoded = getIntent().getStringExtra(ID.MSG_ENCODE_DATA);
 
-        dataView = findViewById(R.id.data_display);
+        dataView = (TextView) findViewById(R.id.data_display);
         dataView.setText(print);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.data_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_comment:
+                showCommentsDialog();
+                return true;
+
+            case R.id.menu_share:
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT, encoded + comments);
+                intent.setType("text/plain");
+
+                startActivity(Intent.createChooser(intent, "Send encoded data to:"));
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void onSendQRClicked(View view) {
@@ -70,7 +101,11 @@ public class DataOutputActivity extends AppCompatActivity {
 
     public void onCommentClicked(View view) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        showCommentsDialog();
+    }
+
+    private void showCommentsDialog() {
+
         final EditText input = new EditText(this);
 
         input.setInputType(InputType.TYPE_CLASS_TEXT |
@@ -79,30 +114,34 @@ public class DataOutputActivity extends AppCompatActivity {
 
         input.setText(comments);
 
-        builder.setView(input);
+        new AlertDialog.Builder(this)
 
-        builder.setTitle("Edit Comments");
+                .setView(input)
+                .setTitle("Edit Comments")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Get the comment and make sure underscore isn't used
-                comments = input.getText().toString().replaceAll("_", "");
-                if (comments.isEmpty()) {
-                    dataView.setText(print);
-                } else {
-                    String newPrint = print + "\nComments:\n\n" + comments;
-                    dataView.setText(newPrint);
-                }
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+                        // Get the comment and make sure underscore isn't used
 
-        builder.show();
+                        comments = input.getText().toString()
+                                .replaceAll("_", "");
+
+                        if (comments.isEmpty()) {
+                            dataView.setText(print);
+                        } else {
+                            String newPrint = print + "\nComments:\n\n" + comments;
+                            dataView.setText(newPrint);
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+
     }
 }
