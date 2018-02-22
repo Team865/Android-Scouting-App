@@ -50,7 +50,6 @@ public class TimedScoutingActivity
 
         actionBar = getSupportActionBar();
 
-        // TODO actually show the title based on what fragment is shown
 
         if(actionBar != null){
             actionBar.setTitle("Autonomous");
@@ -144,7 +143,11 @@ public class TimedScoutingActivity
                 return true;
 
             case R.id.menu_undo:
-                Toast.makeText(this, "Undo pressed (It does nothing for now) ", Toast.LENGTH_LONG).show();
+                Toast.makeText(this,
+                        "Undo pressed (It does nothing for now) ",
+                        Toast.LENGTH_LONG)
+                        .show();
+
                 return true;
 
             case R.id.menu_prev:

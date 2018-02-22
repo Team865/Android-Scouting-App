@@ -1,12 +1,15 @@
 package ca.warp7.android.scouting;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +17,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,7 +30,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ScoutingActivity extends AppCompatActivity {
+public class ScoutingActivity
+        extends AppCompatActivity{
 
 
     private static class ViewIdManager{
@@ -79,12 +84,93 @@ public class ScoutingActivity extends AppCompatActivity {
     TableLayout inputTable;
 
     int timer;
+
     Handler handler;
+    Vibrator vibrator;
 
     Specs specs;
     int currentLayout;
 
     Encoder encoder;
+
+
+    View.OnTouchListener buttonListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            v.performClick();
+
+            Button b = (Button) v;
+
+            switch (event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    b.setTextColor(0xFFFFFFFF);
+                    b.getBackground().setColorFilter(
+                            getResources().getColor(R.color.colorAccent),
+                            PorterDuff.Mode.MULTIPLY);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    b.setTextColor(getResources().getColor(R.color.colorAccent));
+                    b.getBackground().clearColorFilter();
+                    vibrator.vibrate(30);
+                    break;
+            }
+
+            return true;
+        }
+    };
+
+    View.OnClickListener buttonListener2 = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final Button b = (Button) v;
+
+            b.setTextColor(0xFFFFFFFF);
+            b.getBackground().setColorFilter(
+                    getResources().getColor(R.color.colorAccent),
+                    PorterDuff.Mode.MULTIPLY);
+
+            vibrator.vibrate(30);
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    b.setTextColor(getResources().getColor(R.color.colorAccent));
+                    b.getBackground().clearColorFilter();
+                }
+            }, 1000);
+        }
+    };
+
+    Runnable timerUpdater = new Runnable() {
+        @Override
+        public void run() {
+
+            Toolbar tb = (Toolbar) findViewById(R.id.my_toolbar);
+
+            String d = "⏱ " + String.valueOf(timer <= 15 ? 15 - timer : 150 - timer);
+
+            actionBar.setTitle(d);
+
+            if(timer <= 15){
+                tb.setTitleTextColor(0xFFCC9900);
+            }
+            else if (timer <= 120) {
+                tb.setTitleTextColor(0xFF009933);
+            }
+            else if (timer < 150){
+                tb.setTitleTextColor(0xFFFF9900);
+            }
+            else {
+                tb.setTitleTextColor(0xFFFF0000);
+            }
+
+            timer++;
+
+            if (timer <= specs.getTimer()){
+                handler.postDelayed(timerUpdater, 1000);
+            }
+        }
+    };
 
 
     Button createLayoutButton(String text){
@@ -103,6 +189,7 @@ public class ScoutingActivity extends AppCompatActivity {
         layoutParams.width = 0;
 
         button.setLayoutParams(layoutParams);
+        button.setOnClickListener(buttonListener2);
 
         return button;
     }
@@ -123,7 +210,7 @@ public class ScoutingActivity extends AppCompatActivity {
         inputTable.removeAllViews();
 
 
-        for(int i = 0; i < 6; i++){
+        for(int i = 0; i < 4; i++){
             TableRow tr = createLayoutRow();
 
             tr.addView(createLayoutButton(layout.getTitle()));
@@ -159,6 +246,7 @@ public class ScoutingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scouting);
 
         handler = new Handler();
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         Toolbar myToolBar = findViewById(R.id.my_toolbar);
         myToolBar.setNavigationIcon(R.drawable.ic_close);
@@ -193,40 +281,6 @@ public class ScoutingActivity extends AppCompatActivity {
         timerUpdater.run();
 
     }
-
-    Runnable timerUpdater = new Runnable() {
-        @Override
-        public void run() {
-            //String d = String.format(Locale.CANADA,
-            //"%02d:%02d", secondsSinceStart / 60, secondsSinceStart % 60);
-            //actionBar.setSubtitle(d);
-
-            Toolbar tb = (Toolbar) findViewById(R.id.my_toolbar);
-
-            String d = "⏱ " + String.valueOf(timer <= 15 ? 15 - timer : 150 - timer);
-
-            actionBar.setTitle(d);
-
-            if(timer <= 15){
-                tb.setTitleTextColor(0xFFCC9900);
-            }
-            else if (timer <= 120) {
-                tb.setTitleTextColor(0xFF009933);
-            }
-            else if (timer < 150){
-                tb.setTitleTextColor(0xFFFF9900);
-            }
-            else {
-                tb.setTitleTextColor(0xFFFF0000);
-            }
-
-            timer++;
-
-            if (timer <= specs.getTimer()){
-                handler.postDelayed(timerUpdater, 1000);
-            }
-        }
-    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
