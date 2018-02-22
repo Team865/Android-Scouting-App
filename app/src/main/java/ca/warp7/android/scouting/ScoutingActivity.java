@@ -3,6 +3,7 @@ package ca.warp7.android.scouting;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -46,7 +47,9 @@ public class ScoutingActivity extends AppCompatActivity {
 
         button.setText(text);
         button.setAllCaps(false);
-        button.setTextSize(24);
+        button.setTextSize(22);
+        //button.setTypeface(Typeface.SANS_SERIF);
+        button.setTextColor(getResources().getColor(R.color.colorAccent));
 
         TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
                 TableLayout.LayoutParams.MATCH_PARENT,
@@ -89,8 +92,7 @@ public class ScoutingActivity extends AppCompatActivity {
         inputTable.removeAllViews();
 
 
-
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 6; i++){
             TableRow tr = createLayoutRow();
 
             tr.addView(createLayoutButton(layout.getTitle()));
@@ -103,6 +105,8 @@ public class ScoutingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme);
+
         setContentView(R.layout.activity_scouting);
 
         handler = new Handler();

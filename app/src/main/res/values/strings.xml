@@ -16,7 +16,7 @@
     <string name="exit_confirmation_body">
         All data entered will be lost. Scan the QR code to save it to a computer.
     </string>
-    <string name="data_title">Send</string>
+    <string name="data_title">Data Sender</string>
 
     <string name="menu_close">Exit Scouting</string>
     <string name="menu_undo">Undo</string>
@@ -30,6 +30,7 @@
     </string-array>
 
     <string name="layout_error">There was a problem with the layout</string>
-    <string name="submit_qr">Show QR Code</string>
+    <string name="send_show_qr">📷 Show QR Code</string>
+    <string name="send_show_report">📄 Show Report</string>
 
 </resources>
