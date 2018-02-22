@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -22,8 +23,56 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScoutingActivity extends AppCompatActivity {
+
+
+    private static class ViewIdManager{
+        private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
+
+        private static int generateViewId() {
+
+            if (Build.VERSION.SDK_INT < 17) {
+                for (;;) {
+                    final int result = sNextGeneratedId.get();
+
+                    int newValue = result + 1;
+                    if (newValue > 0x00FFFFFF)
+                        newValue = 1;
+                    if (sNextGeneratedId.compareAndSet(result, newValue)) {
+                        return result;
+                    }
+                }
+            } else {
+                return View.generateViewId();
+            }
+
+        }
+
+        private HashMap<Integer, String> idMap;
+
+        @SuppressWarnings("unchecked")
+        ViewIdManager() {
+            idMap = new HashMap();
+        }
+
+        int createViewId(String retrievalId){
+            int viewId = ViewIdManager.generateViewId();
+
+            idMap.put(viewId, retrievalId);
+
+            return viewId;
+        }
+
+        String getRetrievalId(int viewId){
+            if(idMap.containsKey(viewId)){
+                return idMap.get(viewId);
+            }
+            return "";
+        }
+    }
 
     ActionBar actionBar;
     TextView statusBanner;
@@ -37,10 +86,6 @@ public class ScoutingActivity extends AppCompatActivity {
 
     Encoder encoder;
 
-    void updateStatus(String message) {
-        statusBanner.setText(message);
-    }
-
 
     Button createLayoutButton(String text){
         Button button = new Button(this);
@@ -48,7 +93,7 @@ public class ScoutingActivity extends AppCompatActivity {
         button.setText(text);
         button.setAllCaps(false);
         button.setTextSize(22);
-        //button.setTypeface(Typeface.SANS_SERIF);
+        //button.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
         button.setTextColor(getResources().getColor(R.color.colorAccent));
 
         TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
@@ -74,20 +119,6 @@ public class ScoutingActivity extends AppCompatActivity {
         return tableRow;
     }
 
-    void makeLayout(){
-        ArrayList<Specs.Layout> layouts = specs.getLayouts();
-
-        if (layouts.isEmpty() || currentLayout < 0 || currentLayout >= layouts.size()) {
-            return;
-        }
-
-        Specs.Layout layout = layouts.get(currentLayout);
-
-        updateStatus(layout.getTitle());
-
-        layoutInputTable(layout);
-    }
-
     void layoutInputTable(Specs.Layout layout){
         inputTable.removeAllViews();
 
@@ -100,6 +131,24 @@ public class ScoutingActivity extends AppCompatActivity {
 
             inputTable.addView(tr);
         }
+    }
+
+    void updateStatus(String message) {
+        statusBanner.setText(message);
+    }
+
+    void makeLayout(){
+        ArrayList<Specs.Layout> layouts = specs.getLayouts();
+
+        if (layouts.isEmpty() || currentLayout < 0 || currentLayout >= layouts.size()) {
+            return;
+        }
+
+        Specs.Layout layout = layouts.get(currentLayout);
+
+        updateStatus(layout.getTitle());
+
+        layoutInputTable(layout);
     }
 
     @Override
