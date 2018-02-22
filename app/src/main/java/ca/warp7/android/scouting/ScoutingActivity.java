@@ -3,19 +3,18 @@ package ca.warp7.android.scouting;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -41,6 +40,37 @@ public class ScoutingActivity extends AppCompatActivity {
         statusBanner.setText(message);
     }
 
+
+    Button createLayoutButton(String text){
+        Button button = new Button(this);
+
+        button.setText(text);
+        button.setAllCaps(false);
+        button.setTextSize(24);
+
+        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT);
+
+        layoutParams.width = 0;
+
+        button.setLayoutParams(layoutParams);
+
+        return button;
+    }
+
+    TableRow createLayoutRow(){
+        TableRow tableRow = new TableRow(this);
+
+        tableRow.setGravity(Gravity.CENTER);
+
+        tableRow.setLayoutParams(new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT, 1.0f));
+
+        return tableRow;
+    }
+
     void makeLayout(){
         ArrayList<Specs.Layout> layouts = specs.getLayouts();
 
@@ -59,25 +89,12 @@ public class ScoutingActivity extends AppCompatActivity {
         inputTable.removeAllViews();
 
 
-        for(int i = 0; i < 6; i++){
-            TableRow tr = new TableRow(this);
-            tr.setLayoutParams(new TableLayout.LayoutParams(
-                    TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.FILL_PARENT));
 
-            TextView textview = new Button(this);
-        /*textview.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));*/
+        for(int i = 0; i < 4; i++){
+            TableRow tr = createLayoutRow();
 
-            textview.setText("Hello");
-
-
-            TextView textview2 = new Button(this);
-            textview2.setText("Hello " + i);
-
-
-            tr.addView(textview);
-            tr.addView(textview2);
-
+            tr.addView(createLayoutButton(layout.getTitle()));
+            tr.addView(createLayoutButton("Hi"));
 
             inputTable.addView(tr);
         }
@@ -98,6 +115,8 @@ public class ScoutingActivity extends AppCompatActivity {
 
         statusBanner = findViewById(R.id.status_banner);
         inputTable = (TableLayout) findViewById(R.id.input_table);
+
+        inputTable.setGravity(Gravity.CENTER);
 
         specs = Specs.getInstance();
 
