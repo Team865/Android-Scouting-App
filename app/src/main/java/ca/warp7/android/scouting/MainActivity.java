@@ -64,7 +64,6 @@ public class MainActivity
         // Set up UI and event listeners
 
         Toolbar myToolBar = findViewById(R.id.my_toolbar);
-        myToolBar.setNavigationIcon(R.mipmap.ic_launcher);
         setSupportActionBar(myToolBar);
 
         nameField = findViewById(R.id.name_and_initial);

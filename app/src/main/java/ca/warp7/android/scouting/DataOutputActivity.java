@@ -46,7 +46,6 @@ public class DataOutputActivity extends AppCompatActivity {
         // Set the toolbar to be the default action bar
 
         Toolbar myToolBar = findViewById(R.id.my_toolbar);
-        myToolBar.setNavigationIcon(R.mipmap.ic_launcher);
         setSupportActionBar(myToolBar);
 
         // Set up the action bar
@@ -86,7 +85,7 @@ public class DataOutputActivity extends AppCompatActivity {
                 showCommentsDialog();
                 return true;
 
-            case R.id.menu_share:
+            case R.id.menu_send:
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_TEXT, encoded + comments);
                 intent.setType("text/plain");
