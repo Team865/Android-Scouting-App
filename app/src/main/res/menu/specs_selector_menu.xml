@@ -7,4 +7,14 @@
         android:icon="@drawable/ic_folder_open"
         android:title="Select Specs"
         app:showAsAction="always" />
+
+    <item
+        android:title="Use New Interface"
+        android:id="@+id/menu_change_interface"
+        app:showAsAction="never" />
+
+    <item
+        android:title="Copy Default Metrics"
+        android:id="@+id/menu_copy_specs"
+        app:showAsAction="never" />
 </menu>

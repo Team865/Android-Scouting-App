@@ -55,6 +55,8 @@ public class MainActivity
 
     private Specs.Index specsIndex;
 
+    private boolean newInterface = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,33 +97,66 @@ public class MainActivity
     private void setUpSpecs(){
 
         File root = Specs.getSpecsRoot();
-        File indexFile = new File(Specs.getSpecsRoot(), "index.json");
+        File indexFile = new File(root, "index.json");
 
         if (!indexFile.exists()){
-            try{
-                AssetManager am = getAssets();
-                for(String fn : am.list("specs")){
-
-                    InputStream in = am.open("specs/" + fn);
-                    byte[] buffer = new byte[in.available()];
-                    in.read(buffer);
-                    in.close();
-
-                    File f = new File(root, fn);
-                    OutputStream out = new FileOutputStream(f);
-                    out.write(buffer);
-                    out.close();
-
-                }
-            }catch (IOException e){
-                e.printStackTrace();
-            }
+            copySpecs();
         }
 
+        loadIndex(indexFile);
+    }
+
+    private void askToCopySpecs(){
+        new AlertDialog.Builder(this)
+                .setTitle("Copy Default Metrics?")
+                .setMessage("Any custom files stored at \""
+                        + Specs.getSpecsRoot().getAbsolutePath()
+                        + "\" will be overwritten.")
+                .setNegativeButton("No", null)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        copySpecs();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    private void copySpecs(){
+        try{
+            File root = Specs.getSpecsRoot();
+            File indexFile = new File(root, "index.json");
+
+            AssetManager am = getAssets();
+            for(String fn : am.list("specs")){
+
+                InputStream in = am.open("specs/" + fn);
+                byte[] buffer = new byte[in.available()];
+                in.read(buffer);
+                in.close();
+
+                File f = new File(root, fn);
+                OutputStream out = new FileOutputStream(f);
+                out.write(buffer);
+                out.close();
+            }
+
+            loadIndex(indexFile);
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void loadIndex(File indexFile){
         specsIndex = new Specs.Index(indexFile);
 
         if(!specsIndex.getNames().isEmpty()){
             loadSpecsFromName(specsIndex.getNames().get(0));
+        } else {
+            getSupportActionBar().setTitle("Index File Not Found");
         }
     }
 
@@ -228,19 +263,30 @@ public class MainActivity
             case R.id.menu_select_specs:
 
                 final String[] specs = specsIndex.getNames().toArray(new String[0]);
+                new AlertDialog.Builder(this)
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-                builder.setTitle("Select your board");
-
-                builder.setItems(specs, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        loadSpecsFromName(specs[which]);
-                    }
-                });
-                builder.show();
+                        .setTitle("Select your board")
+                        .setItems(specs, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                loadSpecsFromName(specs[which]);
+                            }
+                        })
+                        .show();
                 return true;
+
+            case R.id.menu_copy_specs:
+
+                askToCopySpecs();
+                return true;
+
+            case R.id.menu_change_interface:
+
+                newInterface = !newInterface;
+
+                item.setTitle(newInterface ? "Use Old Interface" : "Use New Interface");
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -314,7 +360,7 @@ public class MainActivity
 
         Intent intent;
         intent = new Intent(this,
-                name.startsWith("nv") ? ScoutingActivity.class : TimedScoutingActivity.class);
+                newInterface ? ScoutingActivity.class : TimedScoutingActivity.class);
 
         intent.putExtra(ID.MSG_MATCH_NUMBER,
                 Integer.parseInt(matchField.getText().toString()));
