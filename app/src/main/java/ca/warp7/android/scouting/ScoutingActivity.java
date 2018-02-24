@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -81,6 +82,7 @@ public class ScoutingActivity
 
     ActionBar actionBar;
     TextView statusBanner;
+    TextView statusTimer;
     TableLayout inputTable;
 
     int timer;
@@ -145,24 +147,13 @@ public class ScoutingActivity
         @Override
         public void run() {
 
-            Toolbar tb = (Toolbar) findViewById(R.id.my_toolbar);
-
             String d = "⏱ " + String.valueOf(timer <= 15 ? 15 - timer : 150 - timer);
 
-            actionBar.setTitle(d);
-
-            if(timer <= 15){
-                tb.setTitleTextColor(0xFFCC9900);
-            }
-            else if (timer <= 120) {
-                tb.setTitleTextColor(0xFF009933);
-            }
-            else if (timer < 150){
-                tb.setTitleTextColor(0xFFFF9900);
-            }
-            else {
-                tb.setTitleTextColor(0xFFFF0000);
-            }
+            statusTimer.setText(d);
+            statusTimer.setTextColor(timer <= 15 ?
+                    0xFFCC9900 : (timer <= 120 ?
+                    0xFF006633 : (timer < 150 ?
+                    0xFFFF9900 : 0xFFFF0000)));
 
             timer++;
 
@@ -178,7 +169,7 @@ public class ScoutingActivity
 
         button.setText(text);
         button.setAllCaps(false);
-        button.setTextSize(22);
+        button.setTextSize(20);
         //button.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
         button.setTextColor(getResources().getColor(R.color.colorAccent));
 
@@ -255,8 +246,12 @@ public class ScoutingActivity
         actionBar = getSupportActionBar();
 
         statusBanner = findViewById(R.id.status_banner);
-        inputTable = (TableLayout) findViewById(R.id.input_table);
+        statusTimer = findViewById(R.id.status_timer);
 
+        actionBar.setDisplayShowTitleEnabled(false);
+
+
+        inputTable = findViewById(R.id.input_table);
         inputTable.setGravity(Gravity.CENTER);
 
         specs = Specs.getInstance();
@@ -276,7 +271,7 @@ public class ScoutingActivity
 
         encoder = new Encoder(matchNumber, teamNumber, scoutName);
         encoder.push(1,3);
-        encoder.push(18,3);
+        encoder.push(19,3);
 
         timerUpdater.run();
 

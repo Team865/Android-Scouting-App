@@ -20,14 +20,36 @@
         android:id="@+id/status_banner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:textAlignment="center"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="20dp"
+        android:gravity="start"
+        android:singleLine="true"
+        android:textAlignment="textStart"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:typeface="sans"
+        app:layout_constraintEnd_toStartOf="@+id/status_timer"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="20dp" />
+
+    <TextView
+        android:id="@+id/status_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginEnd="20dp"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:singleLine="true"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:typeface="sans"
+        app:layout_constraintBaseline_toBaselineOf="@+id/status_banner"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="20dp" />
 
     <TableLayout
         android:id="@+id/input_table"

@@ -15,13 +15,6 @@
         <!--app:showAsAction="never"/>-->
 
     <item
-        android:id="@+id/menu_close"
-        android:icon="@drawable/ic_done"
-        android:title="@string/menu_close"
-        app:showAsAction="always" />
-
-
-    <item
         android:id="@+id/menu_undo"
         android:icon="@drawable/ic_undo"
         android:title="@string/menu_undo"
@@ -37,6 +30,12 @@
         android:id="@+id/menu_next"
         android:icon="@drawable/ic_arrow_forward"
         android:title="@string/menu_next"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_close"
+        android:icon="@drawable/ic_done"
+        android:title="@string/menu_close"
         app:showAsAction="always" />
 
 
