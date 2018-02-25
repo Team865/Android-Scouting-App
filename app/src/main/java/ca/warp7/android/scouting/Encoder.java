@@ -16,7 +16,7 @@ import java.util.TimeZone;
 final class Encoder {
 
     /**
-     * Stores and integer-encode a single datum
+     * Stores and integer-encodes a single datum in a match scouting session
      */
     static final class Datum{
         private int
@@ -34,11 +34,11 @@ final class Encoder {
             return type;
         }
 
-        public int getValue() {
+        int getValue() {
             return value;
         }
 
-        public int getUndoFlag() {
+        int getUndoFlag() {
             return undoFlag;
         }
 
@@ -93,7 +93,7 @@ final class Encoder {
 
     private Specs specs;
 
-    ArrayList<Datum> dataStack;
+    private ArrayList<Datum> dataStack;
 
     Encoder(int matchNumber, int teamNumber, String scoutName) {
         this.matchNumber = matchNumber;

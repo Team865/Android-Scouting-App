@@ -70,13 +70,13 @@ public class TimedScoutingActivity
         pushState(Static.END_RAMP, 0);
         pushState(Static.END_CLIMB, 0);
 
-        pushState(Static.END_ATTACHMENT, 3);
-        pushState(Static.END_CLIMB_SPEED, 3);
-        pushState(Static.END_INTAKE_SPEED, 3);
-        pushState(Static.END_INTAKE_CONSISTENCY, 3);
-        pushState(Static.END_EXCHANGE, 3);
-        pushState(Static.END_SWITCH, 3);
-        pushState(Static.END_SCALE, 3);
+        pushState(Static.END_ATTACHMENT, 0);
+        pushState(Static.END_CLIMB_SPEED, 0);
+        pushState(Static.END_INTAKE_SPEED, 0);
+        pushState(Static.END_INTAKE_CONSISTENCY, 0);
+        pushState(Static.END_EXCHANGE, 0);
+        pushState(Static.END_SWITCH, 0);
+        pushState(Static.END_SCALE, 0);
 
         // Set up the fragments
 

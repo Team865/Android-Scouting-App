@@ -37,19 +37,17 @@
             "title": "Tele-Op",
             "fields": [
                 [
-                    "TELE_INTAKE",
-                    "TELE_EXCHANGE"
+                    "TELE_INTAKE"
                 ],
                 [
-                    "TELE_DEFENSE",
-                    "TELE_ALLIANCE_SWITCH"
+                    "TELE_DEFENSE"
                 ],
                 [
-                    "None",
+                    "TELE_ALLIANCE_SWITCH",
                     "TELE_OPPONENT_SWITCH"
                 ],
                 [
-                    "None",
+                    "TELE_EXCHANGE",
                     "TELE_SCALE"
                 ]
             ]
@@ -75,7 +73,8 @@
                     "END_SWITCH"
                 ],
                 [
-                    "END_SCALE"
+                    "END_SCALE",
+                    "END_DRIVER"
                 ]
             ]
         }
