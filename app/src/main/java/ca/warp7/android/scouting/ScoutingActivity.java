@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,16 +16,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.Button;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -123,7 +118,7 @@ public class ScoutingActivity
                 onBackPressed();
                 return true;
 
-            case R.id.menu_close:
+            case R.id.menu_done:
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
                 intent.putExtra(ID.MSG_PRINT_DATA, encoder.format());
@@ -185,8 +180,8 @@ public class ScoutingActivity
 
     void updateStatus(final String status){
 
-        in.setDuration(100);
-        out.setDuration(100);
+        in.setDuration(125);
+        out.setDuration(125);
 
         out.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -220,6 +215,7 @@ public class ScoutingActivity
 
         Toolbar myToolBar = findViewById(R.id.my_toolbar);
         myToolBar.setNavigationIcon(R.drawable.ic_close);
+        myToolBar.setNavigationContentDescription(R.string.menu_close);
         setSupportActionBar(myToolBar);
 
         actionBar = getSupportActionBar();

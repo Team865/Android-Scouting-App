@@ -41,19 +41,28 @@ public class InputsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         inputTable = view.findViewById(R.id.input_table);
-        inputTable.setGravity(Gravity.CENTER);
         handler = listener.getHandler();
 
-        /*Button button = new Button(getContext());
+        Button b = new Button(getContext());
+        b.setText("Ho");
+        //b.setLayoutParams(createRowParams());
 
-        button.setText("Hi");
 
-        inputTable.addView(button);*/
-
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 3; i++){
             TableRow tr = createLayoutRow();
-            tr.addView(createLayoutButton("" + i));
-            tr.addView(createLayoutButton("Hello World"));
+            tr.addView(createLayoutButton("" + i, 1));
+            tr.addView(createLayoutButton("Hello World", 1));
+            inputTable.addView(tr);
+        }
+
+        TableRow tr2 = createLayoutRow();
+        tr2.addView(createLayoutButton("Best Scouting App Ever", 2));
+        inputTable.addView(tr2);
+
+        for (int i = 0; i < 3; i++){
+            TableRow tr = createLayoutRow();
+            tr.addView(createLayoutButton("" + i, 1));
+            tr.addView(createLayoutButton("Hello World", 1));
             inputTable.addView(tr);
         }
     }
@@ -77,7 +86,7 @@ public class InputsFragment extends Fragment {
     }
 
 
-    Button createLayoutButton(String text){
+    Button createLayoutButton(String text, int span) {
         Button button = new Button(getContext());
 
         button.setText(text);
@@ -86,8 +95,10 @@ public class InputsFragment extends Fragment {
         button.setTypeface(Typeface.SANS_SERIF);
         button.setTextColor(getResources().getColor(R.color.colorAccent));
 
+
         TableRow.LayoutParams layoutParams = createCellParams();
         layoutParams.width = 0;
+        layoutParams.span = span;
 
         button.setLayoutParams(layoutParams);
 
@@ -120,8 +131,6 @@ public class InputsFragment extends Fragment {
 
     TableRow createLayoutRow(){
         TableRow tableRow = new TableRow(getContext());
-
-        tableRow.setGravity(Gravity.CENTER);
 
         tableRow.setLayoutParams(createRowParams());
 

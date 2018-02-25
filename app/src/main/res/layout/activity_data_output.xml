@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             android:isScrollContainer="false"
             android:lineSpacingExtra="10sp"
+            android:paddingBottom="50dp"
             android:textColor="@color/colorGreen"
             android:textIsSelectable="true"
             android:textSize="13sp"

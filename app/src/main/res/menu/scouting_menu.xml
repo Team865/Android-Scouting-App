@@ -2,18 +2,6 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--&lt;!&ndash; "Mark Favorite", should appear as action button if possible &ndash;&gt;-->
-    <!--<item-->
-        <!--android:id="@+id/action_favorite"-->
-        <!--android:icon="@drawable/ic_favorite_black_48dp"-->
-        <!--android:title="@string/action_favorite"-->
-        <!--app:showAsAction="ifRoom"/>-->
-
-    <!--&lt;!&ndash; Settings, should always be in the overflow &ndash;&gt;-->
-    <!--<item android:id="@+id/action_settings"-->
-        <!--android:title="@string/action_settings"-->
-        <!--app:showAsAction="never"/>-->
-
     <item
         android:id="@+id/menu_undo"
         android:icon="@drawable/ic_undo"
@@ -33,9 +21,9 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/menu_close"
+        android:id="@+id/menu_done"
         android:icon="@drawable/ic_done"
-        android:title="@string/menu_close"
+        android:title="@string/menu_done"
         app:showAsAction="always" />
 
 

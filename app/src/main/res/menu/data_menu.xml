@@ -5,11 +5,11 @@
     <item
         android:id="@+id/menu_send"
         android:icon="@drawable/ic_send"
-        android:title="Send"
-        app:showAsAction="always" />
+        android:title="@string/send"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_comment"
         android:icon="@drawable/ic_comment"
-        android:title="Edit Comments"
-        app:showAsAction="always" />
+        android:title="@string/edit_comments"
+        app:showAsAction="ifRoom" />
 </menu>

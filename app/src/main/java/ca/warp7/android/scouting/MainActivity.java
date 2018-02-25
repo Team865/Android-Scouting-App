@@ -55,7 +55,7 @@ public class MainActivity
 
     private Specs.Index specsIndex;
 
-    private boolean newInterface = false;
+    private boolean newInterface = true;
 
 
     @Override
