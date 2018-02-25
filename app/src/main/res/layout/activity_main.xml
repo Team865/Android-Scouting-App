@@ -88,6 +88,7 @@
             android:id="@+id/match_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="@string/hint_match"
             android:imeOptions="actionNext"

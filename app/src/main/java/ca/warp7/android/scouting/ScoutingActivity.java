@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +33,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ScoutingActivity
-        extends AppCompatActivity {
+        extends AppCompatActivity
+        implements InputsFragment.OnInputReceivedListener{
 
     Handler handler;
     Vibrator vibrator;
@@ -46,7 +46,7 @@ public class ScoutingActivity
     ViewPager container;
 
     int timer;
-    int currentTab;
+    int currentTab = 0;
 
     Specs specs;
     Encoder encoder;
@@ -79,23 +79,6 @@ public class ScoutingActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme);
-
-        setContentView(R.layout.activity_scouting);
-
-        handler = new Handler();
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-        Toolbar myToolBar = findViewById(R.id.my_toolbar);
-        myToolBar.setNavigationIcon(R.drawable.ic_close);
-        setSupportActionBar(myToolBar);
-
-        actionBar = getSupportActionBar();
-
-        statusBanner = findViewById(R.id.status_banner);
-        statusTimer = findViewById(R.id.status_timer);
-
-        actionBar.setDisplayShowTitleEnabled(false);
 
         specs = Specs.getInstance();
 
@@ -104,24 +87,15 @@ public class ScoutingActivity
             return;
         }
 
-        currentTab = 0;
+        handler = new Handler();
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        setupUI();
+        setupEncoder();
         makeLayout();
 
-        Intent intent = getIntent();
-        int matchNumber = intent.getIntExtra(ID.MSG_MATCH_NUMBER, -1);
-        int teamNumber = intent.getIntExtra(ID.MSG_TEAM_NUMBER, -1);
-        String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
-
-        encoder = new Encoder(matchNumber, teamNumber, scoutName);
-
-        for(int i = 0; i < 20; i++){
-            encoder.push((int) (Math.random() * 22), (int) (Math.random() * 150));
-        }
-
         vibrator.vibrate(new long[]{0, 35, 30, 35}, -1);
-
         timerUpdater.run();
-        Log.i("crash", "hi");
     }
 
     @Override
@@ -254,19 +228,7 @@ public class ScoutingActivity
         return tableRow;
     }
 
-    void layoutInputTable(Specs.Layout layout){
-        //inputTable.removeAllViews();
 
-
-        for(int i = 0; i < 4; i++){
-            TableRow tr = createLayoutRow();
-
-            tr.addView(createLayoutButton(layout.getTitle()));
-            tr.addView(createLayoutButton("Hi"));
-
-            //inputTable.addView(tr);
-        }
-    }
 
     void updateStatus(final String status){
 
@@ -299,7 +261,7 @@ public class ScoutingActivity
 
     }
 
-    void makeLayout(){
+    private void makeLayout(){
         ArrayList<Specs.Layout> layouts = specs.getLayouts();
 
         if (layouts.isEmpty() || currentTab < 0 || currentTab >= layouts.size()) {
@@ -309,13 +271,41 @@ public class ScoutingActivity
         Specs.Layout layout = layouts.get(currentTab);
 
         updateStatus(layout.getTitle());
+    }
 
-        //layoutInputTable(layout);
+    private void setupUI(){
+        setTheme(R.style.AppTheme);
+        setContentView(R.layout.activity_scouting);
+
+        Toolbar myToolBar = findViewById(R.id.my_toolbar);
+        myToolBar.setNavigationIcon(R.drawable.ic_close);
+        setSupportActionBar(myToolBar);
+
+        actionBar = getSupportActionBar();
+
+        statusBanner = findViewById(R.id.status_banner);
+        statusTimer = findViewById(R.id.status_timer);
+
+        actionBar.setDisplayShowTitleEnabled(false);
+    }
+
+    private void setupEncoder(){
+        Intent intent = getIntent();
+
+        int matchNumber = intent.getIntExtra(ID.MSG_MATCH_NUMBER, -1);
+        int teamNumber = intent.getIntExtra(ID.MSG_TEAM_NUMBER, -1);
+        String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
+
+        encoder = new Encoder(matchNumber, teamNumber, scoutName);
+
+        for(int i = 0; i < 20; i++){
+            encoder.push((int) (Math.random() * 22), (int) (Math.random() * 150));
+        }
     }
 
 
     /**
-     * A manager to keep track of compile-time views by assigning ids
+     * A singleton manager to keep track of compile-time views by assigning ids
      */
     static class ViewIdManager{
         private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
@@ -337,6 +327,15 @@ public class ScoutingActivity
                 return View.generateViewId();
             }
 
+        }
+
+        private static ViewIdManager viewIdManager;
+
+        static ViewIdManager getInstance(){
+            if(viewIdManager == null){
+                viewIdManager = new ViewIdManager();
+            }
+            return viewIdManager;
         }
 
         private HashMap<Integer, String> idMap;
