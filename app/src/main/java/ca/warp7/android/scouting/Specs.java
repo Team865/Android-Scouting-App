@@ -29,7 +29,9 @@ final class Specs {
     private int timer;
 
     private ArrayList<Integer> matchSchedule = new ArrayList<>();
+
     private ArrayList<DataConstant> dataConstants = new ArrayList<>();
+
     private ArrayList<Layout> layouts = new ArrayList<>();
 
 
@@ -106,6 +108,16 @@ final class Specs {
         return dataConstants.get(id);
     }
 
+    DataConstant getDataConstantByStringID(String id) {
+
+        for (DataConstant dc : dataConstants) {
+            if (dc.getId().equals(id)) {
+                return dc;
+            }
+        }
+        return null;
+    }
+
     ArrayList<Layout> getLayouts() {
         return layouts;
     }
@@ -174,7 +186,7 @@ final class Specs {
         private static final String
                 C_ID = "id",
                 C_LOG = "log",
-                C_LABEL = "display",
+                C_LABEL = "label",
                 C_TYPE = "type",
                 C_MAX = "max",
                 C_CHOICES = "choices";
@@ -373,11 +385,11 @@ final class Specs {
             }
         }
 
-        public String getTitle() {
+        String getTitle() {
             return title;
         }
 
-        public ArrayList<String[]> getFields() {
+        ArrayList<String[]> getFields() {
             return fields;
         }
     }

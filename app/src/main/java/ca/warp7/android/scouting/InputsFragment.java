@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.util.ArrayList;
+
 
 public class InputsFragment
 
@@ -57,21 +59,35 @@ public class InputsFragment
         handler = listener.getHandler();
         vibrator = listener.getVibrator();
 
-        for (int i = 0; i < 1; i++){
-            TableRow tr = createLayoutRow();
-            tr.addView(createLayoutButton("" + i, 1));
-            tr.addView(createLayoutButton("Hello World", 1));
-            inputTable.addView(tr);
-        }
+        ArrayList<String[]> fields = layout.getFields();
+        inputTable.setWeightSum(fields.size());
 
-        TableRow tr2 = createLayoutRow();
-        tr2.addView(createLayoutButton(layout.getTitle(), 2));
-        inputTable.addView(tr2);
-
-        for (int i = 0; i < 2; i++){
+        for (String[] fieldRow : fields) {
             TableRow tr = createLayoutRow();
-            tr.addView(createLayoutButton("" + i, 1));
-            tr.addView(createLayoutButton("Hello World", 1));
+
+            Specs.DataConstant dc;
+
+            if (fieldRow.length == 1) {
+                dc = specs.getDataConstantByStringID(fieldRow[0]);
+                if (dc != null) {
+                    tr.addView(createLayoutButton(dc.getLabel(), 2));
+                } else {
+                    tr.addView(createLayoutButton(fieldRow[0], 2));
+                }
+
+            } else {
+                for (String fieldID : fieldRow) {
+
+                    dc = specs.getDataConstantByStringID(fieldID);
+
+                    if (dc != null) {
+                        tr.addView(createLayoutButton(dc.getLabel(), 1));
+                    } else {
+                        tr.addView(createLayoutButton(fieldID, 1));
+                    }
+                }
+            }
+
             inputTable.addView(tr);
         }
     }
@@ -98,12 +114,11 @@ public class InputsFragment
     Button createLayoutButton(String text, int span) {
         Button button = new Button(getContext());
 
-        button.setText(text);
+        button.setText(text.replace(" ", "\n"));
         button.setAllCaps(false);
         button.setTextSize(20);
         button.setTypeface(Typeface.SANS_SERIF);
         button.setTextColor(getResources().getColor(R.color.colorAccent));
-
 
         TableRow.LayoutParams layoutParams = createCellParams();
         layoutParams.width = 0;
@@ -111,6 +126,7 @@ public class InputsFragment
 
         button.setLayoutParams(layoutParams);
 
+        button.setLines(2);
 
         button.setOnClickListener(new View.OnClickListener() {
 
