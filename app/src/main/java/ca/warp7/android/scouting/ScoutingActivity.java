@@ -9,6 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -30,7 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ScoutingActivity
-        extends AppCompatActivity{
+        extends AppCompatActivity {
 
     Handler handler;
     Vibrator vibrator;
@@ -38,19 +42,25 @@ public class ScoutingActivity
     ActionBar actionBar;
     TextView statusBanner;
     TextView statusTimer;
-    //TableLayout inputTable;
+
+    ViewPager container;
 
     int timer;
-    int currentLayout;
+    int currentTab;
 
     Specs specs;
     Encoder encoder;
+
+    final Animation in = new AlphaAnimation(0.0f, 1.0f);
+    final Animation out = new AlphaAnimation(1.0f, 0.0f);
+
 
     Runnable timerUpdater = new Runnable() {
         @Override
         public void run() {
 
-            String d = "⏱ " + String.valueOf(timer <= 15 ? 15 - timer : 150 - timer);
+            String d = (timer <= 15? "Ⓐ" : timer <= 120 ? "Ⓣ" : "Ⓔ") + " "
+                    + String.valueOf(timer <= 15 ? 15 - timer : 150 - timer);
 
             statusTimer.setText(d);
             statusTimer.setTextColor(timer <= 15 ?
@@ -87,10 +97,6 @@ public class ScoutingActivity
 
         actionBar.setDisplayShowTitleEnabled(false);
 
-
-        //inputTable = findViewById(R.id.input_table);
-        //inputTable.setGravity(Gravity.CENTER);
-
         specs = Specs.getInstance();
 
         if(specs == null){
@@ -98,7 +104,7 @@ public class ScoutingActivity
             return;
         }
 
-        currentLayout = 0;
+        currentTab = 0;
         makeLayout();
 
         Intent intent = getIntent();
@@ -107,8 +113,12 @@ public class ScoutingActivity
         String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
 
         encoder = new Encoder(matchNumber, teamNumber, scoutName);
-        encoder.push(1,3);
-        encoder.push(19,3);
+
+        for(int i = 0; i < 20; i++){
+            encoder.push((int) (Math.random() * 22), (int) (Math.random() * 150));
+        }
+
+        vibrator.vibrate(new long[]{0, 35, 30, 35}, -1);
 
         timerUpdater.run();
         Log.i("crash", "hi");
@@ -144,15 +154,15 @@ public class ScoutingActivity
                 return true;
 
             case R.id.menu_prev:
-                if (currentLayout > 0){
-                    currentLayout--;
+                if (currentTab > 0){
+                    currentTab--;
                     makeLayout();
                 }
                 return true;
 
             case R.id.menu_next:
-                if (currentLayout < specs.getLayouts().size() - 1){
-                    currentLayout++;
+                if (currentTab < specs.getLayouts().size() - 1){
+                    currentTab++;
                     makeLayout();
                 }
                 return true;
@@ -258,24 +268,56 @@ public class ScoutingActivity
         }
     }
 
+    void updateStatus(final String status){
+
+        in.setDuration(100);
+        out.setDuration(100);
+
+        out.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                statusBanner.setText(status);
+                statusBanner.startAnimation(in);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        if(!statusBanner.getText().toString().isEmpty()){
+            statusBanner.startAnimation(out);
+        } else {
+            statusBanner.setText(status);
+        }
+
+    }
+
     void makeLayout(){
         ArrayList<Specs.Layout> layouts = specs.getLayouts();
 
-        if (layouts.isEmpty() || currentLayout < 0 || currentLayout >= layouts.size()) {
+        if (layouts.isEmpty() || currentTab < 0 || currentTab >= layouts.size()) {
             return;
         }
 
-        Specs.Layout layout = layouts.get(currentLayout);
+        Specs.Layout layout = layouts.get(currentTab);
 
-        statusBanner.setText(layout.getTitle());
+        updateStatus(layout.getTitle());
 
         //layoutInputTable(layout);
     }
 
+
     /**
      * A manager to keep track of compile-time views by assigning ids
      */
-    private static class ViewIdManager{
+    static class ViewIdManager{
         private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
         private static int generateViewId() {

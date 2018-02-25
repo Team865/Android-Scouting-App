@@ -156,6 +156,8 @@ final class Encoder {
         StringBuilder sb = new StringBuilder();
 
         sb
+                .append('\n')
+
                 .append(formatLeft("Match Number:", 16, " "))
                 .append(matchNumber)
                 .append('\n')

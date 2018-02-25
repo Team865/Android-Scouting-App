@@ -21,6 +21,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="16dp"
         android:layout_marginStart="20dp"
         android:gravity="start"
         android:singleLine="true"
@@ -31,15 +33,14 @@
         android:typeface="sans"
         app:layout_constraintEnd_toStartOf="@+id/status_timer"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="20dp" />
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
 
     <TextView
         android:id="@+id/status_timer"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:ellipsize="end"
         android:gravity="start"
         android:singleLine="true"
@@ -48,32 +49,16 @@
         android:textSize="24sp"
         android:typeface="sans"
         app:layout_constraintBaseline_toBaselineOf="@+id/status_banner"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="20dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <TableLayout
-        android:id="@+id/input_table"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/tabs_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:stretchColumns="*"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status_banner">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/layout_error"
-            android:textAlignment="center"
-            android:textColor="@color/colorError" />
-    </TableLayout>
-
+        app:layout_constraintTop_toBottomOf="@+id/status_banner" />
 
 
 </android.support.constraint.ConstraintLayout>
