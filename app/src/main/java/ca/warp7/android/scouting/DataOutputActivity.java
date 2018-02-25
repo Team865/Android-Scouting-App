@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,19 +37,13 @@ public class DataOutputActivity extends AppCompatActivity {
 
     private boolean qrShown = false;
 
-    private Bitmap qrBitMap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_output);
 
-        // Set the toolbar to be the default action bar
-
         Toolbar myToolBar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolBar);
-
-        // Set up the action bar
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -56,13 +51,12 @@ public class DataOutputActivity extends AppCompatActivity {
             actionBar.setTitle(R.string.data_title);
         }
 
-
         Intent intent = getIntent();
 
         print = intent.getStringExtra(ID.MSG_PRINT_DATA);
         encoded = getIntent().getStringExtra(ID.MSG_ENCODE_DATA);
 
-        dataView = (TextView) findViewById(R.id.data_display);
+        dataView = findViewById(R.id.data_display);
         dataView.setText(print);
 
         qrView = findViewById(R.id.qr_image);

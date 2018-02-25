@@ -5,23 +5,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -31,117 +28,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+
 public class ScoutingActivity
         extends AppCompatActivity{
-
-
-    private static class ViewIdManager{
-        private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
-
-        private static int generateViewId() {
-
-            if (Build.VERSION.SDK_INT < 17) {
-                for (;;) {
-                    final int result = sNextGeneratedId.get();
-
-                    int newValue = result + 1;
-                    if (newValue > 0x00FFFFFF)
-                        newValue = 1;
-                    if (sNextGeneratedId.compareAndSet(result, newValue)) {
-                        return result;
-                    }
-                }
-            } else {
-                return View.generateViewId();
-            }
-
-        }
-
-        private HashMap<Integer, String> idMap;
-
-        @SuppressWarnings("unchecked")
-        ViewIdManager() {
-            idMap = new HashMap();
-        }
-
-        int createViewId(String retrievalId){
-            int viewId = ViewIdManager.generateViewId();
-
-            idMap.put(viewId, retrievalId);
-
-            return viewId;
-        }
-
-        String getRetrievalId(int viewId){
-            if(idMap.containsKey(viewId)){
-                return idMap.get(viewId);
-            }
-            return "";
-        }
-    }
-
-    ActionBar actionBar;
-    TextView statusBanner;
-    TextView statusTimer;
-    TableLayout inputTable;
-
-    int timer;
 
     Handler handler;
     Vibrator vibrator;
 
-    Specs specs;
+    ActionBar actionBar;
+    TextView statusBanner;
+    TextView statusTimer;
+    //TableLayout inputTable;
+
+    int timer;
     int currentLayout;
 
+    Specs specs;
     Encoder encoder;
-
-
-    View.OnTouchListener buttonListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            v.performClick();
-
-            Button b = (Button) v;
-
-            switch (event.getAction()){
-                case MotionEvent.ACTION_DOWN:
-                    b.setTextColor(0xFFFFFFFF);
-                    b.getBackground().setColorFilter(
-                            getResources().getColor(R.color.colorAccent),
-                            PorterDuff.Mode.MULTIPLY);
-                    break;
-                case MotionEvent.ACTION_UP:
-                    b.setTextColor(getResources().getColor(R.color.colorAccent));
-                    b.getBackground().clearColorFilter();
-                    vibrator.vibrate(30);
-                    break;
-            }
-
-            return true;
-        }
-    };
-
-    View.OnClickListener buttonListener2 = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            final Button b = (Button) v;
-
-            b.setTextColor(0xFFFFFFFF);
-            b.getBackground().setColorFilter(
-                    getResources().getColor(R.color.colorAccent),
-                    PorterDuff.Mode.MULTIPLY);
-
-            vibrator.vibrate(30);
-
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    b.setTextColor(getResources().getColor(R.color.colorAccent));
-                    b.getBackground().clearColorFilter();
-                }
-            }, 1000);
-        }
-    };
 
     Runnable timerUpdater = new Runnable() {
         @Override
@@ -162,72 +65,6 @@ public class ScoutingActivity
             }
         }
     };
-
-
-    Button createLayoutButton(String text){
-        Button button = new Button(this);
-
-        button.setText(text);
-        button.setAllCaps(false);
-        button.setTextSize(20);
-        //button.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
-        button.setTextColor(getResources().getColor(R.color.colorAccent));
-
-        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT,
-                TableLayout.LayoutParams.MATCH_PARENT);
-
-        layoutParams.width = 0;
-
-        button.setLayoutParams(layoutParams);
-        button.setOnClickListener(buttonListener2);
-
-        return button;
-    }
-
-    TableRow createLayoutRow(){
-        TableRow tableRow = new TableRow(this);
-
-        tableRow.setGravity(Gravity.CENTER);
-
-        tableRow.setLayoutParams(new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT,
-                TableLayout.LayoutParams.MATCH_PARENT, 1.0f));
-
-        return tableRow;
-    }
-
-    void layoutInputTable(Specs.Layout layout){
-        inputTable.removeAllViews();
-
-
-        for(int i = 0; i < 4; i++){
-            TableRow tr = createLayoutRow();
-
-            tr.addView(createLayoutButton(layout.getTitle()));
-            tr.addView(createLayoutButton("Hi"));
-
-            inputTable.addView(tr);
-        }
-    }
-
-    void updateStatus(String message) {
-        statusBanner.setText(message);
-    }
-
-    void makeLayout(){
-        ArrayList<Specs.Layout> layouts = specs.getLayouts();
-
-        if (layouts.isEmpty() || currentLayout < 0 || currentLayout >= layouts.size()) {
-            return;
-        }
-
-        Specs.Layout layout = layouts.get(currentLayout);
-
-        updateStatus(layout.getTitle());
-
-        layoutInputTable(layout);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,8 +88,8 @@ public class ScoutingActivity
         actionBar.setDisplayShowTitleEnabled(false);
 
 
-        inputTable = findViewById(R.id.input_table);
-        inputTable.setGravity(Gravity.CENTER);
+        //inputTable = findViewById(R.id.input_table);
+        //inputTable.setGravity(Gravity.CENTER);
 
         specs = Specs.getInstance();
 
@@ -274,7 +111,7 @@ public class ScoutingActivity
         encoder.push(19,3);
 
         timerUpdater.run();
-
+        Log.i("crash", "hi");
     }
 
     @Override
@@ -341,4 +178,150 @@ public class ScoutingActivity
                 .create()
                 .show();
     }
+
+
+    TableRow.LayoutParams createCellParams(){
+        return new TableRow.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT);
+    }
+
+    TableLayout.LayoutParams createRowParams(){
+        return new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT, 1.0f);
+    }
+
+    Button createLayoutButton(String text){
+        Button button = new Button(this);
+
+        button.setText(text);
+        button.setAllCaps(false);
+        button.setTextSize(20);
+        //button.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
+        button.setTextColor(getResources().getColor(R.color.colorAccent));
+
+        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
+                createCellParams());
+
+        layoutParams.width = 0;
+
+        button.setLayoutParams(layoutParams);
+
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                final Button b = (Button) v;
+
+                b.setTextColor(0xFFFFFFFF);
+                b.getBackground().setColorFilter(
+                        getResources().getColor(R.color.colorAccent),
+                        PorterDuff.Mode.MULTIPLY);
+
+                vibrator.vibrate(30);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        b.setTextColor(getResources().getColor(R.color.colorAccent));
+                        b.getBackground().clearColorFilter();
+                    }
+                }, 1000);
+            }
+        });
+
+        return button;
+    }
+
+    TableRow createLayoutRow(){
+        TableRow tableRow = new TableRow(this);
+
+        tableRow.setGravity(Gravity.CENTER);
+
+        tableRow.setLayoutParams(createRowParams());
+
+        return tableRow;
+    }
+
+    void layoutInputTable(Specs.Layout layout){
+        //inputTable.removeAllViews();
+
+
+        for(int i = 0; i < 4; i++){
+            TableRow tr = createLayoutRow();
+
+            tr.addView(createLayoutButton(layout.getTitle()));
+            tr.addView(createLayoutButton("Hi"));
+
+            //inputTable.addView(tr);
+        }
+    }
+
+    void makeLayout(){
+        ArrayList<Specs.Layout> layouts = specs.getLayouts();
+
+        if (layouts.isEmpty() || currentLayout < 0 || currentLayout >= layouts.size()) {
+            return;
+        }
+
+        Specs.Layout layout = layouts.get(currentLayout);
+
+        statusBanner.setText(layout.getTitle());
+
+        //layoutInputTable(layout);
+    }
+
+    /**
+     * A manager to keep track of compile-time views by assigning ids
+     */
+    private static class ViewIdManager{
+        private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
+
+        private static int generateViewId() {
+
+            if (Build.VERSION.SDK_INT < 17) {
+                for (;;) {
+                    final int result = sNextGeneratedId.get();
+
+                    int newValue = result + 1;
+                    if (newValue > 0x00FFFFFF)
+                        newValue = 1;
+                    if (sNextGeneratedId.compareAndSet(result, newValue)) {
+                        return result;
+                    }
+                }
+            } else {
+                return View.generateViewId();
+            }
+
+        }
+
+        private HashMap<Integer, String> idMap;
+
+        @SuppressWarnings("unchecked")
+        ViewIdManager() {
+            idMap = new HashMap();
+        }
+
+        int createViewId(String retrievalId){
+            int viewId = ViewIdManager.generateViewId();
+
+            idMap.put(viewId, retrievalId);
+
+            return viewId;
+        }
+
+        String getRetrievalId(int viewId){
+            if(idMap.containsKey(viewId)){
+                return idMap.get(viewId);
+            }
+            return "";
+        }
+
+        void clear(){
+            idMap.clear();
+        }
+    }
+
 }

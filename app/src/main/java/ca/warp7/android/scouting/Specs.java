@@ -20,197 +20,6 @@ import java.util.Locale;
 
 final class Specs {
 
-    static final class DataConstant {
-
-        private static final String
-                C_ID = "id",
-                C_LOG = "log",
-                C_LABEL = "display",
-                C_TYPE = "type",
-                C_MAX = "max",
-                C_CHOICES = "choices";
-
-        private static final String
-                T_TIME = "timestamp",
-                T_CHOICE = "choice",
-                T_RATING = "rating",
-                T_CHECKBOX = "checkbox",
-                T_DURATION = "duration";
-
-
-        static final int
-                TIME = 0,
-                CHOICE = 1,
-                RATING = 2,
-                CHECKBOX = 3,
-                DURATION = 4;
-
-
-        private static int toIntegerType(String type){
-            switch (type) {
-                case DataConstant.T_TIME:
-                    return DataConstant.TIME;
-
-                case DataConstant.T_CHOICE:
-                    return DataConstant.CHOICE;
-
-                case DataConstant.T_RATING:
-                    return DataConstant.RATING;
-
-                case DataConstant.T_CHECKBOX:
-                    return DataConstant.CHECKBOX;
-
-                case DataConstant.T_DURATION:
-                    return DataConstant.DURATION;
-                default:
-                        return -1;
-            }
-        }
-
-
-        final int index;
-
-        final String id;
-
-        final String logTitle;
-
-        final String label;
-
-        final int type;
-
-        final int max;
-
-        final String[] choices;
-
-
-        DataConstant(int index, JSONObject data) throws JSONException {
-
-            this.index = index;
-            this.id = data.getString(C_ID);
-
-            logTitle = data.has(C_LOG) ? data.getString(C_LOG) : "$" + id;
-
-            label = data.has(C_LABEL) ? data.getString(C_LABEL) : "$" + id;
-
-            type = data.has(C_TYPE) ? toIntegerType(data.getString(C_TYPE)) : -1;
-
-            max = data.has(C_MAX) ? data.getInt(C_MAX) : -1;
-
-            if (data.has(C_CHOICES)){
-                JSONArray ca = data.getJSONArray(C_CHOICES);
-                choices = new String[ca.length()];
-
-                for (int i = 0; i < choices.length; i++){
-                    choices[i] = ca.getString(i);
-                }
-
-            } else {
-                choices = new String[]{"None"};
-            }
-        }
-
-        int getIndex() {
-            return index;
-        }
-
-        String getId() {
-            return id;
-        }
-
-        String getLogTitle() {
-            return logTitle;
-        }
-
-        String getLabel() {
-            return label;
-        }
-
-        int getType() {
-            return type;
-        }
-
-        int getMax() {
-            return max;
-        }
-
-        String[] getChoices() {
-            return choices;
-        }
-
-        String format(int v){
-            switch (type){
-                case TIME:
-                case DURATION:
-                    return String.format(Locale.CANADA,"%dm %02ds",
-                            v / 60, v % 60);
-
-                case CHOICE:
-                    return v >= 0 && v < choices.length ?
-                            "<" + choices[v] + ">" : String.valueOf(v);
-
-                case RATING:
-                    return v + " out of " + max;
-
-                case CHECKBOX:
-                    return v != 0? "True" : "False";
-
-                default:
-                    return String.valueOf(v);
-            }
-        }
-
-    }
-
-    static final class Index {
-
-        private ArrayList<String> files = new ArrayList<>();
-
-        ArrayList<String> names = new ArrayList<>();
-
-        ArrayList<String> identifiers = new ArrayList<>();
-
-
-        Index(File file){
-            try {
-                JSONObject index = new JSONObject(readFile(file));
-
-                JSONArray files = index.getJSONArray("files");
-                JSONArray names = index.getJSONArray("names");
-                JSONArray ids = index.getJSONArray("identifiers");
-
-                for(int i = 0; i < ids.length(); i++){
-                    this.files.add(files.getString(i));
-                    this.names.add(names.getString(i));
-                    this.identifiers.add(ids.getString(i));
-                }
-
-            } catch (IOException | JSONException e){
-                e.printStackTrace();
-            }
-        }
-
-        public ArrayList<String> getNames() {
-            return names;
-        }
-
-        public String getFileByName(String name) {
-            return files.get(names.indexOf(name));
-        }
-    }
-
-    static final class Layout{
-
-        String title;
-
-        public Layout(JSONObject data) throws JSONException {
-            title = data.getString("title");
-        }
-
-        public String getTitle() {
-            return title;
-        }
-    }
-
     private static int parseHex32(String h) {
         return Integer.parseInt(h.substring(0, 4), 16) * 65536
                 + Integer.parseInt(h.substring(4, 8), 16);
@@ -362,5 +171,197 @@ final class Specs {
 
     String getAlliance(){
         return alliance;
+    }
+
+
+    static final class DataConstant {
+
+        private static final String
+                C_ID = "id",
+                C_LOG = "log",
+                C_LABEL = "display",
+                C_TYPE = "type",
+                C_MAX = "max",
+                C_CHOICES = "choices";
+
+        private static final String
+                T_TIME = "timestamp",
+                T_CHOICE = "choice",
+                T_RATING = "rating",
+                T_CHECKBOX = "checkbox",
+                T_DURATION = "duration";
+
+
+        static final int
+                TIME = 0,
+                CHOICE = 1,
+                RATING = 2,
+                CHECKBOX = 3,
+                DURATION = 4;
+
+
+        private static int toIntegerType(String type){
+            switch (type) {
+                case DataConstant.T_TIME:
+                    return DataConstant.TIME;
+
+                case DataConstant.T_CHOICE:
+                    return DataConstant.CHOICE;
+
+                case DataConstant.T_RATING:
+                    return DataConstant.RATING;
+
+                case DataConstant.T_CHECKBOX:
+                    return DataConstant.CHECKBOX;
+
+                case DataConstant.T_DURATION:
+                    return DataConstant.DURATION;
+                default:
+                    return -1;
+            }
+        }
+
+
+        final int index;
+
+        final String id;
+
+        final String logTitle;
+
+        final String label;
+
+        final int type;
+
+        final int max;
+
+        final String[] choices;
+
+
+        DataConstant(int index, JSONObject data) throws JSONException {
+
+            this.index = index;
+            this.id = data.getString(C_ID);
+
+            logTitle = data.has(C_LOG) ? data.getString(C_LOG) : "$" + id;
+
+            label = data.has(C_LABEL) ? data.getString(C_LABEL) : "$" + id;
+
+            type = data.has(C_TYPE) ? toIntegerType(data.getString(C_TYPE)) : -1;
+
+            max = data.has(C_MAX) ? data.getInt(C_MAX) : -1;
+
+            if (data.has(C_CHOICES)){
+                JSONArray ca = data.getJSONArray(C_CHOICES);
+                choices = new String[ca.length()];
+
+                for (int i = 0; i < choices.length; i++){
+                    choices[i] = ca.getString(i);
+                }
+
+            } else {
+                choices = new String[]{"None"};
+            }
+        }
+
+        int getIndex() {
+            return index;
+        }
+
+        String getId() {
+            return id;
+        }
+
+        String getLogTitle() {
+            return logTitle;
+        }
+
+        String getLabel() {
+            return label;
+        }
+
+        int getType() {
+            return type;
+        }
+
+        int getMax() {
+            return max;
+        }
+
+        String[] getChoices() {
+            return choices;
+        }
+
+        String format(int v){
+            switch (type){
+                case TIME:
+                case DURATION:
+                    return String.format(Locale.CANADA,"%dm %02ds",
+                            v / 60, v % 60);
+
+                case CHOICE:
+                    return v >= 0 && v < choices.length ?
+                            "<" + choices[v] + ">" : String.valueOf(v);
+
+                case RATING:
+                    return v + " out of " + max;
+
+                case CHECKBOX:
+                    return v != 0? "True" : "False";
+
+                default:
+                    return String.valueOf(v);
+            }
+        }
+
+    }
+
+    static final class Index {
+
+        private ArrayList<String> files = new ArrayList<>();
+
+        ArrayList<String> names = new ArrayList<>();
+
+        ArrayList<String> identifiers = new ArrayList<>();
+
+
+        Index(File file){
+            try {
+                JSONObject index = new JSONObject(readFile(file));
+
+                JSONArray files = index.getJSONArray("files");
+                JSONArray names = index.getJSONArray("names");
+                JSONArray ids = index.getJSONArray("identifiers");
+
+                for(int i = 0; i < ids.length(); i++){
+                    this.files.add(files.getString(i));
+                    this.names.add(names.getString(i));
+                    this.identifiers.add(ids.getString(i));
+                }
+
+            } catch (IOException | JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        public ArrayList<String> getNames() {
+            return names;
+        }
+
+        public String getFileByName(String name) {
+            return files.get(names.indexOf(name));
+        }
+    }
+
+    static final class Layout{
+
+        String title;
+
+        public Layout(JSONObject data) throws JSONException {
+            title = data.getString("title");
+        }
+
+        public String getTitle() {
+            return title;
+        }
     }
 }

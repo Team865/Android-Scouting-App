@@ -12,4 +12,6 @@
     <!--<color name="colorAccent">#5a8ade</color>-->
 
     <color name="colorError">#ff0000</color>
+    <color name="colorGreen">#006633</color>
+
 </resources>
