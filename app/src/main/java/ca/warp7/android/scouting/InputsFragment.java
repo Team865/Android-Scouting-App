@@ -1,7 +1,6 @@
 package ca.warp7.android.scouting;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,7 @@ import android.view.ViewGroup;
 
 public class InputsFragment extends Fragment {
 
-    private OnInputReceivedListener listener;
+    private InputsFragmentListener listener;
 
     public InputsFragment() {
 
@@ -30,11 +29,11 @@ public class InputsFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof OnInputReceivedListener) {
-            listener = (OnInputReceivedListener) context;
+        if (context instanceof InputsFragmentListener) {
+            listener = (InputsFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnInputReceivedListener");
+                    + " must implement InputsFragmentListener");
         }
     }
 
@@ -44,6 +43,6 @@ public class InputsFragment extends Fragment {
         listener = null;
     }
 
-    interface OnInputReceivedListener {
+    interface InputsFragmentListener {
     }
 }

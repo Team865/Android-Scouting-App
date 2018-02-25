@@ -9,11 +9,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +37,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScoutingActivity
         extends AppCompatActivity
-        implements InputsFragment.OnInputReceivedListener{
+        implements InputsFragment.InputsFragmentListener {
 
     Handler handler;
     Vibrator vibrator;
@@ -43,13 +46,16 @@ public class ScoutingActivity
     TextView statusBanner;
     TextView statusTimer;
 
-    ViewPager container;
+    ViewPager pager;
+    PagerAdapter pagerAdapter;
 
     int timer;
     int currentTab = 0;
 
     Specs specs;
     Encoder encoder;
+
+    ArrayList<Specs.Layout> layouts;
 
     final Animation in = new AlphaAnimation(0.0f, 1.0f);
     final Animation out = new AlphaAnimation(1.0f, 0.0f);
@@ -87,12 +93,16 @@ public class ScoutingActivity
             return;
         }
 
+        layouts = specs.getLayouts();
+
         handler = new Handler();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         setupUI();
         setupEncoder();
-        makeLayout();
+        setupPager();
+
+        updateLayout();
 
         vibrator.vibrate(new long[]{0, 35, 30, 35}, -1);
         timerUpdater.run();
@@ -130,14 +140,14 @@ public class ScoutingActivity
             case R.id.menu_prev:
                 if (currentTab > 0){
                     currentTab--;
-                    makeLayout();
+                    updateLayout();
                 }
                 return true;
 
             case R.id.menu_next:
                 if (currentTab < specs.getLayouts().size() - 1){
                     currentTab++;
-                    makeLayout();
+                    updateLayout();
                 }
                 return true;
 
@@ -161,6 +171,111 @@ public class ScoutingActivity
                 })
                 .create()
                 .show();
+    }
+
+
+    void updateStatus(final String status){
+
+        in.setDuration(100);
+        out.setDuration(100);
+
+        out.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                statusBanner.setText(status);
+                statusBanner.startAnimation(in);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        if(!statusBanner.getText().toString().isEmpty()){
+            statusBanner.startAnimation(out);
+        } else {
+            statusBanner.setText(status);
+        }
+
+    }
+
+    private void setupUI(){
+        setTheme(R.style.AppTheme);
+        setContentView(R.layout.activity_scouting);
+
+        Toolbar myToolBar = findViewById(R.id.my_toolbar);
+        myToolBar.setNavigationIcon(R.drawable.ic_close);
+        setSupportActionBar(myToolBar);
+
+        actionBar = getSupportActionBar();
+
+        statusBanner = findViewById(R.id.status_banner);
+        statusTimer = findViewById(R.id.status_timer);
+
+        actionBar.setDisplayShowTitleEnabled(false);
+    }
+
+    private void setupEncoder(){
+        Intent intent = getIntent();
+
+        int matchNumber = intent.getIntExtra(ID.MSG_MATCH_NUMBER, -1);
+        int teamNumber = intent.getIntExtra(ID.MSG_TEAM_NUMBER, -1);
+        String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
+
+        encoder = new Encoder(matchNumber, teamNumber, scoutName);
+
+        for(int i = 0; i < 20; i++){
+            encoder.push((int) (Math.random() * 22), (int) (Math.random() * 150));
+        }
+    }
+
+    private void setupPager(){
+
+        pager = (ViewPager) findViewById(R.id.pager);
+
+        pagerAdapter = new InputTabsPagerAdapter(getSupportFragmentManager());
+
+        pager.setAdapter(pagerAdapter);
+
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position,
+                                       float positionOffset,
+                                       int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                currentTab = position;
+                updateLayout();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    private void updateLayout(){
+
+        if (!layouts.isEmpty() && currentTab >= 0 && currentTab < layouts.size()) {
+
+            Specs.Layout layout = layouts.get(currentTab);
+
+            updateStatus(layout.getTitle());
+
+            if (pager.getCurrentItem() != currentTab) {
+                pager.setCurrentItem(currentTab, true);
+            }
+        }
     }
 
 
@@ -229,77 +344,21 @@ public class ScoutingActivity
     }
 
 
+    private class InputTabsPagerAdapter extends FragmentStatePagerAdapter{
 
-    void updateStatus(final String status){
-
-        in.setDuration(100);
-        out.setDuration(100);
-
-        out.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                statusBanner.setText(status);
-                statusBanner.startAnimation(in);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        if(!statusBanner.getText().toString().isEmpty()){
-            statusBanner.startAnimation(out);
-        } else {
-            statusBanner.setText(status);
+        InputTabsPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-    }
 
-    private void makeLayout(){
-        ArrayList<Specs.Layout> layouts = specs.getLayouts();
-
-        if (layouts.isEmpty() || currentTab < 0 || currentTab >= layouts.size()) {
-            return;
+        @Override
+        public Fragment getItem(int position) {
+            return new InputsFragment();
         }
 
-        Specs.Layout layout = layouts.get(currentTab);
-
-        updateStatus(layout.getTitle());
-    }
-
-    private void setupUI(){
-        setTheme(R.style.AppTheme);
-        setContentView(R.layout.activity_scouting);
-
-        Toolbar myToolBar = findViewById(R.id.my_toolbar);
-        myToolBar.setNavigationIcon(R.drawable.ic_close);
-        setSupportActionBar(myToolBar);
-
-        actionBar = getSupportActionBar();
-
-        statusBanner = findViewById(R.id.status_banner);
-        statusTimer = findViewById(R.id.status_timer);
-
-        actionBar.setDisplayShowTitleEnabled(false);
-    }
-
-    private void setupEncoder(){
-        Intent intent = getIntent();
-
-        int matchNumber = intent.getIntExtra(ID.MSG_MATCH_NUMBER, -1);
-        int teamNumber = intent.getIntExtra(ID.MSG_TEAM_NUMBER, -1);
-        String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
-
-        encoder = new Encoder(matchNumber, teamNumber, scoutName);
-
-        for(int i = 0; i < 20; i++){
-            encoder.push((int) (Math.random() * 22), (int) (Math.random() * 150));
+        @Override
+        public int getCount() {
+            return specs.getLayouts().size();
         }
     }
 
