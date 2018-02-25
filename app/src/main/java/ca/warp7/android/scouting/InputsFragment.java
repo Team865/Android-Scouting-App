@@ -21,13 +21,37 @@ import android.widget.TableRow;
 
 public class InputsFragment extends Fragment {
 
+    static InputsFragment createInstance(int currentTab){
+        InputsFragment f = new InputsFragment();
+
+        Bundle args = new Bundle();
+        args.putInt("tab", currentTab);
+
+        f.setArguments(args);
+        return f;
+    }
+
 
     InputsFragmentListener listener;
     TableLayout inputTable;
     Handler handler;
+    Vibrator vibrator;
+
+    Specs specs;
+    Specs.Layout layout;
 
 
     public InputsFragment() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        int tabNumber = getArguments() != null ? getArguments().getInt("tab") : -1;
+
+        specs = Specs.getInstance();
+        layout = specs.getLayouts().get(tabNumber);
     }
 
     @Override
@@ -42,24 +66,20 @@ public class InputsFragment extends Fragment {
 
         inputTable = view.findViewById(R.id.input_table);
         handler = listener.getHandler();
+        vibrator = listener.getVibrator();
 
-        Button b = new Button(getContext());
-        b.setText("Ho");
-        //b.setLayoutParams(createRowParams());
-
-
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 1; i++){
             TableRow tr = createLayoutRow();
             tr.addView(createLayoutButton("" + i, 1));
             tr.addView(createLayoutButton("Hello World", 1));
             inputTable.addView(tr);
-        }
+        };
 
         TableRow tr2 = createLayoutRow();
-        tr2.addView(createLayoutButton("Best Scouting App Ever", 2));
+        tr2.addView(createLayoutButton(layout.getTitle(), 2));
         inputTable.addView(tr2);
 
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 2; i++){
             TableRow tr = createLayoutRow();
             tr.addView(createLayoutButton("" + i, 1));
             tr.addView(createLayoutButton("Hello World", 1));
@@ -114,7 +134,7 @@ public class InputsFragment extends Fragment {
                         getResources().getColor(R.color.colorAccent),
                         PorterDuff.Mode.MULTIPLY);
 
-                listener.getVibrator().vibrate(30);
+                vibrator.vibrate(30);
 
                 handler.postDelayed(new Runnable() {
                     @Override

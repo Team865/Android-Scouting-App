@@ -20,8 +20,8 @@
 
     <string name="menu_done">Done Scouting</string>
     <string name="menu_undo">Undo</string>
-    <string name="menu_prev">Previous</string>
-    <string name="menu_next">Next</string>
+    <string name="menu_prev">Previous Page</string>
+    <string name="menu_next">Next Page</string>
     <string name="menu_close">Exit Scouting</string>
 
     <string-array name="success_choices">

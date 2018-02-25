@@ -10,12 +10,14 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -60,16 +62,7 @@ public class ScoutingActivity
         @Override
         public void run() {
 
-            String d = (timer <= 15? "Ⓐ" : timer <= 120 ? "Ⓣ" : "Ⓔ") + " "
-                    + String.valueOf(timer <= 15 ? 15 - timer : 150 - timer);
-
-            statusTimer.setText(d);
-            statusTimer.setTextColor(timer <= 15 ?
-                    0xFFCC9900 : (timer <= 120 ?
-                    0xFF006633 : (timer < 150 ?
-                    0xFFFF9900 : 0xFFFF0000)));
-
-            timer++;
+            updateStatusTimer();
 
             if (timer <= specs.getTimer()){
                 handler.postDelayed(timerUpdater, 1000);
@@ -178,36 +171,7 @@ public class ScoutingActivity
         return vibrator;
     }
 
-    void updateStatus(final String status){
 
-        in.setDuration(125);
-        out.setDuration(125);
-
-        out.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                statusBanner.setText(status);
-                statusBanner.startAnimation(in);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        if(!statusBanner.getText().toString().isEmpty()){
-            statusBanner.startAnimation(out);
-        } else {
-            statusBanner.setText(status);
-        }
-
-    }
 
     private void setupUI(){
         setTheme(R.style.AppTheme);
@@ -269,6 +233,37 @@ public class ScoutingActivity
         });
     }
 
+    private void updateStatus(final String status){
+
+        in.setDuration(125);
+        out.setDuration(125);
+
+        out.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                statusBanner.setText(status);
+                statusBanner.startAnimation(in);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        if(!statusBanner.getText().toString().isEmpty()){
+            statusBanner.startAnimation(out);
+        } else {
+            statusBanner.setText(status);
+        }
+
+    }
+
     private void updateLayout(){
 
         if (!layouts.isEmpty() && currentTab >= 0 && currentTab < layouts.size()) {
@@ -283,8 +278,22 @@ public class ScoutingActivity
         }
     }
 
+    private void updateStatusTimer(){
+        String d = (timer <= 15? "Ⓐ" : timer <= 120 ? "Ⓣ" : "Ⓔ") + " "
+                + String.valueOf(timer <= 15 ? 15 - timer : 150 - timer);
 
-    private class InputTabsPagerAdapter extends FragmentStatePagerAdapter{
+        statusTimer.setText(d);
+        statusTimer.setTextColor(timer <= 15 ?
+                0xFFCC9900 : (timer <= 120 ?
+                0xFF006633 : (timer < 150 ?
+                0xFFFF9900 : 0xFFFF0000)));
+
+        timer++;
+    }
+
+
+    private class InputTabsPagerAdapter
+            extends FragmentPagerAdapter {
 
         InputTabsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -293,7 +302,7 @@ public class ScoutingActivity
 
         @Override
         public Fragment getItem(int position) {
-            return new InputsFragment();
+            return InputsFragment.createInstance(position);
         }
 
         @Override
@@ -304,15 +313,15 @@ public class ScoutingActivity
 
 
     /**
-     * A singleton manager to keep track of compile-time views by assigning ids
+     * A manager to keep track of compile-time views by assigning ids
      */
-    static class ViewIdManager{
+    static class ViewIdManager {
         private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
         private static int generateViewId() {
 
             if (Build.VERSION.SDK_INT < 17) {
-                for (;;) {
+                for (; ; ) {
                     final int result = sNextGeneratedId.get();
 
                     int newValue = result + 1;
@@ -328,15 +337,6 @@ public class ScoutingActivity
 
         }
 
-        private static ViewIdManager viewIdManager;
-
-        static ViewIdManager getInstance(){
-            if(viewIdManager == null){
-                viewIdManager = new ViewIdManager();
-            }
-            return viewIdManager;
-        }
-
         private HashMap<Integer, String> idMap;
 
         @SuppressWarnings("unchecked")
@@ -344,7 +344,7 @@ public class ScoutingActivity
             idMap = new HashMap();
         }
 
-        int createViewId(String retrievalId){
+        int createViewId(String retrievalId) {
             int viewId = ViewIdManager.generateViewId();
 
             idMap.put(viewId, retrievalId);
@@ -352,14 +352,14 @@ public class ScoutingActivity
             return viewId;
         }
 
-        String getRetrievalId(int viewId){
-            if(idMap.containsKey(viewId)){
+        String getRetrievalId(int viewId) {
+            if (idMap.containsKey(viewId)) {
                 return idMap.get(viewId);
             }
             return "";
         }
 
-        void clear(){
+        void clear() {
             idMap.clear();
         }
     }
