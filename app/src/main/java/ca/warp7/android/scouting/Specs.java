@@ -14,76 +14,12 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * Data Model for reading files with constants
- * Can be used as a singleton
+ * Data Model for reading metrics, settings,
+ * match schedules, and constant strings.
+ * Used as a singleton throughout the application
  */
 
 final class Specs {
-
-    private static int parseHex32(String h) {
-        return Integer.parseInt(h.substring(0, 4), 16) * 65536
-                + Integer.parseInt(h.substring(4, 8), 16);
-    }
-
-    static File getSpecsRoot(){
-        File r = new File(Environment.getExternalStorageDirectory(), SPECS_ROOT);
-        r.mkdirs();
-        return r;
-    }
-
-    private static String readFile(File f) throws IOException{
-        BufferedReader br = new BufferedReader(new FileReader(f));
-        StringBuilder sb = new StringBuilder();
-
-        String line = br.readLine();
-
-        while (line != null) {
-            sb.append(line);
-            line = br.readLine();
-        }
-
-        br.close();
-        return sb.toString();
-    }
-
-
-    private static final String SPECS_ROOT = "Warp7/specs/";
-
-    private static final String
-            ID  = "id",
-            BOARD_NAME = "board",
-            ALLIANCE = "alliance",
-            EVENT = "event",
-            TIMER = "timer",
-            MATCH_SCHEDULE = "schedule",
-            LAYOUT = "layout",
-            CONSTANTS = "data";
-
-
-    private static Specs activeSpecs = null;
-
-
-    static boolean hasInstance(){
-        return activeSpecs != null;
-    }
-
-    static Specs getInstance(){
-        return activeSpecs;
-    }
-
-    static Specs setInstance(String filename){
-        try{
-
-           activeSpecs = new Specs(readFile(new File(getSpecsRoot(), filename)));
-
-        } catch (IOException | JSONException e){
-
-           e.printStackTrace();
-           activeSpecs = null;
-        }
-        return activeSpecs;
-    }
-
 
     private String specsId;
     private String boardName;
@@ -104,9 +40,9 @@ final class Specs {
         specsId = specs_json.getString(ID);
         boardName = specs_json.getString(BOARD_NAME);
 
-        event = specs_json.has(EVENT) ? specs_json.getString(EVENT) : "";
-        timer = specs_json.has(TIMER) ? specs_json.getInt(TIMER) : 150;
-        alliance = specs_json.has(ALLIANCE) ? specs_json.getString(ALLIANCE) : "N";
+        event = specs_json.optString(EVENT, "");
+        timer = specs_json.optInt(TIMER, 150);
+        alliance = specs_json.optString(ALLIANCE, "N");
 
         if(specs_json.has(MATCH_SCHEDULE)){
             JSONArray schedule = specs_json.getJSONArray(MATCH_SCHEDULE);
@@ -128,21 +64,29 @@ final class Specs {
                 layouts.add(new Layout(layoutsArray.getJSONObject(i)));
             }
         }
-
-
     }
+
 
     boolean hasMatchSchedule(){
         return !matchSchedule.isEmpty();
     }
 
-    boolean matchExistsInSchedule(int m, int t){
+    boolean hasIndexInConstants(int id) {
+        return id >= 0 && id < dataConstants.size();
+    }
+
+    boolean matchIsInSchedule(int m, int t) {
         return hasMatchSchedule() &&
                 t == (m < matchSchedule.size() && m >= 0 ? matchSchedule.get(m) : -1);
     }
 
-    String getSpecsId(){
-        return specsId;
+    int getTimer() {
+        return timer;
+    }
+
+
+    String getAlliance() {
+        return alliance;
     }
 
     String getBoardName() {
@@ -153,26 +97,77 @@ final class Specs {
         return event.isEmpty() ? "No Event" : event;
     }
 
-    int getTimer() {
-        return timer;
+    String getSpecsId() {
+        return specsId;
     }
+
 
     DataConstant getDataConstantByIndex(int id){
         return dataConstants.get(id);
-    }
-
-    boolean hasIndexInConstants(int id){
-        return id >= 0 && id < dataConstants.size();
     }
 
     ArrayList<Layout> getLayouts() {
         return layouts;
     }
 
-    String getAlliance(){
-        return alliance;
+
+    private static final String SPECS_ROOT = "Warp7/specs/";
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    static File getSpecsRoot() {
+        File r = new File(Environment.getExternalStorageDirectory(), SPECS_ROOT);
+        r.mkdirs();
+        return r;
     }
 
+    private static String readFile(File f) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(f));
+        StringBuilder sb = new StringBuilder();
+
+        String line = br.readLine();
+
+        while (line != null) {
+            sb.append(line);
+            line = br.readLine();
+        }
+
+        br.close();
+        return sb.toString();
+    }
+
+    private static final String
+            ID = "id",
+            BOARD_NAME = "board",
+            ALLIANCE = "alliance",
+            EVENT = "event",
+            TIMER = "timer",
+            MATCH_SCHEDULE = "schedule",
+            LAYOUT = "layout",
+            CONSTANTS = "data";
+
+
+    private static Specs activeSpecs = null;
+
+    static boolean hasInstance() {
+        return activeSpecs != null;
+    }
+
+    static Specs getInstance() {
+        return activeSpecs;
+    }
+
+    static Specs setInstance(String filename) {
+        try {
+
+            activeSpecs = new Specs(readFile(new File(getSpecsRoot(), filename)));
+
+        } catch (IOException | JSONException e) {
+
+            e.printStackTrace();
+            activeSpecs = null;
+        }
+        return activeSpecs;
+    }
 
     static final class DataConstant {
 
@@ -230,9 +225,9 @@ final class Specs {
 
         final String label;
 
-        final int type;
-
         final int max;
+
+        final int type;
 
         final String[] choices;
 
@@ -242,13 +237,12 @@ final class Specs {
             this.index = index;
             this.id = data.getString(C_ID);
 
-            logTitle = data.has(C_LOG) ? data.getString(C_LOG) : "$" + id;
 
-            label = data.has(C_LABEL) ? data.getString(C_LABEL) : "$" + id;
+            logTitle = data.optString(C_LOG, "$" + id);
+            label = data.optString(C_LABEL, "$" + id);
+            max = data.optInt(C_MAX, -1);
 
             type = data.has(C_TYPE) ? toIntegerType(data.getString(C_TYPE)) : -1;
-
-            max = data.has(C_MAX) ? data.getInt(C_MAX) : -1;
 
             if (data.has(C_CHOICES)){
                 JSONArray ca = data.getJSONArray(C_CHOICES);
@@ -343,11 +337,11 @@ final class Specs {
             }
         }
 
-        public ArrayList<String> getNames() {
+        ArrayList<String> getNames() {
             return names;
         }
 
-        public String getFileByName(String name) {
+        String getFileByName(String name) {
             return files.get(names.indexOf(name));
         }
     }
@@ -356,12 +350,35 @@ final class Specs {
 
         String title;
 
-        public Layout(JSONObject data) throws JSONException {
+        ArrayList<String[]> fields = new ArrayList<>();
+
+
+        Layout(JSONObject data) throws JSONException {
             title = data.getString("title");
+
+            JSONArray fieldRows = data.getJSONArray("fields");
+
+            for (int i = 0; i < fieldRows.length(); i++) {
+                JSONArray fieldRow = fieldRows.getJSONArray(i);
+
+                if (fieldRow.length() != 0) {
+                    String[] fieldsArray = new String[fieldRow.length()];
+
+                    for (int j = 0; j < fieldRow.length(); j++) {
+                        fieldsArray[j] = fieldRow.getString(j);
+                    }
+
+                    fields.add(fieldsArray);
+                }
+            }
         }
 
         public String getTitle() {
             return title;
+        }
+
+        public ArrayList<String[]> getFields() {
+            return fields;
         }
     }
 }

@@ -15,76 +15,6 @@ import java.util.TimeZone;
 
 final class Encoder {
 
-    /**
-     * Stores and integer-encodes a single datum in a match scouting session
-     */
-    static final class Datum{
-        private int
-                type,
-                value,
-                undoFlag = 0,
-                stateFlag = 0;
-
-        Datum (int type, int value) {
-            this.type = type;
-            this.value = value;
-        }
-
-        int getType() {
-            return type;
-        }
-
-        int getValue() {
-            return value;
-        }
-
-        int getUndoFlag() {
-            return undoFlag;
-        }
-
-        public int getStateFlag() {
-            return stateFlag;
-        }
-
-        void setValue(int value) {
-
-            this.value = value;
-        }
-
-        void setUndoFlag(int undoFlag) {
-            this.undoFlag = undoFlag;
-        }
-
-        void setStateFlag(int stateFlag) {
-            this.stateFlag = stateFlag;
-        }
-
-        int encode() {
-            return undoFlag << 15 | stateFlag << 14 | type << 8 | value;
-        }
-
-    }
-
-    private static String formatRight(String s, int d, String r){
-        String n = s;
-        if (d > n.length())
-            n = new String(new char[d - n.length()])
-                    .replace("\0", r) + n;
-        return n;
-    }
-
-    private static String formatLeft(String s, int d, String r){
-        String n = s;
-        if (d > n.length())
-            n += new String(new char[d - n.length()])
-                    .replace("\0", r);
-        return n;
-    }
-
-    private static String fillHex(int n, int digits){
-        return Encoder.formatRight(Integer.toHexString(n), digits, "0");
-    }
-
     private int matchNumber;
     private int teamNumber;
     private String scoutName;
@@ -210,6 +140,78 @@ final class Encoder {
                 .append(new String(new char[41]).replace("\0", "-"));
 
         return sb.toString();
+    }
+
+
+    private static String formatRight(String s, int d, String r) {
+        String n = s;
+        if (d > n.length())
+            n = new String(new char[d - n.length()])
+                    .replace("\0", r) + n;
+        return n;
+    }
+
+    private static String formatLeft(String s, int d, String r) {
+        String n = s;
+        if (d > n.length())
+            n += new String(new char[d - n.length()])
+                    .replace("\0", r);
+        return n;
+    }
+
+    private static String fillHex(int n, int digits) {
+        return Encoder.formatRight(Integer.toHexString(n), digits, "0");
+    }
+
+
+    /**
+     * Stores and integer-encodes a single datum in a match scouting session
+     */
+    static final class Datum {
+        private int
+                type,
+                value,
+                undoFlag = 0,
+                stateFlag = 0;
+
+        Datum(int type, int value) {
+            this.type = type;
+            this.value = value;
+        }
+
+        int getType() {
+            return type;
+        }
+
+        int getValue() {
+            return value;
+        }
+
+        int getUndoFlag() {
+            return undoFlag;
+        }
+
+        public int getStateFlag() {
+            return stateFlag;
+        }
+
+        void setValue(int value) {
+
+            this.value = value;
+        }
+
+        void setUndoFlag(int undoFlag) {
+            this.undoFlag = undoFlag;
+        }
+
+        void setStateFlag(int stateFlag) {
+            this.stateFlag = stateFlag;
+        }
+
+        int encode() {
+            return undoFlag << 15 | stateFlag << 14 | type << 8 | value;
+        }
+
     }
 
 }

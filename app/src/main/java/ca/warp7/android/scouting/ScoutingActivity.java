@@ -11,13 +11,11 @@ import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,8 +31,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ScoutingActivity
+
         extends AppCompatActivity
-        implements InputsFragment.InputsFragmentListener {
+
+        implements
+        InputsFragment.InputsFragmentListener {
 
     Handler handler;
     Vibrator vibrator;
@@ -315,7 +316,7 @@ public class ScoutingActivity
     /**
      * A manager to keep track of compile-time views by assigning ids
      */
-    static class ViewIdManager {
+    static final class ViewIdManager {
         private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
         private static int generateViewId() {

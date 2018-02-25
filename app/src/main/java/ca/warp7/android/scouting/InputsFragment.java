@@ -9,8 +9,6 @@ import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,23 +17,15 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 
-public class InputsFragment extends Fragment {
+public class InputsFragment
 
-    static InputsFragment createInstance(int currentTab){
-        InputsFragment f = new InputsFragment();
-
-        Bundle args = new Bundle();
-        args.putInt("tab", currentTab);
-
-        f.setArguments(args);
-        return f;
-    }
-
+        extends Fragment {
 
     InputsFragmentListener listener;
-    TableLayout inputTable;
     Handler handler;
     Vibrator vibrator;
+
+    TableLayout inputTable;
 
     Specs specs;
     Specs.Layout layout;
@@ -55,8 +45,7 @@ public class InputsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_inputs, container, false);
     }
 
@@ -73,7 +62,7 @@ public class InputsFragment extends Fragment {
             tr.addView(createLayoutButton("" + i, 1));
             tr.addView(createLayoutButton("Hello World", 1));
             inputTable.addView(tr);
-        };
+        }
 
         TableRow tr2 = createLayoutRow();
         tr2.addView(createLayoutButton(layout.getTitle(), 2));
@@ -157,6 +146,7 @@ public class InputsFragment extends Fragment {
         return tableRow;
     }
 
+
     static TableRow.LayoutParams createCellParams(){
         return new TableRow.LayoutParams(
                 TableRow.LayoutParams.MATCH_PARENT,
@@ -169,6 +159,15 @@ public class InputsFragment extends Fragment {
                 TableLayout.LayoutParams.MATCH_PARENT, 1.0f);
     }
 
+    static InputsFragment createInstance(int currentTab) {
+        InputsFragment f = new InputsFragment();
+
+        Bundle args = new Bundle();
+        args.putInt("tab", currentTab);
+
+        f.setArguments(args);
+        return f;
+    }
 
     interface InputsFragmentListener {
         Handler getHandler();

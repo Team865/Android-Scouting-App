@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -88,166 +87,6 @@ public class MainActivity
         ensurePermissions();
         loadFromPreferences();
         setUpSpecs();
-    }
-
-    /**
-     * Set up the specs directory by copying from the asset folder
-     * if the file is not already there
-     */
-    private void setUpSpecs(){
-
-        File root = Specs.getSpecsRoot();
-        File indexFile = new File(root, "index.json");
-
-        if (!indexFile.exists()){
-            copySpecs();
-        }
-
-        loadIndex(indexFile);
-    }
-
-    private void askToCopySpecs(){
-        new AlertDialog.Builder(this)
-                .setTitle("Copy Default Metrics?")
-                .setMessage("Any custom files stored at \""
-                        + Specs.getSpecsRoot().getAbsolutePath()
-                        + "\" will be overwritten.")
-                .setNegativeButton("No", null)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        copySpecs();
-                    }
-                })
-                .create()
-                .show();
-    }
-
-    private void copySpecs(){
-        try{
-            File root = Specs.getSpecsRoot();
-            File indexFile = new File(root, "index.json");
-
-            AssetManager am = getAssets();
-            for(String fn : am.list("specs")){
-
-                InputStream in = am.open("specs/" + fn);
-                byte[] buffer = new byte[in.available()];
-                in.read(buffer);
-                in.close();
-
-                File f = new File(root, fn);
-                OutputStream out = new FileOutputStream(f);
-                out.write(buffer);
-                out.close();
-            }
-
-            loadIndex(indexFile);
-
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    private void loadIndex(File indexFile){
-        specsIndex = new Specs.Index(indexFile);
-
-        if(!specsIndex.getNames().isEmpty()){
-            loadSpecsFromName(specsIndex.getNames().get(0));
-        } else {
-            getSupportActionBar().setTitle("Index File Not Found");
-        }
-    }
-
-    private void loadSpecsFromName(String name){
-        if(specsIndex != null && specsIndex.getNames().contains(name)){
-            Specs specs = Specs.setInstance(specsIndex.getFileByName(name));
-            ActionBar ab = getSupportActionBar();
-            if(ab != null){
-                ab.setTitle("Board " + specs.getBoardName());
-                ab.setSubtitle(specs.getEvent());
-            }
-            updateTextFieldState();
-        }
-    }
-
-    private void ensurePermissions(){
-        // Ask for File Permissions
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_REQUEST_FILES);
-        }
-    }
-
-    private void loadFromPreferences(){
-        // Set up auto fill from preferences
-
-        SharedPreferences prefs;
-        prefs = this.getSharedPreferences(ID.ROOT_DOMAIN, MODE_PRIVATE);
-
-        nameField.setText(prefs.getString(ID.SAVE_SCOUT_NAME, ""));
-    }
-
-    private boolean matchDoesExist(String m, String t) {
-        return Specs.getInstance().matchExistsInSchedule
-                (Integer.parseInt(m) - 1, Integer.parseInt(t));
-    }
-
-    private void updateTextFieldState(){
-        String n = nameField.getText().toString();
-        String m = matchField.getText().toString();
-        String t = teamField.getText().toString();
-
-        boolean n_empty = n.isEmpty();
-        boolean m_empty = m.isEmpty();
-        boolean t_empty = t.isEmpty();
-
-        findViewById(R.id.name_hint)
-                .setVisibility(!n_empty ? View.VISIBLE : View.INVISIBLE);
-        findViewById(R.id.match_hint)
-                .setVisibility(!m_empty ? View.VISIBLE : View.INVISIBLE);
-        findViewById(R.id.team_hint)
-                .setVisibility(!t_empty ? View.VISIBLE : View.INVISIBLE);
-
-
-
-        if (!(n_empty || m_empty || t_empty)) {
-
-            verifier.setEnabled(true);
-
-            if(Specs.getInstance().hasMatchSchedule()) {
-                if (matchDoesExist(m, t)) {
-
-                    mismatchWarning.setVisibility(View.INVISIBLE);
-                    verifier.setText(R.string.verify_match_info);
-                    verifier.setTextColor(0xFF000000);
-
-                } else {
-                    mismatchWarning.setText(R.string.schedule_mismatch);
-                    mismatchWarning.setVisibility(View.VISIBLE);
-                    verifier.setText(R.string.verify_match_proceed);
-                    verifier.setTextColor(0xFFFF0000);
-                    verifier.setChecked(false);
-
-                }
-            } else {
-                mismatchWarning.setText(R.string.schedule_does_not_exist);
-                mismatchWarning.setVisibility(View.VISIBLE);
-            }
-
-        } else {
-            mismatchWarning.setVisibility(View.INVISIBLE);
-            verifier.setText(R.string.verify_match_info);
-            verifier.setEnabled(false);
-            verifier.setTextColor(0xFF000000);
-            verifier.setChecked(false);
-        }
     }
 
     @Override
@@ -372,5 +211,165 @@ public class MainActivity
 
         startActivity(intent);
 
+    }
+
+
+    /**
+     * Set up the specs directory by copying from the asset folder
+     * if the file is not already there
+     */
+    private void setUpSpecs() {
+
+        File root = Specs.getSpecsRoot();
+        File indexFile = new File(root, "index.json");
+
+        if (!indexFile.exists()) {
+            copySpecs();
+        }
+
+        loadIndex(indexFile);
+    }
+
+    private void askToCopySpecs() {
+        new AlertDialog.Builder(this)
+                .setTitle("Copy Default Metrics?")
+                .setMessage("Any custom files stored at \""
+                        + Specs.getSpecsRoot().getAbsolutePath()
+                        + "\" will be overwritten.")
+                .setNegativeButton("No", null)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        copySpecs();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    private void copySpecs() {
+        try {
+            File root = Specs.getSpecsRoot();
+            File indexFile = new File(root, "index.json");
+
+            AssetManager am = getAssets();
+            for (String fn : am.list("specs")) {
+
+                InputStream in = am.open("specs/" + fn);
+                byte[] buffer = new byte[in.available()];
+                in.read(buffer);
+                in.close();
+
+                File f = new File(root, fn);
+                OutputStream out = new FileOutputStream(f);
+                out.write(buffer);
+                out.close();
+            }
+
+            loadIndex(indexFile);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadIndex(File indexFile) {
+        specsIndex = new Specs.Index(indexFile);
+
+        if (!specsIndex.getNames().isEmpty()) {
+            loadSpecsFromName(specsIndex.getNames().get(0));
+        } else {
+            getSupportActionBar().setTitle("Index File Not Found");
+        }
+    }
+
+    private void loadSpecsFromName(String name) {
+        if (specsIndex != null && specsIndex.getNames().contains(name)) {
+            Specs specs = Specs.setInstance(specsIndex.getFileByName(name));
+            ActionBar ab = getSupportActionBar();
+            if (ab != null) {
+                ab.setTitle("Board " + specs.getBoardName());
+                ab.setSubtitle(specs.getEvent());
+            }
+            updateTextFieldState();
+        }
+    }
+
+    private void ensurePermissions() {
+        // Ask for File Permissions
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_FILES);
+        }
+    }
+
+    private void loadFromPreferences() {
+        // Set up auto fill from preferences
+
+        SharedPreferences prefs;
+        prefs = this.getSharedPreferences(ID.ROOT_DOMAIN, MODE_PRIVATE);
+
+        nameField.setText(prefs.getString(ID.SAVE_SCOUT_NAME, ""));
+    }
+
+    private boolean matchDoesExist(String m, String t) {
+        return Specs.getInstance().matchIsInSchedule
+                (Integer.parseInt(m) - 1, Integer.parseInt(t));
+    }
+
+    private void updateTextFieldState() {
+        String n = nameField.getText().toString();
+        String m = matchField.getText().toString();
+        String t = teamField.getText().toString();
+
+        boolean n_empty = n.isEmpty();
+        boolean m_empty = m.isEmpty();
+        boolean t_empty = t.isEmpty();
+
+        findViewById(R.id.name_hint)
+                .setVisibility(!n_empty ? View.VISIBLE : View.INVISIBLE);
+        findViewById(R.id.match_hint)
+                .setVisibility(!m_empty ? View.VISIBLE : View.INVISIBLE);
+        findViewById(R.id.team_hint)
+                .setVisibility(!t_empty ? View.VISIBLE : View.INVISIBLE);
+
+
+        if (!(n_empty || m_empty || t_empty)) {
+
+            verifier.setEnabled(true);
+
+            if (Specs.getInstance().hasMatchSchedule()) {
+                if (matchDoesExist(m, t)) {
+
+                    mismatchWarning.setVisibility(View.INVISIBLE);
+                    verifier.setText(R.string.verify_match_info);
+                    verifier.setTextColor(0xFF000000);
+
+                } else {
+                    mismatchWarning.setText(R.string.schedule_mismatch);
+                    mismatchWarning.setVisibility(View.VISIBLE);
+                    verifier.setText(R.string.verify_match_proceed);
+                    verifier.setTextColor(0xFFFF0000);
+                    verifier.setChecked(false);
+
+                }
+            } else {
+                mismatchWarning.setText(R.string.schedule_does_not_exist);
+                mismatchWarning.setVisibility(View.VISIBLE);
+            }
+
+        } else {
+            mismatchWarning.setVisibility(View.INVISIBLE);
+            verifier.setText(R.string.verify_match_info);
+            verifier.setEnabled(false);
+            verifier.setTextColor(0xFF000000);
+            verifier.setChecked(false);
+        }
     }
 }

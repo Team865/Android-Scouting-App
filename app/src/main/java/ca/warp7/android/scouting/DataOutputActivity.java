@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,7 +24,9 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
-public class DataOutputActivity extends AppCompatActivity {
+public class DataOutputActivity
+
+        extends AppCompatActivity {
 
     TextView dataView;
     ImageView qrView;
@@ -36,6 +37,7 @@ public class DataOutputActivity extends AppCompatActivity {
     private String comments = "";
 
     private boolean qrShown = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,12 +117,9 @@ public class DataOutputActivity extends AppCompatActivity {
 
     }
 
-    private void makeQR(){
-        try {
-            qrView.setImageBitmap(encodeAsBitmap());
-        } catch (WriterException e){
-            e.printStackTrace();
-        }
+
+    private String getFullEncode() {
+        return encoded + comments;
     }
 
     Bitmap encodeAsBitmap() throws WriterException {
@@ -150,8 +149,12 @@ public class DataOutputActivity extends AppCompatActivity {
         return bitmap;
     }
 
-    private String getFullEncode(){
-        return encoded + comments;
+    private void makeQR(){
+        try {
+            qrView.setImageBitmap(encodeAsBitmap());
+        } catch (WriterException e){
+            e.printStackTrace();
+        }
     }
 
     private void showCommentsDialog() {
