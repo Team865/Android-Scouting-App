@@ -29,7 +29,8 @@
         <activity
             android:name=".DataOutputActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ScoutingActivity"></activity>
+
+        <activity android:name=".ScoutingActivity" />
     </application>
 
 </manifest>

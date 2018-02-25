@@ -173,6 +173,15 @@ public class ScoutingActivity
                 .show();
     }
 
+    @Override
+    public Handler getHandler() {
+        return handler;
+    }
+
+    @Override
+    public Vibrator getVibrator() {
+        return vibrator;
+    }
 
     void updateStatus(final String status){
 
@@ -237,7 +246,7 @@ public class ScoutingActivity
 
     private void setupPager(){
 
-        pager = (ViewPager) findViewById(R.id.pager);
+        pager = findViewById(R.id.pager);
 
         pagerAdapter = new InputTabsPagerAdapter(getSupportFragmentManager());
 
@@ -276,71 +285,6 @@ public class ScoutingActivity
                 pager.setCurrentItem(currentTab, true);
             }
         }
-    }
-
-
-    TableRow.LayoutParams createCellParams(){
-        return new TableRow.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT,
-                TableLayout.LayoutParams.MATCH_PARENT);
-    }
-
-    TableLayout.LayoutParams createRowParams(){
-        return new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT,
-                TableLayout.LayoutParams.MATCH_PARENT, 1.0f);
-    }
-
-    Button createLayoutButton(String text){
-        Button button = new Button(this);
-
-        button.setText(text);
-        button.setAllCaps(false);
-        button.setTextSize(20);
-        //button.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
-        button.setTextColor(getResources().getColor(R.color.colorAccent));
-
-        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
-                createCellParams());
-
-        layoutParams.width = 0;
-
-        button.setLayoutParams(layoutParams);
-
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                final Button b = (Button) v;
-
-                b.setTextColor(0xFFFFFFFF);
-                b.getBackground().setColorFilter(
-                        getResources().getColor(R.color.colorAccent),
-                        PorterDuff.Mode.MULTIPLY);
-
-                vibrator.vibrate(30);
-
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        b.setTextColor(getResources().getColor(R.color.colorAccent));
-                        b.getBackground().clearColorFilter();
-                    }
-                }, 1000);
-            }
-        });
-
-        return button;
-    }
-
-    TableRow createLayoutRow(){
-        TableRow tableRow = new TableRow(this);
-
-        tableRow.setGravity(Gravity.CENTER);
-
-        tableRow.setLayoutParams(createRowParams());
-
-        return tableRow;
     }
 
 
