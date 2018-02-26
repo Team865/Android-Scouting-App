@@ -11,7 +11,8 @@
     <color name="colorAccent">#3c5c94</color>
     <!--<color name="colorAccent">#5a8ade</color>-->
 
-    <color name="colorError">#ff0000</color>
+    <color name="colorRed">#ff0000</color>
     <color name="colorGreen">#006633</color>
+    <color name="colorLightGreen">#009933</color>
 
 </resources>

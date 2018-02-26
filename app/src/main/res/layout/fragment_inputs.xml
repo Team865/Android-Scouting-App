@@ -10,5 +10,6 @@
         android:id="@+id/input_table"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:stretchColumns="*"/>
+        android:layout_margin="12dp"
+        android:stretchColumns="*" />
 </FrameLayout>

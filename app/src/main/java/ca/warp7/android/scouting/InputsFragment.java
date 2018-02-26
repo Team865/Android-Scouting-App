@@ -3,18 +3,22 @@ package ca.warp7.android.scouting;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -47,7 +51,9 @@ public class InputsFragment
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_inputs, container, false);
     }
 
@@ -62,29 +68,18 @@ public class InputsFragment
         ArrayList<String[]> fields = layout.getFields();
         inputTable.setWeightSum(fields.size());
 
+
         for (String[] fieldRow : fields) {
             TableRow tr = createLayoutRow();
 
             Specs.DataConstant dc;
 
             if (fieldRow.length == 1) {
-                dc = specs.getDataConstantByStringID(fieldRow[0]);
-                if (dc != null) {
-                    tr.addView(createLayoutButton(dc.getLabel(), 2));
-                } else {
-                    tr.addView(createLayoutButton(fieldRow[0], 2));
-                }
+                tr.addView(createSpecifiedView(fieldRow[0], 2));
 
             } else {
                 for (String fieldID : fieldRow) {
-
-                    dc = specs.getDataConstantByStringID(fieldID);
-
-                    if (dc != null) {
-                        tr.addView(createLayoutButton(dc.getLabel(), 1));
-                    } else {
-                        tr.addView(createLayoutButton(fieldID, 1));
-                    }
+                    tr.addView(createSpecifiedView(fieldID, 1));
                 }
             }
 
@@ -110,8 +105,74 @@ public class InputsFragment
         listener = null;
     }
 
+    View createSpecifiedView(String id, int span) {
+        Specs.DataConstant dc = specs.getDataConstantByStringID(id);
+        View view;
 
-    Button createLayoutButton(String text, int span) {
+        if (dc != null) {
+
+            switch (dc.getType()) {
+                case Specs.DataConstant.CHECKBOX:
+                    view = createLayoutCheckBox(dc.getLabel());
+                    break;
+
+                case Specs.DataConstant.DURATION:
+                    view = createLayoutDurationButton(dc.getLabel(), dc.getLabelOn());
+                    break;
+
+                case Specs.DataConstant.TIMESTAMP:
+                default:
+                    view = createLayoutButton(dc.getLabel());
+            }
+        } else {
+            view = createLayoutButton(id);
+        }
+
+        ((TableRow.LayoutParams) view.getLayoutParams()).span = span;
+        return view;
+    }
+
+    CheckBox createLayoutCheckBox(String text) {
+
+        CheckBox checkBox = new CheckBox(getContext());
+
+        checkBox.setText(text);
+        checkBox.setTextSize(20);
+        checkBox.setTypeface(Typeface.SANS_SERIF);
+        checkBox.setTextColor(getResources().getColor(R.color.colorAccent));
+
+        TableRow.LayoutParams lp = createCellParams();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            lp.setMargins(30, 0, 30, 0);
+        }
+
+        checkBox.setLayoutParams(lp);
+        checkBox.setGravity(Gravity.CENTER);
+
+        return checkBox;
+    }
+
+    ToggleButton createLayoutDurationButton(String off, String on) {
+        ToggleButton button = new ToggleButton(getContext());
+
+        button.setTextOff(off.replace(" ", "\n"));
+        button.setTextOn(on.replace(" ", "\n"));
+
+        button.setChecked(false);
+
+        button.setAllCaps(false);
+        button.setTextSize(20);
+        button.setTypeface(Typeface.SANS_SERIF);
+        button.setTextColor(getResources().getColor(R.color.colorLightGreen));
+
+        button.setLayoutParams(createCellParams());
+        button.setLines(2);
+
+        return button;
+    }
+
+    Button createLayoutButton(String text) {
         Button button = new Button(getContext());
 
         button.setText(text.replace(" ", "\n"));
@@ -120,12 +181,7 @@ public class InputsFragment
         button.setTypeface(Typeface.SANS_SERIF);
         button.setTextColor(getResources().getColor(R.color.colorAccent));
 
-        TableRow.LayoutParams layoutParams = createCellParams();
-        layoutParams.width = 0;
-        layoutParams.span = span;
-
-        button.setLayoutParams(layoutParams);
-
+        button.setLayoutParams(createCellParams());
         button.setLines(2);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -164,14 +220,18 @@ public class InputsFragment
 
 
     static TableRow.LayoutParams createCellParams(){
-        return new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT,
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.MATCH_PARENT);
+
+        lp.width = 0;
+
+        return lp;
     }
 
     static TableLayout.LayoutParams createRowParams(){
         return new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT,
                 TableLayout.LayoutParams.MATCH_PARENT, 1.0f);
     }
 

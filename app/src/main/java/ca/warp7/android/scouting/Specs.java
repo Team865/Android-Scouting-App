@@ -187,12 +187,13 @@ final class Specs {
                 C_ID = "id",
                 C_LOG = "log",
                 C_LABEL = "label",
+                C_LABEL_ON = "label_on",
                 C_TYPE = "type",
                 C_MAX = "max",
                 C_CHOICES = "choices";
 
         private static final String
-                T_TIME = "timestamp",
+                T_TIMESTAMP = "timestamp",
                 T_CHOICE = "choice",
                 T_RATING = "rating",
                 T_CHECKBOX = "checkbox",
@@ -200,7 +201,7 @@ final class Specs {
 
 
         static final int
-                TIME = 0,
+                TIMESTAMP = 0,
                 CHOICE = 1,
                 RATING = 2,
                 CHECKBOX = 3,
@@ -209,8 +210,8 @@ final class Specs {
 
         private static int toIntegerType(String type){
             switch (type) {
-                case DataConstant.T_TIME:
-                    return DataConstant.TIME;
+                case DataConstant.T_TIMESTAMP:
+                    return DataConstant.TIMESTAMP;
 
                 case DataConstant.T_CHOICE:
                     return DataConstant.CHOICE;
@@ -237,6 +238,8 @@ final class Specs {
 
         final String label;
 
+        final String labelOn;
+
         final int max;
 
         final int type;
@@ -252,6 +255,8 @@ final class Specs {
 
             logTitle = data.optString(C_LOG, "$" + id);
             label = data.optString(C_LABEL, "$" + id);
+            labelOn = data.optString(C_LABEL_ON, "$" + id);
+
             max = data.optInt(C_MAX, -1);
 
             type = data.has(C_TYPE) ? toIntegerType(data.getString(C_TYPE)) : -1;
@@ -285,6 +290,10 @@ final class Specs {
             return label;
         }
 
+        String getLabelOn() {
+            return labelOn;
+        }
+
         int getType() {
             return type;
         }
@@ -299,7 +308,7 @@ final class Specs {
 
         String format(int v){
             switch (type){
-                case TIME:
+                case TIMESTAMP:
                 case DURATION:
                     return String.format(Locale.CANADA,"%dm %02ds",
                             v / 60, v % 60);
