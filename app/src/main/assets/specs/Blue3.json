@@ -40,15 +40,15 @@
                     "TELE_INTAKE"
                 ],
                 [
-                    "TELE_DEFENSE"
-                ],
-                [
                     "TELE_ALLIANCE_SWITCH",
                     "TELE_OPPONENT_SWITCH"
                 ],
                 [
                     "TELE_EXCHANGE",
                     "TELE_SCALE"
+                ],
+                [
+                    "TELE_DEFENSE"
                 ]
             ]
         },

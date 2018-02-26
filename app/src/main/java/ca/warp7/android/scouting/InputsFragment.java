@@ -3,14 +3,13 @@ package ca.warp7.android.scouting;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
+import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -138,33 +136,26 @@ public class InputsFragment
 
         checkBox.setText(text);
         checkBox.setTextSize(20);
-        checkBox.setTypeface(Typeface.SANS_SERIF);
+        checkBox.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
         checkBox.setTextColor(getResources().getColor(R.color.colorAccent));
 
         TableRow.LayoutParams lp = createCellParams();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            lp.setMargins(30, 0, 30, 0);
-        }
-
         checkBox.setLayoutParams(lp);
-        checkBox.setGravity(Gravity.CENTER);
+        //checkBox.setGravity(Gravity.CENTER);
 
         return checkBox;
     }
 
-    ToggleButton createLayoutDurationButton(String off, String on) {
-        ToggleButton button = new ToggleButton(getContext());
+    DurationButton createLayoutDurationButton(String off, String on) {
+        DurationButton button = new DurationButton(getContext());
 
-        button.setTextOff(off.replace(" ", "\n"));
-        button.setTextOn(on.replace(" ", "\n"));
-
-        button.setChecked(false);
+        button.setTexts(off, on);
 
         button.setAllCaps(false);
         button.setTextSize(20);
-        button.setTypeface(Typeface.SANS_SERIF);
-        button.setTextColor(getResources().getColor(R.color.colorLightGreen));
+
+        button.updateLooks();
 
         button.setLayoutParams(createCellParams());
         button.setLines(2);
@@ -248,5 +239,50 @@ public class InputsFragment
     interface InputsFragmentListener {
         Handler getHandler();
         Vibrator getVibrator();
+    }
+
+    private class DurationButton
+            extends AppCompatButton implements View.OnClickListener {
+
+        boolean isOn = false;
+        String off;
+        String on;
+
+        public DurationButton(Context context) {
+            super(context);
+            setOnClickListener(this);
+        }
+
+        void setTexts(String off, String on) {
+            this.off = off;
+            this.on = on;
+        }
+
+        void updateLooks() {
+            if (isOn) {
+                setTextColor(0xFFFFFFFF);
+                setTypeface(null);
+                setText(on);
+                getBackground().setColorFilter(
+                        getResources().getColor(R.color.colorRed),
+                        PorterDuff.Mode.MULTIPLY);
+            } else {
+                //setTextColor(getResources().getColor(R.color.colorLightGreen));
+                setTextColor(0xFFFFFFFF);
+                setTypeface(Typeface.SANS_SERIF);
+                setText(off);
+                //getBackground().clearColorFilter();
+                getBackground().setColorFilter(
+                        getResources().getColor(R.color.colorLightGreen),
+                        PorterDuff.Mode.MULTIPLY);
+            }
+        }
+
+        @Override
+        public void onClick(View v) {
+            isOn = !isOn;
+            updateLooks();
+            vibrator.vibrate(30);
+        }
     }
 }
