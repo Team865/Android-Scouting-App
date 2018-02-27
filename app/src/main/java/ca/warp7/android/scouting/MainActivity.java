@@ -33,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 
 public class MainActivity
@@ -47,46 +48,29 @@ public class MainActivity
 
     private static final int MY_PERMISSIONS_REQUEST_FILES = 0;
 
-    private EditText nameField, matchField, teamField;
+    private boolean newInterface = true;
+
+    private EditText scoutNameField;
+    private EditText matchNumberField;
+    private EditText teamNumberField;
+
     private TextView mismatchWarning;
     private CheckBox verifier;
     private Button matchStartButton;
 
+
     private Specs.Index specsIndex;
-
-    private boolean newInterface = true;
-
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        // Set up UI and event listeners
-
-        Toolbar myToolBar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolBar);
-
-        nameField = findViewById(R.id.name_and_initial);
-        matchField = findViewById(R.id.match_number);
-        teamField = findViewById(R.id.team_number);
-        mismatchWarning = findViewById(R.id.mismatch_warning);
-        verifier = findViewById(R.id.verify_check);
-        matchStartButton = findViewById(R.id.match_start_button);
-
-        verifier.setOnCheckedChangeListener(this);
-
-        nameField.addTextChangedListener(this);
-        matchField.addTextChangedListener(this);
-        teamField.addTextChangedListener(this);
-
-        matchStartButton.setOnClickListener(this);
-
-        // Set up miscellaneous tasks
+        prefs = this.getSharedPreferences(ID.ROOT_DOMAIN, MODE_PRIVATE);
 
         ensurePermissions();
-        loadFromPreferences();
-        setUpSpecs();
+        setupUI();
+        setupSpecs();
     }
 
     @Override
@@ -101,17 +85,7 @@ public class MainActivity
         switch (item.getItemId()) {
             case R.id.menu_select_specs:
 
-                final String[] specs = specsIndex.getNames().toArray(new String[0]);
-                new AlertDialog.Builder(this)
-
-                        .setTitle("Select your board")
-                        .setItems(specs, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                loadSpecsFromName(specs[which]);
-                            }
-                        })
-                        .show();
+                askToSelectSpecs();
                 return true;
 
             case R.id.menu_copy_specs:
@@ -122,8 +96,8 @@ public class MainActivity
             case R.id.menu_change_interface:
 
                 newInterface = !newInterface;
-
                 item.setTitle(newInterface ? "Use Old Interface" : "Use New Interface");
+
                 return true;
 
             default:
@@ -152,13 +126,15 @@ public class MainActivity
 
     @Override
     public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
 
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_FILES: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    setUpSpecs();
+                    setupSpecs();
                 }
             }
         }
@@ -180,10 +156,7 @@ public class MainActivity
     @Override
     public void onClick(View v) {
 
-        SharedPreferences prefs;
-        prefs = this.getSharedPreferences(ID.ROOT_DOMAIN, MODE_PRIVATE);
-
-        String name = nameField.getText().toString().replaceAll("_", "");
+        String name = scoutNameField.getText().toString().replaceAll("_", "");
 
         SharedPreferences.Editor editor = prefs.edit();
 
@@ -202,10 +175,10 @@ public class MainActivity
                 newInterface ? ScoutingActivity.class : TimedScoutingActivity.class);
 
         intent.putExtra(ID.MSG_MATCH_NUMBER,
-                Integer.parseInt(matchField.getText().toString()));
+                Integer.parseInt(matchNumberField.getText().toString()));
 
         intent.putExtra(ID.MSG_TEAM_NUMBER,
-                Integer.parseInt(teamField.getText().toString()));
+                Integer.parseInt(teamNumberField.getText().toString()));
 
         intent.putExtra(ID.MSG_SCOUT_NAME, name);
 
@@ -214,11 +187,45 @@ public class MainActivity
     }
 
 
-    /**
-     * Set up the specs directory by copying from the asset folder
-     * if the file is not already there
-     */
-    private void setUpSpecs() {
+    private void ensurePermissions() {
+        // Ask for File Permissions
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_FILES);
+        }
+    }
+
+    private void setupUI() {
+        setContentView(R.layout.activity_main);
+
+        Toolbar myToolBar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolBar);
+
+        scoutNameField = findViewById(R.id.name_and_initial);
+        matchNumberField = findViewById(R.id.match_number);
+        teamNumberField = findViewById(R.id.team_number);
+
+        mismatchWarning = findViewById(R.id.mismatch_warning);
+        verifier = findViewById(R.id.verify_check);
+        matchStartButton = findViewById(R.id.match_start_button);
+
+        verifier.setOnCheckedChangeListener(this);
+
+        scoutNameField.addTextChangedListener(this);
+        matchNumberField.addTextChangedListener(this);
+        teamNumberField.addTextChangedListener(this);
+
+        matchStartButton.setOnClickListener(this);
+
+        scoutNameField.setText(prefs.getString(ID.SAVE_SCOUT_NAME, ""));
+    }
+
+    private void setupSpecs() {
 
         File root = Specs.getSpecsRoot();
         File indexFile = new File(root, "index.json");
@@ -245,6 +252,21 @@ public class MainActivity
                     }
                 })
                 .create()
+                .show();
+    }
+
+    private void askToSelectSpecs() {
+
+        final String[] specs = specsIndex.getNames().toArray(new String[0]);
+        new AlertDialog.Builder(this)
+
+                .setTitle("Select your board")
+                .setItems(specs, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        loadSpecsFromName(specs[which]);
+                    }
+                })
                 .show();
     }
 
@@ -277,10 +299,19 @@ public class MainActivity
     private void loadIndex(File indexFile) {
         specsIndex = new Specs.Index(indexFile);
 
-        if (!specsIndex.getNames().isEmpty()) {
-            loadSpecsFromName(specsIndex.getNames().get(0));
+        ArrayList<String> names = specsIndex.getNames();
+
+        if (!names.isEmpty()) {
+
+            String savedName = prefs.getString(ID.SAVE_SPECS, "");
+
+            loadSpecsFromName(names.contains(savedName) ? savedName : names.get(0));
+
         } else {
-            getSupportActionBar().setTitle("Index File Not Found");
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle("Index File Not Found");
+            }
         }
     }
 
@@ -293,40 +324,17 @@ public class MainActivity
                 ab.setSubtitle("@ " + specs.getEvent());
             }
             updateTextFieldState();
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString(ID.SAVE_SPECS, name);
+            editor.apply();
         }
-    }
-
-    private void ensurePermissions() {
-        // Ask for File Permissions
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_REQUEST_FILES);
-        }
-    }
-
-    private void loadFromPreferences() {
-        // Set up auto fill from preferences
-
-        SharedPreferences prefs;
-        prefs = this.getSharedPreferences(ID.ROOT_DOMAIN, MODE_PRIVATE);
-
-        nameField.setText(prefs.getString(ID.SAVE_SCOUT_NAME, ""));
-    }
-
-    private boolean matchDoesExist(String m, String t) {
-        return Specs.getInstance().matchIsInSchedule
-                (Integer.parseInt(m) - 1, Integer.parseInt(t));
     }
 
     private void updateTextFieldState() {
-        String n = nameField.getText().toString();
-        String m = matchField.getText().toString();
-        String t = teamField.getText().toString();
+        String n = scoutNameField.getText().toString();
+        String m = matchNumberField.getText().toString();
+        String t = teamNumberField.getText().toString();
 
         boolean n_empty = n.isEmpty();
         boolean m_empty = m.isEmpty();
@@ -371,5 +379,11 @@ public class MainActivity
             verifier.setTextColor(0xFF000000);
             verifier.setChecked(false);
         }
+    }
+
+
+    private boolean matchDoesExist(String m, String t) {
+        return Specs.getInstance().matchIsInSchedule
+                (Integer.parseInt(m) - 1, Integer.parseInt(t));
     }
 }

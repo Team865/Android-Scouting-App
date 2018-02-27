@@ -10,6 +10,7 @@ final class ID {
     static final String MSG_ENCODE_DATA = "ca.warp7.android.scouting.msg.encode_data";
 
     static final String SAVE_SCOUT_NAME = "ca.warp7.android.scouting.save.scout_name";
+    static final String SAVE_SPECS = "ca.warp7.android.scouting.save.specs";
 
     static final String ROOT_DOMAIN = "ca.warp7.android.scouting";
 
