@@ -30,6 +30,35 @@
                     "+"
                 ]
             ]
+        },
+        {
+            "title": "Vaults 2",
+            "fields": [
+                [
+                    "Blue Force",
+                    "+"
+                ],
+                [
+                    "Blue Boost",
+                    "+"
+                ],
+                [
+                    "Blue Levitate",
+                    "+"
+                ],
+                [
+                    "Red Force",
+                    "+"
+                ],
+                [
+                    "Red Boost",
+                    "+"
+                ],
+                [
+                    "Red Levitate",
+                    "+"
+                ]
+            ]
         }
     ],
     "data": [

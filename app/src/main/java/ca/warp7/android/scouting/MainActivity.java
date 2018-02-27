@@ -37,13 +37,10 @@ import java.util.ArrayList;
 
 
 public class MainActivity
-
         extends AppCompatActivity
-
-        implements
-        CompoundButton.OnCheckedChangeListener,
-        TextWatcher,
-        View.OnClickListener {
+        implements TextWatcher,
+        View.OnClickListener,
+        CompoundButton.OnCheckedChangeListener {
 
 
     private static final int MY_PERMISSIONS_REQUEST_FILES = 0;

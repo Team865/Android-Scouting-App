@@ -1,20 +1,13 @@
 package ca.warp7.android.scouting;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -22,12 +15,19 @@ import java.util.ArrayList;
 
 
 public class InputsFragment
-
         extends Fragment {
 
-    InputsFragmentListener listener;
-    Handler handler;
-    Vibrator vibrator;
+    static InputsFragment createInstance(int currentTab) {
+        InputsFragment f = new InputsFragment();
+
+        Bundle args = new Bundle();
+        args.putInt("tab", currentTab);
+
+        f.setArguments(args);
+        return f;
+    }
+
+    InputControls.ActivityListener listener;
 
     TableLayout inputTable;
 
@@ -60,40 +60,19 @@ public class InputsFragment
         super.onViewCreated(view, savedInstanceState);
 
         inputTable = view.findViewById(R.id.input_table);
-        handler = listener.getHandler();
-        vibrator = listener.getVibrator();
 
-        ArrayList<String[]> fields = layout.getFields();
-        inputTable.setWeightSum(fields.size());
-
-
-        for (String[] fieldRow : fields) {
-            TableRow tr = createLayoutRow();
-
-            Specs.DataConstant dc;
-
-            if (fieldRow.length == 1) {
-                tr.addView(createSpecifiedView(fieldRow[0], 2));
-
-            } else {
-                for (String fieldID : fieldRow) {
-                    tr.addView(createSpecifiedView(fieldID, 1));
-                }
-            }
-
-            inputTable.addView(tr);
-        }
+        layoutTable();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof InputsFragmentListener) {
-            listener = (InputsFragmentListener) context;
+        if (context instanceof InputControls.ActivityListener) {
+            listener = (InputControls.ActivityListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement InputsFragmentListener");
+                    + " must implement InputControls.ActivityListener");
         }
     }
 
@@ -103,184 +82,69 @@ public class InputsFragment
         listener = null;
     }
 
-    View createSpecifiedView(String id, int span) {
-        Specs.DataConstant dc = specs.getDataConstantByStringID(id);
-        View view;
 
-        if (dc != null) {
+    View createControlFromDataConstant(Specs.DataConstant dc, String idIfNull) {
 
-            switch (dc.getType()) {
-                case Specs.DataConstant.CHECKBOX:
-                    view = createLayoutCheckBox(dc.getLabel());
-                    break;
-
-                case Specs.DataConstant.DURATION:
-                    view = createLayoutDurationButton(dc.getLabel(), dc.getLabelOn());
-                    break;
-
-                case Specs.DataConstant.TIMESTAMP:
-                default:
-                    view = createLayoutButton(dc.getLabel());
-            }
-        } else {
-            view = createLayoutButton(id);
+        if (dc == null) {
+            return new InputControls.UnknownControl(getContext(), idIfNull, listener);
         }
 
-        ((TableRow.LayoutParams) view.getLayoutParams()).span = span;
-        return view;
+        switch (dc.getType()) {
+            case Specs.DataConstant.CHECKBOX:
+            case Specs.DataConstant.DURATION:
+                return new InputControls.DurationButton(getContext(), dc, listener);
+
+            case Specs.DataConstant.TIMESTAMP:
+            default:
+                return new InputControls.TimerButton(getContext(), dc, listener);
+        }
     }
 
-    CheckBox createLayoutCheckBox(String text) {
+    View createSpecifiedControl(String id, int span) {
+        Specs.DataConstant dc = specs.getDataConstantByStringID(id);
 
-        CheckBox checkBox = new CheckBox(getContext());
+        View view = createControlFromDataConstant(dc, id);
 
-        checkBox.setText(text);
-        checkBox.setTextSize(20);
-        checkBox.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
-        checkBox.setTextColor(getResources().getColor(R.color.colorAccent));
-
-        TableRow.LayoutParams lp = createCellParams();
-
-        checkBox.setLayoutParams(lp);
-        //checkBox.setGravity(Gravity.CENTER);
-
-        return checkBox;
-    }
-
-    DurationButton createLayoutDurationButton(String off, String on) {
-        DurationButton button = new DurationButton(getContext());
-
-        button.setTexts(off, on);
-
-        button.setAllCaps(false);
-        button.setTextSize(20);
-
-        button.updateLooks();
-
-        button.setLayoutParams(createCellParams());
-        button.setLines(2);
-
-        return button;
-    }
-
-    Button createLayoutButton(String text) {
-        Button button = new Button(getContext());
-
-        button.setText(text.replace(" ", "\n"));
-        button.setAllCaps(false);
-        button.setTextSize(20);
-        button.setTypeface(Typeface.SANS_SERIF);
-        button.setTextColor(getResources().getColor(R.color.colorAccent));
-
-        button.setLayoutParams(createCellParams());
-        button.setLines(2);
-
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                final Button b = (Button) v;
-
-                b.setTextColor(0xFFFFFFFF);
-                b.getBackground().setColorFilter(
-                        getResources().getColor(R.color.colorAccent),
-                        PorterDuff.Mode.MULTIPLY);
-
-                vibrator.vibrate(30);
-
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        b.setTextColor(getResources().getColor(R.color.colorAccent));
-                        b.getBackground().clearColorFilter();
-                    }
-                }, 1000);
-            }
-        });
-
-        return button;
-    }
-
-    TableRow createLayoutRow(){
-        TableRow tableRow = new TableRow(getContext());
-
-        tableRow.setLayoutParams(createRowParams());
-
-        return tableRow;
-    }
-
-
-    static TableRow.LayoutParams createCellParams(){
         TableRow.LayoutParams lp = new TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.MATCH_PARENT);
 
+        lp.span = span;
         lp.width = 0;
 
-        return lp;
+        view.setLayoutParams(lp);
+
+        return view;
     }
 
-    static TableLayout.LayoutParams createRowParams(){
-        return new TableLayout.LayoutParams(
+    void layoutRow(String[] fieldRow) {
+        TableRow tr = new TableRow(getContext());
+
+        tr.setLayoutParams(new TableLayout.LayoutParams(
                 TableLayout.LayoutParams.WRAP_CONTENT,
-                TableLayout.LayoutParams.MATCH_PARENT, 1.0f);
-    }
+                TableLayout.LayoutParams.MATCH_PARENT, 1.0f));
 
-    static InputsFragment createInstance(int currentTab) {
-        InputsFragment f = new InputsFragment();
+        if (fieldRow.length == 1) {
+            tr.addView(createSpecifiedControl(fieldRow[0], 2));
 
-        Bundle args = new Bundle();
-        args.putInt("tab", currentTab);
-
-        f.setArguments(args);
-        return f;
-    }
-
-    interface InputsFragmentListener {
-        Handler getHandler();
-        Vibrator getVibrator();
-    }
-
-    private class DurationButton
-            extends AppCompatButton implements View.OnClickListener {
-
-        boolean isOn = false;
-        String off;
-        String on;
-
-        public DurationButton(Context context) {
-            super(context);
-            setOnClickListener(this);
-        }
-
-        void setTexts(String off, String on) {
-            this.off = off;
-            this.on = on;
-        }
-
-        void updateLooks() {
-            if (isOn) {
-                setTextColor(0xFFFFFFFF);
-                setText(on);
-                getBackground().setColorFilter(
-                        getResources().getColor(R.color.colorRed),
-                        PorterDuff.Mode.MULTIPLY);
-            } else {
-                setTextColor(getResources().getColor(R.color.colorLightGreen));
-                //setTextColor(0xFFFFFFFF);
-                setText(off);
-                getBackground().clearColorFilter();
-                //getBackground().setColorFilter(
-                //getResources().getColor(R.color.colorLightGreen),
-                //PorterDuff.Mode.MULTIPLY);
+        } else {
+            for (String fieldID : fieldRow) {
+                tr.addView(createSpecifiedControl(fieldID, 1));
             }
         }
 
-        @Override
-        public void onClick(View v) {
-            isOn = !isOn;
-            updateLooks();
-            vibrator.vibrate(30);
+        inputTable.addView(tr);
+    }
+
+    void layoutTable() {
+
+        ArrayList<String[]> fields = layout.getFields();
+        inputTable.setWeightSum(fields.size());
+
+
+        for (String[] fieldRow : fields) {
+            layoutRow(fieldRow);
         }
     }
+
 }

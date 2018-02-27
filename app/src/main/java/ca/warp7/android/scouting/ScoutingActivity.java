@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -19,23 +18,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ScoutingActivity
-
         extends AppCompatActivity
-
-        implements
-        InputsFragment.InputsFragmentListener {
+        implements InputControls.ActivityListener {
 
     Handler handler;
     Vibrator vibrator;
@@ -306,59 +299,6 @@ public class ScoutingActivity
         @Override
         public int getCount() {
             return specs.getLayouts().size();
-        }
-    }
-
-
-    /**
-     * A manager to keep track of compile-time views by assigning ids
-     */
-    static final class ViewIdManager {
-        private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
-
-        private static int generateViewId() {
-
-            if (Build.VERSION.SDK_INT < 17) {
-                for (; ; ) {
-                    final int result = sNextGeneratedId.get();
-
-                    int newValue = result + 1;
-                    if (newValue > 0x00FFFFFF)
-                        newValue = 1;
-                    if (sNextGeneratedId.compareAndSet(result, newValue)) {
-                        return result;
-                    }
-                }
-            } else {
-                return View.generateViewId();
-            }
-
-        }
-
-        private HashMap<Integer, String> idMap;
-
-        @SuppressWarnings("unchecked")
-        ViewIdManager() {
-            idMap = new HashMap();
-        }
-
-        int createViewId(String retrievalId) {
-            int viewId = ViewIdManager.generateViewId();
-
-            idMap.put(viewId, retrievalId);
-
-            return viewId;
-        }
-
-        String getRetrievalId(int viewId) {
-            if (idMap.containsKey(viewId)) {
-                return idMap.get(viewId);
-            }
-            return "";
-        }
-
-        void clear() {
-            idMap.clear();
         }
     }
 

@@ -25,7 +25,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 public class DataOutputActivity
-
         extends AppCompatActivity {
 
     TextView dataView;
