@@ -261,20 +261,18 @@ public class InputsFragment
         void updateLooks() {
             if (isOn) {
                 setTextColor(0xFFFFFFFF);
-                setTypeface(null);
                 setText(on);
                 getBackground().setColorFilter(
                         getResources().getColor(R.color.colorRed),
                         PorterDuff.Mode.MULTIPLY);
             } else {
-                //setTextColor(getResources().getColor(R.color.colorLightGreen));
-                setTextColor(0xFFFFFFFF);
-                setTypeface(Typeface.SANS_SERIF);
+                setTextColor(getResources().getColor(R.color.colorLightGreen));
+                //setTextColor(0xFFFFFFFF);
                 setText(off);
-                //getBackground().clearColorFilter();
-                getBackground().setColorFilter(
-                        getResources().getColor(R.color.colorLightGreen),
-                        PorterDuff.Mode.MULTIPLY);
+                getBackground().clearColorFilter();
+                //getBackground().setColorFilter(
+                //getResources().getColor(R.color.colorLightGreen),
+                //PorterDuff.Mode.MULTIPLY);
             }
         }
 

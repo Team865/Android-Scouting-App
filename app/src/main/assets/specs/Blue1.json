@@ -1,11 +1,9 @@
 {
     "id": "ff770361",
-
-    "board": "Blue 1",
+    "board": "Robot Blue 1",
 
     "alliance": "B",
-
-    "event": "",
+    "event": "Ontario – Georgian College",
 
     "timer": 150,
 
@@ -83,7 +81,7 @@
     "data": [
         {
             "id": "AUTO_LINE",
-            "label": "Auto Line",
+            "label": "Auto Line Crossed",
             "log": "Auto line",
             "type": "checkbox"
         },

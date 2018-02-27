@@ -200,9 +200,6 @@ public class ScoutingActivity
 
         encoder = new Encoder(matchNumber, teamNumber, scoutName);
 
-        for(int i = 0; i < 20; i++){
-            encoder.push((int) (Math.random() * 22), (int) (Math.random() * 150));
-        }
     }
 
     private void setupPager(){

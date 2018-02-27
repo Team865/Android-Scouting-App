@@ -289,8 +289,8 @@ public class MainActivity
             Specs specs = Specs.setInstance(specsIndex.getFileByName(name));
             ActionBar ab = getSupportActionBar();
             if (ab != null) {
-                ab.setTitle("Board " + specs.getBoardName());
-                ab.setSubtitle(specs.getEvent());
+                ab.setTitle(specs.getBoardName());
+                ab.setSubtitle("@ " + specs.getEvent());
             }
             updateTextFieldState();
         }

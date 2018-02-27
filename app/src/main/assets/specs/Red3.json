@@ -1,11 +1,9 @@
 {
     "id": "894c9040",
-
-    "board": "Red 3",
+    "board": "Robot Red 3",
 
     "alliance": "R",
-
-    "event": "",
+    "event": "Ontario – Georgian College",
 
     "timer": 150,
 
@@ -83,7 +81,7 @@
     "data": [
         {
             "id": "AUTO_LINE",
-            "label": "Auto Line",
+            "label": "Auto Line Crossed",
             "log": "Auto line",
             "type": "checkbox"
         },
