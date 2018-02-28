@@ -7,7 +7,12 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 
 /**
  * Includes a set of controls for input used in the inputs fragment
@@ -54,9 +59,9 @@ class InputControls {
     }
 
     /**
-     * A button that records time as it is pressed
+     * A Base button for other bottons to extend onto
      */
-    static final class TimerButton
+    static class BaseButton
             extends AppCompatButton
             implements BaseControl,
             View.OnClickListener {
@@ -64,13 +69,13 @@ class InputControls {
         Specs.DataConstant dc;
         ActivityListener listener;
 
-        public TimerButton(Context context) {
+        public BaseButton(Context context) {
             super(context);
         }
 
-        public TimerButton(Context context,
-                           Specs.DataConstant dc,
-                           ActivityListener listener) {
+        public BaseButton(Context context,
+                          Specs.DataConstant dc,
+                          ActivityListener listener) {
             super(context);
             setDataConstant(dc);
             setActivityListener(listener);
@@ -80,30 +85,10 @@ class InputControls {
             setAllCaps(false);
             setTextSize(20);
             setLines(2);
-
-            setTypeface(Typeface.SANS_SERIF);
-            setTextColor(getResources().getColor(R.color.colorAccent));
-
-            setText(dc.getLabel());
         }
 
         @Override
         public void onClick(View v) {
-
-            setTextColor(0xFFFFFFFF);
-            getBackground().setColorFilter(
-                    getResources().getColor(R.color.colorAccent),
-                    PorterDuff.Mode.MULTIPLY);
-
-            listener.getVibrator().vibrate(30);
-
-            listener.getHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setTextColor(getResources().getColor(R.color.colorAccent));
-                    getBackground().clearColorFilter();
-                }
-            }, 1000);
         }
 
         @Override
@@ -118,20 +103,56 @@ class InputControls {
     }
 
     /**
+     * A button that records time as it is pressed
+     */
+    static final class TimerButton
+            extends BaseButton {
+
+        public TimerButton(Context context) {
+            super(context);
+        }
+
+        public TimerButton(Context context,
+                           Specs.DataConstant dc,
+                           ActivityListener listener) {
+            super(context, dc, listener);
+
+            setText(dc.getLabel().replace(" ", "\n"));
+
+            setTypeface(Typeface.SANS_SERIF);
+            setTextColor(getResources().getColor(R.color.colorAccent));
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            setTextColor(0xFFFFFFFF);
+            getBackground().setColorFilter(
+                    getResources().getColor(R.color.colorAccent),
+                    PorterDuff.Mode.MULTIPLY);
+
+            listener.getVibrator().vibrate(35);
+
+            listener.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setTextColor(getResources().getColor(R.color.colorAccent));
+                    getBackground().clearColorFilter();
+                }
+            }, 1000);
+        }
+    }
+
+    /**
      * A button that measures duration,
      * equivalent in function as a ToggleButton.
      * It records the time of when the button is
      */
     static final class DurationButton
-            extends AppCompatButton
-            implements BaseControl,
-            View.OnClickListener {
+            extends BaseButton {
 
 
         boolean isOn = false;
-
-        Specs.DataConstant dc;
-        ActivityListener listener;
 
         public DurationButton(Context context) {
             super(context);
@@ -140,18 +161,15 @@ class InputControls {
         public DurationButton(Context context,
                               Specs.DataConstant dc,
                               ActivityListener listener) {
-            super(context);
-            setDataConstant(dc);
-            setActivityListener(listener);
-
-            setOnClickListener(this);
-
-            setAllCaps(false);
-            setTextSize(20);
-            setLines(2);
-
+            super(context, dc, listener);
             updateLooks();
+        }
 
+        @Override
+        public void onClick(View v) {
+            isOn = !isOn;
+            updateLooks();
+            listener.getVibrator().vibrate(60);
         }
 
         void updateLooks() {
@@ -168,11 +186,112 @@ class InputControls {
             }
         }
 
+    }
+
+    /**
+     * A checkbox that gives true or false values
+     */
+    static final class Checkbox
+            extends AppCompatCheckBox
+            implements BaseControl,
+            CompoundButton.OnCheckedChangeListener {
+
+        Specs.DataConstant dc;
+        ActivityListener listener;
+
+        public Checkbox(Context context) {
+            super(context);
+        }
+
+        public Checkbox(Context context,
+                        Specs.DataConstant dc,
+                        ActivityListener listener) {
+            super(context);
+            setDataConstant(dc);
+            setActivityListener(listener);
+
+            setOnCheckedChangeListener(this);
+
+            setAllCaps(false);
+            setTextSize(20);
+            setLines(2);
+
+            setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
+
+            setText(dc.getLabel());
+
+            updateLooks();
+
+        }
+
         @Override
-        public void onClick(View v) {
-            isOn = !isOn;
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            listener.getVibrator().vibrate(30);
             updateLooks();
         }
+
+        @Override
+        public void setDataConstant(Specs.DataConstant dc) {
+            this.dc = dc;
+        }
+
+        @Override
+        public void setActivityListener(ActivityListener listener) {
+            this.listener = listener;
+        }
+
+        void updateLooks() {
+            if (isChecked()) {
+                setTextColor(getResources().getColor(R.color.colorAccent));
+            } else {
+                setTextColor(getResources().getColor(android.R.color.darker_gray));
+            }
+        }
+    }
+
+    /**
+     * An options chooser
+     */
+    static final class Spinner
+            extends AppCompatSpinner
+            implements BaseControl,
+            AdapterView.OnItemSelectedListener {
+
+        Specs.DataConstant dc;
+        ActivityListener listener;
+
+        public Spinner(Context context) {
+            super(context);
+        }
+
+        public Spinner(Context context,
+                       Specs.DataConstant dc,
+                       ActivityListener listener) {
+            super(context);
+            setDataConstant(dc);
+            setActivityListener(listener);
+
+            ArrayAdapter<CharSequence> adapter;
+
+            adapter = new ArrayAdapter<CharSequence>(getContext(),
+                    android.R.layout.simple_spinner_item, dc.getChoices());
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            setAdapter(adapter);
+
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+
 
         @Override
         public void setDataConstant(Specs.DataConstant dc) {
@@ -211,7 +330,7 @@ class InputControls {
 
             setTextColor(getResources().getColor(android.R.color.black));
 
-            setText(text);
+            setText(text.replace(" ", "\n"));
 
             this.listener = listener;
         }
@@ -223,7 +342,7 @@ class InputControls {
                     getResources().getColor(android.R.color.black),
                     PorterDuff.Mode.MULTIPLY);
 
-            listener.getVibrator().vibrate(30);
+            listener.getVibrator().vibrate(new long[]{0, 20, 60, 20}, -1);
 
             listener.getHandler().postDelayed(new Runnable() {
                 @Override

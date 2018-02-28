@@ -91,12 +91,19 @@ public class InputsFragment
 
         switch (dc.getType()) {
             case Specs.DataConstant.CHECKBOX:
+                return new InputControls.Checkbox(getContext(), dc, listener);
+
             case Specs.DataConstant.DURATION:
                 return new InputControls.DurationButton(getContext(), dc, listener);
 
+            case Specs.DataConstant.CHOICE:
+                return new InputControls.Spinner(getContext(), dc, listener);
+
             case Specs.DataConstant.TIMESTAMP:
-            default:
                 return new InputControls.TimerButton(getContext(), dc, listener);
+            default:
+                return new InputControls.UnknownControl(getContext(),
+                        dc.getLabel(), listener);
         }
     }
 
@@ -106,7 +113,7 @@ public class InputsFragment
         View view = createControlFromDataConstant(dc, id);
 
         TableRow.LayoutParams lp = new TableRow.LayoutParams(
-                TableRow.LayoutParams.WRAP_CONTENT,
+                TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.MATCH_PARENT);
 
         lp.span = span;
@@ -121,7 +128,7 @@ public class InputsFragment
         TableRow tr = new TableRow(getContext());
 
         tr.setLayoutParams(new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.WRAP_CONTENT,
+                TableLayout.LayoutParams.MATCH_PARENT,
                 TableLayout.LayoutParams.MATCH_PARENT, 1.0f));
 
         if (fieldRow.length == 1) {
