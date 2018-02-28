@@ -45,9 +45,11 @@ class InputControls {
 
         boolean canUpdateTime();
 
-        void push(int t, int v);
+        void push(int t, int v, int s);
 
-        void pushOnce(int t, int v);
+        void pushOnce(int t, int v, int s);
+
+        void pushTime(int t, int s);
     }
 
     /**
@@ -135,21 +137,24 @@ class InputControls {
 
         @Override
         public void onClick(View v) {
+            if (listener.canUpdateTime()) {
+                setTextColor(0xFFFFFFFF);
+                getBackground().setColorFilter(
+                        getResources().getColor(R.color.colorAccent),
+                        PorterDuff.Mode.MULTIPLY);
 
-            setTextColor(0xFFFFFFFF);
-            getBackground().setColorFilter(
-                    getResources().getColor(R.color.colorAccent),
-                    PorterDuff.Mode.MULTIPLY);
+                listener.getVibrator().vibrate(35);
 
-            listener.getVibrator().vibrate(35);
+                listener.pushTime(dc.getIndex(), 1);
 
-            listener.getHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setTextColor(getResources().getColor(R.color.colorAccent));
-                    getBackground().clearColorFilter();
-                }
-            }, 1000);
+                listener.getHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setTextColor(getResources().getColor(R.color.colorAccent));
+                        getBackground().clearColorFilter();
+                    }
+                }, 1000);
+            }
         }
     }
 
@@ -177,9 +182,12 @@ class InputControls {
 
         @Override
         public void onClick(View v) {
-            isOn = !isOn;
-            updateLooks();
-            listener.getVibrator().vibrate(60);
+            if (listener.canUpdateTime()) {
+                isOn = !isOn;
+                listener.pushTime(dc.getIndex(), isOn ? 1 : 0);
+                updateLooks();
+                listener.getVibrator().vibrate(60);
+            }
         }
 
         void updateLooks() {
@@ -221,7 +229,7 @@ class InputControls {
             setTextColor(getResources().getColor(R.color.colorAccent));
             setLines(1);
 
-            listener.pushOnce(dc.getIndex(), 0);
+            listener.pushOnce(dc.getIndex(), 0, 1);
         }
 
         @Override
@@ -233,7 +241,7 @@ class InputControls {
                         public void onClick(DialogInterface dialog, int which) {
                             listener.getVibrator().vibrate(30);
                             setText(dc.getChoices()[which]);
-                            listener.pushOnce(dc.getIndex(), which);
+                            listener.pushOnce(dc.getIndex(), which, 1);
                         }
                     }).show();
         }
@@ -273,14 +281,14 @@ class InputControls {
 
             updateLooks();
 
-            listener.pushOnce(dc.getIndex(), 0);
+            listener.pushOnce(dc.getIndex(), 0, 1);
 
         }
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             listener.getVibrator().vibrate(30);
-            listener.pushOnce(dc.getIndex(), isChecked ? 1 : 0);
+            listener.pushOnce(dc.getIndex(), isChecked ? 1 : 0, 1);
             updateLooks();
         }
 
@@ -334,7 +342,7 @@ class InputControls {
             setProgress(0);
             lastProgress = 0;
 
-            listener.pushOnce(dc.getIndex(), 0);
+            listener.pushOnce(dc.getIndex(), 0, 1);
 
             setOnSeekBarChangeListener(this);
 
@@ -359,7 +367,7 @@ class InputControls {
                 listener.getVibrator().vibrate(20);
                 lastProgress = getProgress();
 
-                listener.pushOnce(dc.getIndex(), lastProgress);
+                listener.pushOnce(dc.getIndex(), lastProgress, 1);
             }
         }
 

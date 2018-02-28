@@ -40,8 +40,9 @@ public class ScoutingActivity
     ViewPager pager;
     PagerAdapter pagerAdapter;
 
-    int timer;
+    int timer = 0;
     int currentTab = 0;
+    int lastRecordedTime = -1;
 
     Specs specs;
     Encoder encoder;
@@ -167,17 +168,23 @@ public class ScoutingActivity
 
     @Override
     public boolean canUpdateTime() {
-        return false;
+        return lastRecordedTime != timer;
     }
 
     @Override
-    public void push(int t, int v) {
-        encoder.push(t, v);
+    public void push(int t, int v, int s) {
+        encoder.push(t, v, s);
     }
 
     @Override
-    public void pushOnce(int t, int v) {
-        encoder.pushOnce(t, v);
+    public void pushOnce(int t, int v, int s) {
+        encoder.pushOnce(t, v, s);
+    }
+
+    @Override
+    public void pushTime(int t, int s) {
+        push(t, timer, s);
+        lastRecordedTime = timer;
     }
 
 

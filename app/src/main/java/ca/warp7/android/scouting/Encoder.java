@@ -1,8 +1,5 @@
 package ca.warp7.android.scouting;
 
-
-import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,22 +34,24 @@ final class Encoder {
         dataStack = new ArrayList<>();
     }
 
-    void push(int t, int v){
-        dataStack.add(new Datum(t, v));
-        Log.i("push", t + " " + v);
+    void push(int t, int v, int s) {
+        Datum d = new Datum(t, v);
+        d.setStateFlag(s);
+        dataStack.add(d);
     }
 
-    void pushOnce(int t, int v){
+    void pushOnce(int t, int v, int s) {
         if(t < 0 || t > 63){
             return;
         }
         for (Datum d : dataStack){
             if (t == d.getType()){
                 d.setValue(v);
+                d.setStateFlag(s);
                 return;
             }
         }
-        push(t, v);
+        push(t, v, s);
     }
 
     private String head() {
@@ -125,7 +124,8 @@ final class Encoder {
             if(specs.hasIndexInConstants(t)){
                 Specs.DataConstant dc = specs.getDataConstantByIndex(t);
                 sb
-                        .append(formatLeft(dc.getLogTitle(), 23, " "))
+                        .append(formatLeft(dc.getLogTitle() +
+                                (d.getStateFlag() == 0 ? "<Off>" : ""), 23, " "))
                         .append(formatLeft(dc.format(d.getValue()), 14, " "));
             } else {
                 sb
