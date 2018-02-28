@@ -80,7 +80,7 @@ final class Encoder {
 
     String format() {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("YY/MM/dd HH:mm:ss", Locale.CANADA);
+        SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
         StringBuilder sb = new StringBuilder();
 
@@ -111,10 +111,9 @@ final class Encoder {
                 .append(specs.getAlliance())
                 .append("\n\n")
 
-                .append(formatLeft("Data", 23, " "))
-                .append(formatLeft("Value", 14, " "))
-                .append("Undo\n")
-                .append(new String(new char[41]).replace("\0", "-"));
+                .append(formatLeft("Data", 24, " "))
+                .append(formatLeft("Value", 12, " "))
+                .append(new String(new char[37]).replace("\0", "-"));
 
         for (Datum d : dataStack) {
             sb.append("\n");
@@ -125,19 +124,18 @@ final class Encoder {
                 Specs.DataConstant dc = specs.getDataConstantByIndex(t);
                 sb
                         .append(formatLeft(dc.getLogTitle() +
-                                (d.getStateFlag() == 0 ? "<Off>" : ""), 23, " "))
+                                (d.getStateFlag() == 0 ? "<Off>" : ""), 24, " "))
                         .append(formatLeft(dc.format(d.getValue()), 14, " "));
             } else {
                 sb
-                        .append(formatLeft(String.valueOf(t), 23, " "))
-                        .append(formatLeft(String.valueOf(d.getValue()), 14, " "));
+                        .append(formatLeft(String.valueOf(t), 24, " "))
+                        .append(formatLeft(String.valueOf(d.getValue()), 12, " "));
             }
-            sb.append(d.getUndoFlag() != 0 ? "Yes" : "No");
         }
 
         sb
                 .append('\n')
-                .append(new String(new char[41]).replace("\0", "-"));
+                .append(new String(new char[37]).replace("\0", "-"));
 
         return sb.toString();
     }
