@@ -165,6 +165,20 @@ public class ScoutingActivity
         return vibrator;
     }
 
+    @Override
+    public boolean canUpdateTime() {
+        return false;
+    }
+
+    @Override
+    public void push(int t, int v) {
+        encoder.push(t, v);
+    }
+
+    @Override
+    public void pushOnce(int t, int v) {
+        encoder.pushOnce(t, v);
+    }
 
 
     private void setupUI(){

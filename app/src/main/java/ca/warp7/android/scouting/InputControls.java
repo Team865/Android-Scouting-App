@@ -42,6 +42,12 @@ class InputControls {
          * @return The Vibrator service of the activity
          */
         Vibrator getVibrator();
+
+        boolean canUpdateTime();
+
+        void push(int t, int v);
+
+        void pushOnce(int t, int v);
     }
 
     /**
@@ -65,7 +71,7 @@ class InputControls {
     }
 
     /**
-     * A Base button for other bottons to extend onto
+     * A Base button for other buttons to extend onto
      */
     static class BaseButton
             extends AppCompatButton
@@ -212,7 +218,10 @@ class InputControls {
             } else {
                 setText(dc.getLabel());
             }
+            setTextColor(getResources().getColor(R.color.colorAccent));
             setLines(1);
+
+            listener.pushOnce(dc.getIndex(), 0);
         }
 
         @Override
@@ -224,6 +233,7 @@ class InputControls {
                         public void onClick(DialogInterface dialog, int which) {
                             listener.getVibrator().vibrate(30);
                             setText(dc.getChoices()[which]);
+                            listener.pushOnce(dc.getIndex(), which);
                         }
                     }).show();
         }
@@ -263,11 +273,14 @@ class InputControls {
 
             updateLooks();
 
+            listener.pushOnce(dc.getIndex(), 0);
+
         }
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             listener.getVibrator().vibrate(30);
+            listener.pushOnce(dc.getIndex(), isChecked ? 1 : 0);
             updateLooks();
         }
 
@@ -321,6 +334,8 @@ class InputControls {
             setProgress(0);
             lastProgress = 0;
 
+            listener.pushOnce(dc.getIndex(), 0);
+
             setOnSeekBarChangeListener(this);
 
         }
@@ -343,6 +358,8 @@ class InputControls {
             if (getProgress() != lastProgress) {
                 listener.getVibrator().vibrate(20);
                 lastProgress = getProgress();
+
+                listener.pushOnce(dc.getIndex(), lastProgress);
             }
         }
 
