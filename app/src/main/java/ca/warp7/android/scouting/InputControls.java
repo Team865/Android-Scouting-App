@@ -2,11 +2,13 @@ package ca.warp7.android.scouting;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -122,8 +124,6 @@ class InputControls {
             super(context, dc, listener);
 
             setText(dc.getLabel().replace(" ", "\n"));
-
-            setTypeface(Typeface.SANS_SERIF);
             setTextColor(getResources().getColor(R.color.colorAccent));
         }
 
@@ -190,6 +190,43 @@ class InputControls {
             }
         }
 
+    }
+
+    /**
+     * A button that gives the user a list of options to choose
+     */
+    static final class ChoicesButton
+            extends BaseButton {
+
+        public ChoicesButton(Context context) {
+            super(context);
+        }
+
+        public ChoicesButton(Context context, Specs.DataConstant dc, ActivityListener listener) {
+            super(context, dc, listener);
+
+            String[] choices = dc.getChoices();
+
+            if (choices.length > 0) {
+                setText(dc.getChoices()[0]);
+            } else {
+                setText(dc.getLabel());
+            }
+            setLines(1);
+        }
+
+        @Override
+        public void onClick(View v) {
+            new AlertDialog.Builder(getContext())
+                    .setTitle(dc.getLabel())
+                    .setItems(dc.getChoices(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            listener.getVibrator().vibrate(30);
+                            setText(dc.getChoices()[which]);
+                        }
+                    }).show();
+        }
     }
 
     /**
@@ -323,7 +360,6 @@ class InputControls {
     /**
      * Creates a box container for a label and another control
      */
-
     static final class LabeledControlLayout
             extends LinearLayout
             implements BaseControl {

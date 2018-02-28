@@ -107,11 +107,8 @@ public class InputsFragment
 
             case Specs.DataConstant.CHOICE:
 
-                InputControls.UnknownControl v2 = new InputControls.UnknownControl(getContext(),
-                        dc.getLabel(), listener);
-
-                v2.setLines(1);
-                return v2;
+                return new InputControls.LabeledControlLayout(getContext(), dc, listener,
+                        new InputControls.ChoicesButton(getContext(), dc, listener));
 
             default:
                 return new InputControls.UnknownControl(getContext(),
