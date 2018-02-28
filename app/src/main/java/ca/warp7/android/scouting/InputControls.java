@@ -4,15 +4,19 @@ package ca.warp7.android.scouting;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.AppCompatSpinner;
+import android.support.v7.widget.AppCompatSeekBar;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 /**
  * Includes a set of controls for input used in the inputs fragment
@@ -250,48 +254,129 @@ class InputControls {
     }
 
     /**
-     * An options chooser
+     * Creates a ratings bar based on the maximum value specified
      */
-    static final class Spinner
-            extends AppCompatSpinner
+    static final class SeekBar
+            extends AppCompatSeekBar
             implements BaseControl,
-            AdapterView.OnItemSelectedListener {
+            AppCompatSeekBar.OnSeekBarChangeListener {
+
 
         Specs.DataConstant dc;
         ActivityListener listener;
 
-        public Spinner(Context context) {
+        int lastProgress;
+
+        public SeekBar(Context context) {
             super(context);
         }
 
-        public Spinner(Context context,
+        public SeekBar(Context context,
                        Specs.DataConstant dc,
                        ActivityListener listener) {
             super(context);
             setDataConstant(dc);
             setActivityListener(listener);
 
-            ArrayAdapter<CharSequence> adapter;
+            setBackgroundColor(0);
 
-            adapter = new ArrayAdapter<CharSequence>(getContext(),
-                    android.R.layout.simple_spinner_item, dc.getChoices());
+            setMax(dc.getMax());
+            setProgress(0);
+            lastProgress = 0;
 
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-            setAdapter(adapter);
-
-        }
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            setOnSeekBarChangeListener(this);
 
         }
 
         @Override
-        public void onNothingSelected(AdapterView<?> parent) {
+        public void onProgressChanged(android.widget.SeekBar seekBar,
+                                      int progress,
+                                      boolean fromUser) {
 
         }
 
+        @Override
+        public void onStartTrackingTouch(android.widget.SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(android.widget.SeekBar seekBar) {
+
+            if (getProgress() != lastProgress) {
+                listener.getVibrator().vibrate(20);
+                lastProgress = getProgress();
+            }
+        }
+
+        @Override
+        public void setDataConstant(Specs.DataConstant dc) {
+            this.dc = dc;
+        }
+
+        @Override
+        public void setActivityListener(ActivityListener listener) {
+            this.listener = listener;
+        }
+    }
+
+    /**
+     * Creates a box container for a label and another control
+     */
+
+    static final class LabeledControlLayout
+            extends LinearLayout
+            implements BaseControl {
+
+        Specs.DataConstant dc;
+        ActivityListener listener;
+
+        public LabeledControlLayout(Context context) {
+            super(context);
+        }
+
+        public LabeledControlLayout(Context context,
+                                    Specs.DataConstant dc,
+                                    ActivityListener listener,
+                                    View control) {
+            super(context);
+            setDataConstant(dc);
+            setActivityListener(listener);
+
+            setOrientation(VERTICAL);
+
+            // Set the background of the view
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                setBackground(new Button(getContext()).getBackground());
+            } else {
+                setBackgroundResource(android.R.drawable.btn_default);
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                setElevation(4);
+            }
+
+            TableRow.LayoutParams childLayout = new TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.MATCH_PARENT,
+                    1.0f);
+
+            // Add the views
+
+            TextView label = new TextView(context);
+
+            label.setText(dc.getLabel());
+            label.setGravity(Gravity.CENTER);
+            label.setTextSize(15);
+
+            label.setLayoutParams(childLayout);
+            addView(label);
+
+
+            control.setLayoutParams(childLayout);
+            addView(control);
+        }
 
         @Override
         public void setDataConstant(Specs.DataConstant dc) {

@@ -90,17 +90,29 @@ public class InputsFragment
         }
 
         switch (dc.getType()) {
+            case Specs.DataConstant.TIMESTAMP:
+                return new InputControls.TimerButton(getContext(), dc, listener);
+
             case Specs.DataConstant.CHECKBOX:
                 return new InputControls.Checkbox(getContext(), dc, listener);
 
             case Specs.DataConstant.DURATION:
                 return new InputControls.DurationButton(getContext(), dc, listener);
 
-            case Specs.DataConstant.CHOICE:
-                return new InputControls.Spinner(getContext(), dc, listener);
 
-            case Specs.DataConstant.TIMESTAMP:
-                return new InputControls.TimerButton(getContext(), dc, listener);
+            case Specs.DataConstant.RATING:
+
+                return new InputControls.LabeledControlLayout(getContext(), dc, listener,
+                        new InputControls.SeekBar(getContext(), dc, listener));
+
+            case Specs.DataConstant.CHOICE:
+
+                InputControls.UnknownControl v2 = new InputControls.UnknownControl(getContext(),
+                        dc.getLabel(), listener);
+
+                v2.setLines(1);
+                return v2;
+
             default:
                 return new InputControls.UnknownControl(getContext(),
                         dc.getLabel(), listener);
