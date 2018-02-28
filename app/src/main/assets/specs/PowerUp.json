@@ -10,24 +10,24 @@
             "title": "Vaults",
             "fields": [
                 [
-                    "Blue Force",
-                    "Blue Boost",
-                    "Blue Levitate"
+                    "RED_BOOST",
+                    "RED_LEVITATE",
+                    "RED_FORCE"
                 ],
                 [
-                    "+",
-                    "+",
-                    "+"
+                    "RED_BOOST_ADD",
+                    "RED_LEVITATE_ADD",
+                    "RED_FORCE_ADD"
                 ],
                 [
-                    "Red Force",
-                    "Red Boost",
-                    "Red Levitate"
+                    "BLUE_BOOST",
+                    "BLUE_LEVITATE",
+                    "BLUE_FORCE"
                 ],
                 [
-                    "+",
-                    "+",
-                    "+"
+                    "BLUE_BOOST_ADD",
+                    "BLUE_LEVITATE_ADD",
+                    "BLUE_FORCE_ADD"
                 ]
             ]
         },
@@ -35,189 +35,104 @@
             "title": "Vaults 2",
             "fields": [
                 [
-                    "Blue Force",
-                    "+"
+                    "RED_BOOST",
+                    "RED_BOOST_ADD"
                 ],
                 [
-                    "Blue Boost",
-                    "+"
+                    "RED_LEVITATE",
+                    "RED_LEVITATE_ADD"
                 ],
                 [
-                    "Blue Levitate",
-                    "+"
+                    "RED_FORCE",
+                    "RED_FORCE_ADD"
                 ],
                 [
-                    "Red Force",
-                    "+"
+                    "BLUE_BOOST",
+                    "BLUE_BOOST_ADD"
                 ],
                 [
-                    "Red Boost",
-                    "+"
+                    "BLUE_LEVITATE",
+                    "BLUE_LEVITATE_ADD"
                 ],
                 [
-                    "Red Levitate",
-                    "+"
+                    "BLUE_FORCE",
+                    "BLUE_FORCE_ADD"
                 ]
             ]
         }
     ],
     "data": [
         {
-            "id": "AUTO_LINE",
-            "label": "Auto Line Crossed",
-            "log": "Auto line",
-            "type": "checkbox"
-        },
-        {
-            "id": "AUTO_SCALE_ATTEMPT",
-            "label": "Scale Attempt",
-            "log": "Auto scale attempt",
+            "id": "RED_BOOST",
+            "label": "Red Boost",
+            "log": "Red boost",
             "type": "timestamp"
         },
         {
-            "id": "AUTO_SCALE_SUCCESS",
-            "label": "Scale Success",
-            "log": "Auto scale",
+            "id": "RED_LEVITATE",
+            "label": "Red Levitate",
+            "log": "Red levitate",
             "type": "timestamp"
         },
         {
-            "id": "AUTO_SWITCH_ATTEMPT",
-            "label": "Switch Attempt",
-            "log": "Auto switch attempt",
+            "id": "RED_FORCE",
+            "label": "Red Force",
+            "log": "Red force",
             "type": "timestamp"
         },
         {
-            "id": "AUTO_SWITCH_SUCCESS",
-            "label": "Switch Success",
-            "log": "Auto switch",
+            "id": "BLUE_BOOST",
+            "label": "Blue Boost",
+            "log": "Blue boost",
             "type": "timestamp"
         },
         {
-            "id": "AUTO_EXCHANGE_ATTEMPT",
-            "label": "Exchange Attempt",
-            "log": "Auto exchange attempt",
+            "id": "BLUE_LEVITATE",
+            "label": "Blue Levitate",
+            "log": "Blue levitate",
             "type": "timestamp"
         },
         {
-            "id": "AUTO_EXCHANGE_SUCCESS",
-            "label": "Exchange Success",
-            "log": "Auto exchange",
+            "id": "BLUE_FORCE",
+            "label": "Blue Force",
+            "log": "blue force",
             "type": "timestamp"
         },
         {
-            "id": "TELE_INTAKE",
-            "label": "Intake",
-            "log": "Tele intake",
+            "id": "RED_BOOST_ADD",
+            "label": "+",
+            "log": "Red boost place",
             "type": "timestamp"
         },
         {
-            "id": "TELE_DEFENSE",
-            "label": "Start Defense",
-            "log": "Defense",
-            "type": "duration",
-            "label_on": "End Defense"
-        },
-        {
-            "id": "TELE_EXCHANGE",
-            "label": "Exchange",
-            "log": "Tele exchange",
+            "id": "RED_LEVITATE_ADD",
+            "label": "+",
+            "log": "Red levitate place",
             "type": "timestamp"
         },
         {
-            "id": "TELE_ALLIANCE_SWITCH",
-            "label": "Alliance Switch",
-            "log": "Tele alliance switch",
+            "id": "RED_FORCE_ADD",
+            "label": "+",
+            "log": "Red force place",
             "type": "timestamp"
         },
         {
-            "id": "TELE_OPPONENT_SWITCH",
-            "label": "Opponent Switch",
-            "log": "Tele opponent switch",
+            "id": "BLUE_BOOST_ADD",
+            "label": "+",
+            "log": "Blue boost place",
             "type": "timestamp"
         },
         {
-            "id": "TELE_SCALE",
-            "label": "Scale",
-            "log": "Tele scale",
+            "id": "BLUE_LEVITATE_ADD",
+            "label": "+",
+            "log": "Blue levitate place",
             "type": "timestamp"
         },
         {
-            "id": "END_PLATFORM",
-            "label": "Platform",
-            "log": "Platform",
-            "type": "choice",
-            "choices": [
-                "None",
-                "Attempt",
-                "Success"
-            ]
-        },
-        {
-            "id": "END_CLIMB",
-            "label": "Climb",
-            "log": "Climb",
-            "type": "choice",
-            "choices": [
-                "None",
-                "Attempt",
-                "Success"
-            ]
-        },
-        {
-            "id": "END_ATTACHMENT",
-            "label": "Attachment Speed",
-            "log": "Attachment speed",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_CLIMB_SPEED",
-            "label": "Climb Speed",
-            "log": "Climb speed",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_INTAKE_SPEED",
-            "label": "Intake Speed",
-            "log": "Intake speed",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_INTAKE_CONSISTENCY",
-            "label": "Intake Consistency",
-            "log": "Intake consistency",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_EXCHANGE",
-            "label": "Exchange Speed",
-            "log": "Exchange speed",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_SWITCH",
-            "label": "Switch Speed",
-            "log": "Switch speed",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_SCALE",
-            "label": "Scale Speed",
-            "log": "Scale speed",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_DRIVER",
-            "label": "Driver Skill",
-            "log": "Driver skill",
-            "type": "rating",
-            "max": 5
+            "id": "BLUE_FORCE_ADD",
+            "label": "+",
+            "log": "Blue force place",
+            "type": "timestamp"
         }
     ]
 }
