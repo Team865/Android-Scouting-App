@@ -168,7 +168,7 @@ public class ScoutingActivity
 
     @Override
     public boolean canUpdateTime() {
-        return lastRecordedTime != timer;
+        return timer <= specs.getTimer() && lastRecordedTime != timer;
     }
 
     @Override

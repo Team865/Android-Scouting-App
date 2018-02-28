@@ -30,7 +30,9 @@
             android:name=".DataOutputActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".ScoutingActivity" />
+        <activity
+            android:name=".ScoutingActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

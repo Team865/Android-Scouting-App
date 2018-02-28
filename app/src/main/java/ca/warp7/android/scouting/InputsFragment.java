@@ -94,7 +94,8 @@ public class InputsFragment
                 return new InputControls.TimerButton(getContext(), dc, listener);
 
             case Specs.DataConstant.CHECKBOX:
-                return new InputControls.Checkbox(getContext(), dc, listener);
+                return new InputControls.CenteredControlLayout(getContext(), dc, listener,
+                        new InputControls.Checkbox(getContext(), dc, listener));
 
             case Specs.DataConstant.DURATION:
                 return new InputControls.DurationButton(getContext(), dc, listener);

@@ -8,10 +8,12 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatSeekBar;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -210,14 +212,23 @@ class InputControls {
      * A button that gives the user a list of options to choose
      */
     static final class ChoicesButton
-            extends BaseButton {
+            extends AppCompatTextView
+            implements BaseControl,
+            View.OnClickListener {
+
+        Specs.DataConstant dc;
+        ActivityListener listener;
 
         public ChoicesButton(Context context) {
             super(context);
         }
 
         public ChoicesButton(Context context, Specs.DataConstant dc, ActivityListener listener) {
-            super(context, dc, listener);
+            super(context);
+            setDataConstant(dc);
+            setActivityListener(listener);
+
+            setOnClickListener(this);
 
             String[] choices = dc.getChoices();
 
@@ -227,7 +238,13 @@ class InputControls {
                 setText(dc.getLabel());
             }
             setTextColor(getResources().getColor(R.color.colorAccent));
-            setLines(1);
+
+            setAllCaps(false);
+            setTextSize(20);
+
+            setTypeface(new Button(context).getTypeface());
+
+            setGravity(Gravity.CENTER);
 
             listener.pushOnce(dc.getIndex(), 0, 1);
         }
@@ -244,6 +261,16 @@ class InputControls {
                             listener.pushOnce(dc.getIndex(), which, 1);
                         }
                     }).show();
+        }
+
+        @Override
+        public void setDataConstant(Specs.DataConstant dc) {
+            this.dc = dc;
+        }
+
+        @Override
+        public void setActivityListener(ActivityListener listener) {
+            this.listener = listener;
         }
     }
 
@@ -436,6 +463,53 @@ class InputControls {
 
 
             control.setLayoutParams(childLayout);
+            addView(control);
+        }
+
+        @Override
+        public void setDataConstant(Specs.DataConstant dc) {
+            this.dc = dc;
+        }
+
+        @Override
+        public void setActivityListener(ActivityListener listener) {
+            this.listener = listener;
+        }
+    }
+
+    static final class CenteredControlLayout
+            extends ConstraintLayout
+            implements BaseControl {
+
+        Specs.DataConstant dc;
+        ActivityListener listener;
+
+        public CenteredControlLayout(Context context) {
+            super(context);
+        }
+
+        public CenteredControlLayout(Context context,
+                                     Specs.DataConstant dc,
+                                     ActivityListener listener,
+                                     View control) {
+            super(context);
+            setDataConstant(dc);
+            setActivityListener(listener);
+
+            // Set the background of the view
+
+
+            ConstraintLayout.LayoutParams childLayout;
+
+            childLayout = new ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+            childLayout.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+            childLayout.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
+            childLayout.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+            childLayout.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+
+            control.setLayoutParams(childLayout);
+
             addView(control);
         }
 
