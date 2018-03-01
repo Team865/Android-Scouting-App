@@ -44,6 +44,8 @@ public class ScoutingActivity
     int currentTab = 0;
     int lastRecordedTime = -1;
 
+    int[] viewStates;
+
     Specs specs;
     Encoder encoder;
 
@@ -74,6 +76,12 @@ public class ScoutingActivity
         if(specs == null){
             super.onBackPressed();
             return;
+        }
+
+        viewStates = new int[specs.getTotalControls()];
+
+        for (int i = 0; i < viewStates.length; i++) {
+            viewStates[i] = -1;
         }
 
         layouts = specs.getLayouts();
@@ -185,6 +193,21 @@ public class ScoutingActivity
     public void pushTime(int t, int s) {
         push(t, timer, s);
         lastRecordedTime = timer;
+    }
+
+    @Override
+    public int getState(int index) {
+        if (index >= 0 && index < viewStates.length) {
+            return viewStates[index];
+        }
+        return -1;
+    }
+
+    @Override
+    public void setState(int index, int state) {
+        if (index >= 0 && index < viewStates.length) {
+            viewStates[index] = state;
+        }
     }
 
 

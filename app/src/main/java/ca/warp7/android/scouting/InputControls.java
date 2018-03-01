@@ -17,7 +17,6 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -52,6 +51,10 @@ class InputControls {
         void pushOnce(int t, int v, int s);
 
         void pushTime(int t, int s);
+
+        int getState(int index);
+
+        void setState(int index, int state);
     }
 
     /**
@@ -179,6 +182,15 @@ class InputControls {
                               Specs.DataConstant dc,
                               ActivityListener listener) {
             super(context, dc, listener);
+
+            int state = listener.getState(dc.getIndex());
+
+            if (state == -1) {
+                listener.setState(dc.getIndex(), 0);
+            } else if (state == 1) {
+                isOn = true;
+            }
+
             updateLooks();
         }
 
@@ -187,6 +199,7 @@ class InputControls {
             if (listener.canUpdateTime()) {
                 isOn = !isOn;
                 listener.pushTime(dc.getIndex(), isOn ? 1 : 0);
+                listener.setState(dc.getIndex(), isOn ? 1 : 0);
                 updateLooks();
                 listener.getVibrator().vibrate(60);
             }
@@ -280,7 +293,7 @@ class InputControls {
     static final class Checkbox
             extends AppCompatCheckBox
             implements BaseControl,
-            CompoundButton.OnCheckedChangeListener {
+            View.OnClickListener {
 
         Specs.DataConstant dc;
         ActivityListener listener;
@@ -296,7 +309,7 @@ class InputControls {
             setDataConstant(dc);
             setActivityListener(listener);
 
-            setOnCheckedChangeListener(this);
+            setOnClickListener(this);
 
             setAllCaps(false);
             setTextSize(20);
@@ -308,15 +321,15 @@ class InputControls {
 
             updateLooks();
 
-            listener.pushOnce(dc.getIndex(), 0, 1);
+            int state = listener.getState(dc.getIndex());
 
-        }
+            if (state == -1) {
+                listener.pushOnce(dc.getIndex(), 0, 1);
+                listener.setState(dc.getIndex(), 0);
 
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            listener.getVibrator().vibrate(30);
-            listener.pushOnce(dc.getIndex(), isChecked ? 1 : 0, 1);
-            updateLooks();
+            } else if (state == 1) {
+                setChecked(true);
+            }
         }
 
         @Override
@@ -331,10 +344,19 @@ class InputControls {
 
         void updateLooks() {
             if (isChecked()) {
-                setTextColor(getResources().getColor(R.color.colorAccent));
-            } else {
+
                 setTextColor(getResources().getColor(android.R.color.darker_gray));
+            } else {
+                setTextColor(getResources().getColor(R.color.colorAccent));
             }
+        }
+
+        @Override
+        public void onClick(View v) {
+            listener.getVibrator().vibrate(30);
+            listener.pushOnce(dc.getIndex(), isChecked() ? 1 : 0, 1);
+            listener.setState(dc.getIndex(), isChecked() ? 1 : 0);
+            updateLooks();
         }
     }
 
@@ -363,15 +385,26 @@ class InputControls {
             setDataConstant(dc);
             setActivityListener(listener);
 
+            setOnSeekBarChangeListener(this);
+
             setBackgroundColor(0);
 
             setMax(dc.getMax());
             setProgress(0);
             lastProgress = 0;
 
-            listener.pushOnce(dc.getIndex(), 0, 1);
 
-            setOnSeekBarChangeListener(this);
+            int state = listener.getState(dc.getIndex());
+
+            if (state <= -1) {
+                listener.pushOnce(dc.getIndex(), 0, 1);
+                lastProgress = 0;
+                setProgress(0);
+                listener.setState(dc.getIndex(), 0);
+            } else {
+                lastProgress = state;
+                setProgress(state);
+            }
 
         }
 
@@ -395,6 +428,7 @@ class InputControls {
                 lastProgress = getProgress();
 
                 listener.pushOnce(dc.getIndex(), lastProgress, 1);
+                listener.setState(dc.getIndex(), lastProgress);
             }
         }
 
@@ -477,6 +511,9 @@ class InputControls {
         }
     }
 
+    /**
+     * Creates a box container that centers the control inside it
+     */
     static final class CenteredControlLayout
             extends ConstraintLayout
             implements BaseControl {
@@ -497,6 +534,16 @@ class InputControls {
             setActivityListener(listener);
 
             // Set the background of the view
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                setBackground(new Button(getContext()).getBackground());
+            } else {
+                setBackgroundResource(android.R.drawable.btn_default);
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                setElevation(4);
+            }
 
 
             ConstraintLayout.LayoutParams childLayout;
