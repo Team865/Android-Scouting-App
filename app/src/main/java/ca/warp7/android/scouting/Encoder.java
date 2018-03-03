@@ -113,6 +113,7 @@ final class Encoder {
 
                 .append(formatLeft("Data", 24, " "))
                 .append(formatLeft("Value", 12, " "))
+                .append("\n")
                 .append(new String(new char[37]).replace("\0", "-"));
 
         for (Datum d : dataStack) {
