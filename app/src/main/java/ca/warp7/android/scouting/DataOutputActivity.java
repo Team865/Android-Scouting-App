@@ -82,7 +82,7 @@ public class DataOutputActivity
 
             case R.id.menu_send:
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_TEXT, encoded + comments);
+                intent.putExtra(Intent.EXTRA_TEXT, getFullEncode());
                 intent.setType("text/plain");
 
                 startActivity(Intent.createChooser(intent, "Send encoded data to:"));
@@ -118,7 +118,7 @@ public class DataOutputActivity
 
 
     private String getFullEncode() {
-        return encoded + comments;
+        return encoded + comments.replace("\n", " ");
     }
 
     Bitmap encodeAsBitmap() throws WriterException {
