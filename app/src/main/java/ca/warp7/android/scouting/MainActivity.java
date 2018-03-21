@@ -45,8 +45,6 @@ public class MainActivity
 
     private static final int MY_PERMISSIONS_REQUEST_FILES = 0;
 
-    private boolean newInterface = true;
-
     private EditText scoutNameField;
     private EditText matchNumberField;
     private EditText teamNumberField;
@@ -88,13 +86,6 @@ public class MainActivity
             case R.id.menu_copy_specs:
 
                 askToCopySpecs();
-                return true;
-
-            case R.id.menu_change_interface:
-
-                newInterface = !newInterface;
-                item.setTitle(newInterface ? "Use Old Interface" : "Use New Interface");
-
                 return true;
 
             default:

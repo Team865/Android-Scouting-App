@@ -4,17 +4,13 @@
 
     <item
         android:id="@+id/menu_select_specs"
-        android:icon="@drawable/ic_folder_open"
+        android:icon="@drawable/ic_content_copy"
         android:title="@string/select_specs"
         app:showAsAction="ifRoom" />
 
     <item
-        android:title="@string/use_old_interface"
-        android:id="@+id/menu_change_interface"
-        app:showAsAction="never" />
-
-    <item
         android:title="@string/copy_default_metrics"
         android:id="@+id/menu_copy_specs"
-        app:showAsAction="never" />
+        android:icon="@drawable/ic_folder_open"
+        app:showAsAction="ifRoom" />
 </menu>
