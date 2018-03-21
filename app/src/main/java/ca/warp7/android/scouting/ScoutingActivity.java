@@ -90,7 +90,7 @@ public class ScoutingActivity
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         setupUI();
-        setupEncoder();
+        setupValuesFromIntent();
         setupPager();
 
         updateLayout();
@@ -114,32 +114,18 @@ public class ScoutingActivity
                 onBackPressed();
                 return true;
 
-            case R.id.menu_done:
-                Intent intent;
-                intent = new Intent(this, DataOutputActivity.class);
-                intent.putExtra(ID.MSG_PRINT_DATA, encoder.format());
-                intent.putExtra(ID.MSG_ENCODE_DATA, encoder.encode());
-                startActivity(intent);
-                return true;
-
             case R.id.menu_undo:
                 Toast.makeText(this,
                         "Undo pressed (It does nothing) ",
                         Toast.LENGTH_SHORT).show();
                 return true;
 
-            case R.id.menu_prev:
-                if (currentTab > 0){
-                    currentTab--;
-                    updateLayout();
-                }
-                return true;
-
-            case R.id.menu_next:
-                if (currentTab < specs.getLayouts().size() - 1){
-                    currentTab++;
-                    updateLayout();
-                }
+            case R.id.menu_done:
+                Intent intent;
+                intent = new Intent(this, DataOutputActivity.class);
+                intent.putExtra(ID.MSG_PRINT_DATA, encoder.format());
+                intent.putExtra(ID.MSG_ENCODE_DATA, encoder.encode());
+                startActivity(intent);
                 return true;
 
             default:
@@ -225,15 +211,22 @@ public class ScoutingActivity
         statusBanner = findViewById(R.id.status_banner);
         statusTimer = findViewById(R.id.status_timer);
 
-        actionBar.setDisplayShowTitleEnabled(false);
+        //actionBar.setDisplayShowTitleEnabled(false);
     }
 
-    private void setupEncoder(){
+    private void setupValuesFromIntent() {
         Intent intent = getIntent();
 
         int matchNumber = intent.getIntExtra(ID.MSG_MATCH_NUMBER, -1);
         int teamNumber = intent.getIntExtra(ID.MSG_TEAM_NUMBER, -1);
         String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
+
+        actionBar.setTitle("Team " + teamNumber);
+
+        String a = specs.getAlliance();
+
+        ((Toolbar) findViewById(R.id.my_toolbar)).setTitleTextColor(
+                a.equals("R") ? 0xFFFF0000 : a.equals("B") ? 0xFF0000FF : 0);
 
         encoder = new Encoder(matchNumber, teamNumber, scoutName);
 

@@ -15,4 +15,6 @@
     <color name="colorGreen">#006633</color>
     <color name="colorLightGreen">#009933</color>
 
+    <color name="colorAlmostBlack">#404040</color>
+
 </resources>

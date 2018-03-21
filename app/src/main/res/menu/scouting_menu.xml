@@ -9,22 +9,10 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/menu_prev"
-        android:icon="@drawable/ic_arrow_back"
-        android:title="@string/menu_prev"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/menu_next"
-        android:icon="@drawable/ic_arrow_forward"
-        android:title="@string/menu_next"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/menu_done"
         android:icon="@drawable/ic_done"
         android:title="@string/menu_done"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 
 
