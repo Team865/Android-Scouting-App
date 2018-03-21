@@ -23,10 +23,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TimedScoutingActivity"
-            android:immersive="true"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".DataOutputActivity"
             android:screenOrientation="portrait" />
 
