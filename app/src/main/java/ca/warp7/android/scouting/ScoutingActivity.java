@@ -196,6 +196,10 @@ public class ScoutingActivity
         }
     }
 
+    @Override
+    public void pushStatus(String status) {
+        actionBar.setSubtitle(status.replace("{t}", String.valueOf(timer)));
+    }
 
     private void setupUI(){
         setTheme(R.style.AppTheme);
@@ -227,7 +231,7 @@ public class ScoutingActivity
         String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
 
         actionBar.setTitle("Team " + teamNumber);
-        actionBar.setSubtitle("Match " + matchNumber + " started");
+        actionBar.setSubtitle("Match #" + matchNumber + " started");
 
         encoder = new Encoder(matchNumber, teamNumber, scoutName);
 

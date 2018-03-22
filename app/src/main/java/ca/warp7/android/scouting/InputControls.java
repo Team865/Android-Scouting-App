@@ -55,6 +55,8 @@ class InputControls {
         int getState(int index);
 
         void setState(int index, int state);
+
+        void pushStatus(String status);
     }
 
     /**
@@ -159,6 +161,10 @@ class InputControls {
                         getBackground().clearColorFilter();
                     }
                 }, 1000);
+
+                listener.pushStatus(dc.getLabel() + " - {t}s");
+            } else {
+                listener.pushStatus("Too fast");
             }
         }
     }
@@ -200,8 +206,13 @@ class InputControls {
                 isOn = !isOn;
                 listener.pushTime(dc.getIndex(), isOn ? 1 : 0);
                 listener.setState(dc.getIndex(), isOn ? 1 : 0);
+                listener.pushStatus(getText().toString() + " - {t}s");
+
                 updateLooks();
                 listener.getVibrator().vibrate(60);
+
+            } else {
+                listener.pushStatus("Too fast");
             }
         }
 
@@ -272,6 +283,7 @@ class InputControls {
                             listener.getVibrator().vibrate(30);
                             setText(dc.getChoices()[which]);
                             listener.pushOnce(dc.getIndex(), which, 1);
+                            listener.pushStatus(dc.getLabel() + " <" + getText() + ">");
                         }
                     }).show();
         }
@@ -357,6 +369,7 @@ class InputControls {
             listener.pushOnce(dc.getIndex(), isChecked() ? 1 : 0, 1);
             listener.setState(dc.getIndex(), isChecked() ? 1 : 0);
             updateLooks();
+            listener.pushStatus(getText().toString() + " - " + (isChecked() ? "On" : "Off"));
         }
     }
 
@@ -429,6 +442,8 @@ class InputControls {
 
                 listener.pushOnce(dc.getIndex(), lastProgress, 1);
                 listener.setState(dc.getIndex(), lastProgress);
+
+                listener.pushStatus(dc.getLabel() + " - " + lastProgress + "/" + dc.getMax());
             }
         }
 
