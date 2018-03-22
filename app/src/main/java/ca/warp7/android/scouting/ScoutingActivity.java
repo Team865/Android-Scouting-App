@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -115,9 +114,7 @@ public class ScoutingActivity
                 return true;
 
             case R.id.menu_undo:
-                Toast.makeText(this,
-                        "Undo pressed (It does nothing) ",
-                        Toast.LENGTH_SHORT).show();
+                pushStatus("Nothing undone");
                 return true;
 
             case R.id.menu_done:

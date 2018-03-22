@@ -44,11 +44,9 @@ final class Encoder {
         if(t < 0 || t > 63){
             return;
         }
-        for (Datum d : dataStack){
-            if (t == d.getType()){
-                d.setValue(v);
-                d.setStateFlag(s);
-                return;
+        for (int i = 0; i < dataStack.size(); i++) {
+            if (t == dataStack.get(i).getType()) {
+                dataStack.remove(i);
             }
         }
         push(t, v, s);

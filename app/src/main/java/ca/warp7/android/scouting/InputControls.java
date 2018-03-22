@@ -256,13 +256,6 @@ class InputControls {
 
             setOnClickListener(this);
 
-            String[] choices = dc.getChoices();
-
-            if (choices.length > 0) {
-                setText(dc.getChoices()[0]);
-            } else {
-                setText(dc.getLabel());
-            }
             setTextColor(getResources().getColor(R.color.colorAccent));
 
             setAllCaps(false);
@@ -272,7 +265,18 @@ class InputControls {
 
             setGravity(Gravity.CENTER);
 
-            listener.pushOnce(dc.getIndex(), 0, 1);
+            String[] choices = dc.getChoices();
+
+            int state = listener.getState(dc.getIndex());
+
+            if (state <= -1) {
+                listener.pushOnce(dc.getIndex(), 0, 1);
+                lastWhich = 0;
+                listener.setState(dc.getIndex(), 0);
+            } else {
+                lastWhich = state;
+            }
+            setText(choices[lastWhich]);
         }
 
         @Override
@@ -284,9 +288,10 @@ class InputControls {
                         public void onClick(DialogInterface dialog, int which) {
                             if (which != lastWhich) {
                                 lastWhich = which;
-
-                                listener.getVibrator().vibrate(30);
                                 setText(dc.getChoices()[which]);
+
+                                listener.setState(dc.getIndex(), lastWhich);
+                                listener.getVibrator().vibrate(30);
                                 listener.pushOnce(dc.getIndex(), which, 1);
                                 listener.pushStatus(dc.getLabel() + " <" + getText() + ">");
                             }
