@@ -243,6 +243,8 @@ class InputControls {
         Specs.DataConstant dc;
         ActivityListener listener;
 
+        int lastWhich = 0;
+
         public ChoicesButton(Context context) {
             super(context);
         }
@@ -280,10 +282,14 @@ class InputControls {
                     .setItems(dc.getChoices(), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            listener.getVibrator().vibrate(30);
-                            setText(dc.getChoices()[which]);
-                            listener.pushOnce(dc.getIndex(), which, 1);
-                            listener.pushStatus(dc.getLabel() + " <" + getText() + ">");
+                            if (which != lastWhich) {
+                                lastWhich = which;
+
+                                listener.getVibrator().vibrate(30);
+                                setText(dc.getChoices()[which]);
+                                listener.pushOnce(dc.getIndex(), which, 1);
+                                listener.pushStatus(dc.getLabel() + " <" + getText() + ">");
+                            }
                         }
                     }).show();
         }
