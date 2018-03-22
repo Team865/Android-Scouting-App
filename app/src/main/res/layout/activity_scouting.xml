@@ -17,23 +17,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/status_banner"
+        android:id="@+id/title_banner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:gravity="start"
         android:singleLine="true"
         android:textAlignment="textStart"
         android:textColor="@color/colorAlmostBlack"
-        android:textSize="26sp"
+        android:textSize="27sp"
         android:textStyle="bold"
         android:typeface="sans"
         app:layout_constraintEnd_toStartOf="@+id/status_timer"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="20dp" />
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
 
     <TextView
         android:id="@+id/status_timer"
@@ -45,9 +44,9 @@
         android:singleLine="true"
         android:textAlignment="textStart"
         android:textColor="@android:color/black"
-        android:textSize="26sp"
+        android:textSize="27sp"
         android:typeface="sans"
-        app:layout_constraintBaseline_toBaselineOf="@+id/status_banner"
+        app:layout_constraintBaseline_toBaselineOf="@+id/title_banner"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginRight="20dp" />
 
@@ -58,7 +57,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status_banner" />
+        app:layout_constraintTop_toBottomOf="@+id/title_banner" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -34,7 +34,7 @@ public class ScoutingActivity
     Vibrator vibrator;
 
     ActionBar actionBar;
-    TextView statusBanner;
+    TextView titleBanner;
     TextView statusTimer;
 
     ViewPager pager;
@@ -208,10 +208,15 @@ public class ScoutingActivity
 
         actionBar = getSupportActionBar();
 
-        statusBanner = findViewById(R.id.status_banner);
+        titleBanner = findViewById(R.id.title_banner);
         statusTimer = findViewById(R.id.status_timer);
 
-        //actionBar.setDisplayShowTitleEnabled(false);
+        String a = specs.getAlliance();
+
+        myToolBar.setTitleTextColor(
+                a.equals("R") ? 0xFFFF0000 : a.equals("B") ? 0xFF0000FF : 0);
+
+        myToolBar.setSubtitleTextColor(getResources().getColor(R.color.colorAlmostBlack));
     }
 
     private void setupValuesFromIntent() {
@@ -222,11 +227,7 @@ public class ScoutingActivity
         String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
 
         actionBar.setTitle("Team " + teamNumber);
-
-        String a = specs.getAlliance();
-
-        ((Toolbar) findViewById(R.id.my_toolbar)).setTitleTextColor(
-                a.equals("R") ? 0xFFFF0000 : a.equals("B") ? 0xFF0000FF : 0);
+        actionBar.setSubtitle("Match " + matchNumber + " started");
 
         encoder = new Encoder(matchNumber, teamNumber, scoutName);
 
@@ -261,7 +262,7 @@ public class ScoutingActivity
         });
     }
 
-    private void updateStatus(final String status){
+    private void setAnimatedTitleBanner(final String title) {
 
         in.setDuration(125);
         out.setDuration(125);
@@ -274,8 +275,8 @@ public class ScoutingActivity
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                statusBanner.setText(status);
-                statusBanner.startAnimation(in);
+                titleBanner.setText(title);
+                titleBanner.startAnimation(in);
             }
 
             @Override
@@ -284,10 +285,10 @@ public class ScoutingActivity
             }
         });
 
-        if(!statusBanner.getText().toString().isEmpty()){
-            statusBanner.startAnimation(out);
+        if (!titleBanner.getText().toString().isEmpty()) {
+            titleBanner.startAnimation(out);
         } else {
-            statusBanner.setText(status);
+            titleBanner.setText(title);
         }
 
     }
@@ -298,7 +299,7 @@ public class ScoutingActivity
 
             Specs.Layout layout = layouts.get(currentTab);
 
-            updateStatus(layout.getTitle());
+            setAnimatedTitleBanner(layout.getTitle());
 
             if (pager.getCurrentItem() != currentTab) {
                 pager.setCurrentItem(currentTab, true);
