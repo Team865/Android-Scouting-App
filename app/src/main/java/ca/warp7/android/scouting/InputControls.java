@@ -245,7 +245,6 @@ class InputControls {
             int state = listener.getState(dc.getIndex());
 
             if (state <= -1) {
-                listener.push(dc.getIndex(), 0, 1);
                 lastWhich = 0;
                 listener.setState(dc.getIndex(), 0);
             } else {
@@ -312,9 +311,7 @@ class InputControls {
             int state = listener.getState(dc.getIndex());
 
             if (state == -1) {
-                listener.push(dc.getIndex(), 0, 1);
                 listener.setState(dc.getIndex(), 0);
-
             } else if (state == 1) {
                 setChecked(true);
             }
@@ -376,7 +373,6 @@ class InputControls {
             int state = listener.getState(dc.getIndex());
 
             if (state <= -1) {
-                listener.push(dc.getIndex(), 0, 1);
                 lastProgress = 0;
                 setProgress(0);
                 listener.setState(dc.getIndex(), 0);
