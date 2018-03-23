@@ -114,7 +114,14 @@ public class ScoutingActivity
                 return true;
 
             case R.id.menu_undo:
-                pushStatus("Nothing undone");
+                Specs.DataConstant dc = encoder.undo();
+                if (dc == null) {
+                    pushStatus("Nothing can be undone");
+                } else {
+                    pushStatus("Undo \'" + dc.getLabel() + "\'");
+                    vibrator.vibrate(20);
+                    // TODO Defense message does not work properly
+                }
                 return true;
 
             case R.id.menu_done:
@@ -165,11 +172,6 @@ public class ScoutingActivity
     @Override
     public void push(int t, int v, int s) {
         encoder.push(t, v, s);
-    }
-
-    @Override
-    public void pushOnce(int t, int v, int s) {
-        encoder.pushOnce(t, v, s);
     }
 
     @Override

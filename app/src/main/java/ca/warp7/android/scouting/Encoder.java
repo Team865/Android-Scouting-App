@@ -35,22 +35,25 @@ final class Encoder {
     }
 
     void push(int t, int v, int s) {
+        if (t < 0 || t > 63) {
+            return;
+        }
         Datum d = new Datum(t, v);
         d.setStateFlag(s);
         dataStack.add(d);
     }
 
-    void pushOnce(int t, int v, int s) {
-        if(t < 0 || t > 63){
-            return;
-        }
-        // TODO Remove PushOnce completely by push
-        /*for (int i = 0; i < dataStack.size(); i++) {
-            if (t == dataStack.get(i).getType()) {
-                dataStack.remove(i);
+    Specs.DataConstant undo() {
+        for (int i = dataStack.size() - 1; i >= 0; i--) {
+
+            Datum datum = dataStack.get(i);
+
+            if (datum.getUndoFlag() == 0) {
+                datum.setUndoFlag(1);
+                return specs.getDataConstantByIndex(datum.getType());
             }
-        }*/
-        push(t, v, s);
+        }
+        return null;
     }
 
     private String head() {
@@ -125,12 +128,12 @@ final class Encoder {
                 sb
                         .append(formatLeft(dc.getLogTitle() +
                                 (d.getStateFlag() == 0 ? "<Off>" : ""), 24, " "))
-                        .append(formatLeft(dc.format(d.getValue()), 14, " "))
-                        .append(d.getUndoFlag() != 0 ? "ⓤ" : "");
+                        .append(dc.format(d.getValue()))
+                        .append(d.getUndoFlag() != 0 ? " Ⓤ" : "");
             } else {
                 sb
                         .append(formatLeft(String.valueOf(t), 24, " "))
-                        .append(formatLeft(String.valueOf(d.getValue()), 14, " "));
+                        .append(String.valueOf(d.getValue()));
             }
         }
 
@@ -190,7 +193,7 @@ final class Encoder {
             return undoFlag;
         }
 
-        public int getStateFlag() {
+        int getStateFlag() {
             return stateFlag;
         }
 

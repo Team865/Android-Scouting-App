@@ -48,8 +48,6 @@ class InputControls {
 
         void push(int t, int v, int s);
 
-        void pushOnce(int t, int v, int s);
-
         void pushTime(int t, int s);
 
         int getState(int index);
@@ -90,8 +88,9 @@ class InputControls {
             setOnClickListener(this);
 
             setAllCaps(false);
-            setTextSize(20);
+            setTextSize(22);
             setLines(2);
+            setTypeface(Typeface.SANS_SERIF);
         }
 
         @Override
@@ -235,9 +234,9 @@ class InputControls {
             setTextColor(getResources().getColor(R.color.colorAccent));
 
             setAllCaps(false);
-            setTextSize(20);
+            setTextSize(22);
 
-            setTypeface(new Button(context).getTypeface());
+            setTypeface(Typeface.SANS_SERIF);
 
             setGravity(Gravity.CENTER);
 
@@ -246,7 +245,7 @@ class InputControls {
             int state = listener.getState(dc.getIndex());
 
             if (state <= -1) {
-                listener.pushOnce(dc.getIndex(), 0, 1);
+                listener.push(dc.getIndex(), 0, 1);
                 lastWhich = 0;
                 listener.setState(dc.getIndex(), 0);
             } else {
@@ -268,7 +267,7 @@ class InputControls {
 
                                 listener.setState(dc.getIndex(), lastWhich);
                                 listener.getVibrator().vibrate(30);
-                                listener.pushOnce(dc.getIndex(), which, 1);
+                                listener.push(dc.getIndex(), which, 1);
                                 listener.pushStatus(dc.getLabel() + " <" + getText() + ">");
                             }
                         }
@@ -301,10 +300,10 @@ class InputControls {
             setOnClickListener(this);
 
             setAllCaps(false);
-            setTextSize(20);
+            setTextSize(22);
             setLines(2);
 
-            setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
+            setTypeface(Typeface.SANS_SERIF);
 
             setText(dc.getLabel());
 
@@ -313,7 +312,7 @@ class InputControls {
             int state = listener.getState(dc.getIndex());
 
             if (state == -1) {
-                listener.pushOnce(dc.getIndex(), 0, 1);
+                listener.push(dc.getIndex(), 0, 1);
                 listener.setState(dc.getIndex(), 0);
 
             } else if (state == 1) {
@@ -333,7 +332,7 @@ class InputControls {
         @Override
         public void onClick(View v) {
             listener.getVibrator().vibrate(30);
-            listener.pushOnce(dc.getIndex(), isChecked() ? 1 : 0, 1);
+            listener.push(dc.getIndex(), isChecked() ? 1 : 0, 1);
             listener.setState(dc.getIndex(), isChecked() ? 1 : 0);
             updateLooks();
             listener.pushStatus(getText().toString() + " - " + (isChecked() ? "On" : "Off"));
@@ -377,7 +376,7 @@ class InputControls {
             int state = listener.getState(dc.getIndex());
 
             if (state <= -1) {
-                listener.pushOnce(dc.getIndex(), 0, 1);
+                listener.push(dc.getIndex(), 0, 1);
                 lastProgress = 0;
                 setProgress(0);
                 listener.setState(dc.getIndex(), 0);
@@ -407,7 +406,7 @@ class InputControls {
                 listener.getVibrator().vibrate(20);
                 lastProgress = getProgress();
 
-                listener.pushOnce(dc.getIndex(), lastProgress, 1);
+                listener.push(dc.getIndex(), lastProgress, 1);
                 listener.setState(dc.getIndex(), lastProgress);
 
                 listener.pushStatus(dc.getLabel() + " - " + lastProgress + "/" + dc.getMax());
