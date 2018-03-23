@@ -63,20 +63,6 @@ class InputControls {
      * A base interface to set the data constant and the activity listener
      */
     interface BaseControl {
-
-        /**
-         * Sets a bundle of constant values provided for the control
-         *
-         * @param dc the set of constant values
-         */
-        void setDataConstant(Specs.DataConstant dc);
-
-        /**
-         * Sets the activity listener
-         *
-         * @param listener the activity listener for sending data
-         */
-        void setActivityListener(ActivityListener listener);
     }
 
     /**
@@ -98,8 +84,8 @@ class InputControls {
                           Specs.DataConstant dc,
                           ActivityListener listener) {
             super(context);
-            setDataConstant(dc);
-            setActivityListener(listener);
+            this.dc = dc;
+            this.listener = listener;
 
             setOnClickListener(this);
 
@@ -110,16 +96,6 @@ class InputControls {
 
         @Override
         public void onClick(View v) {
-        }
-
-        @Override
-        public void setDataConstant(Specs.DataConstant dc) {
-            this.dc = dc;
-        }
-
-        @Override
-        public void setActivityListener(ActivityListener listener) {
-            this.listener = listener;
         }
     }
 
@@ -251,8 +227,8 @@ class InputControls {
 
         public ChoicesButton(Context context, Specs.DataConstant dc, ActivityListener listener) {
             super(context);
-            setDataConstant(dc);
-            setActivityListener(listener);
+            this.dc = dc;
+            this.listener = listener;
 
             setOnClickListener(this);
 
@@ -298,16 +274,6 @@ class InputControls {
                         }
                     }).show();
         }
-
-        @Override
-        public void setDataConstant(Specs.DataConstant dc) {
-            this.dc = dc;
-        }
-
-        @Override
-        public void setActivityListener(ActivityListener listener) {
-            this.listener = listener;
-        }
     }
 
     /**
@@ -329,8 +295,8 @@ class InputControls {
                         Specs.DataConstant dc,
                         ActivityListener listener) {
             super(context);
-            setDataConstant(dc);
-            setActivityListener(listener);
+            this.dc = dc;
+            this.listener = listener;
 
             setOnClickListener(this);
 
@@ -353,16 +319,6 @@ class InputControls {
             } else if (state == 1) {
                 setChecked(true);
             }
-        }
-
-        @Override
-        public void setDataConstant(Specs.DataConstant dc) {
-            this.dc = dc;
-        }
-
-        @Override
-        public void setActivityListener(ActivityListener listener) {
-            this.listener = listener;
         }
 
         void updateLooks() {
@@ -406,8 +362,8 @@ class InputControls {
                        Specs.DataConstant dc,
                        ActivityListener listener) {
             super(context);
-            setDataConstant(dc);
-            setActivityListener(listener);
+            this.dc = dc;
+            this.listener = listener;
 
             setOnSeekBarChangeListener(this);
 
@@ -457,16 +413,6 @@ class InputControls {
                 listener.pushStatus(dc.getLabel() + " - " + lastProgress + "/" + dc.getMax());
             }
         }
-
-        @Override
-        public void setDataConstant(Specs.DataConstant dc) {
-            this.dc = dc;
-        }
-
-        @Override
-        public void setActivityListener(ActivityListener listener) {
-            this.listener = listener;
-        }
     }
 
     /**
@@ -488,8 +434,8 @@ class InputControls {
                                     ActivityListener listener,
                                     View control) {
             super(context);
-            setDataConstant(dc);
-            setActivityListener(listener);
+            this.dc = dc;
+            this.listener = listener;
 
             setOrientation(VERTICAL);
 
@@ -525,16 +471,6 @@ class InputControls {
             control.setLayoutParams(childLayout);
             addView(control);
         }
-
-        @Override
-        public void setDataConstant(Specs.DataConstant dc) {
-            this.dc = dc;
-        }
-
-        @Override
-        public void setActivityListener(ActivityListener listener) {
-            this.listener = listener;
-        }
     }
 
     /**
@@ -556,8 +492,8 @@ class InputControls {
                                      ActivityListener listener,
                                      View control) {
             super(context);
-            setDataConstant(dc);
-            setActivityListener(listener);
+            this.dc = dc;
+            this.listener = listener;
 
             // Set the background of the view
 
@@ -584,16 +520,6 @@ class InputControls {
             control.setLayoutParams(childLayout);
 
             addView(control);
-        }
-
-        @Override
-        public void setDataConstant(Specs.DataConstant dc) {
-            this.dc = dc;
-        }
-
-        @Override
-        public void setActivityListener(ActivityListener listener) {
-            this.listener = listener;
         }
     }
 
@@ -646,5 +572,4 @@ class InputControls {
             }, 1000);
         }
     }
-
 }
