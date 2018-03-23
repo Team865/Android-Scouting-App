@@ -44,11 +44,12 @@ final class Encoder {
         if(t < 0 || t > 63){
             return;
         }
-        for (int i = 0; i < dataStack.size(); i++) {
+        // TODO Remove PushOnce completely by push
+        /*for (int i = 0; i < dataStack.size(); i++) {
             if (t == dataStack.get(i).getType()) {
                 dataStack.remove(i);
             }
-        }
+        }*/
         push(t, v, s);
     }
 
@@ -124,11 +125,12 @@ final class Encoder {
                 sb
                         .append(formatLeft(dc.getLogTitle() +
                                 (d.getStateFlag() == 0 ? "<Off>" : ""), 24, " "))
-                        .append(formatLeft(dc.format(d.getValue()), 14, " "));
+                        .append(formatLeft(dc.format(d.getValue()), 14, " "))
+                        .append(d.getUndoFlag() != 0 ? "ⓤ" : "");
             } else {
                 sb
                         .append(formatLeft(String.valueOf(t), 24, " "))
-                        .append(formatLeft(String.valueOf(d.getValue()), 12, " "));
+                        .append(formatLeft(String.valueOf(d.getValue()), 14, " "));
             }
         }
 

@@ -228,7 +228,7 @@ public class ScoutingActivity
         String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
 
         actionBar.setTitle("Team " + teamNumber);
-        actionBar.setSubtitle("Match #" + matchNumber + " started");
+        actionBar.setSubtitle("Match " + matchNumber + " Started");
 
         encoder = new Encoder(matchNumber, teamNumber, scoutName);
 

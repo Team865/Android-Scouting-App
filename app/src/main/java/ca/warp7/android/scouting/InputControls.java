@@ -164,7 +164,7 @@ class InputControls {
 
                 listener.pushStatus(dc.getLabel() + " - {t}s");
             } else {
-                listener.pushStatus("Too fast");
+                listener.pushStatus("Cannot Record Time");
             }
         }
     }
@@ -212,7 +212,7 @@ class InputControls {
                 listener.getVibrator().vibrate(60);
 
             } else {
-                listener.pushStatus("Too fast");
+                listener.pushStatus("Cannot Record Time");
             }
         }
 
