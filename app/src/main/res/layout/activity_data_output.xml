@@ -35,13 +35,13 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
 
         <TextView
             android:id="@+id/data_display"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:isScrollContainer="false"
             android:lineSpacingExtra="10sp"
@@ -50,9 +50,9 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:paddingStart="5dp"
-            android:textColor="@color/colorGreen"
+            android:textColor="@color/colorAlmostBlack"
             android:textIsSelectable="true"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="monospace"
             tools:layout_editor_absoluteX="0dp"

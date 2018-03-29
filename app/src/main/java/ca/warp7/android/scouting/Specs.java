@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Data Model for reading metrics, settings,
@@ -314,18 +313,17 @@ final class Specs {
             switch (type){
                 case TIMESTAMP:
                 case DURATION:
-                    return String.format(Locale.CANADA,"%dm %02ds",
-                            v / 60, v % 60);
+                    return v + " s";
 
                 case CHOICE:
                     return v >= 0 && v < choices.length ?
                             "<" + choices[v] + ">" : String.valueOf(v);
 
                 case RATING:
-                    return v + " out of " + max;
+                    return v + "/" + max;
 
                 case CHECKBOX:
-                    return v != 0? "True" : "False";
+                    return v != 0 ? "Yes" : "No";
 
                 default:
                     return String.valueOf(v);

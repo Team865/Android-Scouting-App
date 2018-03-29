@@ -82,7 +82,7 @@ final class Encoder {
 
     String format() {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm:ss", Locale.CANADA);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
         StringBuilder sb = new StringBuilder();
 
@@ -113,10 +113,10 @@ final class Encoder {
                 .append(specs.getAlliance())
                 .append("\n\n")
 
-                .append(formatLeft("Data", 24, " "))
-                .append(formatLeft("Value", 12, " "))
+                .append(formatLeft("Data", 20, " "))
+                .append("Value")
                 .append("\n")
-                .append(new String(new char[37]).replace("\0", "-"));
+                .append(new String(new char[30]).replace("\0", "-"));
 
         for (Datum d : dataStack) {
             sb.append("\n");
@@ -127,19 +127,19 @@ final class Encoder {
                 Specs.DataConstant dc = specs.getDataConstantByIndex(t);
                 sb
                         .append(formatLeft(dc.getLogTitle() +
-                                (d.getStateFlag() == 0 ? "<Off>" : ""), 24, " "))
+                                (d.getStateFlag() == 0 ? "<Off>" : ""), 20, " "))
                         .append(dc.format(d.getValue()))
                         .append(d.getUndoFlag() != 0 ? " Ⓤ" : "");
             } else {
                 sb
-                        .append(formatLeft(String.valueOf(t), 24, " "))
+                        .append(formatLeft(String.valueOf(t), 20, " "))
                         .append(String.valueOf(d.getValue()));
             }
         }
 
         sb
                 .append('\n')
-                .append(new String(new char[37]).replace("\0", "-"));
+                .append(new String(new char[30]).replace("\0", "-"));
 
         return sb.toString();
     }
