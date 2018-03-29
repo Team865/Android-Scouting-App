@@ -217,7 +217,7 @@ public class ScoutingActivity
         String a = specs.getAlliance();
 
         myToolBar.setTitleTextColor(
-                a.equals("R") ? 0xFFFF0000 : a.equals("B") ? 0xFF0000FF : 0);
+                a.equals("R") ? 0xFFFF0000 : a.equals("B") ? 0xFF0000FF : 0xFF808080);
 
         myToolBar.setSubtitleTextColor(getResources().getColor(R.color.colorAlmostBlack));
     }
@@ -229,7 +229,14 @@ public class ScoutingActivity
         int teamNumber = intent.getIntExtra(ID.MSG_TEAM_NUMBER, -1);
         String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
 
-        actionBar.setTitle("Team " + teamNumber);
+        String a = specs.getAlliance();
+
+        if (a.equals("R") || a.equals("B")) {
+            actionBar.setTitle("Team " + teamNumber);
+        } else {
+            actionBar.setTitle("Alliance " + a);
+        }
+
         actionBar.setSubtitle("Match " + matchNumber + " Started");
 
         encoder = new Encoder(matchNumber, teamNumber, scoutName);
