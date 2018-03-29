@@ -91,7 +91,9 @@ public class InputsFragment
 
         switch (dc.getType()) {
             case Specs.DataConstant.TIMESTAMP:
-                return new InputControls.TimerButton(getContext(), dc, listener);
+                //return new InputControls.TimerButton(getContext(), dc, listener);
+                return new InputControls.CountedControlLayout(getContext(), dc, listener,
+                        new InputControls.TimerButton(getContext(), dc, listener));
 
             case Specs.DataConstant.CHECKBOX:
                 return new InputControls.CenteredControlLayout(getContext(), dc, listener,

@@ -8,15 +8,18 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -63,16 +66,27 @@ class InputControls {
     interface BaseControl {
     }
 
+    interface ParentControlListener {
+        View getSupportView();
+    }
+
+    interface ChildControl {
+        void setParentListener(ParentControlListener listener);
+    }
+
     /**
      * A Base button for other buttons to extend onto
      */
     static class BaseButton
             extends AppCompatButton
             implements BaseControl,
+            ChildControl,
             View.OnClickListener {
 
         Specs.DataConstant dc;
         ActivityListener listener;
+        ParentControlListener parentControlListener;
+        View parentSupportView;
 
         public BaseButton(Context context) {
             super(context);
@@ -88,13 +102,23 @@ class InputControls {
             setOnClickListener(this);
 
             setAllCaps(false);
-            setTextSize(22);
+            setTextSize(20);
             setLines(2);
             setTypeface(Typeface.SANS_SERIF);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                setStateListAnimator(null);
+            }
         }
 
         @Override
         public void onClick(View v) {
+        }
+
+        @Override
+        public void setParentListener(ParentControlListener listener) {
+            parentControlListener = listener;
+            parentSupportView = listener.getSupportView();
         }
     }
 
@@ -103,6 +127,8 @@ class InputControls {
      */
     static final class TimerButton
             extends BaseButton {
+
+        int counter;
 
         public TimerButton(Context context) {
             super(context);
@@ -115,11 +141,25 @@ class InputControls {
 
             setText(dc.getLabel().replace(" ", "\n"));
             setTextColor(getResources().getColor(R.color.colorAccent));
+
+            int state = listener.getState(dc.getIndex());
+
+            if (state <= -1) {
+                counter = 0;
+                listener.setState(dc.getIndex(), 0);
+            } else {
+                counter = state;
+            }
+            updateCounterView(false);
         }
 
         @Override
         public void onClick(View v) {
             if (listener.canUpdateTime()) {
+
+                counter++;
+                updateCounterView(true);
+
                 setTextColor(0xFFFFFFFF);
                 getBackground().setColorFilter(
                         getResources().getColor(R.color.colorAccent),
@@ -128,10 +168,12 @@ class InputControls {
                 listener.getVibrator().vibrate(35);
 
                 listener.pushTime(dc.getIndex(), 1);
+                listener.setState(dc.getIndex(), counter);
 
                 listener.getHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        updateCounterView(false);
                         setTextColor(getResources().getColor(R.color.colorAccent));
                         getBackground().clearColorFilter();
                     }
@@ -140,6 +182,27 @@ class InputControls {
                 listener.pushStatus(dc.getLabel() + " - {t}s");
             } else {
                 listener.pushStatus("Cannot Record Time");
+            }
+        }
+
+        @Override
+        public void setParentListener(ParentControlListener listener) {
+            super.setParentListener(listener);
+            updateCounterView(false);
+
+        }
+
+        private void updateCounterView(boolean white) {
+            if (parentSupportView instanceof TextView) {
+                TextView counterView = (TextView) parentSupportView;
+                Log.i("hi", "ho");
+                counterView.setText(String.valueOf(counter));
+
+                if (white) {
+                    counterView.setTextColor(0xFFFFFFFF);
+                } else {
+                    counterView.setTextColor(getResources().getColor(R.color.colorAlmostBlack));
+                }
             }
         }
     }
@@ -224,7 +287,9 @@ class InputControls {
             super(context);
         }
 
-        public ChoicesButton(Context context, Specs.DataConstant dc, ActivityListener listener) {
+        public ChoicesButton(Context context,
+                             Specs.DataConstant dc,
+                             ActivityListener listener) {
             super(context);
             this.dc = dc;
             this.listener = listener;
@@ -234,7 +299,7 @@ class InputControls {
             setTextColor(getResources().getColor(R.color.colorAccent));
 
             setAllCaps(false);
-            setTextSize(22);
+            setTextSize(20);
 
             setTypeface(Typeface.SANS_SERIF);
 
@@ -299,7 +364,7 @@ class InputControls {
             setOnClickListener(this);
 
             setAllCaps(false);
-            setTextSize(22);
+            setTextSize(20);
             setLines(2);
 
             setTypeface(Typeface.SANS_SERIF);
@@ -417,6 +482,8 @@ class InputControls {
             extends LinearLayout
             implements BaseControl {
 
+        //TODO Change to new parent/child interface
+
         Specs.DataConstant dc;
         ActivityListener listener;
 
@@ -475,6 +542,8 @@ class InputControls {
             extends ConstraintLayout
             implements BaseControl {
 
+        //TODO Change to new parent/child interface
+
         Specs.DataConstant dc;
         ActivityListener listener;
 
@@ -505,7 +574,8 @@ class InputControls {
 
             ConstraintLayout.LayoutParams childLayout;
 
-            childLayout = new ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            childLayout = new ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT);
 
             childLayout.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
             childLayout.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
@@ -515,6 +585,62 @@ class InputControls {
             control.setLayoutParams(childLayout);
 
             addView(control);
+        }
+    }
+
+    /**
+     * A counter for the buttons
+     */
+    static final class CountedControlLayout
+            extends FrameLayout
+            implements BaseControl,
+            ParentControlListener {
+
+        Specs.DataConstant dc;
+        ActivityListener listener;
+
+        TextView counter;
+
+        public CountedControlLayout(@NonNull Context context) {
+            super(context);
+        }
+
+        public CountedControlLayout(Context context,
+                                    Specs.DataConstant dc,
+                                    ActivityListener listener,
+                                    View control) {
+            super(context);
+            this.dc = dc;
+            this.listener = listener;
+
+            addView(control);
+
+            counter = new TextView(context);
+            counter.setTextSize(16);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                counter.setElevation(10);
+            }
+
+            LayoutParams childLayout = new LayoutParams(LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT);
+
+            childLayout.leftMargin = 24;
+            childLayout.topMargin = 24;
+
+            counter.setLayoutParams(childLayout);
+
+            addView(counter);
+
+            if (control instanceof ChildControl) {
+                ((ChildControl) control).setParentListener(this);
+            }
+
+        }
+
+        @Override
+        public View getSupportView() {
+            return counter;
         }
     }
 
