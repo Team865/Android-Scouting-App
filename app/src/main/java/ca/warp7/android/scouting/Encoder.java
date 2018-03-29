@@ -56,6 +56,26 @@ final class Encoder {
         return null;
     }
 
+    int getCount(int t){
+        int total = 0;
+        for (Datum d : dataStack){
+            if (d.getType() == t){
+                total++;
+            }
+        }
+        return total;
+    }
+
+    int getLastValue(int t){
+        for (int i = dataStack.size() - 1; i >= 0; i--){
+            Datum d = dataStack.get(i);
+            if (d.getType() == t && d.getUndoFlag() == 0){
+                return dataStack.get(i).getValue();
+            }
+        }
+        return -1;
+    }
+
     private String head() {
         return matchNumber + "_" + teamNumber + "_" + scoutName;
     }

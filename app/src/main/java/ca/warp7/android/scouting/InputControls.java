@@ -47,11 +47,14 @@ class InputControls {
          */
         Vibrator getVibrator();
 
+        /**
+         * @return The encoder object tracking data history
+         */
+        Encoder getEncoder();
+
         boolean canUpdateTime();
 
-        void push(int t, int v, int s);
-
-        void pushTime(int t, int s);
+        void pushCurrentTimeAsValue(int t, int s);
 
         int getState(int index);
 
@@ -168,7 +171,7 @@ class InputControls {
 
                 listener.getVibrator().vibrate(35);
 
-                listener.pushTime(dc.getIndex(), 1);
+                listener.pushCurrentTimeAsValue(dc.getIndex(), 1);
                 listener.setState(dc.getIndex(), counter);
 
                 listener.getHandler().postDelayed(new Runnable() {
@@ -243,7 +246,7 @@ class InputControls {
         public void onClick(View v) {
             if (listener.canUpdateTime()) {
                 isOn = !isOn;
-                listener.pushTime(dc.getIndex(), isOn ? 1 : 0);
+                listener.pushCurrentTimeAsValue(dc.getIndex(), isOn ? 1 : 0);
                 listener.setState(dc.getIndex(), isOn ? 1 : 0);
                 listener.pushStatus(getText().toString() + " - {t}s");
 
@@ -332,7 +335,7 @@ class InputControls {
 
                                 listener.setState(dc.getIndex(), lastWhich);
                                 listener.getVibrator().vibrate(30);
-                                listener.push(dc.getIndex(), which, 1);
+                                listener.getEncoder().push(dc.getIndex(), which, 1);
                                 listener.pushStatus(dc.getLabel() + " <" + getText() + ">");
                             }
                         }
@@ -395,7 +398,7 @@ class InputControls {
         @Override
         public void onClick(View v) {
             listener.getVibrator().vibrate(30);
-            listener.push(dc.getIndex(), isChecked() ? 1 : 0, 1);
+            listener.getEncoder().push(dc.getIndex(), isChecked() ? 1 : 0, 1);
             listener.setState(dc.getIndex(), isChecked() ? 1 : 0);
             updateLooks();
             listener.pushStatus(getText().toString() + " - " + (isChecked() ? "On" : "Off"));
@@ -468,7 +471,7 @@ class InputControls {
                 listener.getVibrator().vibrate(20);
                 lastProgress = getProgress();
 
-                listener.push(dc.getIndex(), lastProgress, 1);
+                listener.getEncoder().push(dc.getIndex(), lastProgress, 1);
                 listener.setState(dc.getIndex(), lastProgress);
 
                 listener.pushStatus(dc.getLabel() + " - " + lastProgress + "/" + dc.getMax());

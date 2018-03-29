@@ -165,18 +165,18 @@ public class ScoutingActivity
     }
 
     @Override
+    public Encoder getEncoder() {
+        return encoder;
+    }
+
+    @Override
     public boolean canUpdateTime() {
         return timer <= specs.getTimer() && lastRecordedTime != timer;
     }
 
     @Override
-    public void push(int t, int v, int s) {
-        encoder.push(t, v, s);
-    }
-
-    @Override
-    public void pushTime(int t, int s) {
-        push(t, timer, s);
+    public void pushCurrentTimeAsValue(int t, int s) {
+        encoder.push(t, timer, s);
         lastRecordedTime = timer;
     }
 
