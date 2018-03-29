@@ -108,6 +108,7 @@ class InputControls {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 setStateListAnimator(null);
+                setElevation(4);
             }
         }
 
