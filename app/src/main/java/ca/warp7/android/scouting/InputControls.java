@@ -56,10 +56,6 @@ class InputControls {
 
         void pushCurrentTimeAsValue(int t, int s);
 
-        int getState(int index);
-
-        void setState(int index, int state);
-
         void pushStatus(String status);
     }
 
@@ -146,14 +142,7 @@ class InputControls {
             setText(dc.getLabel().replace(" ", "\n"));
             setTextColor(getResources().getColor(R.color.colorAccent));
 
-            int state = listener.getState(dc.getIndex());
-
-            if (state <= -1) {
-                counter = 0;
-                listener.setState(dc.getIndex(), 0);
-            } else {
-                counter = state;
-            }
+            counter = listener.getEncoder().getCount(dc.getIndex());
             updateCounterView(false);
         }
 
@@ -172,7 +161,6 @@ class InputControls {
                 listener.getVibrator().vibrate(35);
 
                 listener.pushCurrentTimeAsValue(dc.getIndex(), 1);
-                listener.setState(dc.getIndex(), counter);
 
                 listener.getHandler().postDelayed(new Runnable() {
                     @Override
@@ -219,8 +207,7 @@ class InputControls {
     static final class DurationButton
             extends BaseButton {
 
-
-        boolean isOn = false;
+        boolean isOn;
 
         public DurationButton(Context context) {
             super(context);
@@ -231,13 +218,7 @@ class InputControls {
                               ActivityListener listener) {
             super(context, dc, listener);
 
-            int state = listener.getState(dc.getIndex());
-
-            if (state == -1) {
-                listener.setState(dc.getIndex(), 0);
-            } else if (state == 1) {
-                isOn = true;
-            }
+            isOn = listener.getEncoder().getCount(dc.getIndex()) % 2 != 0;
 
             updateLooks();
         }
@@ -247,7 +228,6 @@ class InputControls {
             if (listener.canUpdateTime()) {
                 isOn = !isOn;
                 listener.pushCurrentTimeAsValue(dc.getIndex(), isOn ? 1 : 0);
-                listener.setState(dc.getIndex(), isOn ? 1 : 0);
                 listener.pushStatus(getText().toString() + " - {t}s");
 
                 updateLooks();
@@ -306,19 +286,12 @@ class InputControls {
             setTextSize(20);
 
             setTypeface(Typeface.SANS_SERIF);
-
             setGravity(Gravity.CENTER);
 
             String[] choices = dc.getChoices();
 
-            int state = listener.getState(dc.getIndex());
+            lastWhich = listener.getEncoder().getLastValue(dc.getIndex(), 0);
 
-            if (state <= -1) {
-                lastWhich = 0;
-                listener.setState(dc.getIndex(), 0);
-            } else {
-                lastWhich = state;
-            }
             setText(choices[lastWhich]);
         }
 
@@ -332,8 +305,6 @@ class InputControls {
                             if (which != lastWhich) {
                                 lastWhich = which;
                                 setText(dc.getChoices()[which]);
-
-                                listener.setState(dc.getIndex(), lastWhich);
                                 listener.getVibrator().vibrate(30);
                                 listener.getEncoder().push(dc.getIndex(), which, 1);
                                 listener.pushStatus(dc.getLabel() + " <" + getText() + ">");
@@ -377,13 +348,7 @@ class InputControls {
 
             updateLooks();
 
-            int state = listener.getState(dc.getIndex());
-
-            if (state == -1) {
-                listener.setState(dc.getIndex(), 0);
-            } else if (state == 1) {
-                setChecked(true);
-            }
+            setChecked(listener.getEncoder().getCount(dc.getIndex()) % 2 != 0);
         }
 
         void updateLooks() {
@@ -399,7 +364,6 @@ class InputControls {
         public void onClick(View v) {
             listener.getVibrator().vibrate(30);
             listener.getEncoder().push(dc.getIndex(), isChecked() ? 1 : 0, 1);
-            listener.setState(dc.getIndex(), isChecked() ? 1 : 0);
             updateLooks();
             listener.pushStatus(getText().toString() + " - " + (isChecked() ? "On" : "Off"));
         }
@@ -435,20 +399,9 @@ class InputControls {
             setBackgroundColor(0);
 
             setMax(dc.getMax());
-            setProgress(0);
-            lastProgress = 0;
 
-
-            int state = listener.getState(dc.getIndex());
-
-            if (state <= -1) {
-                lastProgress = 0;
-                setProgress(0);
-                listener.setState(dc.getIndex(), 0);
-            } else {
-                lastProgress = state;
-                setProgress(state);
-            }
+            lastProgress = listener.getEncoder().getLastValue(dc.getIndex(), 0);
+            setProgress(lastProgress);
 
         }
 
@@ -472,7 +425,6 @@ class InputControls {
                 lastProgress = getProgress();
 
                 listener.getEncoder().push(dc.getIndex(), lastProgress, 1);
-                listener.setState(dc.getIndex(), lastProgress);
 
                 listener.pushStatus(dc.getLabel() + " - " + lastProgress + "/" + dc.getMax());
             }

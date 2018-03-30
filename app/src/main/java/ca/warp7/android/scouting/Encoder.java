@@ -59,21 +59,21 @@ final class Encoder {
     int getCount(int t){
         int total = 0;
         for (Datum d : dataStack){
-            if (d.getType() == t){
+            if (d.getType() == t && d.getUndoFlag() == 0){
                 total++;
             }
         }
         return total;
     }
 
-    int getLastValue(int t){
+    int getLastValue(int t, int defaultValue){
         for (int i = dataStack.size() - 1; i >= 0; i--){
             Datum d = dataStack.get(i);
             if (d.getType() == t && d.getUndoFlag() == 0){
-                return dataStack.get(i).getValue();
+                return d.getValue();
             }
         }
-        return -1;
+        return defaultValue;
     }
 
     private String head() {
