@@ -346,25 +346,15 @@ class InputControls {
 
             setText(dc.getLabel());
 
-            updateLooks();
+            setTextColor(getResources().getColor(R.color.colorAccent));
 
             setChecked(listener.getEncoder().getCount(dc.getIndex()) % 2 != 0);
-        }
-
-        void updateLooks() {
-            if (isChecked()) {
-
-                setTextColor(getResources().getColor(android.R.color.darker_gray));
-            } else {
-                setTextColor(getResources().getColor(R.color.colorAccent));
-            }
         }
 
         @Override
         public void onClick(View v) {
             listener.getVibrator().vibrate(30);
             listener.getEncoder().push(dc.getIndex(), isChecked() ? 1 : 0, 1);
-            updateLooks();
             listener.pushStatus(getText().toString() + " - " + (isChecked() ? "On" : "Off"));
         }
     }
