@@ -85,11 +85,6 @@ final class Specs {
         return timer;
     }
 
-    int getTotalControls() {
-        return dataConstants.size();
-    }
-
-
     String getAlliance() {
         return alliance;
     }

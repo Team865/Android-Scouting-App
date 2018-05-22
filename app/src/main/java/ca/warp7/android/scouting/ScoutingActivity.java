@@ -112,7 +112,6 @@ public class ScoutingActivity
                 } else {
                     pushStatus("Undo \'" + dc.getLabel() + "\'");
                     vibrator.vibrate(20);
-                    // TODO Defense message does not work properly
                 }
                 return true;
 

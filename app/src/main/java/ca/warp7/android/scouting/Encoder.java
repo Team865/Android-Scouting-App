@@ -10,6 +10,7 @@ import java.util.TimeZone;
  * Data model for a specific match
  */
 
+@SuppressWarnings("SameParameterValue")
 final class Encoder {
 
     private int matchNumber;

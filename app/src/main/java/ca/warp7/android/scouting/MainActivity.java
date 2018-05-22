@@ -36,6 +36,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class MainActivity
         extends AppCompatActivity
         implements TextWatcher,
