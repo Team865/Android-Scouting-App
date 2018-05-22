@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -29,37 +30,30 @@ public class ScoutingActivity
         extends AppCompatActivity
         implements InputControls.ActivityListener {
 
-    Handler handler;
-    Vibrator vibrator;
-
-    ActionBar actionBar;
-    TextView titleBanner;
-    TextView statusTimer;
-
-    ViewPager pager;
-    PagerAdapter pagerAdapter;
-
-    int timer = 0;
-    int currentTab = 0;
-    int lastRecordedTime = -1;
-
-    Specs specs;
-    Encoder encoder;
-
-    ArrayList<Specs.Layout> layouts;
-
-    final Animation in = new AlphaAnimation(0.0f, 1.0f);
-    final Animation out = new AlphaAnimation(1.0f, 0.0f);
-
-
+    final Animation animate_in = new AlphaAnimation(0.0f, 1.0f);
+    final Animation animate_out = new AlphaAnimation(1.0f, 0.0f);
+    Handler mTimeHandler;
+    Vibrator mVibrator;
+    ActionBar mActionBar;
+    TextView mTitleBanner;
+    TextView mTimerStatus;
+    SeekBar mTimeSeeker;
+    ViewPager mPager;
+    PagerAdapter mPagerAdapter;
+    int mTimer = 0;
+    int mCurrentTab = 0;
+    int mLastRecordedTime = -1;
+    Specs mSpecs;
+    Encoder mEncoder;
+    ArrayList<Specs.Layout> mLayouts;
     Runnable timerUpdater = new Runnable() {
         @Override
         public void run() {
 
-            updateStatusTimer();
+            updateTimerStatusAndSeeker();
 
-            if (timer <= specs.getTimer()){
-                handler.postDelayed(timerUpdater, 1000);
+            if (mTimer <= mSpecs.getTimer()) {
+                mTimeHandler.postDelayed(timerUpdater, 1000);
             }
         }
     };
@@ -68,17 +62,17 @@ public class ScoutingActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        specs = Specs.getInstance();
+        mSpecs = Specs.getInstance();
 
-        if(specs == null){
+        if (mSpecs == null) {
             super.onBackPressed();
             return;
         }
 
-        layouts = specs.getLayouts();
+        mLayouts = mSpecs.getLayouts();
 
-        handler = new Handler();
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        mTimeHandler = new Handler();
+        mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         setupUI();
         setupValuesFromIntent();
@@ -86,7 +80,7 @@ public class ScoutingActivity
 
         updateLayout();
 
-        vibrator.vibrate(new long[]{0, 35, 30, 35}, -1);
+        mVibrator.vibrate(new long[]{0, 35, 30, 35}, -1);
         timerUpdater.run();
     }
 
@@ -106,20 +100,20 @@ public class ScoutingActivity
                 return true;
 
             case R.id.menu_undo:
-                Specs.DataConstant dc = encoder.undo();
+                Specs.DataConstant dc = mEncoder.undo();
                 if (dc == null) {
                     pushStatus("Nothing can be undone");
                 } else {
                     pushStatus("Undo \'" + dc.getLabel() + "\'");
-                    vibrator.vibrate(20);
+                    mVibrator.vibrate(20);
                 }
                 return true;
 
             case R.id.menu_done:
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
-                intent.putExtra(ID.MSG_PRINT_DATA, encoder.format());
-                intent.putExtra(ID.MSG_ENCODE_DATA, encoder.encode());
+                intent.putExtra(ID.MSG_PRINT_DATA, mEncoder.format());
+                intent.putExtra(ID.MSG_ENCODE_DATA, mEncoder.encode());
                 startActivity(intent);
                 return true;
 
@@ -147,33 +141,33 @@ public class ScoutingActivity
 
     @Override
     public Handler getHandler() {
-        return handler;
+        return mTimeHandler;
     }
 
     @Override
     public Vibrator getVibrator() {
-        return vibrator;
+        return mVibrator;
     }
 
     @Override
     public Encoder getEncoder() {
-        return encoder;
+        return mEncoder;
     }
 
     @Override
     public boolean canUpdateTime() {
-        return timer <= specs.getTimer() && lastRecordedTime != timer;
+        return mTimer <= mSpecs.getTimer() && mLastRecordedTime != mTimer;
     }
 
     @Override
     public void pushCurrentTimeAsValue(int t, int s) {
-        encoder.push(t, timer, s);
-        lastRecordedTime = timer;
+        mEncoder.push(t, mTimer, s);
+        mLastRecordedTime = mTimer;
     }
 
     @Override
     public void pushStatus(String status) {
-        //actionBar.setSubtitle(status.replace("{t}", String.valueOf(timer)));
+        //mActionBar.setSubtitle(status.replace("{t}", String.valueOf(mTimer)));
     }
 
     private void setupUI(){
@@ -185,12 +179,12 @@ public class ScoutingActivity
         myToolBar.setNavigationContentDescription(R.string.menu_close);
         setSupportActionBar(myToolBar);
 
-        actionBar = getSupportActionBar();
+        mActionBar = getSupportActionBar();
 
-        titleBanner = findViewById(R.id.title_banner);
-        statusTimer = findViewById(R.id.status_timer);
+        mTitleBanner = findViewById(R.id.title_banner);
+        mTimerStatus = findViewById(R.id.status_timer);
 
-        String a = specs.getAlliance();
+        String a = mSpecs.getAlliance();
 
         myToolBar.setTitleTextColor(
                 a.equals("R") ? 0xFFFF0000 : a.equals("B") ? 0xFF0000FF : 0xFF808080);
@@ -205,29 +199,29 @@ public class ScoutingActivity
         int teamNumber = intent.getIntExtra(ID.MSG_TEAM_NUMBER, -1);
         String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
 
-        String a = specs.getAlliance();
+        String a = mSpecs.getAlliance();
 
         if (a.equals("R") || a.equals("B")) {
-            actionBar.setTitle("Match " + matchNumber + " — " + teamNumber);
+            mActionBar.setTitle("Match " + matchNumber + " — " + teamNumber);
         } else {
-            actionBar.setTitle(specs.getBoardName());
+            mActionBar.setTitle(mSpecs.getBoardName());
         }
 
-        // actionBar.setSubtitle("Match " + matchNumber + " Started");
+        // mActionBar.setSubtitle("Match " + matchNumber + " Started");
 
-        encoder = new Encoder(matchNumber, teamNumber, scoutName);
+        mEncoder = new Encoder(matchNumber, teamNumber, scoutName);
 
     }
 
     private void setupPager(){
 
-        pager = findViewById(R.id.pager);
+        mPager = findViewById(R.id.pager);
 
-        pagerAdapter = new InputTabsPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new InputTabsPagerAdapter(getSupportFragmentManager());
 
-        pager.setAdapter(pagerAdapter);
+        mPager.setAdapter(mPagerAdapter);
 
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position,
                                        float positionOffset,
@@ -237,7 +231,7 @@ public class ScoutingActivity
 
             @Override
             public void onPageSelected(int position) {
-                currentTab = position;
+                mCurrentTab = position;
                 updateLayout();
             }
 
@@ -250,10 +244,10 @@ public class ScoutingActivity
 
     private void setAnimatedTitleBanner(final String title) {
 
-        in.setDuration(125);
-        out.setDuration(125);
+        animate_in.setDuration(125);
+        animate_out.setDuration(125);
 
-        out.setAnimationListener(new Animation.AnimationListener() {
+        animate_out.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -261,8 +255,8 @@ public class ScoutingActivity
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                titleBanner.setText(title);
-                titleBanner.startAnimation(in);
+                mTitleBanner.setText(title);
+                mTitleBanner.startAnimation(animate_in);
             }
 
             @Override
@@ -271,39 +265,40 @@ public class ScoutingActivity
             }
         });
 
-        if (!titleBanner.getText().toString().isEmpty()) {
-            titleBanner.startAnimation(out);
+        if (!mTitleBanner.getText().toString().isEmpty()) {
+            mTitleBanner.startAnimation(animate_out);
         } else {
-            titleBanner.setText(title);
+            mTitleBanner.setText(title);
         }
 
     }
 
     private void updateLayout(){
 
-        if (!layouts.isEmpty() && currentTab >= 0 && currentTab < layouts.size()) {
+        if (!mLayouts.isEmpty() && mCurrentTab >= 0 && mCurrentTab < mLayouts.size()) {
 
-            Specs.Layout layout = layouts.get(currentTab);
+            Specs.Layout layout = mLayouts.get(mCurrentTab);
 
             setAnimatedTitleBanner(layout.getTitle());
 
-            if (pager.getCurrentItem() != currentTab) {
-                pager.setCurrentItem(currentTab, true);
+            if (mPager.getCurrentItem() != mCurrentTab) {
+                mPager.setCurrentItem(mCurrentTab, true);
             }
         }
     }
 
-    private void updateStatusTimer(){
-        String d = (timer <= 15? "Ⓐ" : timer <= 120 ? "Ⓣ" : "Ⓔ") + " "
-                + String.valueOf(timer <= 15 ? 15 - timer : 150 - timer);
+    private void updateTimerStatusAndSeeker() {
+        String d = String.valueOf(mTimer <= 15 ? 15 - mTimer : 150 - mTimer);
 
-        statusTimer.setText(d);
-        statusTimer.setTextColor(timer <= 15 ?
-                0xFFCC9900 : (timer <= 120 ?
-                0xFF006633 : (timer < 150 ?
+        //d = (mTimer <= 15? "Ⓐ" : mTimer <= 120 ? "Ⓣ" : "Ⓔ") + " " + d;
+
+        mTimerStatus.setText(d);
+        mTimerStatus.setTextColor(mTimer <= 15 ?
+                0xFFCC9900 : (mTimer <= 120 ?
+                0xFF006633 : (mTimer < 150 ?
                 0xFFFF9900 : 0xFFFF0000)));
 
-        timer++;
+        mTimer++;
     }
 
 
@@ -322,7 +317,7 @@ public class ScoutingActivity
 
         @Override
         public int getCount() {
-            return specs.getLayouts().size();
+            return mSpecs.getLayouts().size();
         }
     }
 
