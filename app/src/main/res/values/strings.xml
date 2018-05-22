@@ -1,42 +1,42 @@
 <resources>
     <string name="app_name">Scouting</string>
 
-    <string name="hint_match">Match #</string>
-    <string name="hint_team">Team #</string>
-    <string name="alliance_red">Red  Alliance</string>
-    <string name="alliance_blue">Blue Alliance</string>
-    <string name="hint_name">Name</string>
-    <string name="start_match">⏱ Start</string>
-    <string name="verify_match_info">Verify Match and Team</string>
-    <string name="schedule_mismatch">This match is not found  on the schedule</string>
-    <string name="schedule_does_not_exist">A match schedule has not been provided</string>
-    <string name="verify_match_proceed">Proceed Anyways</string>
-    <string name="exit_confirmation">Exit Scouting?</string>
-    <string name="exit_confirmation_body">
-        All data entered will be lost. Scan the QR code to save it to a computer.
-    </string>
-    <string name="data_title">Data Sender</string>
 
     <string name="menu_done">Done Scouting</string>
     <string name="menu_undo">Undo</string>
     <string name="menu_prev">Previous Page</string>
     <string name="menu_next">Next Page</string>
     <string name="menu_close">Exit Scouting</string>
+    <string name="menu_details">Match Details</string>
+    <string name="menu_copy_default_metrics">Copy Default Metrics</string>
+    <string name="menu_select_specs">Select Board</string>
 
-    <string-array name="success_choices">
-        <item>None</item>
-        <item>Attempt</item>
-        <item>Success</item>
-    </string-array>
+    <string name="hint_match">Match #</string>
+    <string name="hint_team">Team #</string>
+    <string name="hint_name">Name</string>
 
-    <string name="layout_error">There was a problem with the layout</string>
+    <string name="schedule_mismatch">This match is not found  on the schedule</string>
+    <string name="schedule_does_not_exist">A match schedule has not been provided</string>
+
+    <string name="verify_match_info">Verify Match and Team</string>
+    <string name="verify_match_proceed">Proceed Anyways</string>
+
+    <string name="start_match">⏱ Start</string>
+
+
+    <string name="exit_confirmation">Exit Scouting?</string>
+    <string name="exit_confirmation_body">
+        All data entered will be lost. Scan the QR code to save it to a computer.
+    </string>
+
+
+    <string name="data_title">Data Sender</string>
+
     <string name="send_show_qr" o="📷 ">Show QR Code</string>
     <string name="send_show_report" o="📄 ">Show Report</string>
-
-    <string name="copy_default_metrics">Copy Default Metrics</string>
-    <string name="use_old_interface">Use Old Interface</string>
-    <string name="select_specs">Select Board</string>
     <string name="send">Send</string>
     <string name="edit_comments">Edit Comments</string>
+
+    <string name="layout_error">There was a problem with the layout</string>
 
 </resources>

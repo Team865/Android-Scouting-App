@@ -7,12 +7,12 @@
         android:icon="@drawable/ic_undo"
         android:title="@string/menu_undo"
         android:visible="false"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_details"
         android:icon="@drawable/ic_info_outline_ablack"
-        android:title="Match Details"
+        android:title="@string/menu_details"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_done"

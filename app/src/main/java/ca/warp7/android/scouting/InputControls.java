@@ -467,6 +467,7 @@ class InputControls {
             // Add the views
 
             TextView label = new TextView(context);
+            label.setTextColor(getResources().getColor(R.color.colorAlmostBlack));
 
             label.setText(dc.getLabel());
             label.setGravity(Gravity.CENTER);

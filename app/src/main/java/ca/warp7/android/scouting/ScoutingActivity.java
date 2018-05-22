@@ -20,7 +20,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,22 +29,29 @@ public class ScoutingActivity
         extends AppCompatActivity
         implements InputControls.ActivityListener {
 
-    final Animation animate_in = new AlphaAnimation(0.0f, 1.0f);
-    final Animation animate_out = new AlphaAnimation(1.0f, 0.0f);
     Handler mTimeHandler;
     Vibrator mVibrator;
+
     ActionBar mActionBar;
     TextView mTitleBanner;
     TextView mTimerStatus;
-    SeekBar mTimeSeeker;
+
     ViewPager mPager;
     PagerAdapter mPagerAdapter;
+
     int mTimer = 0;
     int mCurrentTab = 0;
     int mLastRecordedTime = -1;
+
     Specs mSpecs;
     Encoder mEncoder;
+
     ArrayList<Specs.Layout> mLayouts;
+
+    final Animation animate_in = new AlphaAnimation(0.0f, 1.0f);
+    final Animation animate_out = new AlphaAnimation(1.0f, 0.0f);
+
+
     Runnable timerUpdater = new Runnable() {
         @Override
         public void run() {
