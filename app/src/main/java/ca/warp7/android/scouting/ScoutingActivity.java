@@ -173,7 +173,7 @@ public class ScoutingActivity
 
     @Override
     public void pushStatus(String status) {
-        actionBar.setSubtitle(status.replace("{t}", String.valueOf(timer)));
+        //actionBar.setSubtitle(status.replace("{t}", String.valueOf(timer)));
     }
 
     private void setupUI(){
@@ -208,12 +208,12 @@ public class ScoutingActivity
         String a = specs.getAlliance();
 
         if (a.equals("R") || a.equals("B")) {
-            actionBar.setTitle("Team " + teamNumber);
+            actionBar.setTitle("Match " + matchNumber + " — " + teamNumber);
         } else {
-            actionBar.setTitle("Alliance " + a);
+            actionBar.setTitle(specs.getBoardName());
         }
 
-        actionBar.setSubtitle("Match " + matchNumber + " Started");
+        // actionBar.setSubtitle("Match " + matchNumber + " Started");
 
         encoder = new Encoder(matchNumber, teamNumber, scoutName);
 
