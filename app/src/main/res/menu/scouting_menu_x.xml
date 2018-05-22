@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_history"
+        android:icon="@drawable/ic_history_ablack"
+        android:title="Item"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_undo"
+        android:icon="@drawable/ic_undo"
+        android:title="@string/menu_undo"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_done"
+        android:icon="@drawable/ic_check_circle_green"
+        android:title="@string/menu_done"
+        app:showAsAction="ifRoom" />
+
+
+</menu>

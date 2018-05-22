@@ -374,4 +374,10 @@ public class MainActivity
         return Specs.getInstance().matchIsInSchedule
                 (Integer.parseInt(m) - 1, Integer.parseInt(t));
     }
+
+    public void x_$0_4(View x_args) {
+        Intent intent;
+        intent = new Intent(this, X_ScoutingActivity.class);
+        startActivity(intent);
+    }
 }
