@@ -28,7 +28,6 @@
         <activity
             android:name=".ScoutingActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".X_ScoutingActivity" />
     </application>
 
 </manifest>

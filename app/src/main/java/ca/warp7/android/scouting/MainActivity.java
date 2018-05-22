@@ -376,8 +376,5 @@ public class MainActivity
     }
 
     public void x_$0_4(View x_args) {
-        Intent intent;
-        intent = new Intent(this, X_ScoutingActivity.class);
-        startActivity(intent);
     }
 }

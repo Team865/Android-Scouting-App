@@ -9,10 +9,15 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/menu_details"
+        android:icon="@drawable/ic_info_outline_ablack"
+        android:title="Match Details"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_done"
-        android:icon="@drawable/ic_done"
+        android:icon="@drawable/ic_check_circle_green"
         android:title="@string/menu_done"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 
 
