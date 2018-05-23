@@ -20,6 +20,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -35,6 +37,8 @@ public class ScoutingActivity
     ActionBar mActionBar;
     TextView mTitleBanner;
     TextView mTimerStatus;
+    ProgressBar mTimeProgress;
+    SeekBar mTimeSeeker;
 
     ViewPager mPager;
     PagerAdapter mPagerAdapter;
@@ -188,7 +192,20 @@ public class ScoutingActivity
         mActionBar = getSupportActionBar();
 
         mTitleBanner = findViewById(R.id.title_banner);
-        mTimerStatus = findViewById(R.id.status_timer);
+        mTimerStatus = findViewById(R.id.timer_status);
+
+        mTimeProgress = findViewById(R.id.time_progress);
+        mTimeSeeker = findViewById(R.id.time_seeker);
+
+        int timer_max = mSpecs.getTimer();
+
+        mTimeProgress.setMax(timer_max);
+        mTimeProgress.setProgress(0);
+
+        mTimeSeeker.setMax(timer_max);
+        mTimeSeeker.setProgress(0);
+
+        // mTimeSeeker.setVisibility(View.VISIBLE);
 
         String a = mSpecs.getAlliance();
 
@@ -303,6 +320,9 @@ public class ScoutingActivity
                 0xFFCC9900 : (mTimer <= 120 ?
                 0xFF006633 : (mTimer < 150 ?
                 0xFFFF9900 : 0xFFFF0000)));
+
+        mTimeProgress.setProgress(mTimer);
+        mTimeSeeker.setProgress(mTimer);
 
         mTimer++;
     }
