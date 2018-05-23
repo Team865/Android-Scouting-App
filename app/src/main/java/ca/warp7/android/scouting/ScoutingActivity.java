@@ -18,8 +18,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -40,12 +42,16 @@ public class ScoutingActivity
     ProgressBar mTimeProgress;
     SeekBar mTimeSeeker;
 
+    ImageButton mPlayPause;
+
     ViewPager mPager;
     PagerAdapter mPagerAdapter;
 
     int mTimer = 0;
     int mCurrentTab = 0;
     int mLastRecordedTime = -1;
+
+    boolean mPausing = false;
 
     Specs mSpecs;
     Encoder mEncoder;
@@ -197,6 +203,8 @@ public class ScoutingActivity
         mTimeProgress = findViewById(R.id.time_progress);
         mTimeSeeker = findViewById(R.id.time_seeker);
 
+        mPlayPause = findViewById(R.id.play_pause);
+
         int timer_max = mSpecs.getTimer();
 
         mTimeProgress.setMax(timer_max);
@@ -325,6 +333,20 @@ public class ScoutingActivity
         mTimeSeeker.setProgress(mTimer);
 
         mTimer++;
+    }
+
+    public void onPlayPauseClicked(View view) {
+        mPausing = !mPausing;
+
+        if (mPausing) {
+            mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
+            mTimeSeeker.setVisibility(View.VISIBLE);
+            mTimeProgress.setVisibility(View.GONE);
+        } else {
+            mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
+            mTimeSeeker.setVisibility(View.GONE);
+            mTimeProgress.setVisibility(View.VISIBLE);
+        }
     }
 
 
