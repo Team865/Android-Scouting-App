@@ -15,7 +15,6 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatTextView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -187,7 +186,6 @@ class InputControls {
         private void updateCounterView(boolean white) {
             if (parentSupportView instanceof TextView) {
                 TextView counterView = (TextView) parentSupportView;
-                Log.i("hi", "ho");
                 counterView.setText(String.valueOf(counter));
 
                 if (white) {

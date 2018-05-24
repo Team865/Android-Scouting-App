@@ -15,89 +15,95 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/time_progress"
-        style="?android:attr/progressBarStyleHorizontal"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/nav_toolbox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
-
-    <SeekBar
-        android:id="@+id/time_seeker"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:paddingBottom="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_progress" />
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
 
-    <TextView
-        android:id="@+id/title_banner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:gravity="start"
-        android:minWidth="100dp"
-        android:singleLine="true"
-        android:textAlignment="textStart"
-        android:textColor="@color/colorAlmostBlack"
-        android:textSize="24sp"
-        android:typeface="sans"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
+        <ProgressBar
+            android:id="@+id/time_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/timer_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:ellipsize="end"
-        android:gravity="end"
-        android:minWidth="50dp"
-        android:singleLine="true"
-        android:textAlignment="textEnd"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:typeface="sans"
-        app:layout_constraintBaseline_toBaselineOf="@+id/title_banner"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <SeekBar
+            android:id="@+id/time_seeker"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/time_progress" />
+
+        <TextView
+            android:id="@+id/title_banner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:gravity="start"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorAlmostBlack"
+            android:textSize="24sp"
+            android:typeface="sans"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/timer_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:minWidth="50dp"
+            android:singleLine="true"
+            android:textAlignment="textEnd"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:typeface="sans"
+            app:layout_constraintBaseline_toBaselineOf="@+id/title_banner"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageButton
+            android:id="@+id/play_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/layout_error"
+            android:onClick="onPlayPauseClicked"
+            android:src="@drawable/ic_pause_ablack"
+            app:layout_constraintBottom_toBottomOf="@+id/timer_status"
+            app:layout_constraintEnd_toStartOf="@+id/timer_status" />
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_margin="0dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_banner" />
-
-    <ImageButton
-        android:id="@+id/play_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="?android:selectableItemBackground"
-        android:contentDescription="@string/layout_error"
-        android:onClick="onPlayPauseClicked"
-        android:src="@drawable/ic_pause_ablack"
-        app:layout_constraintBottom_toBottomOf="@+id/timer_status"
-        app:layout_constraintEnd_toStartOf="@+id/timer_status" />
+        app:layout_constraintTop_toBottomOf="@+id/nav_toolbox" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -41,6 +42,7 @@ public class ScoutingActivity
     TextView mTimerStatus;
     ProgressBar mTimeProgress;
     SeekBar mTimeSeeker;
+    ConstraintLayout mNavToolBox;
 
     ImageButton mPlayPause;
 
@@ -204,6 +206,7 @@ public class ScoutingActivity
         mTimeSeeker = findViewById(R.id.time_seeker);
 
         mPlayPause = findViewById(R.id.play_pause);
+        mNavToolBox = findViewById(R.id.nav_toolbox);
 
         int timer_max = mSpecs.getTimer();
 
@@ -212,8 +215,6 @@ public class ScoutingActivity
 
         mTimeSeeker.setMax(timer_max);
         mTimeSeeker.setProgress(0);
-
-        // mTimeSeeker.setVisibility(View.VISIBLE);
 
         String a = mSpecs.getAlliance();
 
@@ -338,14 +339,28 @@ public class ScoutingActivity
     public void onPlayPauseClicked(View view) {
         mPausing = !mPausing;
 
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+
         if (mPausing) {
             mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
             mTimeSeeker.setVisibility(View.VISIBLE);
             mTimeProgress.setVisibility(View.GONE);
+
+            int yellow = getResources().getColor(R.color.colorReviewYellow);
+
+            toolbar.setBackgroundColor(yellow);
+            mNavToolBox.setBackgroundColor(yellow);
+            mPager.setBackgroundColor(yellow);
         } else {
             mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
             mTimeSeeker.setVisibility(View.GONE);
             mTimeProgress.setVisibility(View.VISIBLE);
+
+            int white = getResources().getColor(R.color.colorPrimary);
+
+            toolbar.setBackgroundColor(white);
+            mNavToolBox.setBackgroundColor(white);
+            mPager.setBackgroundColor(white);
         }
     }
 
