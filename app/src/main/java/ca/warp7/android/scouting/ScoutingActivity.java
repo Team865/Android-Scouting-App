@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -45,6 +46,7 @@ public class ScoutingActivity
     ConstraintLayout mNavToolBox;
 
     ImageButton mPlayPause;
+    ImageButton mUndoSkip;
 
     ViewPager mPager;
     PagerAdapter mPagerAdapter;
@@ -206,6 +208,7 @@ public class ScoutingActivity
         mTimeSeeker = findViewById(R.id.time_seeker);
 
         mPlayPause = findViewById(R.id.play_pause);
+        mUndoSkip = findViewById(R.id.undo_skip);
         mNavToolBox = findViewById(R.id.nav_toolbox);
 
         int timer_max = mSpecs.getTimer();
@@ -324,7 +327,13 @@ public class ScoutingActivity
 
         //d = (mTimer <= 15? "Ⓐ" : mTimer <= 120 ? "Ⓣ" : "Ⓔ") + " " + d;
 
-        mTimerStatus.setText(d);
+        if (mTimer <= 15){
+            mTimerStatus.setTypeface(null, Typeface.ITALIC);
+        }else {
+            mTimerStatus.setTypeface(null, Typeface.NORMAL);
+        }
+
+        mTimerStatus.setText(Encoder.formatRight(d, 3, "0"));
         mTimerStatus.setTextColor(mTimer <= 15 ?
                 0xFFCC9900 : (mTimer <= 120 ?
                 0xFF006633 : (mTimer < 150 ?
@@ -343,6 +352,7 @@ public class ScoutingActivity
 
         if (mPausing) {
             mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
+            mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
             mTimeSeeker.setVisibility(View.VISIBLE);
             mTimeProgress.setVisibility(View.GONE);
 
@@ -353,6 +363,7 @@ public class ScoutingActivity
             mPager.setBackgroundColor(yellow);
         } else {
             mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
+            mUndoSkip.setImageResource(R.drawable.ic_undo);
             mTimeSeeker.setVisibility(View.GONE);
             mTimeProgress.setVisibility(View.VISIBLE);
 

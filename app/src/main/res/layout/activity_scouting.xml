@@ -63,15 +63,51 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageButton
+            android:id="@+id/play_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/layout_error"
+            android:onClick="onPlayPauseClicked"
+            android:src="@drawable/ic_pause_ablack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/undo_skip" />
+
+        <ImageButton
+            android:id="@+id/undo_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/layout_error"
+            android:src="@drawable/ic_undo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/divider" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/timer_status"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/timer_status"
-            android:layout_width="wrap_content"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:ellipsize="end"
             android:gravity="end"
-            android:minWidth="50dp"
             android:singleLine="true"
             android:textAlignment="textEnd"
             android:textColor="@android:color/black"
@@ -80,17 +116,6 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/title_banner"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <ImageButton
-            android:id="@+id/play_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:background="?android:selectableItemBackground"
-            android:contentDescription="@string/layout_error"
-            android:onClick="onPlayPauseClicked"
-            android:src="@drawable/ic_pause_ablack"
-            app:layout_constraintBottom_toBottomOf="@+id/timer_status"
-            app:layout_constraintEnd_toStartOf="@+id/timer_status" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.v4.view.ViewPager
