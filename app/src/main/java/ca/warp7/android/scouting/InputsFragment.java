@@ -44,8 +44,12 @@ public class InputsFragment
 
         int tabNumber = getArguments() != null ? getArguments().getInt("tab") : -1;
 
+        // TODO specs may be null - Fix by: use Intent on ScoutingActivity and use listener
+        // Temporary Fix: check for null and disable the layout
         specs = Specs.getInstance();
-        layout = specs.getLayouts().get(tabNumber);
+        if (specs != null) {
+            layout = specs.getLayouts().get(tabNumber);
+        }
     }
 
     @Override
@@ -61,7 +65,9 @@ public class InputsFragment
 
         inputTable = view.findViewById(R.id.input_table);
 
-        layoutTable();
+        if (specs != null) {
+            layoutTable();
+        }
     }
 
     @Override

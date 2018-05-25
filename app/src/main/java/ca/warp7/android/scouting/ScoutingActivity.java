@@ -323,15 +323,27 @@ public class ScoutingActivity
     }
 
     private void updateTimerStatusAndSeeker() {
-        String d = String.valueOf(mTimer <= 15 ? 15 - mTimer : 150 - mTimer);
+        String d;
+        int time = mTimer <= 15 ? 15 - mTimer : 150 - mTimer;
+        if (mTimer == 0 ) {
+            d = "NEW";
+            mTimerStatus.setTypeface(null, Typeface.BOLD);
+        } else if (mTimer < 150) {
+            d = String.valueOf(time);
+            if (mTimer <= 15){
+                mTimerStatus.setTypeface(null, Typeface.ITALIC);
+            }else {
+                mTimerStatus.setTypeface(null, Typeface.NORMAL);
+            }
+        } else {
+            d = "FIN";
+            mTimerStatus.setTypeface(null, Typeface.BOLD);
+        }
+
 
         //d = (mTimer <= 15? "Ⓐ" : mTimer <= 120 ? "Ⓣ" : "Ⓔ") + " " + d;
 
-        if (mTimer <= 15){
-            mTimerStatus.setTypeface(null, Typeface.ITALIC);
-        }else {
-            mTimerStatus.setTypeface(null, Typeface.NORMAL);
-        }
+
 
         mTimerStatus.setText(Encoder.formatRight(d, 3, "0"));
         mTimerStatus.setTextColor(mTimer <= 15 ?
