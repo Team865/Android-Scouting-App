@@ -27,7 +27,7 @@ public class InputsFragment
         return f;
     }
 
-    InputControls.ActivityListener listener;
+    InputControls.ScoutingActivityListener listener;
 
     TableLayout inputTable;
 
@@ -74,11 +74,11 @@ public class InputsFragment
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof InputControls.ActivityListener) {
-            listener = (InputControls.ActivityListener) context;
+        if (context instanceof InputControls.ScoutingActivityListener) {
+            listener = (InputControls.ScoutingActivityListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement InputControls.ActivityListener");
+                    + " must implement InputControls.ScoutingActivityListener");
         }
     }
 

@@ -34,7 +34,7 @@ class InputControls {
      * This interface is to be implemented by the activity that contains
      * these controls to make available communication
      */
-    interface ActivityListener {
+    interface ScoutingActivityListener {
 
         /**
          * @return The time Handler of the activity
@@ -82,7 +82,7 @@ class InputControls {
             View.OnClickListener {
 
         Specs.DataConstant dc;
-        ActivityListener listener;
+        ScoutingActivityListener listener;
         ParentControlListener parentControlListener;
         View parentSupportView;
 
@@ -92,7 +92,7 @@ class InputControls {
 
         public BaseButton(Context context,
                           Specs.DataConstant dc,
-                          ActivityListener listener) {
+                          ScoutingActivityListener listener) {
             super(context);
             this.dc = dc;
             this.listener = listener;
@@ -135,7 +135,7 @@ class InputControls {
 
         public TimerButton(Context context,
                            Specs.DataConstant dc,
-                           ActivityListener listener) {
+                           ScoutingActivityListener listener) {
             super(context, dc, listener);
 
             setText(dc.getLabel().replace(" ", "\n"));
@@ -213,7 +213,7 @@ class InputControls {
 
         public DurationButton(Context context,
                               Specs.DataConstant dc,
-                              ActivityListener listener) {
+                              ScoutingActivityListener listener) {
             super(context, dc, listener);
 
             isOn = listener.getEncoder().getCount(dc.getIndex()) % 2 != 0;
@@ -261,7 +261,7 @@ class InputControls {
             View.OnClickListener {
 
         Specs.DataConstant dc;
-        ActivityListener listener;
+        ScoutingActivityListener listener;
 
         int lastWhich = 0;
 
@@ -271,7 +271,7 @@ class InputControls {
 
         public ChoicesButton(Context context,
                              Specs.DataConstant dc,
-                             ActivityListener listener) {
+                             ScoutingActivityListener listener) {
             super(context);
             this.dc = dc;
             this.listener = listener;
@@ -321,7 +321,7 @@ class InputControls {
             View.OnClickListener {
 
         Specs.DataConstant dc;
-        ActivityListener listener;
+        ScoutingActivityListener listener;
 
         public Checkbox(Context context) {
             super(context);
@@ -329,7 +329,7 @@ class InputControls {
 
         public Checkbox(Context context,
                         Specs.DataConstant dc,
-                        ActivityListener listener) {
+                        ScoutingActivityListener listener) {
             super(context);
             this.dc = dc;
             this.listener = listener;
@@ -367,7 +367,7 @@ class InputControls {
 
 
         Specs.DataConstant dc;
-        ActivityListener listener;
+        ScoutingActivityListener listener;
 
         int lastProgress;
 
@@ -377,7 +377,7 @@ class InputControls {
 
         public SeekBar(Context context,
                        Specs.DataConstant dc,
-                       ActivityListener listener) {
+                       ScoutingActivityListener listener) {
             super(context);
             this.dc = dc;
             this.listener = listener;
@@ -429,7 +429,7 @@ class InputControls {
         //TODO Change to new parent/child interface
 
         Specs.DataConstant dc;
-        ActivityListener listener;
+        ScoutingActivityListener listener;
 
         public LabeledControlLayout(Context context) {
             super(context);
@@ -437,7 +437,7 @@ class InputControls {
 
         public LabeledControlLayout(Context context,
                                     Specs.DataConstant dc,
-                                    ActivityListener listener,
+                                    ScoutingActivityListener listener,
                                     View control) {
             super(context);
             this.dc = dc;
@@ -490,7 +490,7 @@ class InputControls {
         //TODO Change to new parent/child interface
 
         Specs.DataConstant dc;
-        ActivityListener listener;
+        ScoutingActivityListener listener;
 
         public CenteredControlLayout(Context context) {
             super(context);
@@ -498,7 +498,7 @@ class InputControls {
 
         public CenteredControlLayout(Context context,
                                      Specs.DataConstant dc,
-                                     ActivityListener listener,
+                                     ScoutingActivityListener listener,
                                      View control) {
             super(context);
             this.dc = dc;
@@ -542,7 +542,7 @@ class InputControls {
             ParentControlListener {
 
         Specs.DataConstant dc;
-        ActivityListener listener;
+        ScoutingActivityListener listener;
 
         TextView counter;
 
@@ -552,7 +552,7 @@ class InputControls {
 
         public CountedControlLayout(Context context,
                                     Specs.DataConstant dc,
-                                    ActivityListener listener,
+                                    ScoutingActivityListener listener,
                                     View control) {
             super(context);
             this.dc = dc;
@@ -596,13 +596,13 @@ class InputControls {
             extends AppCompatButton
             implements View.OnClickListener {
 
-        ActivityListener listener;
+        ScoutingActivityListener listener;
 
         public UnknownControl(Context context) {
             super(context);
         }
 
-        public UnknownControl(Context context, String text, ActivityListener listener) {
+        public UnknownControl(Context context, String text, ScoutingActivityListener listener) {
             super(context);
 
             setOnClickListener(this);

@@ -58,6 +58,8 @@ public class MainActivity
     private Specs.Index specsIndex;
     private SharedPreferences prefs;
 
+    private String mPassedSpecsFile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +171,8 @@ public class MainActivity
                 Integer.parseInt(teamNumberField.getText().toString()));
 
         intent.putExtra(ID.MSG_SCOUT_NAME, name);
+
+        intent.putExtra(ID.xMSG_SPECS_FILE, mPassedSpecsFile);
 
         startActivity(intent);
 
@@ -305,7 +309,8 @@ public class MainActivity
 
     private void loadSpecsFromName(String name) {
         if (specsIndex != null && specsIndex.getNames().contains(name)) {
-            Specs specs = Specs.setInstance(specsIndex.getFileByName(name));
+            mPassedSpecsFile = specsIndex.getFileByName(name);
+            Specs specs = Specs.setInstance(mPassedSpecsFile);
             ActionBar ab = getSupportActionBar();
             if (ab != null) {
                 ab.setTitle(specs.getBoardName());

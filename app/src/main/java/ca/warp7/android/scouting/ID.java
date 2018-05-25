@@ -12,6 +12,8 @@ final class ID {
     static final String SAVE_SCOUT_NAME = "ca.warp7.android.scouting.save.scout_name";
     static final String SAVE_SPECS = "ca.warp7.android.scouting.save.specs";
 
+    static final String xMSG_SPECS_FILE = "ca.warp7.android.scouting.x.v0_4i.msg.specs_file";
+
     static final String ROOT_DOMAIN = "ca.warp7.android.scouting";
 
 }
