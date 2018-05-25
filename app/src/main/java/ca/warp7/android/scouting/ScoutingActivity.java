@@ -373,6 +373,7 @@ public class ScoutingActivity
             toolbar.setBackgroundColor(yellow);
             mNavToolBox.setBackgroundColor(yellow);
             mPager.setBackgroundColor(yellow);
+            mTitleBanner.setText("");
         } else {
             mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
             mUndoSkip.setImageResource(R.drawable.ic_undo);

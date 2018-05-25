@@ -64,28 +64,52 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
+            android:id="@+id/nav_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/layout_error"
+            android:padding="4dp"
+            android:src="@drawable/ic_keyboard_arrow_left_ablack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/title_banner" />
+
+        <ImageButton
+            android:id="@+id/nav_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/layout_error"
+            android:padding="4dp"
+            android:src="@drawable/ic_keyboard_arrow_right_ablack"
+            app:layout_constraintBottom_toBottomOf="@+id/nav_back"
+            app:layout_constraintStart_toEndOf="@+id/nav_back" />
+
+        <ImageButton
             android:id="@+id/play_pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:layout_marginEnd="24dp"
             android:layout_marginRight="24dp"
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/layout_error"
             android:onClick="onPlayPauseClicked"
+            android:padding="4dp"
             android:src="@drawable/ic_pause_ablack"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/undo_skip"
             app:layout_constraintEnd_toStartOf="@+id/undo_skip" />
 
         <ImageButton
             android:id="@+id/undo_skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/layout_error"
+            android:padding="4dp"
             android:src="@drawable/ic_undo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/divider" />
