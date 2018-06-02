@@ -27,7 +27,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -409,7 +408,24 @@ public class ScoutingActivity
     }
 
     public void onUndoSkipClicked(View view){
-        Toast.makeText(this, "undo pressed", Toast.LENGTH_SHORT).show();
+        switch (mActivityState){
+            case SCOUTING: // Undo button
+                Specs.DataConstant dc = mEncoder.undo();
+                if (dc != null) {
+                    mVibrator.vibrate(20);
+                }
+                break;
+            case PAUSING: // Skip button
+                break;
+        }
+    }
+
+    public void onNavBackClicked(View view){
+
+    }
+
+    public void onNavForwardClicked(View view){
+
     }
 
     enum ActivityState {
