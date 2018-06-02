@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 public class ScoutingActivity
         extends AppCompatActivity
-        implements InputControls.ScoutingActivityListener {
+        implements ScoutingActivityListener {
 
     Handler mTimeHandler;
     Vibrator mVibrator;

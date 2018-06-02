@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
@@ -29,34 +27,6 @@ import android.widget.TextView;
  */
 
 class InputControls {
-
-    /**
-     * This interface is to be implemented by the activity that contains
-     * these controls to make available communication
-     */
-    interface ScoutingActivityListener {
-
-        /**
-         * @return The time Handler of the activity
-         */
-        Handler getHandler();
-
-        /**
-         * @return The Vibrator service of the activity
-         */
-        Vibrator getVibrator();
-
-        /**
-         * @return The encoder object tracking data history
-         */
-        Encoder getEncoder();
-
-        boolean canUpdateTime();
-
-        void pushCurrentTimeAsValue(int t, int s);
-
-        void pushStatus(String status);
-    }
 
     /**
      * A base interface to set the data constant and the activity listener
