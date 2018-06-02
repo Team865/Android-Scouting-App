@@ -1,5 +1,6 @@
 package ca.warp7.android.scouting;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -44,11 +45,14 @@ public class InputsFragment
 
         int tabNumber = getArguments() != null ? getArguments().getInt("tab") : -1;
 
-        // TODO specs may be null - Fix by: use Intent on ScoutingActivity and use listener
-        // Temporary Fix: check for null and disable the layout
         specs = Specs.getInstance();
-        if (specs != null) {
-            layout = specs.getLayouts().get(tabNumber);
+        if (specs == null){
+            Activity activity = getActivity();
+            if (activity != null) {
+                Specs.setInstance(activity.getIntent().getStringExtra(ID.xMSG_SPECS_FILE));
+                specs = Specs.getInstance();
+                layout = specs.getLayouts().get(tabNumber);
+            }
         }
     }
 

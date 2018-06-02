@@ -85,8 +85,6 @@ public class ScoutingActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Don't use this because it creates the singlet problem
-        // Won't really fix because the InputFragment still use the singleton
         Specs.setInstance(getIntent().getStringExtra(ID.xMSG_SPECS_FILE));
         mSpecs = Specs.getInstance();
 
