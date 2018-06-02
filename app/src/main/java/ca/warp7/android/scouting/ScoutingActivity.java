@@ -35,38 +35,38 @@ public class ScoutingActivity
         extends AppCompatActivity
         implements ScoutingActivityListener {
 
-    ActivityState mActivityState = ActivityState.SCOUTING;
+    private ActivityState mActivityState = ActivityState.SCOUTING;
 
-    Handler mTimeHandler;
-    Vibrator mVibrator;
+    private Handler mTimeHandler;
+    private Vibrator mVibrator;
 
-    ActionBar mActionBar;
-    TextView mTitleBanner;
-    TextView mTimerStatus;
-    ProgressBar mTimeProgress;
-    SeekBar mTimeSeeker;
-    ConstraintLayout mNavToolBox;
+    private ActionBar mActionBar;
+    private TextView mTitleBanner;
+    private TextView mTimerStatus;
+    private ProgressBar mTimeProgress;
+    private SeekBar mTimeSeeker;
+    private ConstraintLayout mNavToolBox;
 
-    ImageButton mNavBack, mNavForward;
-    ImageButton mPlayPause;
-    ImageButton mUndoSkip;
+    private ImageButton mNavBack, mNavForward;
+    private ImageButton mPlayPause;
+    private ImageButton mUndoSkip;
 
-    ViewPager mPager;
-    PagerAdapter mPagerAdapter;
+    private ViewPager mPager;
 
-    int mTimer = 0;
-    int mCurrentTab = 0;
-    int mLastRecordedTime = -1;
+    private int mTimer = 0;
+    private int mCurrentTab = 0;
+    private int mLastRecordedTime = -1;
+    private int mStartingTimestamp;
 
-    Specs mSpecs;
-    Encoder mEncoder;
+    private Specs mSpecs;
+    private Encoder mEncoder;
 
-    ArrayList<Specs.Layout> mLayouts;
+    private ArrayList<Specs.Layout> mLayouts;
 
-    final Animation animate_in = new AlphaAnimation(0.0f, 1.0f);
-    final Animation animate_out = new AlphaAnimation(1.0f, 0.0f);
+    private final Animation animate_in = new AlphaAnimation(0.0f, 1.0f);
+    private final Animation animate_out = new AlphaAnimation(1.0f, 0.0f);
 
-    Runnable mTimerUpdater = new Runnable() {
+    private Runnable mTimerUpdater = new Runnable() {
         @Override
         public void run() {
 
@@ -106,7 +106,19 @@ public class ScoutingActivity
         updateLayout();
 
         mVibrator.vibrate(new long[]{0, 35, 30, 35}, -1);
+
+        if (savedInstanceState == null) {
+            mStartingTimestamp = (int) (System.currentTimeMillis() / 100);
+        } else {
+            mStartingTimestamp = savedInstanceState.getInt(ID.INSTANCE_STATE_START_TIME);
+        }
         mTimerUpdater.run();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(ID.INSTANCE_STATE_START_TIME, mStartingTimestamp);
     }
 
     @Override
@@ -257,7 +269,7 @@ public class ScoutingActivity
 
         mPager = findViewById(R.id.pager);
 
-        mPagerAdapter = new InputTabsPagerAdapter(getSupportFragmentManager());
+        PagerAdapter mPagerAdapter = new InputTabsPagerAdapter(getSupportFragmentManager());
 
         mPager.setAdapter(mPagerAdapter);
 
