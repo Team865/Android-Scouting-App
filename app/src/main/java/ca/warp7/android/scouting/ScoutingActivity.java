@@ -55,7 +55,7 @@ public class ScoutingActivity
     int mCurrentTab = 0;
     int mLastRecordedTime = -1;
 
-    boolean mPausing = false;
+    ActivityState mActivityState = ActivityState.SCOUTING;
 
     Specs mSpecs;
     Encoder mEncoder;
@@ -99,9 +99,10 @@ public class ScoutingActivity
 
         setupUI();
         setupValuesFromIntent();
-        setupPager();
 
-        updateLayout();
+        mPager = findViewById(R.id.pager);
+        //setupPager();
+        //updateLayout();
 
         mVibrator.vibrate(new long[]{0, 35, 30, 35}, -1);
         timerUpdater.run();
@@ -251,6 +252,7 @@ public class ScoutingActivity
 
     }
 
+    @SuppressWarnings("unused")
     private void setupPager(){
 
         mPager = findViewById(R.id.pager);
@@ -327,28 +329,18 @@ public class ScoutingActivity
 
     private void updateTimerStatusAndSeeker() {
         String d;
+
         int time = mTimer <= 15 ? 15 - mTimer : 150 - mTimer;
-        if (mTimer == 0 ) {
-            d = "NEW";
-            mTimerStatus.setTypeface(null, Typeface.BOLD);
-        } else if (mTimer < 150) {
+        if (mTimer < 150) {
             d = String.valueOf(time);
-            if (mTimer <= 15){
-                mTimerStatus.setTypeface(null, Typeface.ITALIC);
-            }else {
-                mTimerStatus.setTypeface(null, Typeface.NORMAL);
-            }
         } else {
             d = "FIN";
             mTimerStatus.setTypeface(null, Typeface.BOLD);
         }
 
+        String status = new String(new char[3 - d.length()]).replace("\0", "0") + d;
 
-        //d = (mTimer <= 15? "Ⓐ" : mTimer <= 120 ? "Ⓣ" : "Ⓔ") + " " + d;
-
-
-
-        mTimerStatus.setText(Encoder.formatRight(d, 3, "0"));
+        mTimerStatus.setText(status);
         mTimerStatus.setTextColor(mTimer <= 15 ?
                 0xFFCC9900 : (mTimer <= 120 ?
                 0xFF006633 : (mTimer < 150 ?
@@ -361,36 +353,48 @@ public class ScoutingActivity
     }
 
     public void onPlayPauseClicked(View view) {
-        mPausing = !mPausing;
 
         Toolbar toolbar = findViewById(R.id.my_toolbar);
 
-        if (mPausing) {
-            mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
-            mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
-            mTimeSeeker.setVisibility(View.VISIBLE);
-            mTimeProgress.setVisibility(View.GONE);
+        switch (mActivityState) {
+            case SCOUTING:
+                mActivityState = ActivityState.PAUSING;
 
-            int yellow = getResources().getColor(R.color.colorReviewYellow);
+                mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
+                mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
+                mTimeSeeker.setVisibility(View.VISIBLE);
+                mTimeProgress.setVisibility(View.GONE);
 
-            toolbar.setBackgroundColor(yellow);
-            mNavToolBox.setBackgroundColor(yellow);
-            mPager.setBackgroundColor(yellow);
-            mTitleBanner.setText("");
-        } else {
-            mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
-            mUndoSkip.setImageResource(R.drawable.ic_undo);
-            mTimeSeeker.setVisibility(View.GONE);
-            mTimeProgress.setVisibility(View.VISIBLE);
+                int yellow = getResources().getColor(R.color.colorReviewYellow);
 
-            int white = getResources().getColor(R.color.colorPrimary);
+                toolbar.setBackgroundColor(yellow);
+                mNavToolBox.setBackgroundColor(yellow);
+                mPager.setBackgroundColor(yellow);
+                mTitleBanner.setText("");
 
-            toolbar.setBackgroundColor(white);
-            mNavToolBox.setBackgroundColor(white);
-            mPager.setBackgroundColor(white);
+                break;
+
+            case PAUSING:
+                mActivityState = ActivityState.SCOUTING;
+
+                mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
+                mUndoSkip.setImageResource(R.drawable.ic_undo);
+                mTimeSeeker.setVisibility(View.GONE);
+                mTimeProgress.setVisibility(View.VISIBLE);
+
+                int white = getResources().getColor(R.color.colorPrimary);
+
+                toolbar.setBackgroundColor(white);
+                mNavToolBox.setBackgroundColor(white);
+                mPager.setBackgroundColor(white);
+
+                break;
         }
     }
 
+    enum ActivityState {
+        STARTING, SCOUTING, PAUSING
+    }
 
     private class InputTabsPagerAdapter
             extends FragmentPagerAdapter {

@@ -166,7 +166,7 @@ final class Encoder {
     }
 
 
-    public static String formatRight(String s, int d, String r) {
+    private static String formatRight(String s, int d, String r) {
         String n = s;
         if (d > n.length())
             n = new String(new char[d - n.length()])
