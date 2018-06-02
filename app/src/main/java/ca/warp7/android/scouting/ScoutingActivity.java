@@ -381,7 +381,7 @@ public class ScoutingActivity
                 toolbar.setBackgroundColor(yellow);
                 mNavToolBox.setBackgroundColor(yellow);
                 mPager.setBackgroundColor(yellow);
-                setAnimatedTitleBanner("");
+                mTitleBanner.setText("");
 
                 break;
 
@@ -402,7 +402,7 @@ public class ScoutingActivity
                 mNavToolBox.setBackgroundColor(white);
                 mPager.setBackgroundColor(white);
 
-                setAnimatedTitleBanner(mLayouts.get(mCurrentTab).getTitle());
+                mTitleBanner.setText(mLayouts.get(mCurrentTab).getTitle());
 
                 break;
         }

@@ -51,9 +51,9 @@ public class InputsFragment
             if (activity != null) {
                 Specs.setInstance(activity.getIntent().getStringExtra(ID.xMSG_SPECS_FILE));
                 specs = Specs.getInstance();
-                layout = specs.getLayouts().get(tabNumber);
             }
         }
+        layout = specs.getLayouts().get(tabNumber);
     }
 
     @Override
