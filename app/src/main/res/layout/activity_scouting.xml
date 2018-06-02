@@ -51,15 +51,17 @@
             android:id="@+id/title_banner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="22dp"
             android:gravity="start"
             android:singleLine="true"
             android:textAlignment="textStart"
             android:textColor="@color/colorAlmostBlack"
             android:textSize="24sp"
             android:typeface="sans"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,32 +69,36 @@
             android:id="@+id/nav_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/layout_error"
             android:padding="4dp"
             android:src="@drawable/ic_keyboard_arrow_left_ablack"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/title_banner" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/nav_forward"
+            app:layout_constraintEnd_toStartOf="@+id/nav_forward" />
 
         <ImageButton
             android:id="@+id/nav_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/layout_error"
             android:padding="4dp"
             android:src="@drawable/ic_keyboard_arrow_right_ablack"
-            app:layout_constraintBottom_toBottomOf="@+id/nav_back"
-            app:layout_constraintStart_toEndOf="@+id/nav_back" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/play_pause"
+            app:layout_constraintEnd_toStartOf="@+id/play_pause" />
 
         <ImageButton
             android:id="@+id/play_pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/layout_error"
             android:onClick="onPlayPauseClicked"
@@ -105,14 +111,15 @@
             android:id="@+id/undo_skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_marginRight="12dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/layout_error"
+            android:onClick="onUndoSkipClicked"
             android:padding="4dp"
             android:src="@drawable/ic_undo"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/divider" />
+            app:layout_constraintEnd_toStartOf="@+id/timer_status" />
 
         <View
             android:id="@+id/divider"

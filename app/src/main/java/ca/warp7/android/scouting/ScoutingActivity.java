@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -45,6 +46,8 @@ public class ScoutingActivity
     SeekBar mTimeSeeker;
     ConstraintLayout mNavToolBox;
 
+    ImageButton mNavBack;
+    ImageButton mNavForward;
     ImageButton mPlayPause;
     ImageButton mUndoSkip;
 
@@ -101,8 +104,8 @@ public class ScoutingActivity
         setupValuesFromIntent();
 
         mPager = findViewById(R.id.pager);
-        //setupPager();
-        //updateLayout();
+        setupPager();
+        updateLayout();
 
         mVibrator.vibrate(new long[]{0, 35, 30, 35}, -1);
         timerUpdater.run();
@@ -211,8 +214,12 @@ public class ScoutingActivity
         mTimeProgress = findViewById(R.id.time_progress);
         mTimeSeeker = findViewById(R.id.time_seeker);
 
+        mNavBack = findViewById(R.id.nav_back);
+        mNavForward = findViewById(R.id.nav_forward);
+
         mPlayPause = findViewById(R.id.play_pause);
         mUndoSkip = findViewById(R.id.undo_skip);
+
         mNavToolBox = findViewById(R.id.nav_toolbox);
 
         int timer_max = mSpecs.getTimer();
@@ -241,13 +248,10 @@ public class ScoutingActivity
         String a = mSpecs.getAlliance();
 
         if (a.equals("R") || a.equals("B")) {
-            mActionBar.setTitle("Match " + matchNumber + " — " + teamNumber);
+            mActionBar.setTitle("Q " + matchNumber + " — " + teamNumber);
         } else {
             mActionBar.setTitle(mSpecs.getBoardName());
         }
-
-        // mActionBar.setSubtitle("Match " + matchNumber + " Started");
-
         mEncoder = new Encoder(matchNumber, teamNumber, scoutName);
 
     }
@@ -284,31 +288,32 @@ public class ScoutingActivity
 
     private void setAnimatedTitleBanner(final String title) {
 
-        animate_in.setDuration(125);
-        animate_out.setDuration(125);
-
-        animate_out.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mTitleBanner.setText(title);
-                mTitleBanner.startAnimation(animate_in);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
+        animate_in.setDuration(100);
+        animate_out.setDuration(100);
 
         if (!mTitleBanner.getText().toString().isEmpty()) {
+            animate_out.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mTitleBanner.setText(title);
+                    mTitleBanner.startAnimation(animate_in);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
             mTitleBanner.startAnimation(animate_out);
+
         } else {
             mTitleBanner.setText(title);
+            mTitleBanner.startAnimation(animate_in);
         }
 
     }
@@ -317,9 +322,14 @@ public class ScoutingActivity
 
         if (!mLayouts.isEmpty() && mCurrentTab >= 0 && mCurrentTab < mLayouts.size()) {
 
-            Specs.Layout layout = mLayouts.get(mCurrentTab);
+            switch (mActivityState){
+                case SCOUTING:
+                    setAnimatedTitleBanner(mLayouts.get(mCurrentTab).getTitle());
+                    break;
+                case PAUSING:
+                    break;
+            }
 
-            setAnimatedTitleBanner(layout.getTitle());
 
             if (mPager.getCurrentItem() != mCurrentTab) {
                 mPager.setCurrentItem(mCurrentTab, true);
@@ -362,6 +372,9 @@ public class ScoutingActivity
 
                 mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
                 mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
+
+                mNavBack.setVisibility(View.VISIBLE);
+                mNavForward.setVisibility(View.VISIBLE);
                 mTimeSeeker.setVisibility(View.VISIBLE);
                 mTimeProgress.setVisibility(View.GONE);
 
@@ -370,7 +383,7 @@ public class ScoutingActivity
                 toolbar.setBackgroundColor(yellow);
                 mNavToolBox.setBackgroundColor(yellow);
                 mPager.setBackgroundColor(yellow);
-                mTitleBanner.setText("");
+                setAnimatedTitleBanner("");
 
                 break;
 
@@ -379,6 +392,9 @@ public class ScoutingActivity
 
                 mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
                 mUndoSkip.setImageResource(R.drawable.ic_undo);
+
+                mNavBack.setVisibility(View.INVISIBLE);
+                mNavForward.setVisibility(View.INVISIBLE);
                 mTimeSeeker.setVisibility(View.GONE);
                 mTimeProgress.setVisibility(View.VISIBLE);
 
@@ -388,8 +404,14 @@ public class ScoutingActivity
                 mNavToolBox.setBackgroundColor(white);
                 mPager.setBackgroundColor(white);
 
+                setAnimatedTitleBanner(mLayouts.get(mCurrentTab).getTitle());
+
                 break;
         }
+    }
+
+    public void onUndoSkipClicked(View view){
+        Toast.makeText(this, "undo pressed", Toast.LENGTH_SHORT).show();
     }
 
     enum ActivityState {
