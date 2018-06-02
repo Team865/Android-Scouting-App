@@ -35,6 +35,8 @@ public class ScoutingActivity
         extends AppCompatActivity
         implements ScoutingActivityListener {
 
+    ActivityState mActivityState = ActivityState.SCOUTING;
+
     Handler mTimeHandler;
     Vibrator mVibrator;
 
@@ -45,8 +47,7 @@ public class ScoutingActivity
     SeekBar mTimeSeeker;
     ConstraintLayout mNavToolBox;
 
-    ImageButton mNavBack;
-    ImageButton mNavForward;
+    ImageButton mNavBack, mNavForward;
     ImageButton mPlayPause;
     ImageButton mUndoSkip;
 
@@ -57,8 +58,6 @@ public class ScoutingActivity
     int mCurrentTab = 0;
     int mLastRecordedTime = -1;
 
-    ActivityState mActivityState = ActivityState.SCOUTING;
-
     Specs mSpecs;
     Encoder mEncoder;
 
@@ -67,15 +66,18 @@ public class ScoutingActivity
     final Animation animate_in = new AlphaAnimation(0.0f, 1.0f);
     final Animation animate_out = new AlphaAnimation(1.0f, 0.0f);
 
-
-    Runnable timerUpdater = new Runnable() {
+    Runnable mTimerUpdater = new Runnable() {
         @Override
         public void run() {
 
+            if (mActivityState != ActivityState.SCOUTING){
+                return; // Check if activity is paused
+            }
+
             updateTimerStatusAndSeeker();
 
-            if (mTimer <= mSpecs.getTimer()) {
-                mTimeHandler.postDelayed(timerUpdater, 1000);
+            if (mTimer <= kTimerLimit) { // Check if match ended
+                mTimeHandler.postDelayed(mTimerUpdater, 1000);
             }
         }
     };
@@ -100,12 +102,11 @@ public class ScoutingActivity
         setupUI();
         setupValuesFromIntent();
 
-        mPager = findViewById(R.id.pager);
         setupPager();
         updateLayout();
 
         mVibrator.vibrate(new long[]{0, 35, 30, 35}, -1);
-        timerUpdater.run();
+        mTimerUpdater.run();
     }
 
     @Override
@@ -180,7 +181,7 @@ public class ScoutingActivity
 
     @Override
     public boolean canUpdateTime() {
-        return mTimer <= mSpecs.getTimer() && mLastRecordedTime != mTimer;
+        return mTimer <= kTimerLimit && mLastRecordedTime != mTimer;
     }
 
     @Override
@@ -219,12 +220,10 @@ public class ScoutingActivity
 
         mNavToolBox = findViewById(R.id.nav_toolbox);
 
-        int timer_max = mSpecs.getTimer();
-
-        mTimeProgress.setMax(timer_max);
+        mTimeProgress.setMax(kTimerLimit);
         mTimeProgress.setProgress(0);
 
-        mTimeSeeker.setMax(timer_max);
+        mTimeSeeker.setMax(kTimerLimit);
         mTimeSeeker.setProgress(0);
 
         String a = mSpecs.getAlliance();
@@ -403,6 +402,8 @@ public class ScoutingActivity
 
                 mTitleBanner.setText(mLayouts.get(mCurrentTab).getTitle());
 
+                mTimerUpdater.run();
+
                 break;
         }
     }
@@ -428,10 +429,6 @@ public class ScoutingActivity
 
     }
 
-    enum ActivityState {
-        STARTING, SCOUTING, PAUSING
-    }
-
     private class InputTabsPagerAdapter
             extends FragmentPagerAdapter {
 
@@ -451,4 +448,9 @@ public class ScoutingActivity
         }
     }
 
+    enum ActivityState {
+        STARTING, SCOUTING, PAUSING
+    }
+
+    static final int kTimerLimit = 150;
 }
