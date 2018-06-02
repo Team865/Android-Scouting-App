@@ -16,6 +16,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,7 +34,8 @@ import java.util.ArrayList;
 
 public class ScoutingActivity
         extends AppCompatActivity
-        implements ScoutingActivityListener {
+        implements ScoutingActivityListener,
+        AppCompatSeekBar.OnSeekBarChangeListener {
 
     private ActivityState mActivityState = ActivityState.SCOUTING;
 
@@ -75,6 +77,7 @@ public class ScoutingActivity
             }
 
             updateTimerStatusAndSeeker();
+            mTimer++;
 
             if (mTimer <= kTimerLimit) { // Check if match ended
                 mTimeHandler.postDelayed(mTimerUpdater, 1000);
@@ -177,6 +180,22 @@ public class ScoutingActivity
     }
 
     @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (fromUser && mActivityState == ActivityState.PAUSING){
+            mTimer = progress;
+            updateTimerStatusAndSeeker();
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+    }
+
+    @Override
     public Handler getHandler() {
         return mTimeHandler;
     }
@@ -237,6 +256,7 @@ public class ScoutingActivity
 
         mTimeSeeker.setMax(kTimerLimit);
         mTimeSeeker.setProgress(0);
+        mTimeSeeker.setOnSeekBarChangeListener(this);
 
         String a = mSpecs.getAlliance();
 
@@ -351,6 +371,7 @@ public class ScoutingActivity
         int time = mTimer <= 15 ? 15 - mTimer : 150 - mTimer;
         if (mTimer < 150) {
             d = String.valueOf(time);
+            mTimerStatus.setTypeface(null, Typeface.NORMAL);
         } else {
             d = "FIN";
             mTimerStatus.setTypeface(null, Typeface.BOLD);
@@ -366,8 +387,6 @@ public class ScoutingActivity
 
         mTimeProgress.setProgress(mTimer);
         mTimeSeeker.setProgress(mTimer);
-
-        mTimer++;
     }
 
     public void onPlayPauseClicked(View view) {
@@ -434,11 +453,17 @@ public class ScoutingActivity
     }
 
     public void onNavBackClicked(View view){
-
+        if (mTimer > 0) {
+            mTimer--;
+            updateTimerStatusAndSeeker();
+        }
     }
 
     public void onNavForwardClicked(View view){
-
+        if (mTimer < kTimerLimit) {
+            mTimer++;
+            updateTimerStatusAndSeeker();
+        }
     }
 
     private class InputTabsPagerAdapter
