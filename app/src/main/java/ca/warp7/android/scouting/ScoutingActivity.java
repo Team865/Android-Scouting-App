@@ -139,14 +139,7 @@ public class ScoutingActivity
                 onBackPressed();
                 return true;
 
-            case R.id.menu_undo:
-                Specs.DataConstant dc = mEncoder.undo();
-                if (dc == null) {
-                    pushStatus("Nothing can be undone");
-                } else {
-                    pushStatus("Undo \'" + dc.getLabel() + "\'");
-                    mVibrator.vibrate(20);
-                }
+            case R.id.menu_details:
                 return true;
 
             case R.id.menu_done:
@@ -443,7 +436,10 @@ public class ScoutingActivity
         switch (mActivityState){
             case SCOUTING: // Undo button
                 Specs.DataConstant dc = mEncoder.undo();
-                if (dc != null) {
+                if (dc == null) {
+                    pushStatus("Nothing can be undone");
+                } else {
+                    pushStatus("Undo \'" + dc.getLabel() + "\'");
                     mVibrator.vibrate(20);
                 }
                 break;

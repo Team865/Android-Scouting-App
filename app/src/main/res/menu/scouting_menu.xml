@@ -3,13 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_undo"
-        android:icon="@drawable/ic_undo"
-        android:title="@string/menu_undo"
-        android:visible="false"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/menu_details"
         android:icon="@drawable/ic_info_outline_ablack"
         android:title="@string/menu_details"
@@ -18,8 +11,6 @@
         android:id="@+id/menu_done"
         android:icon="@drawable/ic_check_circle_green"
         android:title="@string/menu_done"
-        app:showAsAction="always" />
-
-
+        app:showAsAction="ifRoom" />
 
 </menu>
