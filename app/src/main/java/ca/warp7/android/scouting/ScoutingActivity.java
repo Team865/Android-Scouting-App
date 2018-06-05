@@ -30,6 +30,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * The Scouting Activity -- responsible for navigation,
+ * Setting up the interface, and receive actions from inputs
+ */
 
 public class ScoutingActivity
         extends AppCompatActivity
@@ -51,18 +55,15 @@ public class ScoutingActivity
 
     private ViewPager mPager;
 
-    private int mTimer = 0;
-    private int mCurrentTab = 0;
-    private int mLastRecordedTime = -1;
-    private int mStartingTimestamp;
-
     private Specs mSpecs;
     private Encoder mEncoder;
 
     private ArrayList<Specs.Layout> mLayouts;
 
-    private final Animation animate_in = new AlphaAnimation(0.0f, 1.0f);
-    private final Animation animate_out = new AlphaAnimation(1.0f, 0.0f);
+    private int mTimer = 0;
+    private int mCurrentTab = 0;
+    private int mLastRecordedTime = -1;
+    private int mStartingTimestamp;
 
     private Runnable mTimerUpdater = new Runnable() {
         @Override
@@ -80,6 +81,9 @@ public class ScoutingActivity
             }
         }
     };
+
+    private final Animation animate_in = new AlphaAnimation(0.0f, 1.0f);
+    private final Animation animate_out = new AlphaAnimation(1.0f, 0.0f);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,12 +243,16 @@ public class ScoutingActivity
         mTimeSeeker.setProgress(0);
         mTimeSeeker.setOnSeekBarChangeListener(this);
 
-        String a = mSpecs.getAlliance();
+        String alliance = mSpecs.getAlliance();
 
         myToolBar.setTitleTextColor(
-                a.equals("R") ? 0xFFFF0000 : a.equals("B") ? 0xFF0000FF : 0xFF808080);
+                alliance.equals("R") ? kRedAllianceColour :
+                        (alliance.equals("B") ? kBlueAllianceColour : kNeutralAllianceColour));
 
         myToolBar.setSubtitleTextColor(getResources().getColor(R.color.colorAlmostBlack));
+
+        animate_in.setDuration(kFadeDuration);
+        animate_out.setDuration(kFadeDuration);
     }
 
     private void setupValuesFromIntent() {
@@ -261,6 +269,8 @@ public class ScoutingActivity
         } else {
             mActionBar.setTitle(mSpecs.getBoardName());
         }
+        pushStatus("...");
+
         mEncoder = new Encoder(matchNumber, teamNumber, scoutName);
 
     }
@@ -295,9 +305,6 @@ public class ScoutingActivity
     }
 
     private void setAnimatedTitleBanner(final String title) {
-
-        animate_in.setDuration(100);
-        animate_out.setDuration(100);
 
         if (!mTitleBanner.getText().toString().isEmpty()) {
             animate_out.setAnimationListener(new Animation.AnimationListener() {
@@ -346,24 +353,25 @@ public class ScoutingActivity
     }
 
     private void updateTimerStatusAndSeeker() {
+
         String d;
 
-        int time = mTimer <= 15 ? 15 - mTimer : 150 - mTimer;
-        if (mTimer < 150) {
+        int time = mTimer <= kAutonomousTime ? kAutonomousTime - mTimer : kTimerLimit - mTimer;
+
+        if (mTimer < kTimerLimit) {
             d = String.valueOf(time);
             mTimerStatus.setTypeface(null, Typeface.NORMAL);
         } else {
-            d = "FIN";
+            d = kFinished;
             mTimerStatus.setTypeface(null, Typeface.BOLD);
         }
 
         String status = new String(new char[3 - d.length()]).replace("\0", "0") + d;
 
         mTimerStatus.setText(status);
-        mTimerStatus.setTextColor(mTimer <= 15 ?
-                0xFFCC9900 : (mTimer <= 120 ?
-                0xFF006633 : (mTimer < 150 ?
-                0xFFFF9900 : 0xFFFF0000)));
+        mTimerStatus.setTextColor(mTimer <= kAutonomousTime ?
+                kAutonomousColour : mTimer < kTimerLimit ?
+                kTeleOpColour : kFinishedColour);
 
         mTimeProgress.setProgress(mTimer);
         mTimeSeeker.setProgress(mTimer);
@@ -400,8 +408,6 @@ public class ScoutingActivity
 
                 int white = getResources().getColor(R.color.colorPrimary);
 
-                //starting: 0xFFBBFFEE
-
                 toolbar.setBackgroundColor(white);
 
                 mTimerUpdater.run();
@@ -426,13 +432,13 @@ public class ScoutingActivity
         }
     }
 
+
     private class InputTabsPagerAdapter
             extends FragmentPagerAdapter {
 
         InputTabsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
 
         @Override
         public Fragment getItem(int position) {
@@ -445,9 +451,21 @@ public class ScoutingActivity
         }
     }
 
+
     enum ActivityState {
         STARTING, SCOUTING, PAUSING
     }
 
+
     static final int kTimerLimit = 150;
+    static final int kAutonomousTime = 15;
+    static final String kFinished = "FIN";
+    static final int kFadeDuration = 100;
+
+    static final int kBlueAllianceColour = 0xFF0000FF;
+    static final int kRedAllianceColour = 0xFFFF0000;
+    static final int kNeutralAllianceColour = 0xFF808080;
+    static final int kAutonomousColour = 0xFFCC9900;
+    static final int kTeleOpColour = 0xFF006633;
+    static final int kFinishedColour = 0xFFFF0000;
 }
