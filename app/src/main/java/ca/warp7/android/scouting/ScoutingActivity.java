@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -47,9 +46,7 @@ public class ScoutingActivity
     private TextView mTimerStatus;
     private ProgressBar mTimeProgress;
     private SeekBar mTimeSeeker;
-    private ConstraintLayout mNavToolBox;
 
-    private ImageButton mNavBack, mNavForward;
     private ImageButton mPlayPause;
     private ImageButton mUndoSkip;
 
@@ -216,7 +213,7 @@ public class ScoutingActivity
 
     @Override
     public void pushStatus(String status) {
-        //mActionBar.setSubtitle(status.replace("{t}", String.valueOf(mTimer)));
+        mActionBar.setSubtitle(status.replace("{t}", String.valueOf(mTimer)));
     }
 
     private void setupUI(){
@@ -236,13 +233,8 @@ public class ScoutingActivity
         mTimeProgress = findViewById(R.id.time_progress);
         mTimeSeeker = findViewById(R.id.time_seeker);
 
-        mNavBack = findViewById(R.id.nav_back);
-        mNavForward = findViewById(R.id.nav_forward);
-
         mPlayPause = findViewById(R.id.play_pause);
         mUndoSkip = findViewById(R.id.undo_skip);
-
-        mNavToolBox = findViewById(R.id.nav_toolbox);
 
         mTimeProgress.setMax(kTimerLimit);
         mTimeProgress.setProgress(0);
@@ -393,17 +385,12 @@ public class ScoutingActivity
                 mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
                 mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
 
-                mNavBack.setVisibility(View.VISIBLE);
-                mNavForward.setVisibility(View.VISIBLE);
                 mTimeSeeker.setVisibility(View.VISIBLE);
                 mTimeProgress.setVisibility(View.GONE);
 
                 int yellow = getResources().getColor(R.color.colorReviewYellow);
 
                 toolbar.setBackgroundColor(yellow);
-                mNavToolBox.setBackgroundColor(yellow);
-                mPager.setBackgroundColor(yellow);
-                mTitleBanner.setText("");
 
                 break;
 
@@ -413,18 +400,14 @@ public class ScoutingActivity
                 mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
                 mUndoSkip.setImageResource(R.drawable.ic_undo);
 
-                mNavBack.setVisibility(View.INVISIBLE);
-                mNavForward.setVisibility(View.INVISIBLE);
                 mTimeSeeker.setVisibility(View.GONE);
                 mTimeProgress.setVisibility(View.VISIBLE);
 
                 int white = getResources().getColor(R.color.colorPrimary);
 
-                toolbar.setBackgroundColor(white);
-                mNavToolBox.setBackgroundColor(white);
-                mPager.setBackgroundColor(white);
+                //starting: 0xFFBBFFEE
 
-                mTitleBanner.setText(mLayouts.get(mCurrentTab).getTitle());
+                toolbar.setBackgroundColor(white);
 
                 mTimerUpdater.run();
 
@@ -445,20 +428,6 @@ public class ScoutingActivity
                 break;
             case PAUSING: // Skip button
                 break;
-        }
-    }
-
-    public void onNavBackClicked(View view){
-        if (mTimer > 0) {
-            mTimer--;
-            updateTimerStatusAndSeeker();
-        }
-    }
-
-    public void onNavForwardClicked(View view){
-        if (mTimer < kTimerLimit) {
-            mTimer++;
-            updateTimerStatusAndSeeker();
         }
     }
 

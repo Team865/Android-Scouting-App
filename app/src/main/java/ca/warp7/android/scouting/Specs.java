@@ -81,6 +81,8 @@ final class Specs {
                 t == (m < matchSchedule.size() && m >= 0 ? matchSchedule.get(m) : -1);
     }
 
+    @Deprecated
+    @SuppressWarnings("unused")
     int getTimer() {
         return timer;
     }
