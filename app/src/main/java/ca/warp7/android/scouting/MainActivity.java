@@ -157,7 +157,7 @@ public class MainActivity
 
         // Start Auto Activity
 
-        if(!Specs.hasInstance()){
+        if (!Specs.hasInstance()) {
             return;
         }
 

@@ -69,7 +69,7 @@ public class ScoutingActivity
         @Override
         public void run() {
 
-            if (mActivityState != ActivityState.SCOUTING){
+            if (mActivityState != ActivityState.SCOUTING) {
                 return; // Check if activity is paused
             }
 
@@ -86,22 +86,19 @@ public class ScoutingActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Specs.setInstance(getIntent().getStringExtra(ID.xMSG_SPECS_FILE));
         mSpecs = Specs.getInstance();
 
-        if (mSpecs == null) {
-            super.onBackPressed();
-            return;
+        if (mSpecs == null) { // Fixes singlet not loaded issue
+            Specs.setInstance(getIntent().getStringExtra(ID.xMSG_SPECS_FILE));
+            mSpecs = Specs.getInstance();
         }
 
         mLayouts = mSpecs.getLayouts();
-
         mTimeHandler = new Handler();
         mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         setupUI();
         setupValuesFromIntent();
-
         setupPager();
         updateLayout();
 
@@ -171,7 +168,7 @@ public class ScoutingActivity
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (fromUser && mActivityState == ActivityState.PAUSING){
+        if (fromUser && mActivityState == ActivityState.PAUSING) {
             mTimer = progress;
             updateTimerStatusAndSeeker();
         }
@@ -216,7 +213,7 @@ public class ScoutingActivity
         mActionBar.setSubtitle(status.replace("{t}", String.valueOf(mTimer)));
     }
 
-    private void setupUI(){
+    private void setupUI() {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_scouting);
 
@@ -270,7 +267,7 @@ public class ScoutingActivity
     }
 
     @SuppressWarnings("unused")
-    private void setupPager(){
+    private void setupPager() {
 
         mPager = findViewById(R.id.pager);
 
@@ -331,11 +328,11 @@ public class ScoutingActivity
 
     }
 
-    private void updateLayout(){
+    private void updateLayout() {
 
         if (!mLayouts.isEmpty() && mCurrentTab >= 0 && mCurrentTab < mLayouts.size()) {
 
-            switch (mActivityState){
+            switch (mActivityState) {
                 case SCOUTING:
                     setAnimatedTitleBanner(mLayouts.get(mCurrentTab).getTitle());
                     break;
@@ -415,8 +412,8 @@ public class ScoutingActivity
         }
     }
 
-    public void onUndoSkipClicked(View view){
-        switch (mActivityState){
+    public void onUndoSkipClicked(View view) {
+        switch (mActivityState) {
             case SCOUTING: // Undo button
                 Specs.DataConstant dc = mEncoder.undo();
                 if (dc == null) {

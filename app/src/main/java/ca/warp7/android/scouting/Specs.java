@@ -34,7 +34,7 @@ final class Specs {
     private ArrayList<Layout> layouts = new ArrayList<>();
 
 
-    private Specs(String json) throws JSONException{
+    private Specs(String json) throws JSONException {
 
         JSONObject specs_json = new JSONObject(json);
 
@@ -45,30 +45,30 @@ final class Specs {
         timer = specs_json.optInt(TIMER, 150);
         alliance = specs_json.optString(ALLIANCE, "N");
 
-        if(specs_json.has(MATCH_SCHEDULE)){
+        if (specs_json.has(MATCH_SCHEDULE)) {
             JSONArray schedule = specs_json.getJSONArray(MATCH_SCHEDULE);
-            for(int i = 0; i < schedule.length(); i++) {
+            for (int i = 0; i < schedule.length(); i++) {
                 matchSchedule.add(schedule.getInt(i));
             }
         }
 
-        if(specs_json.has(CONSTANTS)){
+        if (specs_json.has(CONSTANTS)) {
             JSONArray constants = specs_json.getJSONArray(CONSTANTS);
-            for (int i = 0; i < constants.length(); i++){
+            for (int i = 0; i < constants.length(); i++) {
                 dataConstants.add(new DataConstant(i, constants.getJSONObject(i)));
             }
         }
 
-        if(specs_json.has(LAYOUT)){
+        if (specs_json.has(LAYOUT)) {
             JSONArray layoutsArray = specs_json.getJSONArray(LAYOUT);
-            for (int i = 0; i < layoutsArray.length(); i++){
+            for (int i = 0; i < layoutsArray.length(); i++) {
                 layouts.add(new Layout(layoutsArray.getJSONObject(i)));
             }
         }
     }
 
 
-    boolean hasMatchSchedule(){
+    boolean hasMatchSchedule() {
         return !matchSchedule.isEmpty();
     }
 
@@ -95,7 +95,7 @@ final class Specs {
         return boardName;
     }
 
-    String getEvent(){
+    String getEvent() {
         return event.isEmpty() ? "No Event" : event;
     }
 
@@ -104,7 +104,7 @@ final class Specs {
     }
 
 
-    DataConstant getDataConstantByIndex(int id){
+    DataConstant getDataConstantByIndex(int id) {
         return dataConstants.get(id);
     }
 
@@ -208,7 +208,7 @@ final class Specs {
                 DURATION = 4;
 
 
-        private static int toIntegerType(String type){
+        private static int toIntegerType(String type) {
             switch (type) {
                 case DataConstant.T_TIMESTAMP:
                     return DataConstant.TIMESTAMP;
@@ -261,11 +261,11 @@ final class Specs {
 
             type = data.has(C_TYPE) ? toIntegerType(data.getString(C_TYPE)) : -1;
 
-            if (data.has(C_CHOICES)){
+            if (data.has(C_CHOICES)) {
                 JSONArray ca = data.getJSONArray(C_CHOICES);
                 choices = new String[ca.length()];
 
-                for (int i = 0; i < choices.length; i++){
+                for (int i = 0; i < choices.length; i++) {
                     choices[i] = ca.getString(i);
                 }
 
@@ -306,8 +306,8 @@ final class Specs {
             return choices;
         }
 
-        String format(int v){
-            switch (type){
+        String format(int v) {
+            switch (type) {
                 case TIMESTAMP:
                 case DURATION:
                     return v + " s";
@@ -338,7 +338,7 @@ final class Specs {
         ArrayList<String> identifiers = new ArrayList<>();
 
 
-        Index(File file){
+        Index(File file) {
             try {
                 JSONObject index = new JSONObject(readFile(file));
 
@@ -346,13 +346,13 @@ final class Specs {
                 JSONArray names = index.getJSONArray("names");
                 JSONArray ids = index.getJSONArray("identifiers");
 
-                for(int i = 0; i < ids.length(); i++){
+                for (int i = 0; i < ids.length(); i++) {
                     this.files.add(files.getString(i));
                     this.names.add(names.getString(i));
                     this.identifiers.add(ids.getString(i));
                 }
 
-            } catch (IOException | JSONException e){
+            } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -366,7 +366,7 @@ final class Specs {
         }
     }
 
-    static final class Layout{
+    static final class Layout {
 
         String title;
 

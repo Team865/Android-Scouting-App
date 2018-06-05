@@ -96,14 +96,14 @@ public class DataOutputActivity
 
     public void onSendQRClicked(View view) {
 
-        if(qrShown){
+        if (qrShown) {
 
             qrShown = false;
             swapButton.setText(R.string.send_show_qr);
             qrView.setVisibility(View.INVISIBLE);
             findViewById(R.id.scroll).setVisibility(View.VISIBLE);
 
-        }else {
+        } else {
 
             qrShown = true;
             swapButton.setText(R.string.send_show_report);
@@ -148,10 +148,10 @@ public class DataOutputActivity
         return bitmap;
     }
 
-    private void makeQR(){
+    private void makeQR() {
         try {
             qrView.setImageBitmap(encodeAsBitmap());
-        } catch (WriterException e){
+        } catch (WriterException e) {
             e.printStackTrace();
         }
     }

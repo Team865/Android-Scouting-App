@@ -57,20 +57,20 @@ final class Encoder {
         return null;
     }
 
-    int getCount(int t){
+    int getCount(int t) {
         int total = 0;
-        for (Datum d : dataStack){
-            if (d.getType() == t && d.getUndoFlag() == 0){
+        for (Datum d : dataStack) {
+            if (d.getType() == t && d.getUndoFlag() == 0) {
                 total++;
             }
         }
         return total;
     }
 
-    int getLastValue(int t, int defaultValue){
-        for (int i = dataStack.size() - 1; i >= 0; i--){
+    int getLastValue(int t, int defaultValue) {
+        for (int i = dataStack.size() - 1; i >= 0; i--) {
             Datum d = dataStack.get(i);
-            if (d.getType() == t && d.getUndoFlag() == 0){
+            if (d.getType() == t && d.getUndoFlag() == 0) {
                 return d.getValue();
             }
         }
@@ -97,7 +97,7 @@ final class Encoder {
         return sb.toString();
     }
 
-    String encode(){
+    String encode() {
         return head() + "_" + dataCode();
     }
 
@@ -144,7 +144,7 @@ final class Encoder {
 
             int t = d.getType();
 
-            if(specs.hasIndexInConstants(t)){
+            if (specs.hasIndexInConstants(t)) {
                 Specs.DataConstant dc = specs.getDataConstantByIndex(t);
                 sb
                         .append(formatLeft(dc.getLogTitle() +

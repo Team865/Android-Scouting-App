@@ -46,7 +46,7 @@ public class InputsFragment
         int tabNumber = getArguments() != null ? getArguments().getInt("tab") : -1;
 
         specs = Specs.getInstance();
-        if (specs == null){
+        if (specs == null) {
             Activity activity = getActivity();
             if (activity != null) {
                 Specs.setInstance(activity.getIntent().getStringExtra(ID.xMSG_SPECS_FILE));
