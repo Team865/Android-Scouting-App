@@ -64,7 +64,7 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        prefs = this.getSharedPreferences(ID.ROOT_DOMAIN, MODE_PRIVATE);
+        prefs = this.getSharedPreferences(ID.ROOT, MODE_PRIVATE);
 
         ensurePermissions();
         setupUI();
@@ -172,7 +172,7 @@ public class MainActivity
 
         intent.putExtra(ID.MSG_SCOUT_NAME, name);
 
-        intent.putExtra(ID.xMSG_SPECS_FILE, mPassedSpecsFile);
+        intent.putExtra(ID.MSG_SPECS_FILE, mPassedSpecsFile);
 
         startActivity(intent);
 
@@ -378,8 +378,5 @@ public class MainActivity
     private boolean matchDoesExist(String m, String t) {
         return Specs.getInstance().matchIsInSchedule
                 (Integer.parseInt(m) - 1, Integer.parseInt(t));
-    }
-
-    public void x_$0_4(View x_args) {
     }
 }

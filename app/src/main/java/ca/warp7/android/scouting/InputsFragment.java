@@ -49,7 +49,7 @@ public class InputsFragment
         if (specs == null) {
             Activity activity = getActivity();
             if (activity != null) {
-                Specs.setInstance(activity.getIntent().getStringExtra(ID.xMSG_SPECS_FILE));
+                Specs.setInstance(activity.getIntent().getStringExtra(ID.MSG_SPECS_FILE));
                 specs = Specs.getInstance();
             }
         }

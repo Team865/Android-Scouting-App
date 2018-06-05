@@ -47,8 +47,7 @@ public class ScoutingActivity
     private ProgressBar mTimeProgress;
     private SeekBar mTimeSeeker;
 
-    private ImageButton mPlayPause;
-    private ImageButton mUndoSkip;
+    private ImageButton mPlayPause, mUndoSkip;
 
     private ViewPager mPager;
 
@@ -89,7 +88,7 @@ public class ScoutingActivity
         mSpecs = Specs.getInstance();
 
         if (mSpecs == null) { // Fixes singlet not loaded issue
-            Specs.setInstance(getIntent().getStringExtra(ID.xMSG_SPECS_FILE));
+            Specs.setInstance(getIntent().getStringExtra(ID.MSG_SPECS_FILE));
             mSpecs = Specs.getInstance();
         }
 
@@ -266,7 +265,6 @@ public class ScoutingActivity
 
     }
 
-    @SuppressWarnings("unused")
     private void setupPager() {
 
         mPager = findViewById(R.id.pager);
