@@ -47,8 +47,11 @@ public class ScoutingActivity
     private Vibrator mVibrator;
 
     private ActionBar mActionBar;
+    private Toolbar mToolbar;
+
     private TextView mTitleBanner;
     private TextView mTimerStatus;
+
     private ProgressBar mTimeProgress;
     private SeekBar mTimeSeeker;
 
@@ -223,10 +226,12 @@ public class ScoutingActivity
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_scouting);
 
-        Toolbar myToolBar = findViewById(R.id.my_toolbar);
-        myToolBar.setNavigationIcon(R.drawable.ic_close);
-        myToolBar.setNavigationContentDescription(R.string.menu_close);
-        setSupportActionBar(myToolBar);
+        mToolbar = findViewById(R.id.my_toolbar);
+
+        mToolbar.setNavigationIcon(R.drawable.ic_close);
+        mToolbar.setNavigationContentDescription(R.string.menu_close);
+
+        setSupportActionBar(mToolbar);
 
         mActionBar = getSupportActionBar();
 
@@ -248,11 +253,11 @@ public class ScoutingActivity
 
         String alliance = mSpecs.getAlliance();
 
-        myToolBar.setTitleTextColor(
+        mToolbar.setTitleTextColor(
                 alliance.equals("R") ? kRedAllianceColour :
                         (alliance.equals("B") ? kBlueAllianceColour : kNeutralAllianceColour));
 
-        myToolBar.setSubtitleTextColor(getResources().getColor(R.color.colorAlmostBlack));
+        mToolbar.setSubtitleTextColor(getResources().getColor(R.color.colorAlmostBlack));
 
         animate_in.setDuration(kFadeDuration);
         animate_out.setDuration(kFadeDuration);
@@ -340,14 +345,7 @@ public class ScoutingActivity
 
         if (!mLayouts.isEmpty() && mCurrentTab >= 0 && mCurrentTab < mLayouts.size()) {
 
-            switch (mActivityState) {
-                case SCOUTING:
-                    setAnimatedTitleBanner(mLayouts.get(mCurrentTab).getTitle());
-                    break;
-                case PAUSING:
-                    break;
-            }
-
+            setAnimatedTitleBanner(mLayouts.get(mCurrentTab).getTitle());
 
             if (mPager.getCurrentItem() != mCurrentTab) {
                 mPager.setCurrentItem(mCurrentTab, true);
@@ -380,28 +378,11 @@ public class ScoutingActivity
         mTimeSeeker.setProgress(mTimer);
     }
 
-    public void onPlayPauseClicked(View view) {
-
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
+    private void setActivityState(ActivityState state) {
+        mActivityState = state;
 
         switch (mActivityState) {
-            case SCOUTING: // Pause button
-                mActivityState = ActivityState.PAUSING;
-
-                mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
-                mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
-
-                mTimeSeeker.setVisibility(View.VISIBLE);
-                mTimeProgress.setVisibility(View.GONE);
-
-                int yellow = getResources().getColor(R.color.colorReviewYellow);
-
-                toolbar.setBackgroundColor(yellow);
-
-                break;
-
-            case PAUSING: // Play button
-                mActivityState = ActivityState.SCOUTING;
+            case SCOUTING:
 
                 mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
                 mUndoSkip.setImageResource(R.drawable.ic_undo);
@@ -411,10 +392,37 @@ public class ScoutingActivity
 
                 int white = getResources().getColor(R.color.colorPrimary);
 
-                toolbar.setBackgroundColor(white);
+                mToolbar.setBackgroundColor(white);
 
                 mTimerUpdater.run();
 
+                break;
+
+            case PAUSING:
+                mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
+                mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
+
+                mTimeSeeker.setVisibility(View.VISIBLE);
+                mTimeProgress.setVisibility(View.GONE);
+
+                int yellow = getResources().getColor(R.color.colorReviewYellow);
+
+                mToolbar.setBackgroundColor(yellow);
+
+                break;
+
+        }
+    }
+
+    public void onPlayPauseClicked(View view) {
+
+        switch (mActivityState) {
+            case SCOUTING: // Pause button
+                setActivityState(ActivityState.PAUSING);
+                break;
+
+            case PAUSING: // Play button
+                setActivityState(ActivityState.SCOUTING);
                 break;
         }
     }
@@ -430,25 +438,13 @@ public class ScoutingActivity
                     mVibrator.vibrate(20);
                 }
                 break;
+
             case PAUSING: // Skip button
 
                 int currentTime = (int) (System.currentTimeMillis() / 1000);
                 mTimer = (currentTime - mStartingTimestamp) % (kTimerLimit + 1);
-                Log.e("mTimerCurrent", String.valueOf(currentTime));
-                Log.e("mTimerStarting", String.valueOf(mStartingTimestamp));
-                mActivityState = ActivityState.SCOUTING;
 
-                mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
-                mUndoSkip.setImageResource(R.drawable.ic_undo);
-
-                mTimeSeeker.setVisibility(View.GONE);
-                mTimeProgress.setVisibility(View.VISIBLE);
-
-                int white = getResources().getColor(R.color.colorPrimary);
-
-                findViewById(R.id.my_toolbar).setBackgroundColor(white);
-
-                mTimerUpdater.run();
+                setActivityState(ActivityState.SCOUTING);
 
                 break;
         }
