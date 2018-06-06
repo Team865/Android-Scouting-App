@@ -64,7 +64,7 @@ public class ScoutingActivity
     private int mTimer = 0;
     private int mCurrentTab = 0;
     private int mLastRecordedTime = -1;
-    private int mStartingTimestamp;
+    private int mStartingTimestamp = 0;
 
     private Runnable mTimerUpdater = new Runnable() {
         @Override
@@ -91,17 +91,10 @@ public class ScoutingActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSpecs = Specs.getInstance();
-
-        if (mSpecs == null) { // Fixes singlet not loaded issue
-            Specs.setInstance(getIntent().getStringExtra(ID.MSG_SPECS_FILE));
-            mSpecs = Specs.getInstance();
-        }
-
-        mLayouts = mSpecs.getLayouts();
         mTimeHandler = new Handler();
         mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+        setupSpecs();
         setupUI();
         setupNavigationSliders();
         setupValuesFromIntent();
@@ -116,7 +109,8 @@ public class ScoutingActivity
         }
 
         mVibrator.vibrate(kStartVibration, -1);
-        setActivityState(ActivityState.SCOUTING); // Start Scouting
+
+        startActivityState(ActivityState.SCOUTING); // Start Scouting
     }
 
     @Override
@@ -204,6 +198,25 @@ public class ScoutingActivity
         mActionBar.setSubtitle(status.replace("{t}", String.valueOf(mTimer)));
     }
 
+    /**
+     * Set up fields from specs
+     */
+
+    private void setupSpecs(){
+        mSpecs = Specs.getInstance();
+
+        if (mSpecs == null) { // Fixes singlet not loaded issue
+            Specs.setInstance(getIntent().getStringExtra(ID.MSG_SPECS_FILE));
+            mSpecs = Specs.getInstance();
+        }
+
+        mLayouts = mSpecs.getLayouts();
+    }
+
+    /**
+     * Set misc view fields
+     */
+
     private void setupUI() {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_scouting);
@@ -234,6 +247,10 @@ public class ScoutingActivity
         animate_in.setDuration(kFadeDuration);
         animate_out.setDuration(kFadeDuration);
     }
+
+    /**
+     *  Set up the progress/seek bars
+     *  */
 
     private void setupNavigationSliders() {
 
@@ -268,6 +285,10 @@ public class ScoutingActivity
 
     }
 
+    /**
+     * Get values from intent(except specs) and initialize the encoder
+     */
+
     private void setupValuesFromIntent() {
         Intent intent = getIntent();
 
@@ -288,6 +309,10 @@ public class ScoutingActivity
         mEncoder = new Encoder(matchNumber, teamNumber, scoutName);
 
     }
+
+    /**
+     * Sets up the pager with adapters and event listeners
+     */
 
     private void setupPager() {
 
@@ -318,8 +343,12 @@ public class ScoutingActivity
         });
     }
 
+    /**
+     * Sets the current activity state and update views and timer
+     * @param state the activity state to start
+     */
 
-    private void setActivityState(ActivityState state) {
+    private void startActivityState(ActivityState state) {
         mActivityState = state;
 
         switch (mActivityState) {
@@ -355,6 +384,11 @@ public class ScoutingActivity
         }
     }
 
+    /**
+     * Change the Title Banner with a fade in/fade out animation
+     * @param title the title to change
+     */
+
     private void setAnimatedTitleBanner(final String title) {
 
         if (!mTitleBanner.getText().toString().isEmpty()) {
@@ -384,6 +418,10 @@ public class ScoutingActivity
 
     }
 
+    /**
+     * Updates the current tab as well as the title banner
+     */
+
     private void updateLayout() {
 
         if (!mLayouts.isEmpty() && mCurrentTab >= 0 && mCurrentTab < mLayouts.size()) {
@@ -395,6 +433,10 @@ public class ScoutingActivity
             }
         }
     }
+
+    /**
+     * Reflect the value of mTimer on the timer view and seek bars
+     */
 
     private void updateTimerStatusAndSeeker() {
 
@@ -421,18 +463,26 @@ public class ScoutingActivity
         mTimeSeeker.setProgress(mTimer);
     }
 
+    /**
+     * Event Handler for the play/pause button, which updates the activity state
+     */
+
     public void onPlayPauseClicked(View view) {
 
         switch (mActivityState) {
             case SCOUTING: // Pause button
-                setActivityState(ActivityState.PAUSING);
+                startActivityState(ActivityState.PAUSING);
                 break;
 
             case PAUSING: // Play button
-                setActivityState(ActivityState.SCOUTING);
+                startActivityState(ActivityState.SCOUTING);
                 break;
         }
     }
+
+    /**
+     * Event Handler for the undo/skip button
+     */
 
     public void onUndoSkipClicked(View view) {
         switch (mActivityState) {
@@ -451,12 +501,15 @@ public class ScoutingActivity
                 int currentTime = (int) (System.currentTimeMillis() / 1000);
                 mTimer = (currentTime - mStartingTimestamp) % (kTimerLimit + 1);
 
-                setActivityState(ActivityState.SCOUTING);
+                startActivityState(ActivityState.SCOUTING);
 
                 break;
         }
     }
 
+    /**
+     * Adapter that returns the proper fragment as pages are navigated
+     */
 
     private class InputTabsPagerAdapter
             extends FragmentPagerAdapter {
