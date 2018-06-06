@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -108,9 +109,11 @@ public class ScoutingActivity
         mVibrator.vibrate(new long[]{0, 35, 30, 35}, -1);
 
         if (savedInstanceState == null) {
-            mStartingTimestamp = (int) (System.currentTimeMillis() / 100);
+            mStartingTimestamp = (int) (System.currentTimeMillis() / 1000);
+            Log.e("IS", "Loaded timestamp from Now: " + mStartingTimestamp);
         } else {
             mStartingTimestamp = savedInstanceState.getInt(ID.INSTANCE_STATE_START_TIME);
+            Log.e("IS", "Loaded timestamp from IS: " + mStartingTimestamp);
         }
         mTimerUpdater.run();
     }
@@ -382,7 +385,7 @@ public class ScoutingActivity
         Toolbar toolbar = findViewById(R.id.my_toolbar);
 
         switch (mActivityState) {
-            case SCOUTING:
+            case SCOUTING: // Pause button
                 mActivityState = ActivityState.PAUSING;
 
                 mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
@@ -397,7 +400,7 @@ public class ScoutingActivity
 
                 break;
 
-            case PAUSING:
+            case PAUSING: // Play button
                 mActivityState = ActivityState.SCOUTING;
 
                 mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
@@ -428,6 +431,25 @@ public class ScoutingActivity
                 }
                 break;
             case PAUSING: // Skip button
+
+                int currentTime = (int) (System.currentTimeMillis() / 1000);
+                mTimer = (currentTime - mStartingTimestamp) % (kTimerLimit + 1);
+                Log.e("mTimerCurrent", String.valueOf(currentTime));
+                Log.e("mTimerStarting", String.valueOf(mStartingTimestamp));
+                mActivityState = ActivityState.SCOUTING;
+
+                mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
+                mUndoSkip.setImageResource(R.drawable.ic_undo);
+
+                mTimeSeeker.setVisibility(View.GONE);
+                mTimeProgress.setVisibility(View.VISIBLE);
+
+                int white = getResources().getColor(R.color.colorPrimary);
+
+                findViewById(R.id.my_toolbar).setBackgroundColor(white);
+
+                mTimerUpdater.run();
+
                 break;
         }
     }
@@ -452,6 +474,9 @@ public class ScoutingActivity
     }
 
 
+    /**
+     * Stages/states of the activity to trigger different behaviours
+     */
     enum ActivityState {
         STARTING, SCOUTING, PAUSING
     }
