@@ -88,6 +88,7 @@
             android:layout_marginRight="16dp"
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/layout_error"
+            android:onClick="onStartScouting"
             android:padding="4dp"
             android:src="@drawable/ic_play_circle_outline_accent"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -110,7 +110,7 @@ public class ScoutingActivity
 
         mVibrator.vibrate(kStartVibration, -1);
 
-        startActivityState(ActivityState.SCOUTING); // Start Scouting
+        startActivityState(ActivityState.STARTING); // Start Scouting
     }
 
     @Override
@@ -304,7 +304,7 @@ public class ScoutingActivity
             mActionBar.setTitle(mSpecs.getBoardName());
         }
 
-        pushStatus("Match Started");
+        pushStatus("Scouting");
 
         mEncoder = new Encoder(matchNumber, teamNumber, scoutName);
 
@@ -470,6 +470,15 @@ public class ScoutingActivity
 
         mTimeProgress.setProgress(mTimer);
         mTimeSeeker.setProgress(mTimer);
+    }
+
+    /**
+     * Handles start of entry. Only called once
+     */
+
+    public void onStartScouting(View view){
+        startActivityState(ActivityState.SCOUTING);
+        pushStatus("Timer Started");
     }
 
     /**
