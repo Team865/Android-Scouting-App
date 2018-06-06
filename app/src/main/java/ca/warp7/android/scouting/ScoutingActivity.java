@@ -352,6 +352,15 @@ public class ScoutingActivity
         mActivityState = state;
 
         switch (mActivityState) {
+            case STARTING:
+                // Add more stuff here
+
+                int blue = getResources().getColor(R.color.colorStartBlue);
+
+                mToolbar.setBackgroundColor(blue);
+
+                break;
+
             case SCOUTING:
 
                 mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
