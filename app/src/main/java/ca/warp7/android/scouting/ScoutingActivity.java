@@ -52,7 +52,7 @@ public class ScoutingActivity
     private ProgressBar mTimeProgress;
     private SeekBar mTimeSeeker;
 
-    private ImageButton mPlayPause, mUndoSkip;
+    private ImageButton mStart, mPlayPause, mUndoSkip;
 
     private ViewPager mPager;
 
@@ -233,6 +233,7 @@ public class ScoutingActivity
         mTitleBanner = findViewById(R.id.title_banner);
         mTimerStatus = findViewById(R.id.timer_status);
 
+        mStart = findViewById(R.id.start_timer);
         mPlayPause = findViewById(R.id.play_pause);
         mUndoSkip = findViewById(R.id.undo_skip);
 
@@ -304,7 +305,7 @@ public class ScoutingActivity
             mActionBar.setTitle(mSpecs.getBoardName());
         }
 
-        pushStatus("Scouting");
+        pushStatus("Scouting Started");
 
         mEncoder = new Encoder(matchNumber, teamNumber, scoutName);
 
@@ -358,10 +359,16 @@ public class ScoutingActivity
                 int blue = getResources().getColor(R.color.colorStartBlue);
 
                 mToolbar.setBackgroundColor(blue);
+                mPlayPause.setVisibility(View.GONE);
+                mUndoSkip.setVisibility(View.GONE);
 
                 break;
 
             case SCOUTING:
+
+                mPlayPause.setVisibility(View.VISIBLE);
+                mUndoSkip.setVisibility(View.VISIBLE);
+                mStart.setVisibility(View.GONE);
 
                 mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
                 mUndoSkip.setImageResource(R.drawable.ic_undo);
@@ -378,6 +385,11 @@ public class ScoutingActivity
                 break;
 
             case PAUSING:
+
+                mPlayPause.setVisibility(View.VISIBLE);
+                mUndoSkip.setVisibility(View.VISIBLE);
+                mStart.setVisibility(View.GONE);
+
                 mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
                 mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
 
@@ -477,6 +489,7 @@ public class ScoutingActivity
      */
 
     public void onStartScouting(View view){
+        mStartingTimestamp = (int) (System.currentTimeMillis() / 1000);
         startActivityState(ActivityState.SCOUTING);
         pushStatus("Timer Started");
     }
