@@ -15,9 +15,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,10 +36,9 @@ import java.util.ArrayList;
 
 public class ScoutingActivity
         extends AppCompatActivity
-        implements ScoutingActivityListener,
-        AppCompatSeekBar.OnSeekBarChangeListener {
+        implements ScoutingActivityListener {
 
-    private ActivityState mActivityState = ActivityState.SCOUTING;
+    private ActivityState mActivityState;
 
     private Handler mTimeHandler;
     private Vibrator mVibrator;
@@ -89,6 +86,7 @@ public class ScoutingActivity
     private final Animation animate_in = new AlphaAnimation(0.0f, 1.0f);
     private final Animation animate_out = new AlphaAnimation(1.0f, 0.0f);
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,20 +103,20 @@ public class ScoutingActivity
         mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         setupUI();
+        setupNavigationSliders();
         setupValuesFromIntent();
         setupPager();
         updateLayout();
 
-        mVibrator.vibrate(new long[]{0, 35, 30, 35}, -1);
 
         if (savedInstanceState == null) {
             mStartingTimestamp = (int) (System.currentTimeMillis() / 1000);
-            Log.e("IS", "Loaded timestamp from Now: " + mStartingTimestamp);
         } else {
             mStartingTimestamp = savedInstanceState.getInt(ID.INSTANCE_STATE_START_TIME);
-            Log.e("IS", "Loaded timestamp from IS: " + mStartingTimestamp);
         }
-        mTimerUpdater.run();
+
+        mVibrator.vibrate(kStartVibration, -1);
+        setActivityState(ActivityState.SCOUTING); // Start Scouting
     }
 
     @Override
@@ -176,22 +174,6 @@ public class ScoutingActivity
     }
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (fromUser && mActivityState == ActivityState.PAUSING) {
-            mTimer = progress;
-            updateTimerStatusAndSeeker();
-        }
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-    }
-
-    @Override
     public Handler getHandler() {
         return mTimeHandler;
     }
@@ -238,18 +220,8 @@ public class ScoutingActivity
         mTitleBanner = findViewById(R.id.title_banner);
         mTimerStatus = findViewById(R.id.timer_status);
 
-        mTimeProgress = findViewById(R.id.time_progress);
-        mTimeSeeker = findViewById(R.id.time_seeker);
-
         mPlayPause = findViewById(R.id.play_pause);
         mUndoSkip = findViewById(R.id.undo_skip);
-
-        mTimeProgress.setMax(kTimerLimit);
-        mTimeProgress.setProgress(0);
-
-        mTimeSeeker.setMax(kTimerLimit);
-        mTimeSeeker.setProgress(0);
-        mTimeSeeker.setOnSeekBarChangeListener(this);
 
         String alliance = mSpecs.getAlliance();
 
@@ -263,6 +235,39 @@ public class ScoutingActivity
         animate_out.setDuration(kFadeDuration);
     }
 
+    private void setupNavigationSliders() {
+
+        mTimeProgress = findViewById(R.id.time_progress);
+        mTimeSeeker = findViewById(R.id.time_seeker);
+
+        mTimeProgress.setMax(kTimerLimit);
+        mTimeProgress.setProgress(0);
+
+        mTimeSeeker.setMax(kTimerLimit);
+        mTimeSeeker.setProgress(0);
+
+        mTimeSeeker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser && mActivityState == ActivityState.PAUSING) {
+                    mTimer = progress;
+                    updateTimerStatusAndSeeker();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+    }
+
     private void setupValuesFromIntent() {
         Intent intent = getIntent();
 
@@ -273,11 +278,12 @@ public class ScoutingActivity
         String a = mSpecs.getAlliance();
 
         if (a.equals("R") || a.equals("B")) {
-            mActionBar.setTitle("Q " + matchNumber + " — " + teamNumber);
+            mActionBar.setTitle("Q" + matchNumber + " — " + teamNumber);
         } else {
             mActionBar.setTitle(mSpecs.getBoardName());
         }
-        pushStatus("...");
+
+        pushStatus("Match Started");
 
         mEncoder = new Encoder(matchNumber, teamNumber, scoutName);
 
@@ -310,6 +316,43 @@ public class ScoutingActivity
 
             }
         });
+    }
+
+
+    private void setActivityState(ActivityState state) {
+        mActivityState = state;
+
+        switch (mActivityState) {
+            case SCOUTING:
+
+                mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
+                mUndoSkip.setImageResource(R.drawable.ic_undo);
+
+                mTimeSeeker.setVisibility(View.GONE);
+                mTimeProgress.setVisibility(View.VISIBLE);
+
+                int white = getResources().getColor(R.color.colorPrimary);
+
+                mToolbar.setBackgroundColor(white);
+
+                mTimerUpdater.run();
+
+                break;
+
+            case PAUSING:
+                mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
+                mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
+
+                mTimeSeeker.setVisibility(View.VISIBLE);
+                mTimeProgress.setVisibility(View.GONE);
+
+                int yellow = getResources().getColor(R.color.colorReviewYellow);
+
+                mToolbar.setBackgroundColor(yellow);
+
+                break;
+
+        }
     }
 
     private void setAnimatedTitleBanner(final String title) {
@@ -363,7 +406,7 @@ public class ScoutingActivity
             d = String.valueOf(time);
             mTimerStatus.setTypeface(null, Typeface.NORMAL);
         } else {
-            d = kFinished;
+            d = "FIN";
             mTimerStatus.setTypeface(null, Typeface.BOLD);
         }
 
@@ -376,42 +419,6 @@ public class ScoutingActivity
 
         mTimeProgress.setProgress(mTimer);
         mTimeSeeker.setProgress(mTimer);
-    }
-
-    private void setActivityState(ActivityState state) {
-        mActivityState = state;
-
-        switch (mActivityState) {
-            case SCOUTING:
-
-                mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
-                mUndoSkip.setImageResource(R.drawable.ic_undo);
-
-                mTimeSeeker.setVisibility(View.GONE);
-                mTimeProgress.setVisibility(View.VISIBLE);
-
-                int white = getResources().getColor(R.color.colorPrimary);
-
-                mToolbar.setBackgroundColor(white);
-
-                mTimerUpdater.run();
-
-                break;
-
-            case PAUSING:
-                mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
-                mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
-
-                mTimeSeeker.setVisibility(View.VISIBLE);
-                mTimeProgress.setVisibility(View.GONE);
-
-                int yellow = getResources().getColor(R.color.colorReviewYellow);
-
-                mToolbar.setBackgroundColor(yellow);
-
-                break;
-
-        }
     }
 
     public void onPlayPauseClicked(View view) {
@@ -480,7 +487,6 @@ public class ScoutingActivity
 
     static final int kTimerLimit = 150;
     static final int kAutonomousTime = 15;
-    static final String kFinished = "FIN";
     static final int kFadeDuration = 100;
 
     static final int kBlueAllianceColour = 0xFF0000FF;
@@ -489,4 +495,6 @@ public class ScoutingActivity
     static final int kAutonomousColour = 0xFFCC9900;
     static final int kTeleOpColour = 0xFF006633;
     static final int kFinishedColour = 0xFFFF0000;
+
+    static final long[] kStartVibration = new long[]{0, 35, 30, 35};
 }
