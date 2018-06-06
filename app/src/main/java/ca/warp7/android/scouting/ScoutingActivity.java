@@ -64,6 +64,7 @@ public class ScoutingActivity
     private int mTimer = 0;
     private int mCurrentTab = 0;
     private int mLastRecordedTime = -1;
+    private int mLastPausedTime = -1;
     private int mStartingTimestamp = 0;
 
     private Runnable mTimerUpdater = new Runnable() {
@@ -101,9 +102,8 @@ public class ScoutingActivity
         setupPager();
         updateLayout();
 
-
         if (savedInstanceState == null) {
-            mStartingTimestamp = (int) (System.currentTimeMillis() / 1000);
+            mStartingTimestamp = getCurrentTime();
         } else {
             mStartingTimestamp = savedInstanceState.getInt(ID.INSTANCE_STATE_START_TIME);
         }
@@ -196,6 +196,10 @@ public class ScoutingActivity
     @Override
     public void pushStatus(String status) {
         mActionBar.setSubtitle(status.replace("{t}", String.valueOf(mTimer)));
+    }
+
+    private int getCurrentTime() {
+        return (int) (System.currentTimeMillis() / 1000);
     }
 
     /**
@@ -366,6 +370,10 @@ public class ScoutingActivity
 
             case SCOUTING:
 
+                if (mLastPausedTime == getCurrentTime()) {
+                    return; // Make sure there's only one timer
+                }
+
                 mPlayPause.setVisibility(View.VISIBLE);
                 mUndoSkip.setVisibility(View.VISIBLE);
                 mStart.setVisibility(View.GONE);
@@ -385,6 +393,8 @@ public class ScoutingActivity
                 break;
 
             case PAUSING:
+
+                mLastPausedTime = getCurrentTime();
 
                 mPlayPause.setVisibility(View.VISIBLE);
                 mUndoSkip.setVisibility(View.VISIBLE);
@@ -489,7 +499,7 @@ public class ScoutingActivity
      */
 
     public void onStartScouting(View view){
-        mStartingTimestamp = (int) (System.currentTimeMillis() / 1000);
+        mStartingTimestamp = getCurrentTime();
         startActivityState(ActivityState.SCOUTING);
         pushStatus("Timer Started");
     }
@@ -529,8 +539,7 @@ public class ScoutingActivity
 
             case PAUSING: // Skip button
 
-                int currentTime = (int) (System.currentTimeMillis() / 1000);
-                mTimer = (currentTime - mStartingTimestamp) % (kTimerLimit + 1);
+                mTimer = (getCurrentTime() - mStartingTimestamp) % (kTimerLimit + 1);
 
                 startActivityState(ActivityState.SCOUTING);
 
