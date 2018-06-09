@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+
 /**
  * The Scouting Activity -- responsible for navigation,
  * Setting up the interface, and receive actions from inputs
@@ -338,6 +339,7 @@ public class ScoutingActivity
 
         pushStatus("Scouting Started");
 
+        // Encoder uses specs so must ensure specs instance exists
         mEncoder = new Encoder(matchNumber, teamNumber, scoutName);
 
     }
@@ -518,7 +520,8 @@ public class ScoutingActivity
             mTimerStatus.setTypeface(null, Typeface.BOLD);
         }
 
-        String status = new String(new char[3 - d.length()]).replace("\0", "0") + d;
+        char[] placeholder = new char[kTotalTimerDigits - d.length()];
+        String status = new String(placeholder).replace("\0", "0") + d;
 
         mTimerStatus.setText(status);
         mTimerStatus.setTextColor(mTimer <= kAutonomousTime ?
@@ -624,6 +627,7 @@ public class ScoutingActivity
     static final int kTimerLimit = 150;
     static final int kAutonomousTime = 15;
     static final int kFadeDuration = 100;
+    static final int kTotalTimerDigits = 3;
 
     static final int kBlueAllianceColour = 0xFF0000FF;
     static final int kRedAllianceColour = 0xFFFF0000;
@@ -632,5 +636,5 @@ public class ScoutingActivity
     static final int kTeleOpColour = 0xFF006633;
     static final int kFinishedColour = 0xFFFF0000;
 
-    static final long[] kStartVibration = new long[]{0, 30, 30, 30};
+    static final long[] kStartVibration = new long[]{0, 20, 30, 20};
 }

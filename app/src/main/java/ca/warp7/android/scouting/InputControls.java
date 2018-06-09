@@ -258,7 +258,7 @@ class InputControls {
 
             String[] choices = dc.getChoices();
 
-            lastWhich = listener.getEncoder().getLastValue(dc.getIndex(), 0);
+            lastWhich = listener.getEncoder().getLastValue(dc.getIndex());
 
             setText(choices[lastWhich]);
         }
@@ -358,7 +358,7 @@ class InputControls {
 
             setMax(dc.getMax());
 
-            lastProgress = listener.getEncoder().getLastValue(dc.getIndex(), 0);
+            lastProgress = listener.getEncoder().getLastValue(dc.getIndex());
             setProgress(lastProgress);
 
         }

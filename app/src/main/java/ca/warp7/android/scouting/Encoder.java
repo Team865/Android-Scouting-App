@@ -67,14 +67,14 @@ final class Encoder {
         return total;
     }
 
-    int getLastValue(int t, int defaultValue) {
+    int getLastValue(int t) {
         for (int i = dataStack.size() - 1; i >= 0; i--) {
             Datum d = dataStack.get(i);
             if (d.getType() == t && d.getUndoFlag() == 0) {
                 return d.getValue();
             }
         }
-        return defaultValue;
+        return 0;
     }
 
     private String head() {
