@@ -371,6 +371,7 @@ public class ScoutingActivity
             case SCOUTING:
 
                 if (mLastPausedTime == getCurrentTime()) {
+                    mActivityState = ActivityState.PAUSING;
                     return; // Make sure there's only one timer
                 }
 
