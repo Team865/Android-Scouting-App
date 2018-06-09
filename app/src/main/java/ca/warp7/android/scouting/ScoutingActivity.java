@@ -38,10 +38,19 @@ public class ScoutingActivity
         extends AppCompatActivity
         implements ScoutingActivityListener {
 
+
+    // Variables to store the various states of the activity
+
     private ActivityState mActivityState;
 
-    private Handler mTimeHandler;
-    private Vibrator mVibrator;
+    private int mTimer = 0;
+    private int mCurrentTab = 0;
+    private int mLastRecordedTime = -1;
+    private int mLastPausedTime = -1;
+    private int mStartingTimestamp = 0;
+
+
+    // UI elements
 
     private ActionBar mActionBar;
     private Toolbar mToolbar;
@@ -56,16 +65,22 @@ public class ScoutingActivity
 
     private ViewPager mPager;
 
+
+    // System Services
+
+    private Handler mTimeHandler;
+    private Vibrator mVibrator;
+
+
+    // App Data Model
+
     private Specs mSpecs;
     private Encoder mEncoder;
 
     private ArrayList<Specs.Layout> mLayouts;
 
-    private int mTimer = 0;
-    private int mCurrentTab = 0;
-    private int mLastRecordedTime = -1;
-    private int mLastPausedTime = -1;
-    private int mStartingTimestamp = 0;
+
+    // Runnable Process
 
     private Runnable mTimerUpdater = new Runnable() {
         @Override
@@ -84,9 +99,14 @@ public class ScoutingActivity
         }
     };
 
+
+    // Animation Objects
+
     private final Animation animate_in = new AlphaAnimation(0.0f, 1.0f);
     private final Animation animate_out = new AlphaAnimation(1.0f, 0.0f);
 
+
+    // Activity Methods
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +127,6 @@ public class ScoutingActivity
         } else {
             mStartingTimestamp = savedInstanceState.getInt(ID.INSTANCE_STATE_START_TIME);
         }
-
-        mVibrator.vibrate(kStartVibration, -1);
 
         startActivityState(ActivityState.STARTING); // Start Scouting
     }
@@ -167,6 +185,9 @@ public class ScoutingActivity
                 .show();
     }
 
+
+    // ScoutingActivityListener methods
+
     @Override
     public Handler getHandler() {
         return mTimeHandler;
@@ -198,15 +219,21 @@ public class ScoutingActivity
         mActionBar.setSubtitle(status.replace("{t}", String.valueOf(mTimer)));
     }
 
+
+    // Utility Methods
+
     private int getCurrentTime() {
         return (int) (System.currentTimeMillis() / 1000);
     }
+
+
+    // Initialization Methods
 
     /**
      * Set up fields from specs
      */
 
-    private void setupSpecs(){
+    private void setupSpecs() {
         mSpecs = Specs.getInstance();
 
         if (mSpecs == null) { // Fixes singlet not loaded issue
@@ -254,8 +281,8 @@ public class ScoutingActivity
     }
 
     /**
-     *  Set up the progress/seek bars
-     *  */
+     * Set up the progress/seek bars
+     */
 
     private void setupNavigationSliders() {
 
@@ -348,8 +375,12 @@ public class ScoutingActivity
         });
     }
 
+    // State Updater Methods
+
+
     /**
      * Sets the current activity state and update views and timer
+     *
      * @param state the activity state to start
      */
 
@@ -371,8 +402,9 @@ public class ScoutingActivity
             case SCOUTING:
 
                 if (mLastPausedTime == getCurrentTime()) {
+                    // Make sure there's only one timer
                     mActivityState = ActivityState.PAUSING;
-                    return; // Make sure there's only one timer
+                    return;
                 }
 
                 mPlayPause.setVisibility(View.VISIBLE);
@@ -389,6 +421,7 @@ public class ScoutingActivity
 
                 mToolbar.setBackgroundColor(white);
 
+                mVibrator.vibrate(kStartVibration, -1); // Vibrate to signal start
                 mTimerUpdater.run();
 
                 break;
@@ -418,6 +451,7 @@ public class ScoutingActivity
 
     /**
      * Change the Title Banner with a fade in/fade out animation
+     *
      * @param title the title to change
      */
 
@@ -495,11 +529,14 @@ public class ScoutingActivity
         mTimeSeeker.setProgress(mTimer);
     }
 
+
+    // Misc. Event Handlers
+
     /**
      * Handles start of entry. Only called once
      */
 
-    public void onStartScouting(View view){
+    public void onStartScouting(View view) {
         mStartingTimestamp = getCurrentTime();
         startActivityState(ActivityState.SCOUTING);
         pushStatus("Timer Started");
@@ -548,6 +585,9 @@ public class ScoutingActivity
         }
     }
 
+
+    // Inner Class and Enum
+
     /**
      * Adapter that returns the proper fragment as pages are navigated
      */
@@ -579,6 +619,8 @@ public class ScoutingActivity
     }
 
 
+    // Static Fields
+
     static final int kTimerLimit = 150;
     static final int kAutonomousTime = 15;
     static final int kFadeDuration = 100;
@@ -590,5 +632,5 @@ public class ScoutingActivity
     static final int kTeleOpColour = 0xFF006633;
     static final int kFinishedColour = 0xFFFF0000;
 
-    static final long[] kStartVibration = new long[]{0, 35, 30, 35};
+    static final long[] kStartVibration = new long[]{0, 30, 30, 30};
 }
