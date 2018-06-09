@@ -350,13 +350,13 @@ public class MainActivity
 
                     mismatchWarning.setVisibility(View.INVISIBLE);
                     verifier.setText(R.string.verify_match_info);
-                    verifier.setTextColor(0xFF000000);
+                    verifier.setTextColor(getResources().getColor(R.color.colorAlmostBlack));
 
                 } else {
                     mismatchWarning.setText(R.string.schedule_mismatch);
                     mismatchWarning.setVisibility(View.VISIBLE);
                     verifier.setText(R.string.verify_match_proceed);
-                    verifier.setTextColor(0xFFFF0000);
+                    verifier.setTextColor(getResources().getColor(R.color.colorRed));
                     verifier.setChecked(false);
 
                 }
@@ -369,7 +369,7 @@ public class MainActivity
             mismatchWarning.setVisibility(View.INVISIBLE);
             verifier.setText(R.string.verify_match_info);
             verifier.setEnabled(false);
-            verifier.setTextColor(0xFF000000);
+            verifier.setTextColor(getResources().getColor(R.color.colorAlmostBlack));
             verifier.setChecked(false);
         }
     }

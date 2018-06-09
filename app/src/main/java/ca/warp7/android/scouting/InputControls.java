@@ -128,7 +128,7 @@ class InputControls {
                 counter++;
                 updateCounterView(true);
 
-                setTextColor(0xFFFFFFFF);
+                setTextColor(getResources().getColor(R.color.colorWhite));
                 getBackground().setColorFilter(
                         getResources().getColor(R.color.colorAccent),
                         PorterDuff.Mode.MULTIPLY);
@@ -165,7 +165,7 @@ class InputControls {
                 counterView.setText(String.valueOf(counter));
 
                 if (white) {
-                    counterView.setTextColor(0xFFFFFFFF);
+                    counterView.setTextColor(getResources().getColor(R.color.colorWhite));
                 } else {
                     counterView.setTextColor(getResources().getColor(R.color.colorAlmostBlack));
                 }
@@ -219,7 +219,7 @@ class InputControls {
 
         void updateLooks() {
             if (isOn) {
-                setTextColor(0xFFFFFFFF);
+                setTextColor(getResources().getColor(R.color.colorWhite));
                 setText(dc.getLabelOn());
                 getBackground().setColorFilter(
                         getResources().getColor(R.color.colorRed),
@@ -603,7 +603,7 @@ class InputControls {
 
         @Override
         public void onClick(View v) {
-            setTextColor(0xFFFFFFFF);
+            setTextColor(getResources().getColor(R.color.colorWhite));
             getBackground().setColorFilter(
                     getResources().getColor(android.R.color.black),
                     PorterDuff.Mode.MULTIPLY);
