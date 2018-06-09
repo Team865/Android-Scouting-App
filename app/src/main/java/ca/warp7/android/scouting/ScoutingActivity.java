@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -575,6 +576,10 @@ public class ScoutingActivity
                 } else {
                     pushStatus("Undo \'" + dc.getLabel() + "\'");
                     mVibrator.vibrate(20);
+                    PagerAdapter pa = mPager.getAdapter();
+                    if (pa != null) {
+                        pa.notifyDataSetChanged();
+                    }
                 }
                 break;
 
@@ -611,6 +616,13 @@ public class ScoutingActivity
         public int getCount() {
             return mSpecs.getLayouts().size();
         }
+
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            // Recreate all fragments when
+            return POSITION_NONE;
+        }
+
     }
 
 
