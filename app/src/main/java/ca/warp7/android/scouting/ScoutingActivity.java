@@ -122,7 +122,7 @@ public class ScoutingActivity
         setupNavigationSliders();
         setupValuesFromIntent();
         setupPager();
-        updateLayout();
+        updateCurrentTab();
 
         if (savedInstanceState == null) {
             mStartingTimestamp = getCurrentTime();
@@ -373,7 +373,7 @@ public class ScoutingActivity
             @Override
             public void onPageSelected(int position) {
                 mCurrentTab = position;
-                updateLayout();
+                updateCurrentTab();
             }
 
             @Override
@@ -496,7 +496,7 @@ public class ScoutingActivity
      * Updates the current tab as well as the title banner
      */
 
-    private void updateLayout() {
+    private void updateCurrentTab() {
 
         if (!mLayouts.isEmpty() && mCurrentTab >= 0 && mCurrentTab < mLayouts.size()) {
 
@@ -505,6 +505,21 @@ public class ScoutingActivity
             if (mPager.getCurrentItem() != mCurrentTab) {
                 mPager.setCurrentItem(mCurrentTab, true);
             }
+        }
+    }
+
+    /**
+     * Updates the state on the views on the page to match undo
+     * and navigation. Current implementation calls the PageAdapter
+     * to destroy all instantiated tabs and recreate them (also in
+     * InputTabsPagerAdapter). Plans to upgrade to getting the specific
+     * fragments and update them (in InputsFragment)
+     */
+
+    private void updateTabInputStates() {
+        InputTabsPagerAdapter pa = (InputTabsPagerAdapter) mPager.getAdapter();
+        if (pa != null) {
+            pa.notifyDataSetChanged();
         }
     }
 
@@ -548,15 +563,13 @@ public class ScoutingActivity
     public void onStartScouting(View view) {
         mStartingTimestamp = getCurrentTime();
         startActivityState(ActivityState.SCOUTING);
-        InputTabsPagerAdapter pa = (InputTabsPagerAdapter) mPager.getAdapter();
-        if (pa != null) {
-            pa.notifyDataSetChanged();
-        }
+        updateTabInputStates();
         pushStatus("Timer Started");
     }
 
     /**
-     * Event Handler for the play/pause button, which updates the activity state
+     * Event Handler for the play/pause button,
+     * which updates the activity state
      */
 
     public void onPlayPauseClicked(View view) {
@@ -585,10 +598,7 @@ public class ScoutingActivity
                 } else {
                     pushStatus("Undo \'" + dc.getLabel() + "\'");
                     mVibrator.vibrate(20);
-                    InputTabsPagerAdapter pa = (InputTabsPagerAdapter) mPager.getAdapter();
-                    if (pa != null) {
-                        pa.notifyDataSetChanged();
-                    }
+                    updateTabInputStates();
                 }
                 break;
 
