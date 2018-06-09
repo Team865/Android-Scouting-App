@@ -206,13 +206,18 @@ public class ScoutingActivity
     }
 
     @Override
-    public boolean canUpdateTime() {
+    public boolean timeIsRecordable() {
         return mTimer <= kTimerLimit && mLastRecordedTime != mTimer;
     }
 
     @Override
-    public void pushCurrentTimeAsValue(int t, int s) {
-        mEncoder.push(t, mTimer, s);
+    public boolean timedInputsShouldDisable() {
+        return mActivityState == ActivityState.STARTING;
+    }
+
+    @Override
+    public void pushCurrentTimeAsValue(int type, int state_flag) {
+        mEncoder.push(type, mTimer, state_flag);
         mLastRecordedTime = mTimer;
     }
 
@@ -543,6 +548,10 @@ public class ScoutingActivity
     public void onStartScouting(View view) {
         mStartingTimestamp = getCurrentTime();
         startActivityState(ActivityState.SCOUTING);
+        InputTabsPagerAdapter pa = (InputTabsPagerAdapter) mPager.getAdapter();
+        if (pa != null) {
+            pa.notifyDataSetChanged();
+        }
         pushStatus("Timer Started");
     }
 

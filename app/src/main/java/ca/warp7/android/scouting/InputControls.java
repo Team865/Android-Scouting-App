@@ -109,15 +109,21 @@ class InputControls {
             super(context, dc, listener);
 
             setText(dc.getLabel().replace(" ", "\n"));
-            setTextColor(getResources().getColor(R.color.colorAccent));
 
             counter = listener.getEncoder().getCount(dc.getIndex());
             updateCounterView(false);
+
+            if (listener.timedInputsShouldDisable()) {
+                setEnabled(false);
+                setTextColor(getResources().getColor(R.color.colorGray));
+            } else {
+                setTextColor(getResources().getColor(R.color.colorAccent));
+            }
         }
 
         @Override
         public void onClick(View v) {
-            if (listener.canUpdateTime()) {
+            if (listener.timeIsRecordable()) {
 
                 counter++;
                 updateCounterView(true);
@@ -189,11 +195,16 @@ class InputControls {
             isOn = listener.getEncoder().getCount(dc.getIndex()) % 2 != 0;
 
             updateLooks();
+
+            if (listener.timedInputsShouldDisable()) {
+                setEnabled(false);
+                setTextColor(getResources().getColor(R.color.colorGray));
+            }
         }
 
         @Override
         public void onClick(View v) {
-            if (listener.canUpdateTime()) {
+            if (listener.timeIsRecordable()) {
                 isOn = !isOn;
                 listener.pushCurrentTimeAsValue(dc.getIndex(), isOn ? 1 : 0);
                 listener.pushStatus(getText().toString() + " - {t}s");
