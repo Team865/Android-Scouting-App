@@ -6,7 +6,8 @@
         "Red1.json",
         "Red2.json",
         "Red3.json",
-        "PowerUp.json"
+        "PowerUp.json",
+        "XRobot.json"
     ],
     "names": [
         "Robot Blue 1",
@@ -15,7 +16,8 @@
         "Robot Red 1",
         "Robot Red 2",
         "Robot Red 3",
-        "Vault/Power Ups"
+        "Vault/Power Ups",
+        "Experimental Board"
     ],
     "identifiers": [
         "ff770361",
@@ -24,6 +26,7 @@
         "ba12a27b",
         "2b7a62fb",
         "894c9040",
-        "65ed7e43"
+        "65ed7e43",
+        "12345678"
     ]
 }

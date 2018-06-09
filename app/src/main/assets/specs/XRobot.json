@@ -1,17 +1,17 @@
 {
-    "id": "32c1bf68",
-    "board": "Blue 3",
-
+    "id": "12345678",
+    "board": "Experimental Board",
     "alliance": "B",
     "event": "Example Template",
-
     "timer": 150,
     "schedule": [],
-
     "layout": [
         {
             "title": "Auto",
             "fields": [
+                [
+                    "AUTO_START_POS"
+                ],
                 [
                     "AUTO_LINE"
                 ],
@@ -22,14 +22,9 @@
                 [
                     "AUTO_SWITCH_ATTEMPT",
                     "AUTO_SWITCH_SUCCESS"
-                ],
-                [
-                    "AUTO_EXCHANGE_ATTEMPT",
-                    "AUTO_EXCHANGE_SUCCESS"
                 ]
             ]
         },
-
         {
             "title": "Tele-Op",
             "fields": [
@@ -49,7 +44,6 @@
                 ]
             ]
         },
-
         {
             "title": "Endgame",
             "fields": [
@@ -76,64 +70,67 @@
             ]
         }
     ],
-
     "data": [
+        {
+            "id": "AUTO_START_POS",
+            "label": "Starting Position (Facing Scale)",
+            "log": "Starting position",
+            "type": "choice",
+            "choices": [
+                "No Show",
+                "Left Side",
+                "Center",
+                "Right Side"
+            ]
+        },
         {
             "id": "AUTO_LINE",
             "label": "Auto Line Crossed",
             "log": "Auto line",
             "type": "checkbox"
         },
-
         {
             "id": "AUTO_SCALE_ATTEMPT",
             "label": "Scale Attempt",
             "log": "Auto scale attempt",
             "type": "timestamp"
         },
-
         {
             "id": "AUTO_SCALE_SUCCESS",
             "label": "Scale Success",
             "log": "Auto scale",
             "type": "timestamp"
         },
-
         {
             "id": "AUTO_SWITCH_ATTEMPT",
             "label": "Switch Attempt",
             "log": "Auto switch attempt",
             "type": "timestamp"
         },
-
         {
             "id": "AUTO_SWITCH_SUCCESS",
             "label": "Switch Success",
             "log": "Auto switch",
             "type": "timestamp"
         },
-
         {
             "id": "AUTO_EXCHANGE_ATTEMPT",
             "label": "Exchange Attempt",
             "log": "Auto exchange attempt",
             "type": "timestamp"
         },
-
         {
             "id": "AUTO_EXCHANGE_SUCCESS",
             "label": "Exchange Success",
             "log": "Auto exchange",
             "type": "timestamp"
         },
-
         {
             "id": "TELE_INTAKE",
             "label": "Intake",
             "log": "Tele intake",
             "type": "timestamp"
         },
-
         {
             "id": "TELE_DEFENSE",
             "label": "Start Defense",
@@ -141,35 +138,30 @@
             "type": "duration",
             "label_on": "End Defense"
         },
-
         {
             "id": "TELE_EXCHANGE",
             "label": "Exchange",
             "log": "Tele exchange",
             "type": "timestamp"
         },
-
         {
             "id": "TELE_ALLIANCE_SWITCH",
             "label": "Alliance Switch",
             "log": "Tele alliance switch",
             "type": "timestamp"
         },
-
         {
             "id": "TELE_OPPONENT_SWITCH",
             "label": "Opponent Switch",
             "log": "Tele opponent switch",
             "type": "timestamp"
         },
-
         {
             "id": "TELE_SCALE",
             "label": "Scale",
             "log": "Tele scale",
             "type": "timestamp"
         },
-
         {
             "id": "END_PLATFORM",
             "label": "Platform",
@@ -181,7 +173,6 @@
                 "Success"
             ]
         },
-
         {
             "id": "END_CLIMB",
             "label": "Climb",
@@ -193,7 +184,6 @@
                 "Success"
             ]
         },
-
         {
             "id": "END_ATTACHMENT",
             "label": "Attachment Speed",
@@ -201,7 +191,6 @@
             "type": "rating",
             "max": 5
         },
-
         {
             "id": "END_CLIMB_SPEED",
             "label": "Climb Speed",
@@ -209,7 +198,6 @@
             "type": "rating",
             "max": 5
         },
-
         {
             "id": "END_INTAKE_SPEED",
             "label": "Intake Speed",
@@ -217,7 +205,6 @@
             "type": "rating",
             "max": 5
         },
-
         {
             "id": "END_INTAKE_CONSISTENCY",
             "label": "Intake Consistency",
@@ -225,7 +212,6 @@
             "type": "rating",
             "max": 5
         },
-
         {
             "id": "END_EXCHANGE",
             "label": "Exchange Speed",
@@ -233,7 +219,6 @@
             "type": "rating",
             "max": 5
         },
-
         {
             "id": "END_SWITCH",
             "label": "Switch Speed",
@@ -241,7 +226,6 @@
             "type": "rating",
             "max": 5
         },
-
         {
             "id": "END_SCALE",
             "label": "Scale Speed",
@@ -249,7 +233,6 @@
             "type": "rating",
             "max": 5
         },
-
         {
             "id": "END_DRIVER",
             "label": "Driver Skill",
