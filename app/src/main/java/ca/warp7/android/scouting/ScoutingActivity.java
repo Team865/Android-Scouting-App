@@ -576,7 +576,7 @@ public class ScoutingActivity
                 } else {
                     pushStatus("Undo \'" + dc.getLabel() + "\'");
                     mVibrator.vibrate(20);
-                    PagerAdapter pa = mPager.getAdapter();
+                    InputTabsPagerAdapter pa = (InputTabsPagerAdapter) mPager.getAdapter();
                     if (pa != null) {
                         pa.notifyDataSetChanged();
                     }
@@ -621,6 +621,14 @@ public class ScoutingActivity
         public int getItemPosition(@NonNull Object object) {
             // Recreate all fragments when
             return POSITION_NONE;
+        }
+
+        @SuppressWarnings("unused")
+        InputsFragment getFragment(int index) {
+        /* Fragments are cached in Adapter, so instantiateItem will
+           return the cached one (if any) or a new instance if necessary.
+         */
+            return (InputsFragment) instantiateItem(mPager, index);
         }
 
     }

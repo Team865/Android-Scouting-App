@@ -176,4 +176,9 @@ public class InputsFragment
         }
     }
 
+    @SuppressWarnings("unused")
+    void updateStates() {
+        android.util.Log.i("Fragment Called!!", "Fragment");
+    }
+
 }
