@@ -325,9 +325,15 @@ class InputControls {
 
             setText(dc.getLabel());
 
-            setTextColor(getResources().getColor(R.color.colorAccent));
-
             setChecked(listener.getEncoder().getCount(dc.getIndex()) % 2 != 0);
+
+            // Temporary Fix before board format changed TODO <<<
+            if (listener.timedInputsShouldDisable()) {
+                setEnabled(false);
+                setTextColor(getResources().getColor(R.color.colorGray));
+            } else {
+                setTextColor(getResources().getColor(R.color.colorAccent));
+            }
         }
 
         @Override
