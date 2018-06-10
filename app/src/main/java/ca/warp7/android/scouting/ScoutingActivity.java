@@ -100,7 +100,7 @@ public class ScoutingActivity
     private ImageButton mUndoSkipButton;
 
     private ViewPager mPager;
-
+    private PagerAdapter mPagerAdapter;
 
     // System Services
 
@@ -470,7 +470,7 @@ public class ScoutingActivity
 
         mPager = findViewById(R.id.pager);
 
-        PagerAdapter mPagerAdapter = new InputTabsPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new InputTabsPagerAdapter(getSupportFragmentManager());
 
         mPager.setAdapter(mPagerAdapter);
 
@@ -667,10 +667,7 @@ public class ScoutingActivity
      */
 
     private void updateTabInputStates() {
-        InputTabsPagerAdapter pa = (InputTabsPagerAdapter) mPager.getAdapter();
-        if (pa != null) {
-            pa.notifyDataSetChanged();
-        }
+        mPagerAdapter.notifyDataSetChanged();
     }
 
     /**
