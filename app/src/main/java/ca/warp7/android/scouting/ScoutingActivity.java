@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+
 /*
 CODE ORGANIZATION
 
@@ -50,6 +52,7 @@ CODE ORGANIZATION
 14.Static Fields
 
  */
+
 
 /**
  * <p>The Scouting Activity -- responsible for navigation,
@@ -92,8 +95,9 @@ public class ScoutingActivity
     private ProgressBar mTimeProgress;
     private SeekBar mTimeSeeker;
 
-    TextView mStartButton;
-    private ImageButton mPlayPauseButton, mUndoSkipButton;
+    private TextView mStartButton;
+    private ImageButton mPlayPauseButton;
+    private ImageButton mUndoSkipButton;
 
     private ViewPager mPager;
 
@@ -123,6 +127,7 @@ public class ScoutingActivity
             }
 
             updateTimerStatusAndSeeker();
+
             mTimer++;
 
             if (mTimer <= kTimerLimit) { // Check if match ended
@@ -142,6 +147,7 @@ public class ScoutingActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         mTimeHandler = new Handler();
@@ -152,6 +158,8 @@ public class ScoutingActivity
         setupNavigationSliders();
         setupValuesFromIntent();
         setupPager();
+
+        updateTimerStatusAndSeeker();
         updateCurrentTab();
 
         if (savedInstanceState == null) {
@@ -160,7 +168,7 @@ public class ScoutingActivity
             mStartingTimestamp = savedInstanceState.getInt(ID.INSTANCE_STATE_START_TIME);
         }
 
-        startActivityState(ActivityState.STARTING); // Start Scouting
+        startActivityState(ActivityState.STARTING);
     }
 
     @Override
@@ -178,6 +186,7 @@ public class ScoutingActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
 
             case android.R.id.home:
@@ -202,6 +211,7 @@ public class ScoutingActivity
 
     @Override
     public void onBackPressed() {
+
         new AlertDialog.Builder(this)
                 .setTitle(R.string.exit_confirmation)
                 .setMessage(R.string.exit_confirmation_body)
@@ -253,7 +263,7 @@ public class ScoutingActivity
 
     @Override
     public void pushStatus(String status) {
-        mActionBar.setSubtitle(status.replace("{t}", String.valueOf(mTimer)));
+        // mActionBar.setSubtitle(status.replace("{t}", String.valueOf(mTimer)));
     }
 
 
@@ -278,6 +288,7 @@ public class ScoutingActivity
     public void onPlayPauseClicked(View view) {
 
         switch (mActivityState) {
+
             case SCOUTING: // Pause button
                 startActivityState(ActivityState.PAUSING);
                 break;
@@ -293,7 +304,9 @@ public class ScoutingActivity
      */
 
     public void onUndoSkipClicked(View view) {
+
         switch (mActivityState) {
+
             case SCOUTING: // Undo button
                 Specs.DataConstant dc = mEncoder.undo();
                 if (dc == null) {
@@ -330,6 +343,7 @@ public class ScoutingActivity
      */
 
     private void setupSpecs() {
+
         mSpecs = Specs.getInstance();
 
         if (mSpecs == null) { // Fixes singlet not loaded issue
@@ -345,6 +359,7 @@ public class ScoutingActivity
      */
 
     private void setupUI() {
+
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_scouting);
 
@@ -363,6 +378,11 @@ public class ScoutingActivity
         mTimerStatus = findViewById(R.id.timer_status);
 
         mStartButton = findViewById(R.id.start_timer);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mStartButton.setElevation(4);
+        }
+
         mPlayPauseButton = findViewById(R.id.play_pause);
         mUndoSkipButton = findViewById(R.id.undo_skip);
 
@@ -394,6 +414,7 @@ public class ScoutingActivity
         mTimeSeeker.setProgress(0);
 
         mTimeSeeker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser && mActivityState == ActivityState.PAUSING) {
@@ -420,6 +441,7 @@ public class ScoutingActivity
      */
 
     private void setupValuesFromIntent() {
+
         Intent intent = getIntent();
 
         int matchNumber = intent.getIntExtra(ID.MSG_MATCH_NUMBER, -1);
@@ -438,7 +460,6 @@ public class ScoutingActivity
 
         // Encoder uses specs so must ensure specs instance exists
         mEncoder = new Encoder(matchNumber, teamNumber, scoutName);
-
     }
 
     /**
@@ -454,6 +475,7 @@ public class ScoutingActivity
         mPager.setAdapter(mPagerAdapter);
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position,
                                        float positionOffset,
@@ -488,6 +510,7 @@ public class ScoutingActivity
         mActivityState = state;
 
         switch (mActivityState) {
+
             case STARTING:
 
                 setStartingNavToolbox();
@@ -534,7 +557,6 @@ public class ScoutingActivity
 
         mTimeSeeker.setVisibility(View.GONE);
         mTimeProgress.setVisibility(View.GONE);
-
     }
 
     /**
@@ -552,7 +574,6 @@ public class ScoutingActivity
 
         mTimeSeeker.setVisibility(View.GONE);
         mTimeProgress.setVisibility(View.VISIBLE);
-
     }
 
     /**
@@ -570,7 +591,6 @@ public class ScoutingActivity
 
         mTimeSeeker.setVisibility(View.VISIBLE);
         mTimeProgress.setVisibility(View.GONE);
-
     }
 
 
@@ -593,7 +613,9 @@ public class ScoutingActivity
     private void setAnimatedTitleBanner(final String title) {
 
         if (!mTitleBanner.getText().toString().isEmpty()) {
+
             animate_out.setAnimationListener(new Animation.AnimationListener() {
+
                 @Override
                 public void onAnimationStart(Animation animation) {
 
@@ -610,6 +632,7 @@ public class ScoutingActivity
 
                 }
             });
+
             mTitleBanner.startAnimation(animate_out);
 
         } else {
@@ -672,6 +695,7 @@ public class ScoutingActivity
         String status = new String(placeholder).replace("\0", "0") + d;
 
         mTimerStatus.setText(status);
+
         mTimerStatus.setTextColor(mTimer <= kAutonomousTime ?
                 kAutonomousColour : mTimer < kTimerLimit ?
                 kTeleOpColour : kFinishedColour);
@@ -706,7 +730,7 @@ public class ScoutingActivity
 
         @Override
         public int getItemPosition(@NonNull Object object) {
-            // Recreate all fragments when
+            // Recreate all fragments when notifyDataSetChanged is called
             return POSITION_NONE;
         }
 
@@ -724,6 +748,7 @@ public class ScoutingActivity
     /**
      * Stages/states of the activity to trigger different behaviours
      */
+
     enum ActivityState {
         STARTING, SCOUTING, PAUSING
     }
