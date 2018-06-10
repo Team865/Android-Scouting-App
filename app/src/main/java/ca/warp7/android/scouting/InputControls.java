@@ -110,7 +110,7 @@ class InputControls {
 
             setText(dc.getLabel().replace(" ", "\n"));
 
-            counter = listener.getEncoder().getCount(dc.getIndex());
+            counter = listener.getEntryModel().getCount(dc.getIndex());
             updateCounterView(false);
 
             if (listener.timedInputsShouldDisable()) {
@@ -192,7 +192,7 @@ class InputControls {
                               ScoutingActivityListener listener) {
             super(context, dc, listener);
 
-            isOn = listener.getEncoder().getCount(dc.getIndex()) % 2 != 0;
+            isOn = listener.getEntryModel().getCount(dc.getIndex()) % 2 != 0;
 
             updateLooks();
 
@@ -269,7 +269,7 @@ class InputControls {
 
             String[] choices = dc.getChoices();
 
-            lastWhich = listener.getEncoder().getLastValue(dc.getIndex());
+            lastWhich = listener.getEntryModel().getLastValue(dc.getIndex());
 
             setText(choices[lastWhich]);
         }
@@ -285,7 +285,7 @@ class InputControls {
                                 lastWhich = which;
                                 setText(dc.getChoices()[which]);
                                 listener.getVibrator().vibrate(30);
-                                listener.getEncoder().push(dc.getIndex(), which, 1);
+                                listener.getEntryModel().push(dc.getIndex(), which, 1);
                                 listener.pushStatus(dc.getLabel() + " <" + getText() + ">");
                             }
                         }
@@ -325,7 +325,7 @@ class InputControls {
 
             setText(dc.getLabel());
 
-            setChecked(listener.getEncoder().getCount(dc.getIndex()) % 2 != 0);
+            setChecked(listener.getEntryModel().getCount(dc.getIndex()) % 2 != 0);
 
             // Temporary Fix before board format changed TODO <<<
             if (listener.timedInputsShouldDisable()) {
@@ -339,7 +339,7 @@ class InputControls {
         @Override
         public void onClick(View v) {
             listener.getVibrator().vibrate(30);
-            listener.getEncoder().push(dc.getIndex(), isChecked() ? 1 : 0, 1);
+            listener.getEntryModel().push(dc.getIndex(), isChecked() ? 1 : 0, 1);
             listener.pushStatus(getText().toString() + " - " + (isChecked() ? "On" : "Off"));
         }
     }
@@ -375,7 +375,7 @@ class InputControls {
 
             setMax(dc.getMax());
 
-            lastProgress = listener.getEncoder().getLastValue(dc.getIndex());
+            lastProgress = listener.getEntryModel().getLastValue(dc.getIndex());
             setProgress(lastProgress);
 
         }
@@ -399,7 +399,7 @@ class InputControls {
                 listener.getVibrator().vibrate(20);
                 lastProgress = getProgress();
 
-                listener.getEncoder().push(dc.getIndex(), lastProgress, 1);
+                listener.getEntryModel().push(dc.getIndex(), lastProgress, 1);
 
                 listener.pushStatus(dc.getLabel() + " - " + lastProgress + "/" + dc.getMax());
             }

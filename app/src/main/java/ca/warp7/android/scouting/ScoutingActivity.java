@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 
 /*
-CODE ORGANIZATION
+CODE ORGANIZED BY FOLLOWING SECTIONS
 
 1. State Variables
 2. UI elements
@@ -61,7 +61,7 @@ CODE ORGANIZATION
  * <p>
  * @see InputsFragment the fragment contained in the pager element.
  * @see ScoutingActivityListener the listener protocol used by individual controls.
- * @see Encoder the data model.
+ * @see EntryModel the entry data model.
  * </p>
  *
  * @author Team 865
@@ -111,7 +111,7 @@ public class ScoutingActivity
     // Data Model Variables
 
     private Specs mSpecs;
-    private Encoder mEncoder;
+    private EntryModel mEntryModel;
 
     private ArrayList<Specs.Layout> mLayouts;
 
@@ -199,8 +199,8 @@ public class ScoutingActivity
             case R.id.menu_done:
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
-                intent.putExtra(ID.MSG_PRINT_DATA, mEncoder.format());
-                intent.putExtra(ID.MSG_ENCODE_DATA, mEncoder.encode());
+                intent.putExtra(ID.MSG_PRINT_DATA, mEntryModel.format());
+                intent.putExtra(ID.MSG_ENCODE_DATA, mEntryModel.encode());
                 startActivity(intent);
                 return true;
 
@@ -241,8 +241,8 @@ public class ScoutingActivity
     }
 
     @Override
-    public Encoder getEncoder() {
-        return mEncoder;
+    public EntryModel getEntryModel() {
+        return mEntryModel;
     }
 
     @Override
@@ -257,7 +257,7 @@ public class ScoutingActivity
 
     @Override
     public void pushCurrentTimeAsValue(int type, int state_flag) {
-        mEncoder.push(type, mTimer, state_flag);
+        mEntryModel.push(type, mTimer, state_flag);
         mLastRecordedTime = mTimer;
     }
 
@@ -308,7 +308,7 @@ public class ScoutingActivity
         switch (mActivityState) {
 
             case SCOUTING: // Undo button
-                Specs.DataConstant dc = mEncoder.undo();
+                Specs.DataConstant dc = mEntryModel.undo();
                 if (dc == null) {
                     pushStatus("Nothing can be undone");
                 } else {
@@ -437,7 +437,7 @@ public class ScoutingActivity
     }
 
     /**
-     * Get values from intent(except specs) and initialize the encoder
+     * Get values from intent(except specs) and initialize the entry model
      */
 
     private void setupValuesFromIntent() {
@@ -458,8 +458,8 @@ public class ScoutingActivity
 
         pushStatus("Scouting Started");
 
-        // Encoder uses specs so must ensure specs instance exists
-        mEncoder = new Encoder(matchNumber, teamNumber, scoutName);
+        // EntryModel uses specs so must ensure specs instance exists
+        mEntryModel = new EntryModel(matchNumber, teamNumber, scoutName);
     }
 
     /**

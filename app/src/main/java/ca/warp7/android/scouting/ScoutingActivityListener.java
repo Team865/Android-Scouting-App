@@ -21,9 +21,9 @@ interface ScoutingActivityListener {
     Vibrator getVibrator();
 
     /**
-     * @return The encoder object tracking data history
+     * @return The entry model object tracking data history
      */
-    Encoder getEncoder();
+    EntryModel getEntryModel();
 
     /**
      * @return whether the current state of the activity can record time

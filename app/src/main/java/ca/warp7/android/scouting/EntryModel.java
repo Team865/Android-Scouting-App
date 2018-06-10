@@ -11,7 +11,7 @@ import java.util.TimeZone;
  */
 
 @SuppressWarnings("SameParameterValue")
-final class Encoder {
+class EntryModel {
 
     private int matchNumber;
     private int teamNumber;
@@ -23,7 +23,7 @@ final class Encoder {
 
     private ArrayList<Datum> dataStack;
 
-    Encoder(int matchNumber, int teamNumber, String scoutName) {
+    EntryModel(int matchNumber, int teamNumber, String scoutName) {
         this.matchNumber = matchNumber;
         this.teamNumber = teamNumber;
         this.scoutName = scoutName;
@@ -183,7 +183,7 @@ final class Encoder {
     }
 
     private static String fillHex(int n, int digits) {
-        return Encoder.formatRight(Integer.toHexString(n), digits, "0");
+        return EntryModel.formatRight(Integer.toHexString(n), digits, "0");
     }
 
 
