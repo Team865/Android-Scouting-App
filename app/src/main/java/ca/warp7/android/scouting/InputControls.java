@@ -70,7 +70,7 @@ class InputControls {
             setOnClickListener(this);
 
             setAllCaps(false);
-            setTextSize(20);
+            setTextSize(18);
             setLines(2);
             setTypeface(Typeface.SANS_SERIF);
 
@@ -262,7 +262,7 @@ class InputControls {
             setTextColor(getResources().getColor(R.color.colorAccent));
 
             setAllCaps(false);
-            setTextSize(20);
+            setTextSize(18);
 
             setTypeface(Typeface.SANS_SERIF);
             setGravity(Gravity.CENTER);
@@ -318,7 +318,7 @@ class InputControls {
             setOnClickListener(this);
 
             setAllCaps(false);
-            setTextSize(20);
+            setTextSize(18);
             setLines(2);
 
             setTypeface(Typeface.SANS_SERIF);
@@ -409,6 +409,7 @@ class InputControls {
     /**
      * Creates a box container for a label and another control
      */
+
     static final class LabeledControlLayout
             extends LinearLayout
             implements BaseControl {
@@ -548,7 +549,7 @@ class InputControls {
             addView(control);
 
             counter = new TextView(context);
-            counter.setTextSize(16);
+            counter.setTextSize(15);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 counter.setElevation(10);
@@ -558,7 +559,7 @@ class InputControls {
                     LayoutParams.WRAP_CONTENT);
 
             childLayout.leftMargin = 24;
-            childLayout.topMargin = 24;
+            childLayout.topMargin = 16;
 
             counter.setLayoutParams(childLayout);
 
@@ -595,7 +596,7 @@ class InputControls {
             setOnClickListener(this);
 
             setAllCaps(false);
-            setTextSize(20);
+            setTextSize(18);
             setLines(2);
 
             setTypeface(Typeface.SANS_SERIF);
