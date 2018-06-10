@@ -92,7 +92,8 @@ public class ScoutingActivity
     private ProgressBar mTimeProgress;
     private SeekBar mTimeSeeker;
 
-    private ImageButton mStart, mPlayPause, mUndoSkip;
+    TextView mStartButton;
+    private ImageButton mPlayPauseButton, mUndoSkipButton;
 
     private ViewPager mPager;
 
@@ -361,9 +362,9 @@ public class ScoutingActivity
         mTitleBanner = findViewById(R.id.title_banner);
         mTimerStatus = findViewById(R.id.timer_status);
 
-        mStart = findViewById(R.id.start_timer);
-        mPlayPause = findViewById(R.id.play_pause);
-        mUndoSkip = findViewById(R.id.undo_skip);
+        mStartButton = findViewById(R.id.start_timer);
+        mPlayPauseButton = findViewById(R.id.play_pause);
+        mUndoSkipButton = findViewById(R.id.undo_skip);
 
         String alliance = mSpecs.getAlliance();
 
@@ -528,8 +529,11 @@ public class ScoutingActivity
 
     private void setStartingNavToolbox() {
 
-        mPlayPause.setVisibility(View.GONE);
-        mUndoSkip.setVisibility(View.GONE);
+        mPlayPauseButton.setVisibility(View.GONE);
+        mUndoSkipButton.setVisibility(View.GONE);
+
+        mTimeSeeker.setVisibility(View.GONE);
+        mTimeProgress.setVisibility(View.GONE);
 
     }
 
@@ -539,12 +543,12 @@ public class ScoutingActivity
 
     private void setScoutingNavToolbox() {
 
-        mPlayPause.setVisibility(View.VISIBLE);
-        mUndoSkip.setVisibility(View.VISIBLE);
-        mStart.setVisibility(View.GONE);
+        mPlayPauseButton.setVisibility(View.VISIBLE);
+        mUndoSkipButton.setVisibility(View.VISIBLE);
+        mStartButton.setVisibility(View.GONE);
 
-        mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
-        mUndoSkip.setImageResource(R.drawable.ic_undo);
+        mPlayPauseButton.setImageResource(R.drawable.ic_pause_ablack);
+        mUndoSkipButton.setImageResource(R.drawable.ic_undo);
 
         mTimeSeeker.setVisibility(View.GONE);
         mTimeProgress.setVisibility(View.VISIBLE);
@@ -557,12 +561,12 @@ public class ScoutingActivity
 
     private void setPausingNavToolbox() {
 
-        mPlayPause.setVisibility(View.VISIBLE);
-        mUndoSkip.setVisibility(View.VISIBLE);
-        mStart.setVisibility(View.GONE);
+        mPlayPauseButton.setVisibility(View.VISIBLE);
+        mUndoSkipButton.setVisibility(View.VISIBLE);
+        mStartButton.setVisibility(View.GONE);
 
-        mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
-        mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
+        mPlayPauseButton.setImageResource(R.drawable.ic_play_arrow_ablack);
+        mUndoSkipButton.setImageResource(R.drawable.ic_skip_next_ablack);
 
         mTimeSeeker.setVisibility(View.VISIBLE);
         mTimeProgress.setVisibility(View.GONE);
