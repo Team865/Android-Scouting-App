@@ -10,7 +10,7 @@
             "title": "Auto",
             "fields": [
                 [
-                    "AUTO_START_POS"
+                    "X_AUTO_START_POS"
                 ],
                 [
                     "AUTO_LINE"
@@ -29,7 +29,8 @@
             "title": "Tele-Op",
             "fields": [
                 [
-                    "TELE_INTAKE"
+                    "TELE_INTAKE",
+                    "X_DROPPED"
                 ],
                 [
                     "TELE_ALLIANCE_SWITCH",
@@ -48,44 +49,47 @@
             "title": "Endgame",
             "fields": [
                 [
-                    "END_PLATFORM",
-                    "END_CLIMB"
+                    "X_END_PLATFORM",
+                    "X_END_CLIMB_TYPE"
                 ],
                 [
-                    "END_ATTACHMENT",
-                    "END_CLIMB_SPEED"
+                    "X_END_ATTACH",
+                    "X_END_CLIMB"
                 ],
                 [
-                    "END_INTAKE_SPEED",
-                    "END_INTAKE_CONSISTENCY"
+                    "END_INTAKE_CONSISTENCY",
+                    "X_END_OUTTAKE_CONSISTENCY"
                 ],
                 [
-                    "END_EXCHANGE",
-                    "END_SWITCH"
-                ],
-                [
-                    "END_SCALE",
-                    "END_DRIVER"
+                    "X_SCALE_REACH",
+                    "X_STRATEGY"
                 ]
             ]
         }
     ],
     "data": [
         {
-            "id": "AUTO_START_POS",
-            "label": "Starting Position (Facing Scale)",
-            "log": "Starting position",
+            "id": "X_AUTO_START_POS",
+            "label": "Start Position",
+            "log": "Start position",
             "type": "choice",
             "choices": [
-                "No Show",
+                "Select",
                 "Left Side",
                 "Center",
                 "Right Side"
             ]
         },
         {
+            "id": "X_INCAPACITATED",
+            "label": "Incapacitated",
+            "log": "Incapacitated",
+            "type": "duration",
+            "label_on": "Incapacitated"
+        },
+        {
             "id": "AUTO_LINE",
-            "label": "Auto Line Crossed",
+            "label": "Auto Line",
             "log": "Auto line",
             "type": "checkbox"
         },
@@ -132,11 +136,17 @@
             "type": "timestamp"
         },
         {
+            "id": "X_DROPPED",
+            "label": "Cube Dropped",
+            "log": "Cube dropped",
+            "type": "timestamp"
+        },
+        {
             "id": "TELE_DEFENSE",
-            "label": "Start Defense",
+            "label": "Defend",
             "log": "Defense",
             "type": "duration",
-            "label_on": "End Defense"
+            "label_on": "Defending"
         },
         {
             "id": "TELE_EXCHANGE",
@@ -174,6 +184,12 @@
             ]
         },
         {
+            "id": "X_END_PLATFORM",
+            "label": "Platform",
+            "log": "Platform",
+            "type": "checkbox"
+        },
+        {
             "id": "END_CLIMB",
             "label": "Climb",
             "log": "Climb",
@@ -182,6 +198,19 @@
                 "None",
                 "Attempt",
                 "Success"
+            ]
+        },
+        {
+            "id": "X_END_CLIMB_TYPE",
+            "label": "Climb Type",
+            "log": "Climb type",
+            "type": "choice",
+            "choices": [
+                "No Climb",
+                "Attempt",
+                "Single",
+                "Double",
+                "Ramp"
             ]
         },
         {
@@ -210,7 +239,14 @@
             "label": "Intake Consistency",
             "log": "Intake consistency",
             "type": "rating",
-            "max": 5
+            "max": 2
+        },
+        {
+            "id": "X_END_OUTTAKE_CONSISTENCY",
+            "label": "Outtake Consistency",
+            "log": "Outtake consistency",
+            "type": "rating",
+            "max": 2
         },
         {
             "id": "END_EXCHANGE",
@@ -227,6 +263,20 @@
             "max": 5
         },
         {
+            "id": "X_STRATEGY",
+            "label": "Primary Strategy",
+            "log": "Primary strategy",
+            "type": "choice",
+            "choices": [
+                "Select",
+                "Scale",
+                "Switch",
+                "Exchange",
+                "Defense",
+                "Mixed"
+            ]
+        },
+        {
             "id": "END_SCALE",
             "label": "Scale Speed",
             "log": "Scale speed",
@@ -239,6 +289,32 @@
             "log": "Driver skill",
             "type": "rating",
             "max": 5
+        },
+        {
+            "id": "X_END_ATTACH",
+            "label": "Attach",
+            "log": "Attach",
+            "type": "duration",
+            "label_on": "Attached"
+        },
+        {
+            "id": "X_END_CLIMB",
+            "label": "Climb",
+            "log": "Attachment",
+            "type": "duration",
+            "label_on": "Climbing"
+        },
+        {
+            "id": "X_SCALE_REACH",
+            "label": "Scale Reach",
+            "log": "Scale reach",
+            "type": "choice",
+            "choices": [
+                "N/A",
+                "1 Layer",
+                "2 Layers",
+                "3 Layers"
+            ]
         }
     ]
 }
