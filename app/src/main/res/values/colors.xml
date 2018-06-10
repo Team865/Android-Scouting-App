@@ -18,8 +18,9 @@
 
     <color name="colorAlmostBlack">#404040</color>
 
-    <color name="colorReviewYellow">#EEEE88</color>
-    <color name="colorStartBlue">#66FFAA</color>
+    <color name="colorReviewYellow">#EEDD88</color>
+    <!--<color name="colorStartBlue">#66FFAA</color>-->
+    <color name="colorStartBlue">#CCFFFF</color>
 
     <color name="colorGray">#808080</color>
 

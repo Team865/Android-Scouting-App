@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -30,10 +31,37 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/*
+CODE ORGANIZATION
+
+1. State Variables
+2. UI elements
+3. System Services
+4. Data Model Variables
+5. Timer Process
+6. Animation Objects
+7. Activity Methods
+8. ScoutingActivityListener methods
+9. Misc. Event Handlers
+10.Utility Methods
+11.Initialization Methods
+12.State Updater Methods
+13.Inner Class and Enum
+14.Static Fields
+
+ */
 
 /**
- * The Scouting Activity -- responsible for navigation,
- * Setting up the interface, and receive actions from inputs
+ * <p>The Scouting Activity -- responsible for navigation,
+ * Setting up the interface, and receive actions from inputs.</p>
+ *
+ * <p>
+ * @see InputsFragment the fragment contained in the pager element.
+ * @see ScoutingActivityListener the listener protocol used by individual controls.
+ * @see Encoder the data model.
+ * </p>
+ *
+ * @author Team 865
  */
 
 public class ScoutingActivity
@@ -41,7 +69,7 @@ public class ScoutingActivity
         implements ScoutingActivityListener {
 
 
-    // Variables to store the various states of the activity
+    // State Variables
 
     private ActivityState mActivityState;
 
@@ -56,6 +84,7 @@ public class ScoutingActivity
 
     private ActionBar mActionBar;
     private Toolbar mToolbar;
+    private ConstraintLayout mNavToolbox;
 
     private TextView mTitleBanner;
     private TextView mTimerStatus;
@@ -74,7 +103,7 @@ public class ScoutingActivity
     private Vibrator mVibrator;
 
 
-    // App Data Model
+    // Data Model Variables
 
     private Specs mSpecs;
     private Encoder mEncoder;
@@ -82,7 +111,7 @@ public class ScoutingActivity
     private ArrayList<Specs.Layout> mLayouts;
 
 
-    // Runnable Process
+    // Timer Process
 
     private Runnable mTimerUpdater = new Runnable() {
         @Override
@@ -227,6 +256,65 @@ public class ScoutingActivity
     }
 
 
+    // Misc. Event Handlers
+
+    /**
+     * Handles start of entry. Only called once
+     */
+
+    public void onStartScouting(View view) {
+        mStartingTimestamp = getCurrentTime();
+        startActivityState(ActivityState.SCOUTING);
+        updateTabInputStates();
+        pushStatus("Timer Started");
+    }
+
+    /**
+     * Event Handler for the play/pause button,
+     * which updates the activity state
+     */
+
+    public void onPlayPauseClicked(View view) {
+
+        switch (mActivityState) {
+            case SCOUTING: // Pause button
+                startActivityState(ActivityState.PAUSING);
+                break;
+
+            case PAUSING: // Play button
+                startActivityState(ActivityState.SCOUTING);
+                break;
+        }
+    }
+
+    /**
+     * Event Handler for the undo/skip button
+     */
+
+    public void onUndoSkipClicked(View view) {
+        switch (mActivityState) {
+            case SCOUTING: // Undo button
+                Specs.DataConstant dc = mEncoder.undo();
+                if (dc == null) {
+                    pushStatus("Nothing can be undone");
+                } else {
+                    pushStatus("Undo \'" + dc.getLabel() + "\'");
+                    mVibrator.vibrate(20);
+                    updateTabInputStates();
+                }
+                break;
+
+            case PAUSING: // Skip button
+
+                mTimer = (getCurrentTime() - mStartingTimestamp) % (kTimerLimit + 1);
+
+                startActivityState(ActivityState.SCOUTING);
+
+                break;
+        }
+    }
+
+
     // Utility Methods
 
     private int getCurrentTime() {
@@ -267,6 +355,8 @@ public class ScoutingActivity
         setSupportActionBar(mToolbar);
 
         mActionBar = getSupportActionBar();
+
+        mNavToolbox = findViewById(R.id.nav_toolbox);
 
         mTitleBanner = findViewById(R.id.title_banner);
         mTimerStatus = findViewById(R.id.timer_status);
@@ -393,41 +483,27 @@ public class ScoutingActivity
      */
 
     private void startActivityState(ActivityState state) {
+
         mActivityState = state;
 
         switch (mActivityState) {
             case STARTING:
-                // Add more stuff here
 
-                int blue = getResources().getColor(R.color.colorStartBlue);
-
-                mToolbar.setBackgroundColor(blue);
-                mPlayPause.setVisibility(View.GONE);
-                mUndoSkip.setVisibility(View.GONE);
+                setStartingNavToolbox();
+                setBackgroundColour(getResources().getColor(R.color.colorStartBlue));
 
                 break;
 
             case SCOUTING:
 
+                // Make sure there's only one timer
                 if (mLastPausedTime == getCurrentTime()) {
-                    // Make sure there's only one timer
                     mActivityState = ActivityState.PAUSING;
                     return;
                 }
 
-                mPlayPause.setVisibility(View.VISIBLE);
-                mUndoSkip.setVisibility(View.VISIBLE);
-                mStart.setVisibility(View.GONE);
-
-                mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
-                mUndoSkip.setImageResource(R.drawable.ic_undo);
-
-                mTimeSeeker.setVisibility(View.GONE);
-                mTimeProgress.setVisibility(View.VISIBLE);
-
-                int white = getResources().getColor(R.color.colorPrimary);
-
-                mToolbar.setBackgroundColor(white);
+                setScoutingNavToolbox();
+                setBackgroundColour(getResources().getColor(R.color.colorWhite));
 
                 mVibrator.vibrate(kStartVibration, -1); // Vibrate to signal start
                 mTimerUpdater.run();
@@ -438,23 +514,70 @@ public class ScoutingActivity
 
                 mLastPausedTime = getCurrentTime();
 
-                mPlayPause.setVisibility(View.VISIBLE);
-                mUndoSkip.setVisibility(View.VISIBLE);
-                mStart.setVisibility(View.GONE);
-
-                mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
-                mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
-
-                mTimeSeeker.setVisibility(View.VISIBLE);
-                mTimeProgress.setVisibility(View.GONE);
-
-                int yellow = getResources().getColor(R.color.colorReviewYellow);
-
-                mToolbar.setBackgroundColor(yellow);
+                setPausingNavToolbox();
+                setBackgroundColour(getResources().getColor(R.color.colorReviewYellow));
 
                 break;
 
         }
+    }
+
+    /**
+     * Hide the navigation buttons on start
+     */
+
+    private void setStartingNavToolbox() {
+
+        mPlayPause.setVisibility(View.GONE);
+        mUndoSkip.setVisibility(View.GONE);
+
+    }
+
+    /**
+     * Toggles image icons and visibility for scouting state
+     */
+
+    private void setScoutingNavToolbox() {
+
+        mPlayPause.setVisibility(View.VISIBLE);
+        mUndoSkip.setVisibility(View.VISIBLE);
+        mStart.setVisibility(View.GONE);
+
+        mPlayPause.setImageResource(R.drawable.ic_pause_ablack);
+        mUndoSkip.setImageResource(R.drawable.ic_undo);
+
+        mTimeSeeker.setVisibility(View.GONE);
+        mTimeProgress.setVisibility(View.VISIBLE);
+
+    }
+
+    /**
+     * Toggles image icons and visibility for pausing state
+     */
+
+    private void setPausingNavToolbox() {
+
+        mPlayPause.setVisibility(View.VISIBLE);
+        mUndoSkip.setVisibility(View.VISIBLE);
+        mStart.setVisibility(View.GONE);
+
+        mPlayPause.setImageResource(R.drawable.ic_play_arrow_ablack);
+        mUndoSkip.setImageResource(R.drawable.ic_skip_next_ablack);
+
+        mTimeSeeker.setVisibility(View.VISIBLE);
+        mTimeProgress.setVisibility(View.GONE);
+
+    }
+
+
+    /**
+     * Updates the activity's background colour
+     */
+
+    private void setBackgroundColour(int colour) {
+        mToolbar.setBackgroundColor(colour);
+        mNavToolbox.setBackgroundColor(colour);
+        mPager.setBackgroundColor(colour);
     }
 
     /**
@@ -551,65 +674,6 @@ public class ScoutingActivity
 
         mTimeProgress.setProgress(mTimer);
         mTimeSeeker.setProgress(mTimer);
-    }
-
-
-    // Misc. Event Handlers
-
-    /**
-     * Handles start of entry. Only called once
-     */
-
-    public void onStartScouting(View view) {
-        mStartingTimestamp = getCurrentTime();
-        startActivityState(ActivityState.SCOUTING);
-        updateTabInputStates();
-        pushStatus("Timer Started");
-    }
-
-    /**
-     * Event Handler for the play/pause button,
-     * which updates the activity state
-     */
-
-    public void onPlayPauseClicked(View view) {
-
-        switch (mActivityState) {
-            case SCOUTING: // Pause button
-                startActivityState(ActivityState.PAUSING);
-                break;
-
-            case PAUSING: // Play button
-                startActivityState(ActivityState.SCOUTING);
-                break;
-        }
-    }
-
-    /**
-     * Event Handler for the undo/skip button
-     */
-
-    public void onUndoSkipClicked(View view) {
-        switch (mActivityState) {
-            case SCOUTING: // Undo button
-                Specs.DataConstant dc = mEncoder.undo();
-                if (dc == null) {
-                    pushStatus("Nothing can be undone");
-                } else {
-                    pushStatus("Undo \'" + dc.getLabel() + "\'");
-                    mVibrator.vibrate(20);
-                    updateTabInputStates();
-                }
-                break;
-
-            case PAUSING: // Skip button
-
-                mTimer = (getCurrentTime() - mStartingTimestamp) % (kTimerLimit + 1);
-
-                startActivityState(ActivityState.SCOUTING);
-
-                break;
-        }
     }
 
 
