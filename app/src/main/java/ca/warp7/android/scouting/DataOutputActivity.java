@@ -85,7 +85,7 @@ public class DataOutputActivity
                 intent.putExtra(Intent.EXTRA_TEXT, getFullEncode());
                 intent.setType("text/plain");
 
-                startActivity(Intent.createChooser(intent, "Send encoded data to:"));
+                startActivity(Intent.createChooser(intent, getFullEncode()));
 
                 return true;
 
