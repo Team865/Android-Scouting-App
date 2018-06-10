@@ -200,7 +200,7 @@ public class ScoutingActivity
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
                 intent.putExtra(ID.MSG_PRINT_DATA, EntryFormatter.formatReport(mEntryModel));
-                intent.putExtra(ID.MSG_ENCODE_DATA, mEntryModel.encode());
+                intent.putExtra(ID.MSG_ENCODE_DATA, EntryFormatter.formatEncode(mEntryModel));
                 startActivity(intent);
                 return true;
 

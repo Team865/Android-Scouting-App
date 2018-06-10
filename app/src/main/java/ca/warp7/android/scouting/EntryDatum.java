@@ -3,6 +3,7 @@ package ca.warp7.android.scouting;
 /**
  * Stores and integer-encodes a single datum in a match scouting session
  */
+
 @SuppressWarnings("SameParameterValue")
 final class EntryDatum {
     private int

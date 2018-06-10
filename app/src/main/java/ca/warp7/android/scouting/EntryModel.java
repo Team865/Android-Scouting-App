@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Data model for a specific match
  */
 
-@SuppressWarnings({"SameParameterValue", "unused"})
+@SuppressWarnings({"SameParameterValue"})
 class EntryModel {
 
     private int matchNumber;
@@ -96,51 +96,4 @@ class EntryModel {
         }
         return 0;
     }
-
-    private String head() {
-        return matchNumber + "_" + teamNumber + "_" + scoutName;
-    }
-
-    private String dataCode() {
-        StringBuilder sb = new StringBuilder();
-        sb
-                .append(fillHex(timestamp, 8))
-                .append("_")
-                .append(specs.getSpecsId())
-                .append("_");
-
-        for (EntryDatum d : dataStack)
-            sb.append(fillHex(d.encode(), 4));
-
-        sb.append("_");
-
-        return sb.toString();
-    }
-
-    String encode() {
-        return head() + "_" + dataCode();
-    }
-
-
-    private static String formatRight(String s, int d, String r) {
-        String n = s;
-        if (d > n.length())
-            n = new String(new char[d - n.length()])
-                    .replace("\0", r) + n;
-        return n;
-    }
-
-    private static String formatLeft(String s, int d, String r) {
-        String n = s;
-        if (d > n.length())
-            n += new String(new char[d - n.length()])
-                    .replace("\0", r);
-        return n;
-    }
-
-    private static String fillHex(int n, int digits) {
-        return EntryModel.formatRight(Integer.toHexString(n), digits, "0");
-    }
-
-
 }

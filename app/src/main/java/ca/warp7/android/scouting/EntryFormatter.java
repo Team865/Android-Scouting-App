@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Formatting utility for EntryModel
+ * Static Formatting Utility for EntryModel
  */
 
 class EntryFormatter {
@@ -79,6 +79,30 @@ class EntryFormatter {
         sb
                 .append('\n')
                 .append(new String(new char[31]).replace("\0", "-"));
+
+        return sb.toString();
+    }
+
+    static String formatEncode(EntryModel entry) {
+        return formatHeader(entry) + "_" + formatDataCode(entry);
+    }
+
+    private static String formatHeader(EntryModel entry) {
+        return entry.getMatchNumber() + "_" + entry.getTeamNumber() + "_" + entry.getScoutName();
+    }
+
+    private static String formatDataCode(EntryModel entry) {
+        StringBuilder sb = new StringBuilder();
+        sb
+                .append(fillHex(entry.getTimestamp(), 8))
+                .append("_")
+                .append(entry.getSpecs().getSpecsId())
+                .append("_");
+
+        for (EntryDatum d : entry.getDataStack())
+            sb.append(fillHex(d.encode(), 4));
+
+        sb.append("_");
 
         return sb.toString();
     }
