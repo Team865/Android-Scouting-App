@@ -1,16 +1,12 @@
 package ca.warp7.android.scouting;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Data model for a specific match
  */
 
-@SuppressWarnings("SameParameterValue")
+@SuppressWarnings({"SameParameterValue", "unused"})
 class EntryModel {
 
     private int matchNumber;
@@ -21,7 +17,7 @@ class EntryModel {
 
     private Specs specs;
 
-    private ArrayList<Datum> dataStack;
+    private ArrayList<EntryDatum> dataStack;
 
     EntryModel(int matchNumber, int teamNumber, String scoutName) {
         this.matchNumber = matchNumber;
@@ -35,11 +31,35 @@ class EntryModel {
         dataStack = new ArrayList<>();
     }
 
+    public int getMatchNumber() {
+        return matchNumber;
+    }
+
+    public int getTeamNumber() {
+        return teamNumber;
+    }
+
+    public String getScoutName() {
+        return scoutName;
+    }
+
+    public int getTimestamp() {
+        return timestamp;
+    }
+
+    public Specs getSpecs() {
+        return specs;
+    }
+
+    public ArrayList<EntryDatum> getDataStack() {
+        return dataStack;
+    }
+
     void push(int t, int v, int s) {
         if (t < 0 || t > 63) {
             return;
         }
-        Datum d = new Datum(t, v);
+        EntryDatum d = new EntryDatum(t, v);
         d.setStateFlag(s);
         dataStack.add(d);
     }
@@ -47,7 +67,7 @@ class EntryModel {
     Specs.DataConstant undo() {
         for (int i = dataStack.size() - 1; i >= 0; i--) {
 
-            Datum datum = dataStack.get(i);
+            EntryDatum datum = dataStack.get(i);
 
             if (datum.getUndoFlag() == 0) {
                 datum.setUndoFlag(1);
@@ -59,7 +79,7 @@ class EntryModel {
 
     int getCount(int t) {
         int total = 0;
-        for (Datum d : dataStack) {
+        for (EntryDatum d : dataStack) {
             if (d.getType() == t && d.getUndoFlag() == 0) {
                 total++;
             }
@@ -69,7 +89,7 @@ class EntryModel {
 
     int getLastValue(int t) {
         for (int i = dataStack.size() - 1; i >= 0; i--) {
-            Datum d = dataStack.get(i);
+            EntryDatum d = dataStack.get(i);
             if (d.getType() == t && d.getUndoFlag() == 0) {
                 return d.getValue();
             }
@@ -89,7 +109,7 @@ class EntryModel {
                 .append(specs.getSpecsId())
                 .append("_");
 
-        for (Datum d : dataStack)
+        for (EntryDatum d : dataStack)
             sb.append(fillHex(d.encode(), 4));
 
         sb.append("_");
@@ -99,70 +119,6 @@ class EntryModel {
 
     String encode() {
         return head() + "_" + dataCode();
-    }
-
-    String format() {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm:ss", Locale.CANADA);
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
-        StringBuilder sb = new StringBuilder();
-
-        sb
-                .append('\n')
-
-                .append(formatLeft("Match Number:", 16, " "))
-                .append(matchNumber)
-                .append('\n')
-
-                .append(formatLeft("Team Number:", 16, " "))
-                .append(teamNumber)
-                .append('\n')
-
-                .append(formatLeft("Start Time:", 16, " "))
-                .append(sdf.format(new Date(timestamp * 1000L)))
-                .append('\n')
-
-                .append(formatLeft("Scouter:", 16, " "))
-                .append(scoutName)
-                .append('\n')
-
-                .append(formatLeft("Board:", 16, " "))
-                .append(specs.getBoardName())
-                .append('\n')
-
-                .append(formatLeft("Alliance:", 16, " "))
-                .append(specs.getAlliance())
-                .append("\n\n")
-
-                .append(formatLeft("Data", 21, " "))
-                .append("Value")
-                .append("\n")
-                .append(new String(new char[31]).replace("\0", "-"));
-
-        for (Datum d : dataStack) {
-            sb.append("\n");
-
-            int t = d.getType();
-
-            if (specs.hasIndexInConstants(t)) {
-                Specs.DataConstant dc = specs.getDataConstantByIndex(t);
-                sb
-                        .append(formatLeft(dc.getLogTitle() +
-                                (d.getStateFlag() == 0 ? "<Off>" : "") + " ", 20, " "))
-                        .append(dc.format(d.getValue()))
-                        .append(d.getUndoFlag() != 0 ? " Ⓤ" : "");
-            } else {
-                sb
-                        .append(formatLeft(String.valueOf(t), 21, " "))
-                        .append(String.valueOf(d.getValue()));
-            }
-        }
-
-        sb
-                .append('\n')
-                .append(new String(new char[31]).replace("\0", "-"));
-
-        return sb.toString();
     }
 
 
@@ -186,55 +142,5 @@ class EntryModel {
         return EntryModel.formatRight(Integer.toHexString(n), digits, "0");
     }
 
-
-    /**
-     * Stores and integer-encodes a single datum in a match scouting session
-     */
-    static final class Datum {
-        private int
-                type,
-                value,
-                undoFlag = 0,
-                stateFlag = 0;
-
-        Datum(int type, int value) {
-            this.type = type;
-            this.value = value;
-        }
-
-        int getType() {
-            return type;
-        }
-
-        int getValue() {
-            return value;
-        }
-
-        int getUndoFlag() {
-            return undoFlag;
-        }
-
-        int getStateFlag() {
-            return stateFlag;
-        }
-
-        void setValue(int value) {
-
-            this.value = value;
-        }
-
-        void setUndoFlag(int undoFlag) {
-            this.undoFlag = undoFlag;
-        }
-
-        void setStateFlag(int stateFlag) {
-            this.stateFlag = stateFlag;
-        }
-
-        int encode() {
-            return undoFlag << 15 | stateFlag << 14 | type << 8 | value;
-        }
-
-    }
 
 }

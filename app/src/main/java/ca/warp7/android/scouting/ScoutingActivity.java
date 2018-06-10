@@ -199,7 +199,7 @@ public class ScoutingActivity
             case R.id.menu_done:
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
-                intent.putExtra(ID.MSG_PRINT_DATA, mEntryModel.format());
+                intent.putExtra(ID.MSG_PRINT_DATA, EntryFormatter.formatReport(mEntryModel));
                 intent.putExtra(ID.MSG_ENCODE_DATA, mEntryModel.encode());
                 startActivity(intent);
                 return true;
