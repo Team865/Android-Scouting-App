@@ -113,7 +113,7 @@ class Entry {
             EntryDatum datum = mDataStack.get(i);
 
             if (datum.getUndoFlag() == 0) {
-                datum.setUndoFlag(1);
+                datum.flagAsUndone();
                 return mSpecs.getDataConstantByIndex(datum.getType());
             }
         }
