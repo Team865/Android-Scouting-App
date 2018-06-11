@@ -80,6 +80,10 @@ class EntryModel {
         return mDataStack;
     }
 
+    public void setStartingTimestamp(int timestamp) {
+        mStartingTimestamp = timestamp;
+    }
+
     /**
      * Pushes some data into the data stack
      */
@@ -146,5 +150,27 @@ class EntryModel {
             }
         }
         return 0;
+    }
+
+    /**
+     * Cleans out data that have been undone
+     */
+
+    void clean() {
+
+        ArrayList<EntryDatum> cleanedList = new ArrayList<>();
+
+        for (EntryDatum datum : mDataStack) {
+            if (datum.getUndoFlag() == 0) {
+                cleanedList.add(datum);
+            }
+        }
+
+        mDataStack = cleanedList;
+    }
+
+    interface Listener {
+        @SuppressWarnings("unused")
+        int getCurrentRelativeTime();
     }
 }

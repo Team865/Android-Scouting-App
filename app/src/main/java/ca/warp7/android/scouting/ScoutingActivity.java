@@ -169,6 +169,8 @@ public class ScoutingActivity
             mStartingTimestamp = savedInstanceState.getInt(ID.INSTANCE_STATE_START_TIME);
         }
 
+        mEntryModel.setStartingTimestamp(mStartingTimestamp);
+
         startActivityState(ActivityState.STARTING);
     }
 
@@ -198,11 +200,15 @@ public class ScoutingActivity
                 return true;
 
             case R.id.menu_done:
+
+                mEntryModel.clean(); // Remove the undoes
+
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
                 intent.putExtra(ID.MSG_PRINT_DATA, EntryFormatter.formatReport(mEntryModel));
                 intent.putExtra(ID.MSG_ENCODE_DATA, EntryFormatter.formatEncode(mEntryModel));
                 startActivity(intent);
+
                 return true;
 
             default:
@@ -230,6 +236,11 @@ public class ScoutingActivity
 
 
     // ScoutingActivityListener methods
+
+    @Override
+    public int getCurrentRelativeTime() {
+        return mTimer;
+    }
 
     @Override
     public Handler getHandler() {
@@ -275,10 +286,15 @@ public class ScoutingActivity
      */
 
     public void onStartScouting(View view) {
+
         mStartingTimestamp = getCurrentTime();
+        mEntryModel.setStartingTimestamp(mStartingTimestamp);
+
         startActivityState(ActivityState.SCOUTING);
         updateTabInputStates();
+
         pushStatus("Timer Started");
+
     }
 
     /**

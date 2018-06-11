@@ -8,7 +8,8 @@ import android.os.Vibrator;
  * these controls to engage in communication
  */
 
-interface ScoutingActivityListener {
+interface ScoutingActivityListener
+        extends EntryModel.Listener {
 
     /**
      * @return The time Handler of the activity
