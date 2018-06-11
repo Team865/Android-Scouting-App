@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * @see EntryFormatter
  */
 
-class EntryModel {
+class Entry {
 
     private int mMatchNumber;
     private int mTeamNumber;
@@ -43,7 +43,7 @@ class EntryModel {
 
     private ArrayList<EntryDatum> mDataStack;
 
-    EntryModel(int matchNumber, int teamNumber, String scoutName) {
+    Entry(int matchNumber, int teamNumber, String scoutName) {
 
         mMatchNumber = matchNumber;
         mTeamNumber = teamNumber;

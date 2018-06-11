@@ -61,7 +61,7 @@ CODE ORGANIZED BY FOLLOWING SECTIONS
  * <p>
  * @see InputsFragment
  * @see ScoutingActivityListener
- * @see EntryModel
+ * @see Entry
  * </p>
  *
  * @author Team 865
@@ -112,7 +112,7 @@ public class ScoutingActivity
     // Data Model Variables
 
     private Specs mSpecs;
-    private EntryModel mEntryModel;
+    private Entry mEntry;
 
     private ArrayList<Specs.Layout> mLayouts;
 
@@ -169,7 +169,7 @@ public class ScoutingActivity
             mStartingTimestamp = savedInstanceState.getInt(ID.INSTANCE_STATE_START_TIME);
         }
 
-        mEntryModel.setStartingTimestamp(mStartingTimestamp);
+        mEntry.setStartingTimestamp(mStartingTimestamp);
 
         startActivityState(ActivityState.STARTING);
     }
@@ -201,12 +201,12 @@ public class ScoutingActivity
 
             case R.id.menu_done:
 
-                mEntryModel.clean(); // Remove the undoes
+                mEntry.clean(); // Remove the undoes
 
                 Intent intent;
                 intent = new Intent(this, DataOutputActivity.class);
-                intent.putExtra(ID.MSG_PRINT_DATA, EntryFormatter.formatReport(mEntryModel));
-                intent.putExtra(ID.MSG_ENCODE_DATA, EntryFormatter.formatEncode(mEntryModel));
+                intent.putExtra(ID.MSG_PRINT_DATA, EntryFormatter.formatReport(mEntry));
+                intent.putExtra(ID.MSG_ENCODE_DATA, EntryFormatter.formatEncode(mEntry));
                 startActivity(intent);
 
                 return true;
@@ -253,8 +253,8 @@ public class ScoutingActivity
     }
 
     @Override
-    public EntryModel getEntryModel() {
-        return mEntryModel;
+    public Entry getEntry() {
+        return mEntry;
     }
 
     @Override
@@ -269,7 +269,7 @@ public class ScoutingActivity
 
     @Override
     public void pushCurrentTimeAsValue(int type, int state_flag) {
-        mEntryModel.push(type, mTimer, state_flag);
+        mEntry.push(type, mTimer, state_flag);
         mLastRecordedTime = mTimer;
     }
 
@@ -288,7 +288,7 @@ public class ScoutingActivity
     public void onStartScouting(View view) {
 
         mStartingTimestamp = getCurrentTime();
-        mEntryModel.setStartingTimestamp(mStartingTimestamp);
+        mEntry.setStartingTimestamp(mStartingTimestamp);
 
         startActivityState(ActivityState.SCOUTING);
         updateTabInputStates();
@@ -325,7 +325,7 @@ public class ScoutingActivity
         switch (mActivityState) {
 
             case SCOUTING: // Undo button
-                Specs.DataConstant dc = mEntryModel.undo();
+                Specs.DataConstant dc = mEntry.undo();
                 if (dc == null) {
                     pushStatus("Nothing can be undone");
                 } else {
@@ -478,8 +478,8 @@ public class ScoutingActivity
 
         pushStatus("Scouting Started");
 
-        // EntryModel uses specs so must ensure specs instance exists
-        mEntryModel = new EntryModel(matchNumber, teamNumber, scoutName);
+        // Entry uses Specs so must ensure specs instance exists
+        mEntry = new Entry(matchNumber, teamNumber, scoutName);
     }
 
     /**

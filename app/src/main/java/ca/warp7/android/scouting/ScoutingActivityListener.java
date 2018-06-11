@@ -9,7 +9,7 @@ import android.os.Vibrator;
  */
 
 interface ScoutingActivityListener
-        extends EntryModel.Listener {
+        extends Entry.Listener {
 
     /**
      * @return The time Handler of the activity
@@ -24,7 +24,7 @@ interface ScoutingActivityListener
     /**
      * @return The entry model object tracking data history
      */
-    EntryModel getEntryModel();
+    Entry getEntry();
 
     /**
      * @return whether the current state of the activity can record time

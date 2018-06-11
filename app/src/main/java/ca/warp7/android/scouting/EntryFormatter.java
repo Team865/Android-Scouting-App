@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Static Formatting Utility for EntryModel
+ * Static Formatting Utility for Entry
  */
 
 class EntryFormatter {
@@ -17,7 +17,7 @@ class EntryFormatter {
      * @param entry the entry to report on
      * @return a string to be displayed
      */
-    static String formatReport(EntryModel entry) {
+    static String formatReport(Entry entry) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
@@ -83,15 +83,15 @@ class EntryFormatter {
         return sb.toString();
     }
 
-    static String formatEncode(EntryModel entry) {
+    static String formatEncode(Entry entry) {
         return formatHeader(entry) + "_" + formatDataCode(entry);
     }
 
-    private static String formatHeader(EntryModel entry) {
+    private static String formatHeader(Entry entry) {
         return entry.getMatchNumber() + "_" + entry.getTeamNumber() + "_" + entry.getScoutName();
     }
 
-    private static String formatDataCode(EntryModel entry) {
+    private static String formatDataCode(Entry entry) {
         StringBuilder sb = new StringBuilder();
         sb
                 .append(fillHex(entry.getStartingTimestamp(), 8))
