@@ -6,11 +6,11 @@ package ca.warp7.android.scouting;
 
 @SuppressWarnings("SameParameterValue")
 final class EntryDatum {
-    private int
-            type,
-            value,
-            undoFlag = 0,
-            stateFlag = 0;
+
+    private int type;
+    private int value;
+    private int undoFlag = 0;
+    private int stateFlag = 0;
 
     EntryDatum(int type, int value) {
         this.type = type;

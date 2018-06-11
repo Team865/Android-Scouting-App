@@ -59,9 +59,9 @@ CODE ORGANIZED BY FOLLOWING SECTIONS
  * Setting up the interface, and receive actions from inputs.</p>
  *
  * <p>
- * @see InputsFragment the fragment contained in the pager element.
- * @see ScoutingActivityListener the listener protocol used by individual controls.
- * @see EntryModel the entry data model.
+ * @see InputsFragment
+ * @see ScoutingActivityListener
+ * @see EntryModel
  * </p>
  *
  * @author Team 865
@@ -101,6 +101,7 @@ public class ScoutingActivity
 
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
+
 
     // System Services
 
@@ -331,6 +332,9 @@ public class ScoutingActivity
 
     // Utility Methods
 
+    /**
+     * @return The current time in seconds
+     */
     private int getCurrentTime() {
         return (int) (System.currentTimeMillis() / 1000);
     }
@@ -496,8 +500,8 @@ public class ScoutingActivity
         });
     }
 
-    // State Updater Methods
 
+    // State Updater Methods
 
     /**
      * Sets the current activity state and update views and timer

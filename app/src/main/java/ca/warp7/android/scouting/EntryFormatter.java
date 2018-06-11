@@ -37,7 +37,7 @@ class EntryFormatter {
                 .append('\n')
 
                 .append(formatLeftWithSpaces("Start Time:", 16))
-                .append(sdf.format(new Date(entry.getTimestamp() * 1000L)))
+                .append(sdf.format(new Date(entry.getStartingTimestamp() * 1000L)))
                 .append('\n')
 
                 .append(formatLeftWithSpaces("Scouter:", 16))
@@ -94,7 +94,7 @@ class EntryFormatter {
     private static String formatDataCode(EntryModel entry) {
         StringBuilder sb = new StringBuilder();
         sb
-                .append(fillHex(entry.getTimestamp(), 8))
+                .append(fillHex(entry.getStartingTimestamp(), 8))
                 .append("_")
                 .append(entry.getSpecs().getSpecsId())
                 .append("_");
