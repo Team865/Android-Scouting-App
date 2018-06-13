@@ -57,14 +57,14 @@ CODE ORGANIZED BY FOLLOWING SECTIONS
 /**
  * <p>The Scouting Activity -- responsible for navigation,
  * Setting up the interface, and receive actions from inputs.</p>
- *
  * <p>
+ * <p>
+ *
+ * @author Team 865
  * @see InputsFragment
  * @see ScoutingActivityListener
  * @see Entry
  * </p>
- *
- * @author Team 865
  */
 
 public class ScoutingActivity
@@ -200,7 +200,7 @@ public class ScoutingActivity
             case R.id.menu_details: // Info button
 
                 new AlertDialog.Builder(this)
-                        .setTitle(mActionBar.getTitle() + " (" + mSpecs.getBoardName() + ")")
+                        .setTitle(mActionBar.getTitle() + " Log")
                         .setMessage(mStatusLog.toString())
                         .create()
                         .show(); // Show the log in a dialog

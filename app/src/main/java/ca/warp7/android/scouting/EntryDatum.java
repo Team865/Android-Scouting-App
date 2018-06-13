@@ -2,7 +2,7 @@ package ca.warp7.android.scouting;
 
 /**
  * Stores and integer-encodes a single datum in a match scouting session
- *
+ * <p>
  * As of now, a datum is 16 bits long and has the following properties
  * -- Undo flag at bit 1
  * -- State flag at bit 2
@@ -14,7 +14,7 @@ package ca.warp7.android.scouting;
  */
 
 
-final class EntryDatum {
+class EntryDatum {
 
     private int mDataType;
     private int mDataValue;

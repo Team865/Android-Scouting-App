@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Used as a singleton throughout the application
  */
 
-final class Specs {
+class Specs {
 
     private String specsId;
     private String boardName;
