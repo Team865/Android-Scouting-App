@@ -113,8 +113,9 @@ public class ScoutingActivity
 
     private Specs mSpecs;
     private Entry mEntry;
-
     private ArrayList<Specs.Layout> mLayouts;
+
+    private StringBuilder mStatusLog;
 
 
     // Timer Process
@@ -196,10 +197,17 @@ public class ScoutingActivity
                 onBackPressed();
                 return true;
 
-            case R.id.menu_details:
+            case R.id.menu_details: // Info button
+
+                new AlertDialog.Builder(this)
+                        .setTitle(mActionBar.getTitle() + " (" + mSpecs.getBoardName() + ")")
+                        .setMessage(mStatusLog.toString())
+                        .create()
+                        .show(); // Show the log in a dialog
+
                 return true;
 
-            case R.id.menu_done:
+            case R.id.menu_done: // Check mark button
 
                 mEntry.clean(); // Remove the undoes
 
@@ -276,6 +284,8 @@ public class ScoutingActivity
     @Override
     public void pushStatus(String status) {
         // mActionBar.setSubtitle(status.replace("{t}", String.valueOf(mTimer)));
+        mStatusLog.append(status.replace("{t}", String.valueOf(mTimer)));
+        mStatusLog.append("\n");
     }
 
 
@@ -476,6 +486,7 @@ public class ScoutingActivity
             mActionBar.setTitle(mSpecs.getBoardName());
         }
 
+        mStatusLog = new StringBuilder(); // initialize the log
         pushStatus("Scouting Started");
 
         // NOTE Entry uses Specs so must ensure specs instance exists

@@ -6,7 +6,6 @@
         android:id="@+id/menu_details"
         android:icon="@drawable/ic_info_outline_ablack"
         android:title="@string/menu_details"
-        android:visible="false"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_done"
