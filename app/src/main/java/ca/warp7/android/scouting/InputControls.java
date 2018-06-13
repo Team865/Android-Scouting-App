@@ -24,19 +24,31 @@ import android.widget.TextView;
 /**
  * Includes a set of controls for input used in the inputs fragment
  * that implement custom behaviours for scouting purposes.
+ *
+ * @author Team 865
  */
 
 class InputControls {
 
     /**
-     * A base interface to set the data constant and the activity listener
+     * Base interface for all custom controls
      */
     interface BaseControl {
+        // void updateControlState();
     }
+
+    /**
+     * Interface for containers to implement, which the child
+     * view can call to get the supporting view to act on it
+     */
 
     interface ParentControlListener {
         View getSupportView();
     }
+
+    /**
+     * Child view interface to pass a ParentControlLister
+     */
 
     interface ChildControl {
         void setParentListener(ParentControlListener listener);
@@ -45,6 +57,7 @@ class InputControls {
     /**
      * A Base button for other buttons to extend onto
      */
+
     static class BaseButton
             extends AppCompatButton
             implements BaseControl,
@@ -94,6 +107,7 @@ class InputControls {
     /**
      * A button that records time as it is pressed
      */
+
     static final class TimerButton
             extends BaseButton {
 
@@ -178,6 +192,7 @@ class InputControls {
      * equivalent in function as a ToggleButton.
      * It records the time of when the button is
      */
+
     static final class DurationButton
             extends BaseButton {
 
@@ -236,6 +251,7 @@ class InputControls {
     /**
      * A button that gives the user a list of options to choose
      */
+
     static final class ChoicesButton
             extends AppCompatTextView
             implements BaseControl,
@@ -296,6 +312,7 @@ class InputControls {
     /**
      * A checkbox that gives true or false values
      */
+
     static final class Checkbox
             extends AppCompatCheckBox
             implements BaseControl,
@@ -327,7 +344,7 @@ class InputControls {
 
             setChecked(listener.getEntry().getCount(dc.getIndex()) % 2 != 0);
 
-            // Temporary Fix before board format changed TODO <<<
+            // Temporary Fix before board format changed
             if (listener.timedInputsShouldDisable()) {
                 setEnabled(false);
                 setTextColor(getResources().getColor(R.color.colorGray));
@@ -347,6 +364,7 @@ class InputControls {
     /**
      * Creates a ratings bar based on the maximum value specified
      */
+
     static final class SeekBar
             extends AppCompatSeekBar
             implements BaseControl,
@@ -412,12 +430,12 @@ class InputControls {
 
     static final class LabeledControlLayout
             extends LinearLayout
-            implements BaseControl {
-
-        //TODO Change to new parent/child interface
+            implements BaseControl, View.OnClickListener {
 
         Specs.DataConstant dc;
         ScoutingActivityListener listener;
+
+        View subControl;
 
         public LabeledControlLayout(Context context) {
             super(context);
@@ -465,20 +483,32 @@ class InputControls {
 
             control.setLayoutParams(childLayout);
             addView(control);
+            setOnClickListener(this);
+
+            subControl = control;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (!listener.timedInputsShouldDisable()) {
+                subControl.performClick();
+            }
         }
     }
 
     /**
      * Creates a box container that centers the control inside it
      */
+
     static final class CenteredControlLayout
             extends ConstraintLayout
-            implements BaseControl {
-
-        //TODO Change to new parent/child interface
+            implements BaseControl,
+            View.OnClickListener {
 
         Specs.DataConstant dc;
         ScoutingActivityListener listener;
+
+        View subControl;
 
         public CenteredControlLayout(Context context) {
             super(context);
@@ -504,7 +534,6 @@ class InputControls {
                 setElevation(4);
             }
 
-
             ConstraintLayout.LayoutParams childLayout;
 
             childLayout = new ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
@@ -518,12 +547,23 @@ class InputControls {
             control.setLayoutParams(childLayout);
 
             addView(control);
+            setOnClickListener(this);
+
+            subControl = control;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (!listener.timedInputsShouldDisable()) {
+                subControl.performClick();
+            }
         }
     }
 
     /**
      * A counter for the buttons
      */
+
     static final class CountedControlLayout
             extends FrameLayout
             implements BaseControl,
@@ -580,6 +620,7 @@ class InputControls {
     /**
      * Creates a placeholder button that shows button is not found
      */
+
     static final class UnknownControl
             extends AppCompatButton
             implements View.OnClickListener {
