@@ -13,7 +13,7 @@ package ca.warp7.android.scouting;
  * @author Team 865
  */
 
-@SuppressWarnings("unused")
+
 final class EntryDatum {
 
     private int mDataType;
@@ -65,14 +65,5 @@ final class EntryDatum {
 
     void setStateFlag(int stateFlag) {
         this.mStateFlag = stateFlag;
-    }
-
-    int encode() {
-        return mUndoFlag << 15 | mStateFlag << 14 | mDataType << 8 | mDataValue;
-    }
-
-    @SuppressWarnings("unused")
-    int encode_v2() {
-        return mUndoFlag << 19 | mDataType << 12 | mDataValue;
     }
 }

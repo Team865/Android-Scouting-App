@@ -102,7 +102,7 @@ class EntryFormatter {
                 .append("_");
 
         for (EntryDatum d : entry.getDataStack())
-            sb.append(fillHex(d.encode(), 4));
+            sb.append(fillHex(datumEncode(d), 4));
 
         sb.append("_");
 
@@ -119,6 +119,13 @@ class EntryFormatter {
 
     private static String fillHex(int n, int digits) {
         return formatRightWithZeroes(Integer.toHexString(n), digits);
+    }
+
+    private static int datumEncode(EntryDatum datum) {
+        return datum.getUndoFlag() << 15
+                | datum.getStateFlag() << 14
+                | datum.getType() << 8
+                | datum.getValue();
     }
 
 }
