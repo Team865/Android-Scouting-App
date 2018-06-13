@@ -13,6 +13,7 @@ package ca.warp7.android.scouting;
  * @author Team 865
  */
 
+@SuppressWarnings("unused")
 final class EntryDatum {
 
     private int mDataType;
@@ -20,9 +21,18 @@ final class EntryDatum {
     private int mUndoFlag;
     private int mStateFlag;
 
-    EntryDatum(int type, int value) {
+    // This data is not encoded; it is used to determine the order of data points
+    private int mRecordedTime;
+
+
+    private EntryDatum(int type, int value) {
         mDataType = type;
         mDataValue = value;
+    }
+
+    EntryDatum(int type, int value, int recordedTime) {
+        this(type, value);
+        mRecordedTime = recordedTime;
     }
 
     int getType() {
@@ -43,6 +53,10 @@ final class EntryDatum {
 
     void setValue(int value) {
         this.mDataValue = value;
+    }
+
+    public int getRecordedTime() {
+        return mRecordedTime;
     }
 
     void flagAsUndone() {

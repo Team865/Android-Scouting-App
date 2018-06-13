@@ -101,10 +101,19 @@ class Entry {
         if (dataType < 0 || dataType > 63) {
             return;
         }
-        EntryDatum d = new EntryDatum(dataType, dataValue);
-        d.setStateFlag(dataState);
-        mDataStack.add(d);
 
+        int currentTime = mTimekeeper.getCurrentRelativeTime();
+
+        EntryDatum datum = new EntryDatum(dataType, dataValue, currentTime);
+        datum.setStateFlag(dataState);
+
+        int index = 0;
+        while (index < mDataStack.size() &&
+                mDataStack.get(index).getRecordedTime() <= currentTime) {
+            index++;
+        }
+
+        mDataStack.add(index, datum);
     }
 
     /**

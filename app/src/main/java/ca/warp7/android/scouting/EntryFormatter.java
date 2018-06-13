@@ -68,7 +68,7 @@ class EntryFormatter {
                 Specs.DataConstant dc = specs.getDataConstantByIndex(t);
                 sb
                         .append(formatLeftWithSpaces(dc.getLogTitle() +
-                                (d.getStateFlag() == 0 ? "<Off>" : "") + " ", 20))
+                                (d.getStateFlag() == 0 ? "<Off>" : "") + " ", 24))
                         .append(dc.format(d.getValue()))
                         .append(d.getUndoFlag() != 0 ? " Ⓤ" : "");
             } else {
