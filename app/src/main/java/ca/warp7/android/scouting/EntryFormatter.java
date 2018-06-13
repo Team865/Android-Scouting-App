@@ -6,7 +6,9 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Static Formatting Utility for Entry
+ * Static Formatting Utilities for Entry
+ *
+ * @author Team 865
  */
 
 class EntryFormatter {

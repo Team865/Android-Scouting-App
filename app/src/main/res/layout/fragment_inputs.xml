@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     tools:context="ca.warp7.android.scouting.InputsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <TableLayout
         android:id="@+id/input_table"
         android:layout_width="match_parent"

@@ -31,6 +31,7 @@ import java.util.ArrayList;
  * @see EntryFormatter
  */
 
+@SuppressWarnings("unused")
 class Entry {
 
     private int mMatchNumber;
@@ -43,7 +44,12 @@ class Entry {
 
     private ArrayList<EntryDatum> mDataStack;
 
-    Entry(int matchNumber, int teamNumber, String scoutName) {
+    private Timekeeper mTimekeeper;
+
+    Entry(int matchNumber,
+          int teamNumber,
+          String scoutName,
+          Timekeeper timekeeper) {
 
         mMatchNumber = matchNumber;
         mTeamNumber = teamNumber;
@@ -54,6 +60,8 @@ class Entry {
         mSpecs = Specs.getInstance();
 
         mDataStack = new ArrayList<>();
+
+        mTimekeeper = timekeeper;
     }
 
     public int getMatchNumber() {
@@ -169,7 +177,7 @@ class Entry {
         mDataStack = cleanedList;
     }
 
-    interface Listener {
+    interface Timekeeper {
         @SuppressWarnings("unused")
         int getCurrentRelativeTime();
     }

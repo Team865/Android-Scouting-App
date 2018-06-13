@@ -9,7 +9,7 @@ import android.os.Vibrator;
  */
 
 interface ScoutingActivityListener
-        extends Entry.Listener {
+        extends Entry.Timekeeper {
 
     /**
      * @return The time Handler of the activity

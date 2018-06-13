@@ -478,8 +478,8 @@ public class ScoutingActivity
 
         pushStatus("Scouting Started");
 
-        // Entry uses Specs so must ensure specs instance exists
-        mEntry = new Entry(matchNumber, teamNumber, scoutName);
+        // NOTE Entry uses Specs so must ensure specs instance exists
+        mEntry = new Entry(matchNumber, teamNumber, scoutName, this);
     }
 
     /**
