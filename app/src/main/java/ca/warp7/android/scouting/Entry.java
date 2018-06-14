@@ -102,18 +102,12 @@ class Entry {
             return;
         }
 
-        int currentTime = mTimekeeper.getCurrentRelativeTime();
+        EntryDatum datum = new EntryDatum(dataType, dataValue,
+                mTimekeeper.getCurrentRelativeTime());
 
-        EntryDatum datum = new EntryDatum(dataType, dataValue, currentTime);
         datum.setStateFlag(dataState);
 
-        int index = 0;
-        while (index < mDataStack.size() &&
-                mDataStack.get(index).getRecordedTime() <= currentTime) {
-            index++;
-        }
-
-        mDataStack.add(index, datum);
+        mDataStack.add(maxIndexBeforeCurrentTime(), datum);
     }
 
     /**
@@ -146,11 +140,13 @@ class Entry {
 
         int total = 0;
 
-        for (EntryDatum datum : mDataStack) {
+        for (int i = maxIndexBeforeCurrentTime() - 1; i >= 0; i--) {
+            EntryDatum datum = mDataStack.get(i);
             if (datum.getType() == dataType && datum.getUndoFlag() == 0) {
                 total++;
             }
         }
+
         return total;
     }
 
@@ -160,7 +156,7 @@ class Entry {
 
     int getLastValue(int dataType) {
 
-        for (int i = mDataStack.size() - 1; i >= 0; i--) {
+        for (int i = maxIndexBeforeCurrentTime() - 1; i >= 0; i--) {
             EntryDatum datum = mDataStack.get(i);
             if (datum.getType() == dataType && datum.getUndoFlag() == 0) {
                 return datum.getValue();
@@ -184,6 +180,21 @@ class Entry {
         }
 
         mDataStack = cleanedList;
+    }
+
+    /**
+     * Get the maximum index of the datum recorded before or equal the current time,
+     * or the last item in the data stack
+     */
+    private int maxIndexBeforeCurrentTime() {
+
+        int index = 0; // find the maximum index that is less than current time
+        while (index < mDataStack.size() &&
+                mDataStack.get(index).getRecordedTime() <= mTimekeeper.getCurrentRelativeTime()) {
+            index++;
+        }
+        return index;
+
     }
 
     interface Timekeeper {
