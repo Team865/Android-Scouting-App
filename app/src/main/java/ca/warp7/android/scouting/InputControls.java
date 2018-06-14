@@ -430,12 +430,10 @@ class InputControls {
 
     static final class LabeledControlLayout
             extends LinearLayout
-            implements BaseControl, View.OnClickListener {
+            implements BaseControl {
 
         Specs.DataConstant dc;
         ScoutingActivityListener listener;
-
-        View subControl;
 
         public LabeledControlLayout(Context context) {
             super(context);
@@ -483,16 +481,6 @@ class InputControls {
 
             control.setLayoutParams(childLayout);
             addView(control);
-            setOnClickListener(this);
-
-            subControl = control;
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (!listener.timedInputsShouldDisable()) {
-                subControl.performClick();
-            }
         }
     }
 
@@ -554,7 +542,8 @@ class InputControls {
 
         @Override
         public void onClick(View v) {
-            if (!listener.timedInputsShouldDisable()) {
+            if (!listener.timedInputsShouldDisable()
+                    && subControl instanceof View.OnClickListener) {
                 subControl.performClick();
             }
         }
