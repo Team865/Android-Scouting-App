@@ -165,27 +165,26 @@ public class ScoutingActivity
         updateTimerStatusAndSeeker();
         updateCurrentTab();
 
-        if (savedInstanceState == null) {
-            mStartingTimestamp = getCurrentTime();
-        } else {
-            mStartingTimestamp = savedInstanceState.getInt(ID.INSTANCE_STATE_START_TIME);
-        }
-
-        mEntry.setStartingTimestamp(mStartingTimestamp);
-
-        startActivityState(ActivityState.STARTING);
+        initStates(savedInstanceState);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+
         super.onSaveInstanceState(outState);
-        outState.putInt(ID.INSTANCE_STATE_START_TIME, mStartingTimestamp);
+
+        outState.putSerializable(ID.INSTANCE_ACTIVITY_STATE, mActivityState);
+        outState.putInt(ID.INSTANCE_TIMER, mTimer);
+        outState.putSerializable(ID.INSTANCE_CURRENT_TAB, mCurrentTab);
+        outState.putInt(ID.INSTANCE_START_TIME, mStartingTimestamp);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.scouting_menu, menu);
+
         return true;
     }
 
@@ -535,6 +534,23 @@ public class ScoutingActivity
 
             }
         });
+    }
+
+    /**
+     * Initializes states or restore it from savedInstanceState
+     */
+
+    private void initStates(Bundle savedInstanceState) {
+
+        if (savedInstanceState == null) {
+            mStartingTimestamp = getCurrentTime();
+        } else {
+            mStartingTimestamp = savedInstanceState.getInt(ID.INSTANCE_START_TIME);
+        }
+
+        mEntry.setStartingTimestamp(mStartingTimestamp);
+
+        startActivityState(ActivityState.STARTING);
     }
 
 
