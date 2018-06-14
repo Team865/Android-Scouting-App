@@ -75,6 +75,7 @@ public class ScoutingActivity
     // State Variables
 
     private ActivityState mActivityState;
+    private boolean mCountUpTimerMode;
 
     private int mTimer = 0;
     private int mCurrentTab = 0;
@@ -353,6 +354,15 @@ public class ScoutingActivity
 
                 break;
         }
+    }
+
+    /**
+     * Toggles the format of the timer, which is shown
+     */
+
+    public void onStatusTimerClicked(View view) {
+        mCountUpTimerMode = !mCountUpTimerMode;
+        updateTimerStatusAndSeeker();
     }
 
 
@@ -707,22 +717,27 @@ public class ScoutingActivity
 
     private void updateTimerStatusAndSeeker() {
 
-        String d;
+        String status;
+        int time;
 
-        int time = mTimer <= kAutonomousTime ? kAutonomousTime - mTimer : kTimerLimit - mTimer;
-
-        if (mTimer < kTimerLimit) {
-            d = String.valueOf(time);
-            mTimerStatus.setTypeface(null, Typeface.NORMAL);
-        } else {
-            d = "FIN";
+        if (mCountUpTimerMode) {
+            time = mTimer;
             mTimerStatus.setTypeface(null, Typeface.BOLD);
+        } else {
+            time = mTimer <= kAutonomousTime ? kAutonomousTime - mTimer : kTimerLimit - mTimer;
+            mTimerStatus.setTypeface(null, Typeface.NORMAL);
         }
 
-        char[] placeholder = new char[kTotalTimerDigits - d.length()];
-        String status = new String(placeholder).replace("\0", "0") + d;
+        if (mTimer < kTimerLimit) {
+            status = String.valueOf(time);
+        } else {
+            status = "FIN";
+        }
 
-        mTimerStatus.setText(status);
+        char[] placeholder = new char[kTotalTimerDigits - status.length()];
+        String filled_status = new String(placeholder).replace("\0", "0") + status;
+
+        mTimerStatus.setText(filled_status);
 
         mTimerStatus.setTextColor(mTimer <= kAutonomousTime ?
                 kAutonomousColour : mTimer < kTimerLimit ?
@@ -797,4 +812,5 @@ public class ScoutingActivity
     static final int kFinishedColour = 0xFFFF0000;
 
     static final long[] kStartVibration = new long[]{0, 20, 30, 20};
+
 }

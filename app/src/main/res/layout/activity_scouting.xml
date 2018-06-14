@@ -55,6 +55,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:gravity="start"
+            android:minWidth="32dp"
             android:singleLine="true"
             android:textAlignment="textStart"
             android:textColor="@color/colorAlmostBlack"
@@ -110,26 +111,29 @@
             android:padding="4dp"
             android:src="@drawable/ic_undo"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/timer_status" />
+            app:layout_constraintEnd_toStartOf="@+id/divider" />
 
         <View
             android:id="@+id/divider"
             android:layout_width="1dp"
             android:layout_height="0dp"
+            android:layout_marginRight="4dp"
             android:layout_marginTop="24dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/timer_status"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="4dp" />
 
         <TextView
             android:id="@+id/timer_status"
-            android:layout_width="55dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:ellipsize="end"
             android:gravity="end"
+            android:onClick="onStatusTimerClicked"
             android:singleLine="true"
             android:textAlignment="textEnd"
             android:textColor="@android:color/black"
