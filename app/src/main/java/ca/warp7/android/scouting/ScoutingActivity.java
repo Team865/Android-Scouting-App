@@ -212,23 +212,7 @@ public class ScoutingActivity
                 return true;
 
             case R.id.menu_qr:
-                AlertDialog dialog = new AlertDialog.Builder(this)
-                        .setTitle("QR Code")
-                        .setView(getQRImage())
-                        .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        })
-                        .setPositiveButton("Send", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        })
-                        .create();
-                dialog.show();
+                onQRMenuClicked();
                 return true;
 
             case R.id.menu_done: // Check mark button
@@ -388,6 +372,9 @@ public class ScoutingActivity
         updateTimerStatusAndSeeker();
     }
 
+    /**
+     * Shows the log on title click
+     */
 
     public void onToolbarTitleClicked(View view) {
         new AlertDialog.Builder(this)
@@ -395,6 +382,40 @@ public class ScoutingActivity
                 .setMessage(mStatusLog.toString())
                 .create()
                 .show(); // Show the log in a dialog
+    }
+
+    /**
+     * Shows the QR dialog with sharing options
+     */
+
+    private void onQRMenuClicked() {
+
+        mEntry.clean();
+        final String encoded = EntryFormatter.formatEncode(mEntry);
+
+        new AlertDialog.Builder(this)
+                .setTitle("QR Code")
+                .setView(getQRImage(encoded))
+
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+
+                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.putExtra(Intent.EXTRA_TEXT, encoded);
+                        intent.setType("text/plain");
+
+                        startActivity(Intent.createChooser(intent, encoded));
+                    }
+                })
+                .create()
+                .show();
     }
 
 
@@ -408,7 +429,11 @@ public class ScoutingActivity
     }
 
 
-    private ImageView getQRImage() {
+    /**
+     * @return an ImageView of the current encode
+     */
+
+    private ImageView getQRImage(String encoded) {
 
         ImageView qrImage = new ImageView(this);
         int dim = mNavToolbox.getWidth();
@@ -417,7 +442,7 @@ public class ScoutingActivity
 
             qrImage.setImageBitmap(new BarcodeEncoder().createBitmap(
                     new MultiFormatWriter().encode(
-                            EntryFormatter.formatEncode(mEntry),
+                            encoded,
                             BarcodeFormat.QR_CODE,
                             dim,
                             dim,
