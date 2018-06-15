@@ -88,6 +88,10 @@ public class ScoutingActivity
 
     private ActionBar mActionBar;
     private Toolbar mToolbar;
+
+    private TextView mToolbarTeam;
+    private TextView mToolbarMatch;
+
     private ConstraintLayout mNavToolbox;
 
     private TextView mTitleBanner;
@@ -200,7 +204,7 @@ public class ScoutingActivity
             case R.id.menu_details: // Info button
 
                 new AlertDialog.Builder(this)
-                        .setTitle(mActionBar.getTitle() + " Log")
+                        .setTitle("Log")
                         .setMessage(mStatusLog.toString())
                         .create()
                         .show(); // Show the log in a dialog
@@ -407,6 +411,9 @@ public class ScoutingActivity
         mToolbar.setNavigationIcon(R.drawable.ic_close);
         mToolbar.setNavigationContentDescription(R.string.menu_close);
 
+        mToolbarTeam = mToolbar.findViewById(R.id.toolbar_team);
+        mToolbarMatch = mToolbar.findViewById(R.id.toolbar_match);
+
         setSupportActionBar(mToolbar);
 
         mActionBar = getSupportActionBar();
@@ -424,14 +431,6 @@ public class ScoutingActivity
 
         mPlayPauseButton = findViewById(R.id.play_pause);
         mUndoSkipButton = findViewById(R.id.undo_skip);
-
-        String alliance = mSpecs.getAlliance();
-
-        mToolbar.setTitleTextColor(
-                alliance.equals("R") ? kRedAllianceColour :
-                        (alliance.equals("B") ? kBlueAllianceColour : kNeutralAllianceColour));
-
-        mToolbar.setSubtitleTextColor(getResources().getColor(R.color.colorAlmostBlack));
 
         animate_in.setDuration(kFadeDuration);
         animate_out.setDuration(kFadeDuration);
@@ -487,13 +486,19 @@ public class ScoutingActivity
         int teamNumber = intent.getIntExtra(ID.MSG_TEAM_NUMBER, -1);
         String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
 
-        String a = mSpecs.getAlliance();
+        String alliance = mSpecs.getAlliance();
 
-        if (a.equals("R") || a.equals("B")) {
-            mActionBar.setTitle("Q" + matchNumber + " — " + teamNumber);
-        } else {
-            mActionBar.setTitle(mSpecs.getBoardName());
-        }
+        mActionBar.setDisplayShowTitleEnabled(false);
+
+        mToolbarTeam.setText(alliance.equals("R") || alliance.equals("B") ?
+                String.valueOf(teamNumber) : mSpecs.getBoardName());
+
+        String m = "Match " + matchNumber;
+        mToolbarMatch.setText(m);
+
+        mToolbarTeam.setTextColor(
+                alliance.equals("R") ? kRedAllianceColour :
+                        (alliance.equals("B") ? kBlueAllianceColour : kNeutralAllianceColour));
 
         mStatusLog = new StringBuilder(); // initialize the log
         pushStatus("Scouting Started");
