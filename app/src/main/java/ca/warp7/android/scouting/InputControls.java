@@ -537,6 +537,10 @@ class InputControls {
             addView(control);
             setOnClickListener(this);
 
+            if (listener.timedInputsShouldDisable()) {
+                setEnabled(false);
+            }
+
             subControl = control;
         }
 
