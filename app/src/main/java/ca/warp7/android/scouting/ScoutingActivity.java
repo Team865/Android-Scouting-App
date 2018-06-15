@@ -26,9 +26,15 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.ArrayList;
 
@@ -206,6 +212,23 @@ public class ScoutingActivity
                 return true;
 
             case R.id.menu_qr:
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("QR Code")
+                        .setView(getQRImage())
+                        .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .create();
+                dialog.show();
                 return true;
 
             case R.id.menu_done: // Check mark button
@@ -382,6 +405,28 @@ public class ScoutingActivity
      */
     private int getCurrentTime() {
         return (int) (System.currentTimeMillis() / 1000);
+    }
+
+
+    private ImageView getQRImage() {
+
+        ImageView qrImage = new ImageView(this);
+        int dim = mNavToolbox.getWidth();
+
+        try {
+
+            qrImage.setImageBitmap(new BarcodeEncoder().createBitmap(
+                    new MultiFormatWriter().encode(
+                            EntryFormatter.formatEncode(mEntry),
+                            BarcodeFormat.QR_CODE,
+                            dim,
+                            dim,
+                            null)));
+
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        return qrImage;
     }
 
 
