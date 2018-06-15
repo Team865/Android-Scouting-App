@@ -9,7 +9,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_comment"
-        android:icon="@drawable/ic_comment"
+        android:icon="@drawable/ic_comment_white"
         android:title="@string/edit_comments"
         app:showAsAction="ifRoom" />
 </menu>

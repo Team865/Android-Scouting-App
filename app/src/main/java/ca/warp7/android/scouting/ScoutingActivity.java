@@ -67,6 +67,7 @@ CODE ORGANIZED BY FOLLOWING SECTIONS
  * </p>
  */
 
+
 public class ScoutingActivity
         extends AppCompatActivity
         implements ScoutingActivityListener {
@@ -84,7 +85,7 @@ public class ScoutingActivity
     private int mStartingTimestamp = 0;
 
 
-    // UI elements
+    // UI elements (see layout file)
 
     private ActionBar mActionBar;
     private Toolbar mToolbar;
@@ -199,6 +200,12 @@ public class ScoutingActivity
 
             case android.R.id.home:
                 onBackPressed();
+                return true;
+
+            case R.id.menu_flags:
+                return true;
+
+            case R.id.menu_qr:
                 return true;
 
             case R.id.menu_done: // Check mark button
