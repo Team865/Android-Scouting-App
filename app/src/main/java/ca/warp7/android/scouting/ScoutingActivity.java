@@ -201,16 +201,6 @@ public class ScoutingActivity
                 onBackPressed();
                 return true;
 
-            case R.id.menu_details: // Info button
-
-                new AlertDialog.Builder(this)
-                        .setTitle("Log")
-                        .setMessage(mStatusLog.toString())
-                        .create()
-                        .show(); // Show the log in a dialog
-
-                return true;
-
             case R.id.menu_done: // Check mark button
 
                 mEntry.clean(); // Remove the undoes
@@ -369,6 +359,15 @@ public class ScoutingActivity
     }
 
 
+    public void onToolbarTitleClicked(View view) {
+        new AlertDialog.Builder(this)
+                .setTitle("Entry Log")
+                .setMessage(mStatusLog.toString())
+                .create()
+                .show(); // Show the log in a dialog
+    }
+
+
     // Utility Methods
 
     /**
@@ -501,7 +500,14 @@ public class ScoutingActivity
                         (alliance.equals("B") ? kBlueAllianceColour : kNeutralAllianceColour));
 
         mStatusLog = new StringBuilder(); // initialize the log
-        pushStatus("Scouting Started");
+
+        pushStatus("Match: " + matchNumber);
+        pushStatus("Team: " + teamNumber);
+        pushStatus("Scouter: " + scoutName);
+        pushStatus("Board: " + mSpecs.getBoardName());
+        pushStatus("Alliance: " + mSpecs.getAlliance());
+        pushStatus("\n");
+
 
         // NOTE Entry uses Specs so must ensure specs instance exists
         mEntry = new Entry(matchNumber, teamNumber, scoutName, this);
@@ -576,7 +582,6 @@ public class ScoutingActivity
             case STARTING:
 
                 setStartingNavToolbox();
-                setBackgroundColour(getResources().getColor(R.color.colorStartBlue));
 
                 break;
 
