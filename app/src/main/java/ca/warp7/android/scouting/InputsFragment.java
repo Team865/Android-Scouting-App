@@ -14,30 +14,25 @@ import android.widget.TableRow;
 
 import java.util.ArrayList;
 
+/**
+ * The fragment that is shown in the biggest portion
+ * of ScoutingActivity -- it manages a TableLayout that
+ * contains the views from InputControls defined in Specs
+ *
+ * @author Team 865
+ */
 
 public class InputsFragment
         extends Fragment {
 
-    static InputsFragment createInstance(int currentTab) {
-        InputsFragment f = new InputsFragment();
 
-        Bundle args = new Bundle();
-        args.putInt("tab", currentTab);
+    ScoutingActivityListener mListener;
 
-        f.setArguments(args);
-        return f;
-    }
+    TableLayout mInputTable;
 
-    ScoutingActivityListener listener;
+    Specs mSpecs;
+    Specs.Layout mLayout;
 
-    TableLayout inputTable;
-
-    Specs specs;
-    Specs.Layout layout;
-
-
-    public InputsFragment() {
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,16 +40,16 @@ public class InputsFragment
 
         int tabNumber = getArguments() != null ? getArguments().getInt("tab") : -1;
 
-        specs = Specs.getInstance();
+        mSpecs = Specs.getInstance();
 
-        if (specs == null) {
+        if (mSpecs == null) {
             Activity activity = getActivity();
             if (activity != null) {
                 Specs.setInstance(activity.getIntent().getStringExtra(ID.MSG_SPECS_FILE));
-                specs = Specs.getInstance();
+                mSpecs = Specs.getInstance();
             }
         }
-        layout = specs.getLayouts().get(tabNumber);
+        mLayout = mSpecs.getLayouts().get(tabNumber);
     }
 
     @Override
@@ -68,9 +63,9 @@ public class InputsFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        inputTable = view.findViewById(R.id.input_table);
+        mInputTable = view.findViewById(R.id.input_table);
 
-        if (specs != null) {
+        if (mSpecs != null) {
             layoutTable();
         }
     }
@@ -80,7 +75,7 @@ public class InputsFragment
         super.onAttach(context);
 
         if (context instanceof ScoutingActivityListener) {
-            listener = (ScoutingActivityListener) context;
+            mListener = (ScoutingActivityListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement InputControls.ScoutingActivityListener");
@@ -90,48 +85,60 @@ public class InputsFragment
     @Override
     public void onDetach() {
         super.onDetach();
-        listener = null;
+        mListener = null;
     }
 
+    /**
+     * Creates a view from its definition
+     *
+     * @param dc       the data constant
+     * @param idIfNull the display value if control is undefined
+     * @return a matching View from InputControls
+     */
 
     View createControlFromDataConstant(Specs.DataConstant dc, String idIfNull) {
 
         if (dc == null) {
-            return new InputControls.UnknownControl(getContext(), idIfNull, listener);
+            return new InputControls.UnknownControl(getContext(), idIfNull, mListener);
         }
 
         switch (dc.getType()) {
             case Specs.DataConstant.TIMESTAMP:
-                //return new InputControls.TimerButton(getContext(), dc, listener);
-                return new InputControls.CountedControlLayout(getContext(), dc, listener,
-                        new InputControls.TimerButton(getContext(), dc, listener));
+                //return new InputControls.TimerButton(getContext(), dc, mListener);
+                return new InputControls.CountedControlLayout(getContext(), dc, mListener,
+                        new InputControls.TimerButton(getContext(), dc, mListener));
 
             case Specs.DataConstant.CHECKBOX:
-                return new InputControls.CenteredControlLayout(getContext(), dc, listener,
-                        new InputControls.Checkbox(getContext(), dc, listener));
+                return new InputControls.CenteredControlLayout(getContext(), dc, mListener,
+                        new InputControls.Checkbox(getContext(), dc, mListener));
 
             case Specs.DataConstant.DURATION:
-                return new InputControls.DurationButton(getContext(), dc, listener);
+                return new InputControls.DurationButton(getContext(), dc, mListener);
 
 
             case Specs.DataConstant.RATING:
 
-                return new InputControls.LabeledControlLayout(getContext(), dc, listener,
-                        new InputControls.SeekBar(getContext(), dc, listener));
+                return new InputControls.LabeledControlLayout(getContext(), dc, mListener,
+                        new InputControls.SeekBar(getContext(), dc, mListener));
 
             case Specs.DataConstant.CHOICE:
 
-                return new InputControls.LabeledControlLayout(getContext(), dc, listener,
-                        new InputControls.ChoicesButton(getContext(), dc, listener));
+                return new InputControls.LabeledControlLayout(getContext(), dc, mListener,
+                        new InputControls.ChoicesButton(getContext(), dc, mListener));
 
             default:
                 return new InputControls.UnknownControl(getContext(),
-                        dc.getLabel(), listener);
+                        dc.getLabel(), mListener);
         }
     }
 
+    /**
+     * Get a specific view by its ID and its span in the table
+     * @return the specified view with added layout
+     */
+
     View createSpecifiedControl(String id, int span) {
-        Specs.DataConstant dc = specs.getDataConstantByStringID(id);
+        Specs.DataConstant dc = mSpecs.getDataConstantByStringID(id);
 
         View view = createControlFromDataConstant(dc, id);
 
@@ -146,6 +153,11 @@ public class InputsFragment
 
         return view;
     }
+
+    /**
+     * Layouts a row in the table
+     * @param fieldRow an array of identifiers
+     */
 
     void layoutRow(String[] fieldRow) {
         TableRow tr = new TableRow(getContext());
@@ -163,13 +175,17 @@ public class InputsFragment
             }
         }
 
-        inputTable.addView(tr);
+        mInputTable.addView(tr);
     }
+
+    /**
+     * Get the layout and create the entire table
+     */
 
     void layoutTable() {
 
-        ArrayList<String[]> fields = layout.getFields();
-        inputTable.setWeightSum(fields.size());
+        ArrayList<String[]> fields = mLayout.getFields();
+        mInputTable.setWeightSum(fields.size());
 
 
         for (String[] fieldRow : fields) {
@@ -177,14 +193,35 @@ public class InputsFragment
         }
     }
 
+    /**
+     * Update the states of input views
+     */
 
     void updateStates() {
-        if (inputTable != null) {
-            inputTable.removeAllViews();
+
+        if (mInputTable != null) {
+            mInputTable.removeAllViews();
         }
-        if (specs != null) {
+
+        if (mSpecs != null) {
             layoutTable();
         }
     }
 
+    /**
+     * Creates an fragment instance
+     *
+     * @param currentTab the tab to create the instance on
+     * @return the created instance
+     */
+
+    static InputsFragment createInstance(int currentTab) {
+        InputsFragment f = new InputsFragment();
+
+        Bundle args = new Bundle();
+        args.putInt("tab", currentTab);
+
+        f.setArguments(args);
+        return f;
+    }
 }
