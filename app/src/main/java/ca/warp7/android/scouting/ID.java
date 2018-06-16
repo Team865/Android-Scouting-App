@@ -25,5 +25,4 @@ class ID {
     static final String INSTANCE_START_TIME = ROOT + ".is.start_time";
     static final String INSTANCE_ACTIVITY_STATE = ROOT + ".is.activity_state";
     static final String INSTANCE_TIMER = ROOT + ".is.timer";
-    static final String INSTANCE_CURRENT_TAB = ROOT + ".is.current_tab";
 }

@@ -152,6 +152,7 @@ public class ScoutingActivity
             mTimerIsRunning = true;
 
             updateTimerStatusAndSeeker();
+            updateTabInputStates();
             mTimer++;
 
             if (mTimer <= kTimerLimit) { // Check if match ended
@@ -196,7 +197,6 @@ public class ScoutingActivity
 
         outState.putSerializable(ID.INSTANCE_ACTIVITY_STATE, mActivityState);
         outState.putInt(ID.INSTANCE_TIMER, mTimer);
-        outState.putSerializable(ID.INSTANCE_CURRENT_TAB, mCurrentTab);
         outState.putInt(ID.INSTANCE_START_TIME, mStartingTimestamp);
     }
 
@@ -351,7 +351,7 @@ public class ScoutingActivity
                     pushStatus("Cannot Undo @" + mTimer + "s");
                 } else {
                     pushStatus("Undo \'" + dc.getLabel() + "\'");
-                    mVibrator.vibrate(kUndoVibration);
+                    mVibrator.vibrate(kActionEffectVibration);
                     updateTabInputStates();
                 }
                 break;
@@ -601,6 +601,7 @@ public class ScoutingActivity
                 if (fromUser && mActivityState == ActivityState.PAUSING) {
                     mTimer = progress;
                     updateTimerStatusAndSeeker();
+                    updateTabInputStates();
                 }
             }
 
@@ -983,5 +984,5 @@ public class ScoutingActivity
     static final int kFinishedColour = 0xFFFF0000;
 
     static final long[] kStartVibration = new long[]{0, 20, 30, 20};
-    static final int kUndoVibration = 20;
+    static final int kActionEffectVibration = 20;
 }
