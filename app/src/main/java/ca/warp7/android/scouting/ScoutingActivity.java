@@ -63,8 +63,13 @@ CODE ORGANIZED BY FOLLOWING SECTIONS
 
 
 /**
- * <p>The Scouting Activity -- responsible for navigation,
- * Setting up the interface, and receive actions from inputs.</p>
+ * <p>The Scouting Activity -- A generic activity to collect data
+ * for an Entry based on a set Specs. It controls all sub-components
+ * of the activity and implements a listener that can be used for
+ * callback. It is responsible to manage the activity's state and
+ * lifecycle, setting up components in the interface, receive
+ * events from action buttons for navigation and commands, and
+ * keeps track of an Entry object which stores the data </p>
  * <p>
  * <p>
  *
@@ -339,10 +344,10 @@ public class ScoutingActivity
             case SCOUTING: // Undo button
                 Specs.DataConstant dc = mEntry.undo();
                 if (dc == null) {
-                    pushStatus("Nothing can be undone");
+                    pushStatus("Cannot Undo @" + mTimer + "s");
                 } else {
                     pushStatus("Undo \'" + dc.getLabel() + "\'");
-                    mVibrator.vibrate(20);
+                    mVibrator.vibrate(kUndoVibration);
                     updateTabInputStates();
                 }
                 break;
@@ -977,5 +982,5 @@ public class ScoutingActivity
     static final int kFinishedColour = 0xFFFF0000;
 
     static final long[] kStartVibration = new long[]{0, 20, 30, 20};
-
+    static final int kUndoVibration = 20;
 }

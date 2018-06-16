@@ -210,7 +210,6 @@ class Entry {
     }
 
     interface Timekeeper {
-        @SuppressWarnings("unused")
         int getCurrentRelativeTime();
     }
 }
