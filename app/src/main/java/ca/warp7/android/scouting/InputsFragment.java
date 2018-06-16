@@ -46,6 +46,7 @@ public class InputsFragment
         int tabNumber = getArguments() != null ? getArguments().getInt("tab") : -1;
 
         specs = Specs.getInstance();
+
         if (specs == null) {
             Activity activity = getActivity();
             if (activity != null) {
@@ -176,9 +177,14 @@ public class InputsFragment
         }
     }
 
-    @SuppressWarnings("unused")
+
     void updateStates() {
-        android.util.Log.i("Fragment Called!!", "Fragment");
+        if (inputTable != null) {
+            inputTable.removeAllViews();
+        }
+        if (specs != null) {
+            layoutTable();
+        }
     }
 
 }

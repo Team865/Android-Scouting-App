@@ -9,12 +9,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -120,7 +118,7 @@ public class ScoutingActivity
     private ImageButton mUndoSkipButton;
 
     private ViewPager mPager;
-    private PagerAdapter mPagerAdapter;
+    private InputTabsPagerAdapter mPagerAdapter;
 
 
     // System Services
@@ -880,7 +878,16 @@ public class ScoutingActivity
      */
 
     private void updateTabInputStates() {
-        mPagerAdapter.notifyDataSetChanged();
+
+        if (mCurrentTab != 0) {
+            mPagerAdapter.getFragment(mCurrentTab - 1).updateStates();
+        }
+
+        mPagerAdapter.getFragment(mCurrentTab).updateStates();
+
+        if (mCurrentTab != mPagerAdapter.getCount() - 1) {
+            mPagerAdapter.getFragment(mCurrentTab + 1).updateStates();
+        }
     }
 
     /**
@@ -943,13 +950,6 @@ public class ScoutingActivity
             return mSpecs.getLayouts().size();
         }
 
-        @Override
-        public int getItemPosition(@NonNull Object object) {
-            // Recreate all fragments when notifyDataSetChanged is called
-            return POSITION_NONE;
-        }
-
-        @SuppressWarnings("unused")
         InputsFragment getFragment(int index) {
         /* Fragments are cached in Adapter, so instantiateItem will
            return the cached one (if any) or a new instance if necessary.
