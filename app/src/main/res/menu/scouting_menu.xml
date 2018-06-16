@@ -16,6 +16,7 @@
         android:id="@+id/menu_done"
         android:icon="@drawable/ic_check_circle_green"
         android:title="@string/menu_done"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
 </menu>

@@ -109,7 +109,7 @@
             android:paddingRight="16dp"
             android:paddingTop="4dp"
             android:text="@string/start_timer"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/timer_status"

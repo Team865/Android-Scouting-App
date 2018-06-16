@@ -375,6 +375,12 @@ public class ScoutingActivity
         new AlertDialog.Builder(this)
                 .setTitle("Entry Log")
                 .setMessage(mStatusLog.toString())
+                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
                 .create()
                 .show(); // Show the log in a dialog
     }
@@ -399,6 +405,13 @@ public class ScoutingActivity
                     }
                 })
 
+                .setNeutralButton("Old Interface", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onDataOutputIntent();
+                    }
+                })
+
                 .setPositiveButton("Send To", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -410,6 +423,7 @@ public class ScoutingActivity
                         startActivity(Intent.createChooser(intent, encoded));
                     }
                 })
+
                 .create()
                 .show();
     }
@@ -630,7 +644,7 @@ public class ScoutingActivity
         pushStatus("Scouter: " + scoutName);
         pushStatus("Board: " + mSpecs.getBoardName());
         pushStatus("Alliance: " + mSpecs.getAlliance());
-        pushStatus("\n");
+        pushStatus("");
 
 
         // NOTE Entry uses Specs so must ensure specs instance exists
