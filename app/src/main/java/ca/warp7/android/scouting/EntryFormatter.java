@@ -78,12 +78,28 @@ class EntryFormatter {
             }
         }
 
-        sb
-                .append('\n')
-                .append(new String(new char[31]).replace("\0", "-"));
+        sb.append('\n');
+
+        if (!entry.getComments().isEmpty()) {
+            sb
+                    .append(new String(new char[31]).replace("\0", "*"))
+                    .append('\n')
+                    .append("New Comments: ")
+                    .append(entry.getComments())
+                    .append("\n");
+        }
+
+        sb.append(new String(new char[31]).replace("\0", "-"));
 
         return sb.toString();
     }
+
+    /**
+     * Formats the entry into hex encoded format
+     *
+     * @param entry the entry to encode
+     * @return an encoded string, following an underscore-delimited convention
+     */
 
     static String formatEncode(Entry entry) {
         return formatHeader(entry) + "_" + formatDataCode(entry);

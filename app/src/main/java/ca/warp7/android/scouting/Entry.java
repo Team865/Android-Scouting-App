@@ -64,6 +64,8 @@ class Entry {
         mDataStack = new ArrayList<>();
 
         mTimekeeper = timekeeper;
+
+        mComments = "";
     }
 
     public int getMatchNumber() {
