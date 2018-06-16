@@ -95,7 +95,6 @@ public class ScoutingActivity
 
     // UI elements (see layout file)
 
-    private ActionBar mActionBar;
     private Toolbar mToolbar;
 
     private TextView mToolbarTeam;
@@ -553,8 +552,6 @@ public class ScoutingActivity
 
         setSupportActionBar(mToolbar);
 
-        mActionBar = getSupportActionBar();
-
         mNavToolbox = findViewById(R.id.nav_toolbox);
 
         mTitleBanner = findViewById(R.id.title_banner);
@@ -625,7 +622,11 @@ public class ScoutingActivity
 
         String alliance = mSpecs.getAlliance();
 
-        mActionBar.setDisplayShowTitleEnabled(false);
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
 
         mToolbarTeam.setText(alliance.equals("R") || alliance.equals("B") ?
                 String.valueOf(teamNumber) : mSpecs.getBoardName());
