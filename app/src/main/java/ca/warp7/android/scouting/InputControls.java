@@ -36,7 +36,8 @@ class InputControls {
      * Base interface for all custom controls
      */
     interface BaseControl {
-        // void updateControlState();
+        @SuppressWarnings("unused")
+        void updateControlState();
     }
 
     /**
@@ -60,7 +61,7 @@ class InputControls {
      * A Base button for other buttons to extend onto
      */
 
-    static class BaseButton
+    static abstract class BaseButton
             extends AppCompatButton
             implements BaseControl,
             ChildControl,
@@ -175,6 +176,11 @@ class InputControls {
 
         }
 
+        @Override
+        public void updateControlState() {
+
+        }
+
         private void updateCounterView(boolean white) {
             if (parentSupportView instanceof TextView) {
                 TextView counterView = (TextView) parentSupportView;
@@ -232,6 +238,11 @@ class InputControls {
             } else {
                 listener.pushStatus("Time Conflict @" + listener.getCurrentRelativeTime() + "s");
             }
+        }
+
+        @Override
+        public void updateControlState() {
+
         }
 
         void updateLooks() {
@@ -309,6 +320,11 @@ class InputControls {
                         }
                     }).show();
         }
+
+        @Override
+        public void updateControlState() {
+
+        }
     }
 
     /**
@@ -360,6 +376,11 @@ class InputControls {
             listener.getVibrator().vibrate(kVibrationLength);
             listener.getEntry().push(dc.getIndex(), isChecked() ? 1 : 0, 1);
             listener.pushStatus(getText().toString() + " - " + (isChecked() ? "On" : "Off"));
+        }
+
+        @Override
+        public void updateControlState() {
+
         }
     }
 
@@ -424,6 +445,11 @@ class InputControls {
                 listener.pushStatus(dc.getLabel() + " - " + lastProgress + "/" + dc.getMax());
             }
         }
+
+        @Override
+        public void updateControlState() {
+
+        }
     }
 
     /**
@@ -483,6 +509,11 @@ class InputControls {
 
             control.setLayoutParams(childLayout);
             addView(control);
+        }
+
+        @Override
+        public void updateControlState() {
+
         }
     }
 
@@ -553,6 +584,11 @@ class InputControls {
                 subControl.performClick();
             }
         }
+
+        @Override
+        public void updateControlState() {
+
+        }
     }
 
     /**
@@ -609,6 +645,11 @@ class InputControls {
         @Override
         public View getSupportView() {
             return counter;
+        }
+
+        @Override
+        public void updateControlState() {
+
         }
     }
 
