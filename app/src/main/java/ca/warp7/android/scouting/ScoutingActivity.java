@@ -41,6 +41,25 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import java.util.ArrayList;
 
 
+/**
+ * <p>The Scouting Activity -- A generic activity to collect data
+ * for an Entry based on a set Specs. It controls all sub-components
+ * of the activity and implements a listener that can be used for
+ * callback. It is responsible to manage the activity's state and
+ * lifecycle, setting up components in the interface, receive
+ * events from action buttons for navigation and commands, and
+ * keeps track of an Entry object which stores the data </p>
+ * <p>
+ * <p>
+ *
+ * @author Team 865
+ * @see InputsFragment
+ * @see ScoutingActivityListener
+ * @see Entry
+ * </p>
+ */
+
+
 /*
 CODE ORGANIZED BY FOLLOWING SECTIONS
 
@@ -62,25 +81,6 @@ CODE ORGANIZED BY FOLLOWING SECTIONS
  */
 
 
-/**
- * <p>The Scouting Activity -- A generic activity to collect data
- * for an Entry based on a set Specs. It controls all sub-components
- * of the activity and implements a listener that can be used for
- * callback. It is responsible to manage the activity's state and
- * lifecycle, setting up components in the interface, receive
- * events from action buttons for navigation and commands, and
- * keeps track of an Entry object which stores the data </p>
- * <p>
- * <p>
- *
- * @author Team 865
- * @see InputsFragment
- * @see ScoutingActivityListener
- * @see Entry
- * </p>
- */
-
-
 public class ScoutingActivity
         extends AppCompatActivity
         implements ScoutingActivityListener {
@@ -89,13 +89,15 @@ public class ScoutingActivity
     // State Variables
 
     private ActivityState mActivityState;
-    private boolean mCountUpTimerMode;
+
+    private boolean mTimerIsCountingUp;
+    private boolean mTimerIsRunning;
 
     private int mTimer = 0;
     private int mCurrentTab = 0;
-    private int mLastRecordedTime = -1;
-    private int mLastPausedTime = -1;
+
     private int mStartingTimestamp = 0;
+    private int mLastRecordedTime = -1;
 
 
     // UI elements (see layout file)
@@ -143,11 +145,13 @@ public class ScoutingActivity
         public void run() {
 
             if (mActivityState != ActivityState.SCOUTING) {
+                mTimerIsRunning = false;
                 return; // Check if activity is paused
             }
 
-            updateTimerStatusAndSeeker();
+            mTimerIsRunning = true;
 
+            updateTimerStatusAndSeeker();
             mTimer++;
 
             if (mTimer <= kTimerLimit) { // Check if match ended
@@ -367,7 +371,7 @@ public class ScoutingActivity
      */
 
     public void onStatusTimerClicked(View view) {
-        mCountUpTimerMode = !mCountUpTimerMode;
+        mTimerIsCountingUp = !mTimerIsCountingUp;
         updateTimerStatusAndSeeker();
     }
 
@@ -731,8 +735,7 @@ public class ScoutingActivity
 
             case SCOUTING:
 
-                // Make sure there's only one timer
-                if (mLastPausedTime == getCurrentTime()) {
+                if (mTimerIsRunning) {
                     mActivityState = ActivityState.PAUSING;
                     return;
                 }
@@ -746,8 +749,6 @@ public class ScoutingActivity
                 break;
 
             case PAUSING:
-
-                mLastPausedTime = getCurrentTime();
 
                 setPausingNavToolbox();
                 setBackgroundColour(getResources().getColor(R.color.colorReviewYellow));
@@ -890,7 +891,7 @@ public class ScoutingActivity
         String status;
         int time;
 
-        if (mCountUpTimerMode) {
+        if (mTimerIsCountingUp) {
             time = mTimer;
             mTimerStatus.setTypeface(null, Typeface.BOLD);
         } else {
