@@ -105,6 +105,7 @@ class EntryFormatter {
             sb.append(fillHex(datumEncode(d), 4));
 
         sb.append("_");
+        sb.append(entry.getComments());
 
         return sb.toString();
     }

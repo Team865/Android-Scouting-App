@@ -19,12 +19,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -209,6 +211,7 @@ public class ScoutingActivity
                 return true;
 
             case R.id.menu_flags:
+                onCommentsAndFlags();
                 return true;
 
             case R.id.menu_qr:
@@ -216,15 +219,7 @@ public class ScoutingActivity
                 return true;
 
             case R.id.menu_done: // Check mark button
-
-                mEntry.clean(); // Remove the undoes
-
-                Intent intent;
-                intent = new Intent(this, DataOutputActivity.class);
-                intent.putExtra(ID.MSG_PRINT_DATA, EntryFormatter.formatReport(mEntry));
-                intent.putExtra(ID.MSG_ENCODE_DATA, EntryFormatter.formatEncode(mEntry));
-                startActivity(intent);
-
+                onDataOutputIntent();
                 return true;
 
             default:
@@ -404,9 +399,10 @@ public class ScoutingActivity
                     }
                 })
 
-                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Send To", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // Show the sharing screen
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.putExtra(Intent.EXTRA_TEXT, encoded);
                         intent.setType("text/plain");
@@ -415,6 +411,57 @@ public class ScoutingActivity
                     }
                 })
                 .create()
+                .show();
+    }
+
+    /**
+     * Starts the data output activity
+     */
+
+    private void onDataOutputIntent() {
+        mEntry.clean(); // Remove the undoes
+
+        Intent intent;
+        intent = new Intent(this, DataOutputActivity.class);
+        intent.putExtra(ID.MSG_PRINT_DATA, EntryFormatter.formatReport(mEntry));
+        intent.putExtra(ID.MSG_ENCODE_DATA, EntryFormatter.formatEncode(mEntry));
+        startActivity(intent);
+    }
+
+    /**
+     * Opens a comments dialog, flags in the future
+     */
+
+    private void onCommentsAndFlags() {
+
+        final EditText input = new EditText(this);
+
+        input.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_FLAG_MULTI_LINE |
+                InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+
+        input.setText(mEntry.getComments());
+
+        new AlertDialog.Builder(this)
+
+                .setTitle(R.string.edit_comments)
+                .setView(input)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Get the comment and make sure underscore isn't used
+
+                        mEntry.setComments(input.getText().toString()
+                                .replaceAll("_", ""));
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
                 .show();
     }
 

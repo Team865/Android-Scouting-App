@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * @see EntryFormatter
  */
 
-@SuppressWarnings("unused")
+
 class Entry {
 
     private int mMatchNumber;
@@ -39,6 +39,8 @@ class Entry {
     private String mScoutName;
 
     private int mStartingTimestamp;
+
+    private String mComments;
 
     private Specs mSpecs;
 
@@ -84,12 +86,20 @@ class Entry {
         return mSpecs;
     }
 
+    public String getComments() {
+        return mComments;
+    }
+
     public ArrayList<EntryDatum> getDataStack() {
         return mDataStack;
     }
 
     public void setStartingTimestamp(int timestamp) {
         mStartingTimestamp = timestamp;
+    }
+
+    public void setComments(String comments) {
+        mComments = comments;
     }
 
     /**
