@@ -1,9 +1,16 @@
 package ca.warp7.android.scouting;
 
+/*
+This file contains code taken from
+https://github.com/journeyapps/zxing-android-embedded/,
+which is licensed under the Apache License, Version 2.0
+ */
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,7 +41,7 @@ import android.widget.TextView;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.google.zxing.common.BitMatrix;
 
 import java.util.ArrayList;
 
@@ -491,8 +498,35 @@ public class ScoutingActivity
     /**
      * @return The current time in seconds
      */
+
     private int getCurrentTime() {
         return (int) (System.currentTimeMillis() / 1000);
+    }
+
+
+    /**
+     * Creates a Bitmap from a BitMatrix
+     * <p>
+     * Code taken and modified from
+     * https://github.com/journeyapps/zxing-android-embedded/
+     * <p>
+     * LICENSED UNDER Apache 2.0
+     */
+
+    public Bitmap createBitmap(BitMatrix matrix) {
+        int width = matrix.getWidth();
+        int height = matrix.getHeight();
+        int[] pixels = new int[width * height];
+        for (int y = 0; y < height; y++) {
+            int offset = y * width;
+            for (int x = 0; x < width; x++) {
+                pixels[offset + x] = matrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF;
+            }
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bitmap;
     }
 
 
@@ -507,7 +541,7 @@ public class ScoutingActivity
 
         try {
 
-            qrImage.setImageBitmap(new BarcodeEncoder().createBitmap(
+            qrImage.setImageBitmap(createBitmap(
                     new MultiFormatWriter().encode(
                             encoded,
                             BarcodeFormat.QR_CODE,
