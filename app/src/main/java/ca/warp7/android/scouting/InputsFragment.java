@@ -13,6 +13,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The fragment that is shown in the biggest portion
@@ -26,12 +27,14 @@ public class InputsFragment
         extends Fragment {
 
 
-    ScoutingActivityListener mListener;
+    private ScoutingActivityListener mListener;
 
-    TableLayout mInputTable;
+    private TableLayout mInputTable;
 
-    Specs mSpecs;
-    Specs.Layout mLayout;
+    private Specs mSpecs;
+    private Specs.Layout mLayout;
+
+    private List<View> mInputControls = new ArrayList<>();
 
 
     @Override
@@ -49,6 +52,7 @@ public class InputsFragment
                 mSpecs = Specs.getInstance();
             }
         }
+
         mLayout = mSpecs.getLayouts().get(tabNumber);
     }
 
@@ -134,6 +138,7 @@ public class InputsFragment
 
     /**
      * Get a specific view by its ID and its span in the table
+     *
      * @return the specified view with added layout
      */
 
@@ -151,11 +156,14 @@ public class InputsFragment
 
         view.setLayoutParams(lp);
 
+        mInputControls.add(view);
+
         return view;
     }
 
     /**
      * Layouts a row in the table
+     *
      * @param fieldRow an array of identifiers
      */
 
@@ -199,12 +207,18 @@ public class InputsFragment
 
     void updateStates() {
 
-        if (mInputTable != null) {
+        /*if (mInputTable != null) {
             mInputTable.removeAllViews();
         }
 
         if (mSpecs != null) {
             layoutTable();
+        }*/
+
+        for (View control : mInputControls) {
+            if (control instanceof InputControls.BaseControl) {
+                ((InputControls.BaseControl) control).updateControlState();
+            }
         }
     }
 
