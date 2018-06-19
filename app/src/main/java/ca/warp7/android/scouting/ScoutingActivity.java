@@ -231,10 +231,6 @@ public class ScoutingActivity
                 onQRMenuClicked();
                 return true;
 
-            case R.id.menu_done: // Check mark button
-                onDataOutputIntent();
-                return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -446,7 +442,6 @@ public class ScoutingActivity
      */
 
     private void onDataOutputIntent() {
-        mEntry.clean(); // Remove the undoes
 
         Intent intent;
         intent = new Intent(this, DataOutputActivity.class);
