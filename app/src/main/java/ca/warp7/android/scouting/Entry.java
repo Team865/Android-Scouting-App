@@ -1,6 +1,7 @@
 package ca.warp7.android.scouting;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Data model for the scouting app. Strictly, it follows
@@ -29,10 +30,13 @@ import java.util.ArrayList;
  * @author Team 865
  * @see EntryDatum
  * @see EntryFormatter
+ * @see ScoutingActivity
  */
 
 
 class Entry {
+
+    private static final int kMaxTypes = 64;
 
     private int mMatchNumber;
     private int mTeamNumber;
@@ -44,18 +48,15 @@ class Entry {
 
     private Specs mSpecs;
 
-    private ArrayList<EntryDatum> mDataStack;
+    private List<EntryDatum> mDataStack;
 
     private Timekeeper mTimekeeper;
 
-    Entry(int matchNumber,
-          int teamNumber,
-          String scoutName,
-          Timekeeper timekeeper) {
+    Entry(int match, int team, String scout, Timekeeper timekeeper) {
 
-        mMatchNumber = matchNumber;
-        mTeamNumber = teamNumber;
-        this.mScoutName = scoutName;
+        mMatchNumber = match;
+        mTeamNumber = team;
+        mScoutName = scout;
 
         mStartingTimestamp = (int) (System.currentTimeMillis() / 1000);
 
@@ -92,7 +93,7 @@ class Entry {
         return mComments;
     }
 
-    public ArrayList<EntryDatum> getDataStack() {
+    public List<EntryDatum> getDataStack() {
         return mDataStack;
     }
 
@@ -110,7 +111,7 @@ class Entry {
 
     void push(int dataType, int dataValue, int dataState) {
 
-        if (dataType < 0 || dataType > 63) {
+        if (dataType < 0 || dataType > kMaxTypes - 1) {
             return;
         }
 
@@ -178,6 +179,24 @@ class Entry {
     }
 
     /**
+     * Returns whether a data type should be focused at the current time
+     */
+
+    @SuppressWarnings("unused")
+    boolean isFocused(int dataType) {
+
+        int relTime = mTimekeeper.getCurrentRelativeTime();
+
+        for (EntryDatum datum : mDataStack) {
+            if (datum.getRecordedTime() == relTime) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Cleans out data that have been undone
      */
 
@@ -201,14 +220,18 @@ class Entry {
     private int maxIndexBeforeCurrentTime() {
 
         int index = 0; // find the maximum index that is less than current time
+        int relTime = mTimekeeper.getCurrentRelativeTime();
+
         while (index < mDataStack.size() &&
-                mDataStack.get(index).getRecordedTime() <= mTimekeeper.getCurrentRelativeTime()) {
+                mDataStack.get(index).getRecordedTime() <= relTime) {
             index++;
         }
         return index;
-
     }
 
+    /**
+     * A callback interface to get the current time
+     */
     interface Timekeeper {
         int getCurrentRelativeTime();
     }
