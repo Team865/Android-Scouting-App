@@ -437,6 +437,7 @@ public class ScoutingActivity
      * Starts the data output activity
      */
 
+    @SuppressWarnings("deprecation")
     private void onDataOutputIntent() {
 
         Intent intent;

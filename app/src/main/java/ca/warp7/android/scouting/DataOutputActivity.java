@@ -24,6 +24,8 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+@SuppressWarnings("DeprecatedIsStillUsed")
+@Deprecated
 public class DataOutputActivity
         extends AppCompatActivity {
 
