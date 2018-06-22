@@ -151,7 +151,7 @@ public class ScoutingActivity
 
             if (mActivityState != ActivityState.SCOUTING) {
                 mTimerIsRunning = false;
-                return; // Check if activity is paused
+                return;
             }
 
             mTimerIsRunning = true;
@@ -162,6 +162,9 @@ public class ScoutingActivity
 
             if (mTimer <= kTimerLimit) { // Check if match ended
                 mTimeHandler.postDelayed(mTimerUpdater, 1000);
+            } else {
+                mTimerIsRunning = false;
+                startActivityState(ActivityState.PAUSING);
             }
         }
     };
@@ -752,7 +755,8 @@ public class ScoutingActivity
 
     private void startActivityState(ActivityState state) {
 
-        if (mTimerIsRunning && state == ActivityState.SCOUTING) {
+        if (state == ActivityState.SCOUTING &&
+                (mTimerIsRunning || mTimer >= kTimerLimit)) {
             return; // Return if there is a timer running
         }
 
