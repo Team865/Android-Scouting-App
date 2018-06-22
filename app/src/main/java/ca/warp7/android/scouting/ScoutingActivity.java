@@ -347,22 +347,15 @@ public class ScoutingActivity
         switch (mActivityState) {
 
             case SCOUTING: // Undo button
-                Specs.DataConstant dc = mEntry.undo();
-                if (dc == null) {
-                    pushStatus("Cannot Undo @" + mTimer + "s");
-                } else {
-                    pushStatus("Undo \'" + dc.getLabel() + "\'");
-                    mVibrator.vibrate(kActionEffectVibration);
-                    updateTabInputStates();
-                }
+
+                performUndo();
+
                 break;
 
             case PAUSING: // Skip button
 
-                mTimer = (getCurrentTime() - mStartingTimestamp) % (kTimerLimit + 1);
-
+                mTimer = calculateCurrentRelativeTime();
                 startActivityState(ActivityState.SCOUTING);
-
                 break;
         }
     }
@@ -496,6 +489,14 @@ public class ScoutingActivity
 
     private int getCurrentTime() {
         return (int) (System.currentTimeMillis() / 1000);
+    }
+
+    /**
+     * Calculates the relative time based on
+     * the current time and the starting timestamp
+     */
+    private int calculateCurrentRelativeTime() {
+        return (getCurrentTime() - mStartingTimestamp) % (kTimerLimit + 1);
     }
 
 
@@ -751,6 +752,10 @@ public class ScoutingActivity
 
     private void startActivityState(ActivityState state) {
 
+        if (mTimerIsRunning && state == ActivityState.SCOUTING) {
+            return; // Return if there is a timer running
+        }
+
         mActivityState = state;
 
         switch (mActivityState) {
@@ -762,11 +767,6 @@ public class ScoutingActivity
                 break;
 
             case SCOUTING:
-
-                if (mTimerIsRunning) {
-                    mActivityState = ActivityState.PAUSING;
-                    return;
-                }
 
                 setScoutingNavToolbox();
                 setBackgroundColour(getResources().getColor(R.color.colorWhite));
@@ -782,7 +782,6 @@ public class ScoutingActivity
                 setBackgroundColour(getResources().getColor(R.color.colorReviewYellow));
 
                 break;
-
         }
     }
 
@@ -955,6 +954,21 @@ public class ScoutingActivity
         mTimeSeeker.setProgress(mTimer);
     }
 
+    /**
+     * Attempts to undo the previous action and vibrates
+     * if the undo has been successful
+     */
+    private void performUndo() {
+        Specs.DataConstant dc = mEntry.undo();
+        if (dc == null) {
+            pushStatus("Cannot Undo @" + mTimer + "s");
+        } else {
+            pushStatus("Undo \'" + dc.getLabel() + "\'");
+            mVibrator.vibrate(kActionEffectVibration);
+            updateTabInputStates();
+        }
+    }
+
 
     // Inner Class and Enum
 
@@ -980,9 +994,6 @@ public class ScoutingActivity
         }
 
         InputsFragment getFragment(int index) {
-        /* Fragments are cached in Adapter, so instantiateItem will
-           return the cached one (if any) or a new instance if necessary.
-         */
             return (InputsFragment) instantiateItem(mPager, index);
         }
 

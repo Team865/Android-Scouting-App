@@ -22,7 +22,7 @@
     <string name="verify_match_proceed">Proceed Anyways</string>
 
     <string name="start_match">Enter Match Scouting</string>
-    <string name="start_timer">⏱ Start</string>
+    <string name="start_timer" o="⏱">Start</string>
 
 
     <string name="exit_confirmation">Exit Scouting?</string>
