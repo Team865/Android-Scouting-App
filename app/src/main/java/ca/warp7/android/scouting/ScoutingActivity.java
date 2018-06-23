@@ -351,16 +351,12 @@ public class ScoutingActivity
 
             case SCOUTING: // Undo button
 
-                if (mTimer == calculateCurrentRelativeTime()) {
+                if (isTimerAtCurrentTime()) {
                     performUndo();
                 } else {
                     mTimer = calculateCurrentRelativeTime();
-
-                    // 'hack' to bypass timer check and make the phone vibrate
-                    mActivityState = ActivityState.PAUSING;
-                    // end
-
-                    startActivityState(ActivityState.SCOUTING);
+                    mVibrator.vibrate(kStartVibration, -1);
+                    mUndoSkipButton.setImageResource(R.drawable.ic_undo_ablack);
                 }
 
                 break;
@@ -511,6 +507,10 @@ public class ScoutingActivity
      */
     private int calculateCurrentRelativeTime() {
         return (getCurrentTime() - mStartingTimestamp) % (kTimerLimit + 1);
+    }
+
+    private boolean isTimerAtCurrentTime() {
+        return Math.abs(mTimer - calculateCurrentRelativeTime()) <= 1;
     }
 
 
@@ -825,10 +825,10 @@ public class ScoutingActivity
 
         mPlayPauseButton.setImageResource(R.drawable.ic_pause_ablack);
 
-        if (mTimer == calculateCurrentRelativeTime()) {
+        if (isTimerAtCurrentTime()) {
             mUndoSkipButton.setImageResource(R.drawable.ic_undo_ablack);
         } else {
-            mUndoSkipButton.setImageResource(R.drawable.ic_skip_next_ablack);
+            mUndoSkipButton.setImageResource(R.drawable.ic_skip_next_red);
         }
 
         mTimeSeeker.setVisibility(View.GONE);
@@ -846,7 +846,7 @@ public class ScoutingActivity
         mStartButton.setVisibility(View.GONE);
 
         mPlayPauseButton.setImageResource(R.drawable.ic_play_arrow_ablack);
-        mUndoSkipButton.setImageResource(R.drawable.ic_skip_next_ablack);
+        mUndoSkipButton.setImageResource(R.drawable.ic_skip_next_red);
 
         mTimeSeeker.setVisibility(View.VISIBLE);
         mTimeProgress.setVisibility(View.GONE);
@@ -1044,5 +1044,5 @@ public class ScoutingActivity
     static final int kFinishedColour = 0xFFFF0000;
 
     static final long[] kStartVibration = new long[]{0, 20, 30, 20};
-    static final int kActionEffectVibration = 20;
+    static final int kActionEffectVibration = 30;
 }

@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/menu_select_specs"
-        android:icon="@drawable/ic_content_copy"
+        android:icon="@drawable/ic_content_copy_white"
         android:title="@string/menu_select_specs"
         app:showAsAction="ifRoom" />
 
