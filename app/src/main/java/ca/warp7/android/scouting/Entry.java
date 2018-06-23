@@ -182,13 +182,12 @@ class Entry {
      * Returns whether a data type should be focused at the current time
      */
 
-    @SuppressWarnings("unused")
     boolean isFocused(int dataType) {
 
         int relTime = mTimekeeper.getCurrentRelativeTime();
 
         for (EntryDatum datum : mDataStack) {
-            if (datum.getRecordedTime() == relTime) {
+            if (datum.getType() == dataType && datum.getRecordedTime() == relTime) {
                 return true;
             }
         }

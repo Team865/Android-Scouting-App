@@ -156,7 +156,7 @@ public class InputsFragment
 
         view.setLayoutParams(lp);
 
-        mInputControls.add(view);
+        mInputControls.add(view); // Add to the list of tracked views
 
         return view;
     }

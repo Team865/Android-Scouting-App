@@ -258,7 +258,7 @@ public class ScoutingActivity
     }
 
 
-    // ScoutingActivityListener methods
+    // ScoutingActivityListener methods (documented there)
 
     @Override
     public int getCurrentRelativeTime() {
@@ -288,6 +288,11 @@ public class ScoutingActivity
     @Override
     public boolean timedInputsShouldDisable() {
         return mActivityState == ActivityState.STARTING;
+    }
+
+    @Override
+    public boolean dataShouldFocus(int dataType) {
+        return mEntry.isFocused(dataType);
     }
 
     @Override

@@ -6,6 +6,8 @@ import android.os.Vibrator;
 /**
  * This interface is to be implemented by the activity that contains
  * these controls to engage in communication
+ *
+ * @author Team 865
  */
 
 interface ScoutingActivityListener
@@ -35,6 +37,12 @@ interface ScoutingActivityListener
      * @return whether the activity is in a state not accepting timed data
      */
     boolean timedInputsShouldDisable();
+
+    /**
+     * @return whether a specific control should focus at the current time
+     */
+    @SuppressWarnings("unused")
+    boolean dataShouldFocus(int dataType);
 
     /**
      * Pushes the current time to the data stack
