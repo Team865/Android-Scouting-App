@@ -140,7 +140,7 @@
             android:contentDescription="@string/layout_error"
             android:onClick="onUndoSkipClicked"
             android:padding="6dp"
-            android:src="@drawable/ic_undo"
+            android:src="@drawable/ic_undo_ablack"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/divider" />
 

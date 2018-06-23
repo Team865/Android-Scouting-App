@@ -231,7 +231,7 @@ public class ScoutingActivity
                 return true;
 
             case R.id.menu_qr:
-                onQRMenuClicked();
+                onShowQRCode();
                 return true;
 
             default:
@@ -351,7 +351,17 @@ public class ScoutingActivity
 
             case SCOUTING: // Undo button
 
-                performUndo();
+                if (mTimer == calculateCurrentRelativeTime()) {
+                    performUndo();
+                } else {
+                    mTimer = calculateCurrentRelativeTime();
+
+                    // 'hack' to bypass timer check and make the phone vibrate
+                    mActivityState = ActivityState.PAUSING;
+                    // end
+
+                    startActivityState(ActivityState.SCOUTING);
+                }
 
                 break;
 
@@ -394,7 +404,7 @@ public class ScoutingActivity
      * Shows the QR dialog with sharing options
      */
 
-    private void onQRMenuClicked() {
+    private void onShowQRCode() {
 
         mEntry.clean();
         final String encoded = EntryFormatter.formatEncode(mEntry);
@@ -585,7 +595,7 @@ public class ScoutingActivity
 
         mToolbar = findViewById(R.id.my_toolbar);
 
-        mToolbar.setNavigationIcon(R.drawable.ic_close);
+        mToolbar.setNavigationIcon(R.drawable.ic_close_ablack);
         mToolbar.setNavigationContentDescription(R.string.menu_close);
 
         mToolbarTeam = mToolbar.findViewById(R.id.toolbar_team);
@@ -814,7 +824,12 @@ public class ScoutingActivity
         mStartButton.setVisibility(View.GONE);
 
         mPlayPauseButton.setImageResource(R.drawable.ic_pause_ablack);
-        mUndoSkipButton.setImageResource(R.drawable.ic_undo);
+
+        if (mTimer == calculateCurrentRelativeTime()) {
+            mUndoSkipButton.setImageResource(R.drawable.ic_undo_ablack);
+        } else {
+            mUndoSkipButton.setImageResource(R.drawable.ic_skip_next_ablack);
+        }
 
         mTimeSeeker.setVisibility(View.GONE);
         mTimeProgress.setVisibility(View.VISIBLE);

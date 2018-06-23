@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/menu_copy_specs"
-        android:icon="@drawable/ic_folder_open"
+        android:icon="@drawable/ic_folder_open_white"
         android:title="@string/menu_copy_default_metrics"
         app:showAsAction="ifRoom" />
 </menu>
