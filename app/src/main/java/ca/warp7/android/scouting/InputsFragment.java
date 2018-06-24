@@ -13,7 +13,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The fragment that is shown in the biggest portion
@@ -33,8 +32,6 @@ public class InputsFragment
 
     private Specs mSpecs;
     private Specs.Layout mLayout;
-
-    private List<View> mInputControls = new ArrayList<>();
 
 
     @Override
@@ -156,8 +153,6 @@ public class InputsFragment
 
         view.setLayoutParams(lp);
 
-        mInputControls.add(view); // Add to the list of tracked views
-
         return view;
     }
 
@@ -207,7 +202,7 @@ public class InputsFragment
 
     void updateStates() {
 
-        /*if (mInputTable != null) {
+/*        if (mInputTable != null) {
             mInputTable.removeAllViews();
         }
 
@@ -215,9 +210,18 @@ public class InputsFragment
             layoutTable();
         }*/
 
-        for (View control : mInputControls) {
-            if (control instanceof InputControls.BaseControl) {
-                ((InputControls.BaseControl) control).updateControlState();
+        if (mInputTable != null) {
+            for (int i = 0; i < mInputTable.getChildCount(); i++) {
+                View child = mInputTable.getChildAt(i);
+                if (child instanceof TableRow) {
+                    TableRow row = (TableRow) child;
+                    for (int j = 0; j < row.getChildCount(); j++) {
+                        View view = row.getChildAt(j);
+                        if (view instanceof InputControls.BaseControl) {
+                            ((InputControls.BaseControl) view).updateControlState();
+                        }
+                    }
+                }
             }
         }
     }

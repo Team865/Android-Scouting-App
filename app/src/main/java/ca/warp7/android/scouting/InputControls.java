@@ -127,41 +127,43 @@ class InputControls {
 
             setText(dc.getLabel().replace(" ", "\n"));
 
-            counter = listener.getEntry().getCount(dc.getIndex());
-            updateCounterView(false);
+            //counter = listener.getEntry().getCount(dc.getIndex());
+            /*updateCounterView(false);
 
             if (listener.timedInputsShouldDisable()) {
                 setEnabled(false);
                 setTextColor(getResources().getColor(R.color.colorGray));
             } else {
                 setTextColor(getResources().getColor(R.color.colorAccent));
-            }
+            }*/
+            updateControlState();
         }
 
         @Override
         public void onClick(View v) {
             if (listener.timeIsRecordable()) {
 
-                counter++;
-                updateCounterView(true);
+                //counter++;
+                //updateCounterView(true);
 
-                setTextColor(getResources().getColor(R.color.colorWhite));
+                /*setTextColor(getResources().getColor(R.color.colorWhite));
                 getBackground().setColorFilter(
                         getResources().getColor(R.color.colorAccent),
-                        PorterDuff.Mode.MULTIPLY);
+                        PorterDuff.Mode.MULTIPLY);*/
 
                 listener.getVibrator().vibrate(kVibrationLength);
 
                 listener.pushCurrentTimeAsValue(dc.getIndex(), 1);
+                updateControlState();
 
-                listener.getHandler().postDelayed(new Runnable() {
+                /*listener.getHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         updateCounterView(false);
                         setTextColor(getResources().getColor(R.color.colorAccent));
                         getBackground().clearColorFilter();
                     }
-                }, 1000);
+                }, 1000);*/
 
                 listener.pushStatus(dc.getLabel() + " - {t}s");
             } else {
@@ -179,6 +181,26 @@ class InputControls {
         @Override
         public void updateControlState() {
 
+            if (listener.timedInputsShouldDisable()) {
+                setEnabled(false);
+                setTextColor(getResources().getColor(R.color.colorGray));
+            } else {
+
+                counter = listener.getEntry().getCount(dc.getIndex());
+                if (listener.dataShouldFocus(dc.getIndex())) {
+                    updateCounterView(true);
+                    setTextColor(getResources().getColor(R.color.colorWhite));
+                    getBackground().setColorFilter(
+                            getResources().getColor(R.color.colorAccent),
+                            PorterDuff.Mode.MULTIPLY);
+                } else {
+                    getBackground().clearColorFilter();
+                    setTextColor(getResources().getColor(R.color.colorAccent));
+                    updateCounterView(false);
+                }
+                setEnabled(true);
+
+            }
         }
 
         private void updateCounterView(boolean white) {
@@ -604,6 +626,7 @@ class InputControls {
         ScoutingActivityListener listener;
 
         TextView counter;
+        View subControl;
 
         public CountedControlLayout(@NonNull Context context) {
             super(context);
@@ -640,6 +663,8 @@ class InputControls {
                 ((ChildControl) control).setParentListener(this);
             }
 
+            subControl = control;
+
         }
 
         @Override
@@ -649,7 +674,9 @@ class InputControls {
 
         @Override
         public void updateControlState() {
-
+            if (subControl instanceof BaseControl) {
+                ((BaseControl) subControl).updateControlState();
+            }
         }
     }
 
