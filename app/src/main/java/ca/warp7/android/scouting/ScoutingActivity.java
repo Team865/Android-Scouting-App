@@ -421,7 +421,7 @@ public class ScoutingActivity
                     }
                 })
 
-                .setNeutralButton("Old Interface", new DialogInterface.OnClickListener() {
+                .setNeutralButton("Old Screen", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onDataOutputIntent();

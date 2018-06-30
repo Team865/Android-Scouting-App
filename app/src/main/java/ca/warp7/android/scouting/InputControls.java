@@ -212,15 +212,7 @@ class InputControls {
                               Specs.DataConstant dc,
                               ScoutingActivityListener listener) {
             super(context, dc, listener);
-
-            isOn = listener.getEntry().getCount(dc.getIndex()) % 2 != 0;
-
-            updateLooks();
-
-            if (listener.timedInputsShouldDisable()) {
-                setEnabled(false);
-                setTextColor(getResources().getColor(R.color.colorGray));
-            }
+            updateControlState();
         }
 
         @Override
@@ -240,7 +232,16 @@ class InputControls {
 
         @Override
         public void updateControlState() {
+            isOn = listener.getEntry().getCount(dc.getIndex()) % 2 != 0;
 
+            updateLooks();
+
+            if (listener.timedInputsShouldDisable()) {
+                setEnabled(false);
+                setTextColor(getResources().getColor(R.color.colorGray));
+            } else {
+                setEnabled(true);
+            }
         }
 
         void updateLooks() {
