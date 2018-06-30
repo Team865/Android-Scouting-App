@@ -295,11 +295,7 @@ class InputControls {
             setTypeface(Typeface.SANS_SERIF);
             setGravity(Gravity.CENTER);
 
-            String[] choices = dc.getChoices();
-
-            lastWhich = listener.getEntry().getLastValue(dc.getIndex());
-
-            setText(choices[lastWhich]);
+            updateControlState();
         }
 
         @Override
@@ -322,7 +318,8 @@ class InputControls {
 
         @Override
         public void updateControlState() {
-
+            lastWhich = listener.getEntry().getLastValue(dc.getIndex());
+            setText(dc.getChoices()[lastWhich]);
         }
     }
 
@@ -462,6 +459,8 @@ class InputControls {
         Specs.DataConstant dc;
         ScoutingActivityListener listener;
 
+        View subControl;
+
         public LabeledControlLayout(Context context) {
             super(context);
         }
@@ -508,11 +507,14 @@ class InputControls {
 
             control.setLayoutParams(childLayout);
             addView(control);
+            subControl = control;
         }
 
         @Override
         public void updateControlState() {
-
+            if (subControl instanceof BaseControl) {
+                ((BaseControl) subControl).updateControlState();
+            }
         }
     }
 
@@ -586,7 +588,9 @@ class InputControls {
 
         @Override
         public void updateControlState() {
-
+            if (subControl instanceof BaseControl) {
+                ((BaseControl) subControl).updateControlState();
+            }
         }
     }
 
