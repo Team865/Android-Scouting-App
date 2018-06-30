@@ -153,6 +153,7 @@ class InputControls {
         @Override
         public void setParentListener(ParentControlListener listener) {
             super.setParentListener(listener);
+            updateCounterView(false);
         }
 
         @Override
@@ -356,15 +357,7 @@ class InputControls {
 
             setText(dc.getLabel());
 
-            setChecked(listener.getEntry().getCount(dc.getIndex()) % 2 != 0);
-
-            // Temporary Fix before board format changed
-            if (listener.timedInputsShouldDisable()) {
-                setEnabled(false);
-                setTextColor(getResources().getColor(R.color.colorGray));
-            } else {
-                setTextColor(getResources().getColor(R.color.colorAccent));
-            }
+            updateControlState();
         }
 
         @Override
@@ -376,7 +369,15 @@ class InputControls {
 
         @Override
         public void updateControlState() {
-
+            // Temporary Fix before board format changed
+            if (listener.timedInputsShouldDisable()) {
+                setEnabled(false);
+                setTextColor(getResources().getColor(R.color.colorGray));
+            } else {
+                setEnabled(true);
+                setTextColor(getResources().getColor(R.color.colorAccent));
+            }
+            setChecked(listener.getEntry().getCount(dc.getIndex()) % 2 != 0);
         }
     }
 
@@ -412,9 +413,7 @@ class InputControls {
 
             setMax(dc.getMax());
 
-            lastProgress = listener.getEntry().getLastValue(dc.getIndex());
-            setProgress(lastProgress);
-
+            updateControlState();
         }
 
         @Override
@@ -444,7 +443,8 @@ class InputControls {
 
         @Override
         public void updateControlState() {
-
+            lastProgress = listener.getEntry().getLastValue(dc.getIndex());
+            setProgress(lastProgress);
         }
     }
 
