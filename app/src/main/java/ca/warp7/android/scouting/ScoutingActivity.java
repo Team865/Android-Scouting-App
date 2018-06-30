@@ -90,6 +90,8 @@ public class ScoutingActivity
         extends AppCompatActivity
         implements ScoutingActivityListener {
 
+    // Beta Feature Variables
+    private boolean use_beta;
 
     // State Variables
 
@@ -388,7 +390,8 @@ public class ScoutingActivity
      */
 
     public void onToolbarTitleClicked(View view) {
-        new AlertDialog.Builder(this)
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Entry Log")
                 .setMessage(mStatusLog.toString())
                 .setPositiveButton("Done", new DialogInterface.OnClickListener() {
@@ -396,9 +399,20 @@ public class ScoutingActivity
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                })
-                .create()
-                .show(); // Show the log in a dialog
+                });
+        if (mActivityState != ActivityState.STARTING) {
+            //final boolean use_beta = mPlayPauseButton.getVisibility() == View.VISIBLE;
+            builder.setNeutralButton(use_beta ? "Hide Pause" : "Show Pause",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            use_beta = !use_beta;
+                            mVibrator.vibrate(50);
+                            mPlayPauseButton.setVisibility(use_beta ? View.VISIBLE : View.GONE);
+                        }
+                    });
+        }
+        builder.create().show();
     }
 
     /**
@@ -824,7 +838,10 @@ public class ScoutingActivity
 
     private void setScoutingNavToolbox() {
 
-        mPlayPauseButton.setVisibility(View.VISIBLE);
+        // mPlayPauseButton.setVisibility(View.VISIBLE);
+
+        mPlayPauseButton.setVisibility(use_beta ? View.VISIBLE : View.GONE);
+
         mUndoSkipButton.setVisibility(View.VISIBLE);
         mStartButton.setVisibility(View.GONE);
 
