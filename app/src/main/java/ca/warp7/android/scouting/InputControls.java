@@ -571,11 +571,8 @@ class InputControls {
             addView(control);
             setOnClickListener(this);
 
-            if (listener.timedInputsShouldDisable()) {
-                setEnabled(false);
-            }
-
             subControl = control;
+            updateControlState();
         }
 
         @Override
@@ -588,6 +585,7 @@ class InputControls {
 
         @Override
         public void updateControlState() {
+            setEnabled(!listener.timedInputsShouldDisable());
             if (subControl instanceof BaseControl) {
                 ((BaseControl) subControl).updateControlState();
             }
