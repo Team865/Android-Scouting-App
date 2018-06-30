@@ -126,16 +126,6 @@ class InputControls {
             super(context, dc, listener);
 
             setText(dc.getLabel().replace(" ", "\n"));
-
-            //counter = listener.getEntry().getCount(dc.getIndex());
-            /*updateCounterView(false);
-
-            if (listener.timedInputsShouldDisable()) {
-                setEnabled(false);
-                setTextColor(getResources().getColor(R.color.colorGray));
-            } else {
-                setTextColor(getResources().getColor(R.color.colorAccent));
-            }*/
             updateControlState();
         }
 
@@ -143,27 +133,16 @@ class InputControls {
         public void onClick(View v) {
             if (listener.timeIsRecordable()) {
 
-                //counter++;
-                //updateCounterView(true);
-
-                /*setTextColor(getResources().getColor(R.color.colorWhite));
-                getBackground().setColorFilter(
-                        getResources().getColor(R.color.colorAccent),
-                        PorterDuff.Mode.MULTIPLY);*/
-
                 listener.getVibrator().vibrate(kVibrationLength);
 
                 listener.pushCurrentTimeAsValue(dc.getIndex(), 1);
                 updateControlState();
-
-                /*listener.getHandler().postDelayed(new Runnable() {
+                listener.getHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        updateCounterView(false);
-                        setTextColor(getResources().getColor(R.color.colorAccent));
-                        getBackground().clearColorFilter();
+                        updateControlState();
                     }
-                }, 1000);*/
+                }, 1000);
 
                 listener.pushStatus(dc.getLabel() + " - {t}s");
             } else {
@@ -174,8 +153,6 @@ class InputControls {
         @Override
         public void setParentListener(ParentControlListener listener) {
             super.setParentListener(listener);
-            updateCounterView(false);
-
         }
 
         @Override
@@ -199,7 +176,6 @@ class InputControls {
                     updateCounterView(false);
                 }
                 setEnabled(true);
-
             }
         }
 
