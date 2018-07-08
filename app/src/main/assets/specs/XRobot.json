@@ -49,7 +49,7 @@
             "title": "Endgame",
             "fields": [
                 [
-                    "X_END_PLATFORM",
+                    "X_END_DEPLOY",
                     "X_END_CLIMB_TYPE"
                 ],
                 [
@@ -58,10 +58,9 @@
                 ],
                 [
                     "END_INTAKE_CONSISTENCY",
-                    "X_END_OUTTAKE_CONSISTENCY"
+                    "END_DRIVER"
                 ],
                 [
-                    "X_SCALE_REACH",
                     "X_STRATEGY"
                 ]
             ]
@@ -187,7 +186,14 @@
             "id": "X_END_PLATFORM",
             "label": "Platform",
             "log": "Platform",
-            "type": "checkbox"
+            "type": "duration"
+        },
+        {
+            "id": "X_END_DEPLOY",
+            "label": "Deploy",
+            "log": "Deploy",
+            "type": "duration",
+            "label_on": "Deploying"
         },
         {
             "id": "END_CLIMB",
@@ -207,10 +213,12 @@
             "type": "choice",
             "choices": [
                 "No Climb",
-                "Attempt",
-                "Single",
-                "Double",
-                "Ramp"
+                "Attempted/Failed",
+                "Front Climb - Single",
+                "Front Climb - Double",
+                "Side Climb - Single",
+                "Side Climb - Double",
+                "Ramp on Another Robot"
             ]
         },
         {
@@ -239,7 +247,7 @@
             "label": "Intake Consistency",
             "log": "Intake consistency",
             "type": "rating",
-            "max": 2
+            "max": 5
         },
         {
             "id": "X_END_OUTTAKE_CONSISTENCY",
@@ -264,8 +272,8 @@
         },
         {
             "id": "X_STRATEGY",
-            "label": "Primary Strategy",
-            "log": "Primary strategy",
+            "label": "Main Strategy",
+            "log": "Main strategy",
             "type": "choice",
             "choices": [
                 "Select",
@@ -299,10 +307,10 @@
         },
         {
             "id": "X_END_CLIMB",
-            "label": "Climb",
+            "label": "Climbed",
             "log": "Attachment",
             "type": "duration",
-            "label_on": "Climbing"
+            "label_on": "Climbed"
         },
         {
             "id": "X_SCALE_REACH",
