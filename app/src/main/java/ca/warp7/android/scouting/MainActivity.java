@@ -215,6 +215,14 @@ public class MainActivity
         matchStartButton.setOnClickListener(this);
 
         scoutNameField.setText(prefs.getString(ID.SAVE_SCOUT_NAME, ""));
+
+        try {
+            ((TextView) findViewById(R.id.version_info))
+                    .setText(getPackageManager().getPackageInfo(getPackageName(), 0)
+                            .versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupSpecs() {

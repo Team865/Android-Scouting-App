@@ -830,7 +830,7 @@ public class ScoutingActivity
         mUndoSkipButton.setVisibility(View.GONE);
 
         mTimeSeeker.setVisibility(View.GONE);
-        mTimeProgress.setVisibility(View.GONE);
+        mTimeProgress.setVisibility(View.VISIBLE);
     }
 
     /**
