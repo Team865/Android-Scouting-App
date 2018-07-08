@@ -91,7 +91,7 @@ public class ScoutingActivity
         implements ScoutingActivityListener {
 
     // Beta Feature Variables
-    private boolean use_beta;
+    private boolean mUsingPauseBetaFeature;
 
     // State Variables
 
@@ -166,7 +166,9 @@ public class ScoutingActivity
                 mTimeHandler.postDelayed(mTimerUpdater, 1000);
             } else {
                 mTimerIsRunning = false;
-                startActivityState(ActivityState.PAUSING);
+                if (mUsingPauseBetaFeature) {
+                    startActivityState(ActivityState.PAUSING);
+                }
             }
         }
     };
@@ -401,14 +403,13 @@ public class ScoutingActivity
                     }
                 });
         if (mActivityState != ActivityState.STARTING) {
-            //final boolean use_beta = mPlayPauseButton.getVisibility() == View.VISIBLE;
-            builder.setNeutralButton(use_beta ? "Hide Pause" : "Show Pause",
+            builder.setNeutralButton(mUsingPauseBetaFeature ? "Hide Pause" : "Show Pause",
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            use_beta = !use_beta;
+                            mUsingPauseBetaFeature = !mUsingPauseBetaFeature;
                             mVibrator.vibrate(50);
-                            mPlayPauseButton.setVisibility(use_beta ? View.VISIBLE : View.GONE);
+                            mPlayPauseButton.setVisibility(mUsingPauseBetaFeature ? View.VISIBLE : View.GONE);
                         }
                     });
         }
@@ -840,7 +841,7 @@ public class ScoutingActivity
 
         // mPlayPauseButton.setVisibility(View.VISIBLE);
 
-        mPlayPauseButton.setVisibility(use_beta ? View.VISIBLE : View.GONE);
+        mPlayPauseButton.setVisibility(mUsingPauseBetaFeature ? View.VISIBLE : View.GONE);
 
         mUndoSkipButton.setVisibility(View.VISIBLE);
         mStartButton.setVisibility(View.GONE);
