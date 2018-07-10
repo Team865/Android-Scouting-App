@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/menu_select_specs"
-        android:icon="@drawable/ic_content_copy_white"
+        android:icon="@drawable/ic_content_copy_ablack"
         android:title="@string/menu_select_specs"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_copy_specs"
-        android:icon="@drawable/ic_folder_open_white"
+        android:icon="@drawable/ic_folder_open_ablack"
         android:title="@string/menu_copy_default_metrics"
         app:showAsAction="ifRoom" />
 </menu>
