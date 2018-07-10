@@ -25,8 +25,6 @@ class Specs {
     private String event;
     private String alliance;
 
-    private int timer;
-
     private ArrayList<Integer> matchSchedule = new ArrayList<>();
 
     private ArrayList<DataConstant> dataConstants = new ArrayList<>();
@@ -42,7 +40,6 @@ class Specs {
         boardName = specs_json.getString(BOARD_NAME);
 
         event = specs_json.optString(EVENT, "");
-        timer = specs_json.optInt(TIMER, 150);
         alliance = specs_json.optString(ALLIANCE, "N");
 
         if (specs_json.has(MATCH_SCHEDULE)) {
@@ -79,12 +76,6 @@ class Specs {
     boolean matchIsInSchedule(int m, int t) {
         return hasMatchSchedule() &&
                 t == (m < matchSchedule.size() && m >= 0 ? matchSchedule.get(m) : -1);
-    }
-
-    @Deprecated
-    @SuppressWarnings("unused")
-    int getTimer() {
-        return timer;
     }
 
     String getAlliance() {
@@ -152,7 +143,6 @@ class Specs {
             BOARD_NAME = "board",
             ALLIANCE = "alliance",
             EVENT = "event",
-            TIMER = "timer",
             MATCH_SCHEDULE = "schedule",
             LAYOUT = "layout",
             CONSTANTS = "data";

@@ -330,7 +330,7 @@ public class ScoutingActivity
         startActivityState(ActivityState.SCOUTING);
         updateTabInputStates();
 
-        pushStatus("Timer Started");
+        pushStatus("Timer Started\n");
 
     }
 
@@ -729,6 +729,7 @@ public class ScoutingActivity
         pushStatus("Team: " + teamNumber);
         pushStatus("Scouter: " + scoutName);
         pushStatus("Board: " + mSpecs.getBoardName());
+        pushStatus("Board ID: " + mSpecs.getSpecsId());
         pushStatus("Alliance: " + mSpecs.getAlliance());
         pushStatus("");
 
