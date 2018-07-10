@@ -1,5 +1,12 @@
 {
     "files": [
+        "v2_red1.json",
+        "v2_red2.json",
+        "v2_red3.json",
+        "v2_blue1.json",
+        "v2_blue2.json",
+        "v2_blue3.json",
+
         "Blue1.json",
         "Blue2.json",
         "Blue3.json",
@@ -10,16 +17,29 @@
         "XRobot.json"
     ],
     "names": [
-        "Robot Blue 1",
-        "Robot Blue 2",
-        "Robot Blue 3",
-        "Robot Red 1",
-        "Robot Red 2",
-        "Robot Red 3",
+        "Red 1",
+        "Red 2",
+        "Red 3",
+        "Blue 1",
+        "Blue 2",
+        "Blue 3",
+        "Old Blue 1",
+        "Old Blue 2",
+        "Old Blue 3",
+        "Old Red 1",
+        "Old Red 2",
+        "Old Red 3",
         "Vault/Power Ups",
         "Experimental Board"
     ],
     "identifiers": [
+        "040020a1",
+        "040020a2",
+        "040020a3",
+        "040020b1",
+        "040020b2",
+        "040020b3",
+
         "ff770361",
         "e3bb3f98",
         "32c1bf68",
