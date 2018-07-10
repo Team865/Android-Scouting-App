@@ -25,10 +25,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.EditText;
@@ -486,8 +489,11 @@ public class ScoutingActivity
                 InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
         input.setText(mEntry.getComments());
+        input.setSelection(mEntry.getComments().length());
+        input.setGravity(Gravity.CENTER);
+        input.setHint(R.string.comments_hint);
 
-        new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this)
 
                 .setTitle(R.string.edit_comments)
                 .setView(input)
@@ -507,7 +513,14 @@ public class ScoutingActivity
                         dialog.cancel();
                     }
                 })
-                .show();
+                .create();
+        Window window = dialog.getWindow();
+
+        if (window != null) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
+
+        dialog.show();
     }
 
 

@@ -30,6 +30,13 @@
         All data entered will be lost. Scan the QR code to save it to a computer.
     </string>
 
+    <string name="comments_hint">
+        Add comments here if there is an error with your scouting
+        (started late, missed an event, entry needs re-scout, etc.)
+        or if the robot fell, is missing, or did other weird things
+        so the data can be adjusted accordingly
+    </string>
+
 
     <string name="data_title">Data Sender</string>
 
