@@ -10,7 +10,7 @@
             "title": "Auto",
             "fields": [
                 [
-                    "X_AUTO_START_POS"
+                    "AUTO_START_POS"
                 ],
                 [
                     "AUTO_LINE"
@@ -29,8 +29,7 @@
             "title": "Tele-Op",
             "fields": [
                 [
-                    "TELE_INTAKE",
-                    "X_DROPPED"
+                    "TELE_INTAKE"
                 ],
                 [
                     "TELE_ALLIANCE_SWITCH",
@@ -49,46 +48,47 @@
             "title": "Endgame",
             "fields": [
                 [
-                    "X_END_DEPLOY",
-                    "X_END_CLIMB_TYPE"
+                    "END_PLATFORM_TIMER",
+                    "END_CLIMBED_TIMER"
                 ],
                 [
-                    "X_END_ATTACH",
-                    "X_END_CLIMB"
+                    "END_ENDGAME_TYPE"
                 ],
                 [
-                    "END_INTAKE_CONSISTENCY",
+                    "END_OBJECTIVE"
+                ]
+            ]
+        },
+        {
+            "title": "Ratings",
+            "fields": [
+                [
+                    "END_PLATFORM",
+                    "END_CLIMB"
+                ],
+                [
+                    "END_ATTACHMENT",
+                    "END_CLIMB_SPEED"
+                ],
+                [
+                    "END_INTAKE_SPEED",
+                    "END_INTAKE_CONSISTENCY"
+                ],
+                [
+                    "END_EXCHANGE",
+                    "END_SWITCH"
+                ],
+                [
+                    "END_SCALE",
                     "END_DRIVER"
-                ],
-                [
-                    "X_STRATEGY"
                 ]
             ]
         }
     ],
     "data": [
         {
-            "id": "X_AUTO_START_POS",
-            "label": "Start Position",
-            "log": "Start position",
-            "type": "choice",
-            "choices": [
-                "Select",
-                "Left Side",
-                "Center",
-                "Right Side"
-            ]
-        },
-        {
-            "id": "X_INCAPACITATED",
-            "label": "Incapacitated",
-            "log": "Incapacitated",
-            "type": "duration",
-            "label_on": "Incapacitated"
-        },
-        {
             "id": "AUTO_LINE",
-            "label": "Auto Line",
+            "label": "Auto Line Crossed",
             "log": "Auto line",
             "type": "checkbox"
         },
@@ -135,17 +135,11 @@
             "type": "timestamp"
         },
         {
-            "id": "X_DROPPED",
-            "label": "Cube Dropped",
-            "log": "Cube dropped",
-            "type": "timestamp"
-        },
-        {
             "id": "TELE_DEFENSE",
-            "label": "Defend",
+            "label": "Start Defense",
             "log": "Defense",
             "type": "duration",
-            "label_on": "Defending"
+            "label_on": "End Defense"
         },
         {
             "id": "TELE_EXCHANGE",
@@ -183,19 +177,6 @@
             ]
         },
         {
-            "id": "X_END_PLATFORM",
-            "label": "Platform",
-            "log": "Platform",
-            "type": "duration"
-        },
-        {
-            "id": "X_END_DEPLOY",
-            "label": "Deploy",
-            "log": "Deploy",
-            "type": "duration",
-            "label_on": "Deploying"
-        },
-        {
             "id": "END_CLIMB",
             "label": "Climb",
             "log": "Climb",
@@ -204,21 +185,6 @@
                 "None",
                 "Attempt",
                 "Success"
-            ]
-        },
-        {
-            "id": "X_END_CLIMB_TYPE",
-            "label": "Climb Type",
-            "log": "Climb type",
-            "type": "choice",
-            "choices": [
-                "No Climb",
-                "Attempted/Failed",
-                "Front Climb - Single",
-                "Front Climb - Double",
-                "Side Climb - Single",
-                "Side Climb - Double",
-                "Ramp on Another Robot"
             ]
         },
         {
@@ -250,13 +216,6 @@
             "max": 5
         },
         {
-            "id": "X_END_OUTTAKE_CONSISTENCY",
-            "label": "Outtake Consistency",
-            "log": "Outtake consistency",
-            "type": "rating",
-            "max": 2
-        },
-        {
             "id": "END_EXCHANGE",
             "label": "Exchange Speed",
             "log": "Exchange speed",
@@ -269,20 +228,6 @@
             "log": "Switch speed",
             "type": "rating",
             "max": 5
-        },
-        {
-            "id": "X_STRATEGY",
-            "label": "Main Strategy",
-            "log": "Main strategy",
-            "type": "choice",
-            "choices": [
-                "Select",
-                "Scale",
-                "Switch",
-                "Exchange",
-                "Defense",
-                "Mixed"
-            ]
         },
         {
             "id": "END_SCALE",
@@ -299,29 +244,58 @@
             "max": 5
         },
         {
-            "id": "X_END_ATTACH",
-            "label": "Attach",
-            "log": "Attach",
-            "type": "duration",
-            "label_on": "Attached"
+            "id": "AUTO_START_POS",
+            "label": "Start Position",
+            "log": "Start position",
+            "type": "choice",
+            "choices": [
+                "Select",
+                "Left",
+                "Center",
+                "Right"
+            ]
         },
         {
-            "id": "X_END_CLIMB",
+            "id": "END_PLATFORM_TIMER",
+            "label": "Platform",
+            "log": "Platform timer",
+            "type": "duration",
+            "label_on": "Platform"
+        },
+        {
+            "id": "END_CLIMBED_TIMER",
             "label": "Climbed",
-            "log": "Attachment",
+            "log": "Climbed timer",
             "type": "duration",
             "label_on": "Climbed"
         },
         {
-            "id": "X_SCALE_REACH",
-            "label": "Scale Reach",
-            "log": "Scale reach",
+            "id": "END_ENDGAME_TYPE",
+            "label": "Endgame Type",
+            "log": "Endgame type",
             "type": "choice",
             "choices": [
-                "N/A",
-                "1 Layer",
-                "2 Layers",
-                "3 Layers"
+                "None",
+                "Platform",
+                "Failed Climb",
+                "Single Climb",
+                "Double Climb",
+                "Single Climb, Lifting Another Robot",
+                "Lifted by Another Robot"
+            ]
+        },
+        {
+            "id": "END_OBJECTIVE",
+            "label": "Game objective",
+            "log": "Objective",
+            "type": "choice",
+            "choices": [
+                "Select",
+                "Scale",
+                "Alliance Switch",
+                "Opponent Switch",
+                "Exchange",
+                "Defense"
             ]
         }
     ]
