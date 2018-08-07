@@ -41,7 +41,8 @@ public class MainActivity
         extends AppCompatActivity
         implements TextWatcher,
         View.OnClickListener,
-        CompoundButton.OnCheckedChangeListener {
+        CompoundButton.OnCheckedChangeListener,
+        View.OnLongClickListener {
 
 
     private static final int MY_PERMISSIONS_REQUEST_FILES = 0;
@@ -178,6 +179,13 @@ public class MainActivity
 
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        Intent intent = new Intent(this, ManagedPreferences.Activity.class);
+        startActivity(intent);
+        return true;
+    }
+
 
     private void ensurePermissions() {
         // Ask for File Permissions
@@ -216,13 +224,17 @@ public class MainActivity
 
         scoutNameField.setText(prefs.getString(ID.SAVE_SCOUT_NAME, ""));
 
+        TextView appTitle = findViewById(R.id.app_title);
+
         try {
-            String appTitle = "Scouting App " +
+            String appTitleString = "Scouting App " +
                     getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            ((TextView) findViewById(R.id.app_title)).setText(appTitle);
+            appTitle.setText(appTitleString);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
+        appTitle.setOnLongClickListener(this);
     }
 
     private void setupSpecs() {

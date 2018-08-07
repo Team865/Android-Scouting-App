@@ -310,7 +310,6 @@ public class ScoutingActivity
 
     @Override
     public void pushStatus(String status) {
-        // mActionBar.setSubtitle(status.replace("{t}", String.valueOf(mTimer)));
         mStatusLog.append(status.replace("{t}", String.valueOf(mTimer)));
         mStatusLog.append("\n");
     }
@@ -557,9 +556,11 @@ public class ScoutingActivity
      */
 
     public Bitmap createBitmap(BitMatrix matrix) {
+
         int width = matrix.getWidth();
         int height = matrix.getHeight();
         int[] pixels = new int[width * height];
+
         for (int y = 0; y < height; y++) {
             int offset = y * width;
             for (int x = 0; x < width; x++) {
