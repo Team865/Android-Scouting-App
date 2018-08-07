@@ -217,9 +217,9 @@ public class MainActivity
         scoutNameField.setText(prefs.getString(ID.SAVE_SCOUT_NAME, ""));
 
         try {
-            ((TextView) findViewById(R.id.version_info))
-                    .setText(getPackageManager().getPackageInfo(getPackageName(), 0)
-                            .versionName);
+            String appTitle = "Scouting App " +
+                    getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            ((TextView) findViewById(R.id.app_title)).setText(appTitle);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -321,8 +321,8 @@ public class MainActivity
             Specs specs = Specs.setInstance(mPassedSpecsFile);
             ActionBar ab = getSupportActionBar();
             if (ab != null) {
-                ab.setTitle(specs.getBoardName());
-                ab.setSubtitle("@ " + specs.getEvent());
+                ab.setTitle("Board: " + specs.getBoardName());
+                ab.setSubtitle(specs.getEvent());
             }
             updateTextFieldState();
 
