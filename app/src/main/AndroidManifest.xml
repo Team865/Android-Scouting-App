@@ -28,7 +28,11 @@
         <activity
             android:name=".ScoutingActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ManagedPreferences$Activity" />
+        <activity android:name=".ManagedPreferences$Activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-        android:key="pref_hi"
-        android:title="ho"
-        android:summary="hee"
+    <SwitchPreference
+        android:key="pref_use_vibration"
+        android:title="Use Vibration"
+        android:summary="Vibrate when the app successfully complete an action you requested (such as clicking a button or undo)"
         android:defaultValue="true" />
+    <SwitchPreference
+        android:key="pref_show_pause"
+        android:title="Pause, Resume, and SeekBar"
+        android:summary="These features allows you to go back to edit data in an entry"
+        android:defaultValue="false" />
+    <SwitchPreference
+        android:key="pref_offer_legacy_screen"
+        android:title="Offer Legacy Data Screen"
+        android:defaultValue="false" />
 </PreferenceScreen>

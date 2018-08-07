@@ -41,8 +41,7 @@ public class MainActivity
         extends AppCompatActivity
         implements TextWatcher,
         View.OnClickListener,
-        CompoundButton.OnCheckedChangeListener,
-        View.OnLongClickListener {
+        CompoundButton.OnCheckedChangeListener {
 
 
     private static final int MY_PERMISSIONS_REQUEST_FILES = 0;
@@ -179,11 +178,9 @@ public class MainActivity
 
     }
 
-    @Override
-    public boolean onLongClick(View v) {
+    public void onLogoClicked(View view) {
         Intent intent = new Intent(this, ManagedPreferences.Activity.class);
         startActivity(intent);
-        return true;
     }
 
 
@@ -233,8 +230,6 @@ public class MainActivity
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
-        appTitle.setOnLongClickListener(this);
     }
 
     private void setupSpecs() {
