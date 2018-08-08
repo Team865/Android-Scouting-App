@@ -24,6 +24,11 @@ interface ScoutingActivityListener
     Vibrator getVibrator();
 
     /**
+     * @return The managed Vibrator service of the activity
+     */
+    ManagedPreferences.ActionVibrator getManagedVibrator();
+
+    /**
      * @return The entry model object tracking data history
      */
     Entry getEntry();

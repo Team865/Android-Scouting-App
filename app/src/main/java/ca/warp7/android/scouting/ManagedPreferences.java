@@ -57,6 +57,7 @@ class ManagedPreferences {
 
     private SharedPreferences mSharedPreferences;
     private Context mContext;
+    private ActionVibrator mActionVibrator;
 
     ManagedPreferences(Context context) {
         mContext = context;
@@ -64,8 +65,11 @@ class ManagedPreferences {
     }
 
     ActionVibrator getVibrator() {
-        boolean useVibration = mSharedPreferences.getBoolean(kVibratorPreferenceName, true);
-        return new ActionVibrator(mContext, useVibration);
+        if (mActionVibrator == null) {
+            mActionVibrator = new ActionVibrator(mContext,
+                    mSharedPreferences.getBoolean(kVibratorPreferenceName, true));
+        }
+        return mActionVibrator;
     }
 
     private static final String kVibratorPreferenceName = "pref_use_vibration";

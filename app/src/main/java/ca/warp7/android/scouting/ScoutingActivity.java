@@ -137,6 +137,7 @@ public class ScoutingActivity
 
     private Handler mTimeHandler;
     private Vibrator mVibrator;
+    private ManagedPreferences mPreferences;
 
 
     // Data Model Variables
@@ -144,7 +145,6 @@ public class ScoutingActivity
     private Specs mSpecs;
     private Entry mEntry;
     private ArrayList<Specs.Layout> mLayouts;
-
     private StringBuilder mStatusLog;
 
 
@@ -192,6 +192,7 @@ public class ScoutingActivity
 
         mTimeHandler = new Handler();
         mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        mPreferences = new ManagedPreferences(this);
 
         setupSpecs();
         setupUI();
@@ -283,6 +284,11 @@ public class ScoutingActivity
     }
 
     @Override
+    public ManagedPreferences.ActionVibrator getManagedVibrator() {
+        return mPreferences.getVibrator();
+    }
+
+    @Override
     public Entry getEntry() {
         return mEntry;
     }
@@ -366,7 +372,7 @@ public class ScoutingActivity
                     performUndo();
                 } else {
                     mTimer = calculateCurrentRelativeTime();
-                    mVibrator.vibrate(kStartVibration, -1);
+                    getManagedVibrator().vibrateStart();
                     mUndoSkipButton.setImageResource(R.drawable.ic_undo_ablack);
                 }
 
@@ -410,7 +416,7 @@ public class ScoutingActivity
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             mUsingPauseBetaFeature = !mUsingPauseBetaFeature;
-                            mVibrator.vibrate(50);
+                            getManagedVibrator().vibrateAction();
                             mPlayPauseButton.setVisibility(mUsingPauseBetaFeature ? View.VISIBLE : View.GONE);
                         }
                     });
@@ -821,7 +827,7 @@ public class ScoutingActivity
                 setScoutingNavToolbox();
                 setBackgroundColour(getResources().getColor(R.color.colorWhite));
 
-                mVibrator.vibrate(kStartVibration, -1); // Vibrate to signal start
+                getManagedVibrator().vibrateStart(); // Vibrate to signal start
                 mTimerUpdater.run();
 
                 break;
@@ -1022,7 +1028,7 @@ public class ScoutingActivity
             pushStatus("Cannot Undo @" + mTimer + "s");
         } else {
             pushStatus("Undo \'" + dc.getLabel() + "\'");
-            mVibrator.vibrate(kActionEffectVibration);
+            getManagedVibrator().vibrateAction();
             updateTabInputStates();
         }
     }
@@ -1080,7 +1086,4 @@ public class ScoutingActivity
     static final int kAutonomousColour = 0xFFCC9900;
     static final int kTeleOpColour = 0xFF006633;
     static final int kFinishedColour = 0xFFFF0000;
-
-    static final long[] kStartVibration = new long[]{0, 20, 30, 20};
-    static final int kActionEffectVibration = 30;
 }
