@@ -30,13 +30,10 @@ import android.widget.TextView;
 
 class InputControls {
 
-    static final int kVibrationLength = 35;
-
     /**
      * Base interface for all custom controls
      */
     interface BaseControl {
-        @SuppressWarnings("unused")
         void updateControlState();
     }
 
@@ -133,7 +130,7 @@ class InputControls {
         public void onClick(View v) {
             if (listener.timeIsRecordable()) {
 
-                listener.getVibrator().vibrate(kVibrationLength);
+                listener.getManagedVibrator().vibrateAction();
 
                 listener.pushCurrentTimeAsValue(dc.getIndex(), 1);
                 updateControlState();
@@ -224,7 +221,7 @@ class InputControls {
                 listener.pushStatus(getText().toString() + " - {t}s");
 
                 updateLooks();
-                listener.getVibrator().vibrate(kVibrationLength);
+                listener.getManagedVibrator().vibrateAction();
 
             } else {
                 listener.pushStatus("Time Conflict @" + listener.getCurrentRelativeTime() + "s");
@@ -309,7 +306,7 @@ class InputControls {
                             if (which != lastWhich) {
                                 lastWhich = which;
                                 setText(dc.getChoices()[which]);
-                                listener.getVibrator().vibrate(kVibrationLength);
+                                listener.getManagedVibrator().vibrateAction();
                                 listener.getEntry().push(dc.getIndex(), which, 1);
                                 listener.pushStatus(dc.getLabel() + " <" + getText() + ">");
                             }
@@ -362,7 +359,7 @@ class InputControls {
 
         @Override
         public void onClick(View v) {
-            listener.getVibrator().vibrate(kVibrationLength);
+            listener.getManagedVibrator().vibrateAction();
             listener.getEntry().push(dc.getIndex(), isChecked() ? 1 : 0, 1);
             listener.pushStatus(getText().toString() + " - " + (isChecked() ? "On" : "Off"));
         }
@@ -432,7 +429,7 @@ class InputControls {
         public void onStopTrackingTouch(android.widget.SeekBar seekBar) {
 
             if (getProgress() != lastProgress) {
-                listener.getVibrator().vibrate(kVibrationLength);
+                listener.getManagedVibrator().vibrateAction();
                 lastProgress = getProgress();
 
                 listener.getEntry().push(dc.getIndex(), lastProgress, 1);
@@ -697,9 +694,7 @@ class InputControls {
             getBackground().setColorFilter(
                     getResources().getColor(android.R.color.black),
                     PorterDuff.Mode.MULTIPLY);
-
-            listener.getVibrator().vibrate(new long[]{0, 20, 60, 20}, -1);
-
+            listener.getManagedVibrator().vibrateAction();
             listener.getHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

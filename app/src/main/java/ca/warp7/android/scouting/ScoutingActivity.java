@@ -7,7 +7,6 @@ which is licensed under the Apache License, Version 2.0
  */
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,7 +14,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -136,7 +134,6 @@ public class ScoutingActivity
     // System Services
 
     private Handler mTimeHandler;
-    private Vibrator mVibrator;
     private ManagedPreferences mPreferences;
 
 
@@ -191,7 +188,6 @@ public class ScoutingActivity
         super.onCreate(savedInstanceState);
 
         mTimeHandler = new Handler();
-        mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mPreferences = new ManagedPreferences(this);
 
         setupSpecs();
@@ -276,11 +272,6 @@ public class ScoutingActivity
     @Override
     public Handler getHandler() {
         return mTimeHandler;
-    }
-
-    @Override
-    public Vibrator getVibrator() {
-        return mVibrator;
     }
 
     @Override
