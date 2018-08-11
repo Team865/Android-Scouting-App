@@ -1,13 +1,23 @@
 package ca.warp7.android.scouting;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 class ManagedPreferences {
 
@@ -16,6 +26,61 @@ class ManagedPreferences {
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
+            ClickListener listener = new ClickListener();
+            findPreference(kCopyAssetsKey).setOnPreferenceClickListener(listener);
+        }
+    }
+
+    public static class ClickListener implements Preference.OnPreferenceClickListener {
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+            switch (preference.getKey()) {
+                case kCopyAssetsKey:
+                    askToCopy(preference.getContext());
+                    return true;
+            }
+            return false;
+        }
+
+        private void askToCopy(final Context context) {
+            new AlertDialog.Builder(context)
+                    .setTitle("Are you sure?")
+                    .setMessage("Any files stored at \""
+                            + Specs.getSpecsRoot().getAbsolutePath()
+                            + "\" will be overwritten.")
+                    .setNegativeButton("No", null)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            copyAssets(context);
+                        }
+                    })
+                    .create()
+                    .show();
+        }
+
+        @SuppressWarnings("ResultOfMethodCallIgnored")
+        private void copyAssets(Context context) {
+            try {
+                File root = Specs.getSpecsRoot();
+
+                AssetManager assetManager = context.getAssets();
+                for (String fileName : assetManager.list("specs")) {
+
+                    InputStream inputStream = assetManager.open("specs/" + fileName);
+                    byte[] buffer = new byte[inputStream.available()];
+                    inputStream.read(buffer);
+                    inputStream.close();
+
+                    File outFile = new File(root, fileName);
+                    OutputStream outputStream = new FileOutputStream(outFile);
+                    outputStream.write(buffer);
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -67,15 +132,16 @@ class ManagedPreferences {
     ActionVibrator getVibrator() {
         if (mActionVibrator == null) {
             mActionVibrator = new ActionVibrator(mContext,
-                    mSharedPreferences.getBoolean(kVibratorPreferenceName, true));
+                    mSharedPreferences.getBoolean(kVibratorPreferenceKey, true));
         }
         return mActionVibrator;
     }
 
     boolean shouldShowPause() {
-        return mSharedPreferences.getBoolean(kShowPausePreferenceName, false);
+        return mSharedPreferences.getBoolean(kShowPausePreferenceKey, false);
     }
 
-    private static final String kShowPausePreferenceName = "pref_show_pause";
-    private static final String kVibratorPreferenceName = "pref_use_vibration";
+    private static final String kShowPausePreferenceKey = "pref_show_pause";
+    private static final String kVibratorPreferenceKey = "pref_use_vibration";
+    private static final String kCopyAssetsKey = "pref_copy_assets";
 }

@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <SwitchPreference
-        android:key="pref_use_vibration"
-        android:title="Use Vibration"
-        android:summary="Vibrate when the app successfully complete an action you requested (such as clicking a button or undo)"
-        android:defaultValue="true" />
-    <SwitchPreference
-        android:key="pref_show_pause"
-        android:title="Pause, Resume, and SeekBar"
-        android:summary="These features allows you to go back to edit data in an entry (Click on the team/match number at the top to enable in-match)"
-        android:defaultValue="false" />
+    <PreferenceCategory android:title="Options">
+        <SwitchPreference
+            android:key="pref_use_vibration"
+            android:title="Use Vibration"
+            android:summary="Vibrate when the app successfully complete an action you requested (such as clicking a button or undo)"
+            android:defaultValue="true" />
+        <SwitchPreference
+            android:key="pref_show_pause"
+            android:title="Pause, Resume, and SeekBar"
+            android:summary="These features allows you to go back to edit data in an entry (Click on the team/match number at the top to enable in-match)"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Actions">
+        <Preference
+            android:key="pref_copy_assets"
+            android:title="Copy Asset Files"
+            android:summary="Copies any files (board/template/schedule) bundled with this app on installation into the usage folder" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
