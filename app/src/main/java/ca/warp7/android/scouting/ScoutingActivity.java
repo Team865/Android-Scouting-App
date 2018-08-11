@@ -401,7 +401,7 @@ public class ScoutingActivity
                         dialog.dismiss();
                     }
                 });
-        if (mActivityState != ActivityState.STARTING) {
+        if (mActivityState != ActivityState.STARTING && mPreferences.shouldShowPause()) {
             builder.setNeutralButton(mUsingPauseBetaFeature ? "Hide Pause" : "Show Pause",
                     new DialogInterface.OnClickListener() {
                         @Override

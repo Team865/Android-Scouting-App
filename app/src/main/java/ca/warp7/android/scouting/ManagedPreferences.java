@@ -72,5 +72,10 @@ class ManagedPreferences {
         return mActionVibrator;
     }
 
+    boolean shouldShowPause() {
+        return mSharedPreferences.getBoolean(kShowPausePreferenceName, false);
+    }
+
+    private static final String kShowPausePreferenceName = "pref_show_pause";
     private static final String kVibratorPreferenceName = "pref_use_vibration";
 }
