@@ -68,6 +68,11 @@ public class MainActivity
 
         ensurePermissions();
         setupUI();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         setupSpecs();
     }
 

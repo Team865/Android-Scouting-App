@@ -9,7 +9,7 @@
     <string name="menu_close">Exit Scouting</string>
     <string name="menu_details">Match Details</string>
     <string name="menu_copy_default_metrics">Copy Default Metrics</string>
-    <string name="menu_select_specs">Select Board</string>
+    <string name="menu_select_specs">Select</string>
 
     <string name="hint_match">Match #</string>
     <string name="hint_team">Team #</string>
