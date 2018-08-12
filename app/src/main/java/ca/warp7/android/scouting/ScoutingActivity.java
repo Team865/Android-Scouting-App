@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -226,10 +227,6 @@ public class ScoutingActivity
 
         switch (item.getItemId()) {
 
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
             case R.id.menu_flags:
                 onCommentsAndFlags();
                 return true;
@@ -413,6 +410,14 @@ public class ScoutingActivity
                     });
         }
         builder.create().show();
+    }
+
+    /**
+     * An overwrite to onBackPressed with a View argument to allow callback
+     */
+
+    public void onBackPressed(View view) {
+        onBackPressed();
     }
 
     /**
@@ -626,9 +631,6 @@ public class ScoutingActivity
 
         mToolbar = findViewById(R.id.my_toolbar);
 
-        mToolbar.setNavigationIcon(R.drawable.ic_close_ablack);
-        mToolbar.setNavigationContentDescription(R.string.menu_close);
-
         mToolbarTeam = mToolbar.findViewById(R.id.toolbar_team);
         mToolbarMatch = mToolbar.findViewById(R.id.toolbar_match);
 
@@ -720,6 +722,13 @@ public class ScoutingActivity
         mToolbarTeam.setTextColor(
                 alliance.equals("R") ? kRedAllianceColour :
                         (alliance.equals("B") ? kBlueAllianceColour : kNeutralAllianceColour));
+
+        findViewById(R.id.highlight_bar).getBackground()
+                .setColorFilter(getResources()
+                                .getColor(alliance.equals("R") ? R.color.colorAlmostRed :
+                                        (alliance.equals("B") ? R.color.colorAlmostBlue :
+                                                R.color.colorAlmostWhite)),
+                        PorterDuff.Mode.MULTIPLY);
 
         mStatusLog = new StringBuilder(); // initialize the log
 

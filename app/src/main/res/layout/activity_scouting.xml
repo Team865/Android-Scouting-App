@@ -18,28 +18,52 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:onClick="onToolbarTitleClicked"
-            android:orientation="horizontal"
-            android:padding="6dp"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="14dp">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/toolbar_team"
+            <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:contentDescription="@string/exit_confirmation"
+                android:src="@drawable/ic_close_ablack"
+                android:onClick="onBackPressed"
+                tools:ignore="NewApi" />
 
-            <TextView
-                android:id="@+id/toolbar_match"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="16dp"
-                android:textColor="@color/colorAlmostBlack"
-                android:textSize="20sp" />
+            <LinearLayout
+                android:id="@+id/highlight_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/cornered_bg"
+                android:onClick="onToolbarTitleClicked"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="5dp"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="14dp">
+
+                <TextView
+                    android:id="@+id/toolbar_team"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/toolbar_match"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="16dp"
+                    android:textColor="@color/colorAlmostBlack"
+                    android:textSize="20sp"
+                    android:typeface="sans" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -63,6 +87,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -71,6 +96,7 @@
             android:id="@+id/time_seeker"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -84,7 +110,7 @@
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:gravity="start"
             android:minWidth="32dp"
             android:singleLine="true"
@@ -150,7 +176,7 @@
             android:layout_height="0dp"
             android:layout_marginEnd="72dp"
             android:layout_marginRight="72dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
