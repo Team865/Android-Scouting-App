@@ -11,6 +11,11 @@
             android:title="Pause, Resume, and SeekBar"
             android:summary="These features allows you to go back to edit data in an entry (Click on the team/match number at the top to enable in-match)"
             android:defaultValue="false" />
+        <SwitchPreference
+            android:key="pref_show_legacy_screen"
+            android:title="Offer Legacy Data Screen"
+            android:summary="Offer the option of viewing the old data screen"
+            android:defaultValue="false" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Actions">
         <Preference

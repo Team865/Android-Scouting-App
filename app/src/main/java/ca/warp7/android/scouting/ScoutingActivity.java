@@ -429,7 +429,7 @@ public class ScoutingActivity
         mEntry.clean();
         final String encoded = EntryFormatter.formatEncode(mEntry);
 
-        new AlertDialog.Builder(this)
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("QR Code")
                 .setView(getQRImage(encoded))
 
@@ -437,13 +437,6 @@ public class ScoutingActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                })
-
-                .setNeutralButton("Old Screen", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onDataOutputIntent();
                     }
                 })
 
@@ -457,10 +450,18 @@ public class ScoutingActivity
 
                         startActivity(Intent.createChooser(intent, encoded));
                     }
-                })
+                });
 
-                .create()
-                .show();
+        if (mPreferences.shouldShowDataOutputsActivity()) {
+            builder.setNeutralButton("Old Screen", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    onDataOutputIntent();
+                }
+            });
+        }
+
+        builder.create().show();
     }
 
     /**
