@@ -6,7 +6,9 @@ https://github.com/journeyapps/zxing-android-embedded/,
 which is licensed under the Apache License, Version 2.0
  */
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +17,8 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,10 +29,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -38,6 +44,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
@@ -1062,6 +1070,229 @@ public class ScoutingActivity
             return (InputsFragment) instantiateItem(mPager, index);
         }
 
+    }
+
+
+    /**
+     * The fragment that is shown in the biggest portion
+     * of ScoutingActivity -- it manages a TableLayout that
+     * contains the views from InputControls defined in Specs
+     *
+     * @author Team 865
+     */
+
+    public static class InputsFragment
+            extends Fragment {
+
+
+        private ScoutingActivityListener mListener;
+
+        private TableLayout mInputTable;
+
+        private Specs mSpecs;
+        private Specs.Layout mLayout;
+
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            int tabNumber = getArguments() != null ? getArguments().getInt("tab") : -1;
+
+            mSpecs = Specs.getInstance();
+
+            if (mSpecs == null) {
+                Activity activity = getActivity();
+                if (activity != null) {
+                    Specs.setInstance(activity.getIntent().getStringExtra(ID.MSG_SPECS_FILE));
+                    mSpecs = Specs.getInstance();
+                }
+            }
+
+            mLayout = mSpecs.getLayouts().get(tabNumber);
+        }
+
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater,
+                                 ViewGroup container,
+                                 Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.fragment_inputs, container, false);
+        }
+
+        @Override
+        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+
+            mInputTable = view.findViewById(R.id.input_table);
+
+            if (mSpecs != null) {
+                layoutTable();
+            }
+        }
+
+        @Override
+        public void onAttach(Context context) {
+            super.onAttach(context);
+
+            if (context instanceof ScoutingActivityListener) {
+                mListener = (ScoutingActivityListener) context;
+            } else {
+                throw new RuntimeException(context.toString()
+                        + " must implement InputControls.ScoutingActivityListener");
+            }
+        }
+
+        @Override
+        public void onDetach() {
+            super.onDetach();
+            mListener = null;
+        }
+
+        /**
+         * Creates a view from its definition
+         *
+         * @param dc       the data constant
+         * @param idIfNull the display value if control is undefined
+         * @return a matching View from InputControls
+         */
+
+        View createControlFromDataConstant(Specs.DataConstant dc, String idIfNull) {
+
+            if (dc == null) {
+                return new InputControls.UnknownControl(getContext(), idIfNull, mListener);
+            }
+
+            switch (dc.getType()) {
+                case Specs.DataConstant.TIMESTAMP:
+                    //return new InputControls.TimerButton(getContext(), dc, mListener);
+                    return new InputControls.CountedControlLayout(getContext(), dc, mListener,
+                            new InputControls.TimerButton(getContext(), dc, mListener));
+
+                case Specs.DataConstant.CHECKBOX:
+                    return new InputControls.CenteredControlLayout(getContext(), dc, mListener,
+                            new InputControls.Checkbox(getContext(), dc, mListener));
+
+                case Specs.DataConstant.DURATION:
+                    return new InputControls.DurationButton(getContext(), dc, mListener);
+
+
+                case Specs.DataConstant.RATING:
+
+                    return new InputControls.LabeledControlLayout(getContext(), dc, mListener,
+                            new InputControls.SeekBar(getContext(), dc, mListener));
+
+                case Specs.DataConstant.CHOICE:
+
+                    return new InputControls.LabeledControlLayout(getContext(), dc, mListener,
+                            new InputControls.ChoicesButton(getContext(), dc, mListener));
+
+                default:
+                    return new InputControls.UnknownControl(getContext(),
+                            dc.getLabel(), mListener);
+            }
+        }
+
+        /**
+         * Get a specific view by its ID and its span in the table
+         *
+         * @return the specified view with added layout
+         */
+
+        View createSpecifiedControl(String id, int span) {
+            Specs.DataConstant dc = mSpecs.getDataConstantByStringID(id);
+
+            View view = createControlFromDataConstant(dc, id);
+
+            TableRow.LayoutParams lp = new TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.MATCH_PARENT);
+
+            lp.span = span;
+            lp.width = 0;
+
+            view.setLayoutParams(lp);
+
+            return view;
+        }
+
+        /**
+         * Layouts a row in the table
+         *
+         * @param fieldRow an array of identifiers
+         */
+
+        void layoutRow(String[] fieldRow) {
+            TableRow tr = new TableRow(getContext());
+
+            tr.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.MATCH_PARENT, 1.0f));
+
+            if (fieldRow.length == 1) {
+                tr.addView(createSpecifiedControl(fieldRow[0], 2));
+
+            } else {
+                for (String fieldID : fieldRow) {
+                    tr.addView(createSpecifiedControl(fieldID, 1));
+                }
+            }
+
+            mInputTable.addView(tr);
+        }
+
+        /**
+         * Get the layout and create the entire table
+         */
+
+        void layoutTable() {
+
+            ArrayList<String[]> fields = mLayout.getFields();
+            mInputTable.setWeightSum(fields.size());
+
+
+            for (String[] fieldRow : fields) {
+                layoutRow(fieldRow);
+            }
+        }
+
+        /**
+         * Update the states of input views
+         */
+
+        void updateStates() {
+
+            if (mInputTable != null) {
+                for (int i = 0; i < mInputTable.getChildCount(); i++) {
+                    View child = mInputTable.getChildAt(i);
+                    if (child instanceof TableRow) {
+                        TableRow row = (TableRow) child;
+                        for (int j = 0; j < row.getChildCount(); j++) {
+                            View view = row.getChildAt(j);
+                            if (view instanceof InputControls.BaseControl) {
+                                ((InputControls.BaseControl) view).updateControlState();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * Creates an fragment instance
+         *
+         * @param currentTab the tab to create the instance on
+         * @return the created instance
+         */
+
+        static InputsFragment createInstance(int currentTab) {
+            InputsFragment f = new InputsFragment();
+
+            Bundle args = new Bundle();
+            args.putInt("tab", currentTab);
+
+            f.setArguments(args);
+            return f;
+        }
     }
 
 
