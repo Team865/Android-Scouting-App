@@ -47,4 +47,13 @@
 
     <string name="layout_error">There was a problem with the layout</string>
 
+    <string-array name="board_choices">
+        <item>Red 1</item>
+        <item>Red 2</item>
+        <item>Red 3</item>
+        <item>Blue 1</item>
+        <item>Blue 2</item>
+        <item>Blue 3</item>
+    </string-array>
+
 </resources>

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,6 +23,13 @@ public class EntrySelectorActivity extends AppCompatActivity {
         setTitle("Entry Selector");
 
         ListView lv = findViewById(R.id.entry_list);
+        Spinner spinner = findViewById(R.id.board_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.board_choices, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
 
         try {
             File mtf = new File(Specs.getSpecsRoot(), "match-table.csv");
