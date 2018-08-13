@@ -3,6 +3,7 @@ package ca.warp7.android.scouting;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ class ManagedPreferences {
             addPreferencesFromResource(R.xml.preferences);
             ClickListener listener = new ClickListener();
             findPreference(kCopyAssetsKey).setOnPreferenceClickListener(listener);
+            findPreference(kEntrySelectorKey).setOnPreferenceClickListener(listener);
         }
     }
 
@@ -38,8 +40,17 @@ class ManagedPreferences {
                 case kCopyAssetsKey:
                     askToCopy(preference.getContext());
                     return true;
+                case kEntrySelectorKey:
+                    entrySelectorIntent(preference.getContext());
+                    return true;
             }
             return false;
+        }
+
+        private void entrySelectorIntent(Context context) {
+            Intent intent;
+            intent = new Intent(context, EntrySelectorActivity.class);
+            context.startActivity(intent);
         }
 
         private void askToCopy(final Context context) {
@@ -149,4 +160,5 @@ class ManagedPreferences {
     private static final String kVibratorPreferenceKey = "pref_use_vibration";
     private static final String kCopyAssetsKey = "pref_copy_assets";
     private static final String kShowDOAKey = "pref_show_legacy_screen";
+    private static final String kEntrySelectorKey = "pref_x_entry_selector";
 }

@@ -23,5 +23,11 @@
             android:title="Copy Asset Files"
             android:summary="Copies any files (board/template/schedule) bundled with this app on installation into the usage folder" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="Experimental Features">
+        <Preference
+            android:key="pref_x_entry_selector"
+            android:title="Entry Selector"
+            android:summary="Allows the display of the match schedule" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
