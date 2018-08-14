@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -30,6 +32,18 @@ class ManagedPreferences {
             ClickListener listener = new ClickListener();
             findPreference(kCopyAssetsKey).setOnPreferenceClickListener(listener);
             findPreference(kEntrySelectorKey).setOnPreferenceClickListener(listener);
+
+            try {
+                PackageInfo packageInfo = getActivity().getPackageManager()
+                        .getPackageInfo(getActivity().getPackageName(), 0);
+
+                Preference aboutApp = findPreference(kAboutAppKey);
+                aboutApp.setSummary("Version: "
+                        + packageInfo.versionName);
+
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -161,4 +175,5 @@ class ManagedPreferences {
     private static final String kCopyAssetsKey = "pref_copy_assets";
     private static final String kShowDOAKey = "pref_show_legacy_screen";
     private static final String kEntrySelectorKey = "pref_x_entry_selector";
+    private static final String kAboutAppKey = "pref_about";
 }
