@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     style="?android:selectableItemBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="horizontal"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/match_number"
-        android:layout_width="wrap_content"
+        android:layout_width="32dp"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_vertical|end"
         android:textColor="@color/colorAlmostBlack"
-        android:textSize="18sp"
-        tools:text="Match #" />
+        android:textSize="18sp" />
 
     <view
         android:id="@+id/alliance_view"
         class="ca.warp7.android.scouting.Widgets$AllianceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <Space
+        android:layout_width="32dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp" />
 </LinearLayout>

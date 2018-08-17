@@ -30,10 +30,6 @@ class ManagedData {
             return mTeams[i];
         }
 
-        public int[] getTeams() {
-            return mTeams;
-        }
-
         public int getMatchNumber() {
             return mMatchNumber;
         }

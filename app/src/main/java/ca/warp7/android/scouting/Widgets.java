@@ -16,7 +16,7 @@ public class Widgets {
     @SuppressWarnings("unused")
     static class AllianceView extends View {
 
-        static final float kPad = 36;
+        static final float kPad = 24;
         static final int kRadius = 16;
 
         Paint mAlmostRedPaint = new Paint();
@@ -111,22 +111,22 @@ public class Widgets {
             canvas.drawLine(0, h / 2, w, h / 2, mGrayTextPaint);
             Paint R1Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
                     ManagedData.RobotPosition.RED1 ?
-                    mRedFocusedTextPaint : mGrayTextPaint) : mRedTextPaint;
+                    mRedFocusedTextPaint : mGrayTextPaint) : mGrayTextPaint;//mRedTextPaint;
             Paint R2Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
                     ManagedData.RobotPosition.RED2 ?
-                    mRedFocusedTextPaint : mGrayTextPaint) : mRedTextPaint;
+                    mRedFocusedTextPaint : mGrayTextPaint) : mGrayTextPaint;//mRedTextPaint;
             Paint R3Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
                     ManagedData.RobotPosition.RED3 ?
-                    mRedFocusedTextPaint : mGrayTextPaint) : mRedTextPaint;
+                    mRedFocusedTextPaint : mGrayTextPaint) : mGrayTextPaint;//mRedTextPaint;
             Paint B1Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
                     ManagedData.RobotPosition.BLUE1 ?
-                    mBlueFocusedTextPaint : mGrayTextPaint) : mBlueTextPaint;
+                    mBlueFocusedTextPaint : mGrayTextPaint) : mGrayTextPaint;//mBlueTextPaint;
             Paint B2Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
                     ManagedData.RobotPosition.BLUE2 ?
-                    mBlueFocusedTextPaint : mGrayTextPaint) : mBlueTextPaint;
+                    mBlueFocusedTextPaint : mGrayTextPaint) : mGrayTextPaint;//mBlueTextPaint;
             Paint B3Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
                     ManagedData.RobotPosition.BLUE3 ?
-                    mBlueFocusedTextPaint : mGrayTextPaint) : mBlueTextPaint;
+                    mBlueFocusedTextPaint : mGrayTextPaint) : mGrayTextPaint;//mBlueTextPaint;
             canvas.drawText(mR1Team, (w / 3 - R1Paint
                     .measureText(mR1Team)) / 2, h / 2 - 16, R1Paint);
             canvas.drawText(mR2Team, w / 3 + (w / 3 - R2Paint
