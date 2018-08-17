@@ -40,7 +40,7 @@ class ManagedData {
     }
 
     static class MatchTable {
-        List<MatchInfo> mMatches = new ArrayList<>();
+        private List<MatchInfo> mMatches = new ArrayList<>();
 
 
         MatchTable() throws IOException {
@@ -65,6 +65,18 @@ class ManagedData {
                 result[i] = String.valueOf(mMatches.get(i).getTeamAt(board));
             }
             return result;
+        }
+
+        int size() {
+            return mMatches.size();
+        }
+
+        MatchInfo getMatchInfo(int index) {
+            return mMatches.get(index);
+        }
+
+        List<MatchInfo> getMatches() {
+            return mMatches;
         }
     }
 

@@ -1,19 +1,60 @@
 package ca.warp7.android.scouting;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.List;
 
 public class EntrySelectorActivity extends AppCompatActivity {
+
+    static class MatchTableAdapter extends ArrayAdapter<ManagedData.MatchInfo> {
+
+        LayoutInflater mInflater;
+
+        MatchTableAdapter(@NonNull Context context, List<ManagedData.MatchInfo> matches) {
+            super(context, 0, matches);
+            mInflater = LayoutInflater.from(context);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+
+            View itemView;
+            if (convertView != null && convertView instanceof LinearLayout) {
+                itemView = convertView;
+            } else {
+                itemView = mInflater.inflate(R.layout.entry_list_item, parent, false);
+            }
+
+            ManagedData.MatchInfo matchInfo = getItem(position);
+
+            if (matchInfo != null) {
+                Widgets.AllianceView allianceView = itemView.findViewById(R.id.alliance_view);
+                allianceView.setAllianceFromMatchInfo(matchInfo);
+                allianceView.setNoRobotFocused();
+                TextView matchNumber = itemView.findViewById(R.id.match_number);
+                matchNumber.setText(String.valueOf(matchInfo.getMatchNumber()));
+            }
+            return itemView;
+        }
+    }
 
     ManagedData.MatchTable mMatchTable;
     ListView mEntryList;
@@ -45,18 +86,19 @@ public class EntrySelectorActivity extends AppCompatActivity {
                     })
                     .create().show();
         }
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mEntryList.setAdapter(new ArrayAdapter<>(EntrySelectorActivity.this,
-                        android.R.layout.simple_list_item_1,
-                        mMatchTable.getTeamsArrayForBoard(position)));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        mEntryList.setAdapter(new MatchTableAdapter(this, mMatchTable.getMatches()));
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                mEntryList.setAdapter(new ArrayAdapter<>(EntrySelectorActivity.this,
+//                        android.R.layout.simple_list_item_1,
+//                        mMatchTable.getTeamsArrayForBoard(position)));
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
     }
 }
