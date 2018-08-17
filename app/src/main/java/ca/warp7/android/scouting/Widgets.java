@@ -17,6 +17,7 @@ public class Widgets {
     static class AllianceView extends View {
 
         static final float kPad = 36;
+        static final int kRadius = 16;
 
         Paint mAlmostRedPaint = new Paint();
         Paint mAlmostBluePaint = new Paint();
@@ -26,14 +27,14 @@ public class Widgets {
         Paint mRedFocusedTextPaint = new Paint();
         Paint mBlueFocusedTextPaint = new Paint();
 
-        float min_width;
+        private float mMinimumWidth;
 
-        private String mR1Team = "1";
-        private String mR2Team = "33";
-        private String mR3Team = "865";
-        private String mB1Team = "4917";
-        private String mB2Team = "2056";
-        private String mB3Team = "254";
+        private String mR1Team = "Red 1";
+        private String mR2Team = "Red 2";
+        private String mR3Team = "Red 3";
+        private String mB1Team = "Blue 1";
+        private String mB2Team = "Blue 2";
+        private String mB3Team = "Blue 3";
 
         private ManagedData.RobotPosition mFocusedRobotPosition = ManagedData.RobotPosition.RED1;
         private boolean mShouldFocusARobot = false;
@@ -71,8 +72,7 @@ public class Widgets {
             mBlueFocusedTextPaint.setTextSize(36);
             mBlueFocusedTextPaint.setAntiAlias(true);
 
-            min_width = mRedFocusedTextPaint.measureText("8888");
-            setFocusedRobotPosition(ManagedData.RobotPosition.BLUE3);
+            mMinimumWidth = mRedFocusedTextPaint.measureText("8888");
         }
 
         public void setFocusedRobotPosition(ManagedData.RobotPosition position) {
@@ -84,23 +84,31 @@ public class Widgets {
             mShouldFocusARobot = false;
         }
 
+        public void setAllianceFromMatchInfo(ManagedData.MatchInfo matchInfo) {
+            mR1Team = String.valueOf(matchInfo.getTeamAt(0));
+            mR2Team = String.valueOf(matchInfo.getTeamAt(1));
+            mR3Team = String.valueOf(matchInfo.getTeamAt(2));
+            mB1Team = String.valueOf(matchInfo.getTeamAt(3));
+            mB2Team = String.valueOf(matchInfo.getTeamAt(4));
+            mB3Team = String.valueOf(matchInfo.getTeamAt(5));
+        }
+
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            int width = getMeasuredWidth();
-            int height = getMeasuredHeight();
-            int radius = 16;
-            canvas.drawRect(0, radius, width, height / 2, mAlmostRedPaint);
-            canvas.drawRect(radius, 0, width - radius, radius, mAlmostRedPaint);
-            canvas.drawCircle(radius, radius, radius, mAlmostRedPaint);
-            canvas.drawCircle(width - radius, radius, radius, mAlmostRedPaint);
-            canvas.drawRect(0, height / 2, width, height - radius, mAlmostBluePaint);
-            canvas.drawRect(radius, height - radius, width - radius, height, mAlmostBluePaint);
-            canvas.drawCircle(radius, height - radius, radius, mAlmostBluePaint);
-            canvas.drawCircle(width - radius, height - radius, radius, mAlmostBluePaint);
-            canvas.drawLine(width / 3, 0, width / 3, height, mGrayTextPaint);
-            canvas.drawLine(width / 3 * 2, 0, width / 3 * 2, height, mGrayTextPaint);
-            canvas.drawLine(0, height / 2, width, height / 2, mGrayTextPaint);
+            final int w = getMeasuredWidth();
+            final int h = getMeasuredHeight();
+            canvas.drawRect(0, kRadius, w, h / 2, mAlmostRedPaint);
+            canvas.drawRect(kRadius, 0, w - kRadius, kRadius, mAlmostRedPaint);
+            canvas.drawCircle(kRadius, kRadius, kRadius, mAlmostRedPaint);
+            canvas.drawCircle(w - kRadius, kRadius, kRadius, mAlmostRedPaint);
+            canvas.drawRect(0, h / 2, w, h - kRadius, mAlmostBluePaint);
+            canvas.drawRect(kRadius, h - kRadius, w - kRadius, h, mAlmostBluePaint);
+            canvas.drawCircle(kRadius, h - kRadius, kRadius, mAlmostBluePaint);
+            canvas.drawCircle(w - kRadius, h - kRadius, kRadius, mAlmostBluePaint);
+            canvas.drawLine(w / 3, 0, w / 3, h, mGrayTextPaint);
+            canvas.drawLine(w / 3 * 2, 0, w / 3 * 2, h, mGrayTextPaint);
+            canvas.drawLine(0, h / 2, w, h / 2, mGrayTextPaint);
             Paint R1Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
                     ManagedData.RobotPosition.RED1 ?
                     mRedFocusedTextPaint : mGrayTextPaint) : mRedTextPaint;
@@ -119,25 +127,25 @@ public class Widgets {
             Paint B3Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
                     ManagedData.RobotPosition.BLUE3 ?
                     mBlueFocusedTextPaint : mGrayTextPaint) : mBlueTextPaint;
-            canvas.drawText(mR1Team, (width / 3 - R1Paint
-                    .measureText(mR1Team)) / 2, height / 2 - 16, R1Paint);
-            canvas.drawText(mR2Team, width / 3 + (width / 3 - R2Paint
-                    .measureText(mR2Team)) / 2, height / 2 - 16, R2Paint);
-            canvas.drawText(mR3Team, width / 3 * 2 + (width / 3 - R3Paint
-                    .measureText(mR3Team)) / 2, height / 2 - 16, R3Paint);
-            canvas.drawText(mB1Team, (width / 3 - B1Paint
-                    .measureText(mB1Team)) / 2, height - 16, B1Paint);
-            canvas.drawText(mB2Team, width / 3 + (width / 3 - B2Paint
-                    .measureText(mB2Team)) / 2, height - 16, B2Paint);
-            canvas.drawText(mB3Team, width / 3 * 2 + (width / 3 - B3Paint
-                    .measureText(mB3Team)) / 2, height - 16, B3Paint);
+            canvas.drawText(mR1Team, (w / 3 - R1Paint
+                    .measureText(mR1Team)) / 2, h / 2 - 16, R1Paint);
+            canvas.drawText(mR2Team, w / 3 + (w / 3 - R2Paint
+                    .measureText(mR2Team)) / 2, h / 2 - 16, R2Paint);
+            canvas.drawText(mR3Team, w / 3 * 2 + (w / 3 - R3Paint
+                    .measureText(mR3Team)) / 2, h / 2 - 16, R3Paint);
+            canvas.drawText(mB1Team, (w / 3 - B1Paint
+                    .measureText(mB1Team)) / 2, h - 16, B1Paint);
+            canvas.drawText(mB2Team, w / 3 + (w / 3 - B2Paint
+                    .measureText(mB2Team)) / 2, h - 16, B2Paint);
+            canvas.drawText(mB3Team, w / 3 * 2 + (w / 3 - B3Paint
+                    .measureText(mB3Team)) / 2, h - 16, B3Paint);
         }
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-            setMeasuredDimension((int) (min_width * 3 + kPad * 6), 120);
+            setMeasuredDimension((int) (mMinimumWidth * 3 + kPad * 6), 120);
         }
     }
 }
