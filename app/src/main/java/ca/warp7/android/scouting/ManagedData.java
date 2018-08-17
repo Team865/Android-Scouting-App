@@ -9,6 +9,10 @@ import java.util.List;
 
 class ManagedData {
 
+    enum RobotPosition {
+        RED1, RED2, RED3, BLUE1, BLUE2, BLUE3
+    }
+
     static class MatchInfo {
         private int[] mTeams;
         private int mMatchNumber;

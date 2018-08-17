@@ -844,7 +844,7 @@ public class ScoutingActivity
             case PAUSING:
 
                 setPausingNavToolbox();
-                setBackgroundColour(getResources().getColor(R.color.colorReviewYellow));
+                setBackgroundColour(getResources().getColor(R.color.colorAlmostYellow));
 
                 break;
         }
