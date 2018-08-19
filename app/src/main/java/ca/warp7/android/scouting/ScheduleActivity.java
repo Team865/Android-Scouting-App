@@ -67,6 +67,8 @@ public class ScheduleActivity extends AppCompatActivity {
                         (MatchWithAllianceItem) scoutingScheduleItem;
                 AllianceView allianceView = itemView.findViewById(R.id.alliance_view);
                 allianceView.setDataFromScheduledMatchItem(matchItem);
+                allianceView.invalidate(); // Fix cached image in convert view
+
                 TextView matchNumberView = itemView.findViewById(R.id.match_number);
                 matchNumberView.setText(String.valueOf(matchItem.getMatchNumber()));
             }
