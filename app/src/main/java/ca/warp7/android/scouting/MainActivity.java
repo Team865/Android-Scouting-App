@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -29,10 +28,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
 import ca.warp7.android.scouting.model.Specs;
@@ -46,7 +41,6 @@ public class MainActivity
         View.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
 
-
     private static final int MY_PERMISSIONS_REQUEST_FILES = 0;
 
     private EditText scoutNameField;
@@ -57,7 +51,6 @@ public class MainActivity
     private CheckBox verifier;
     private Button matchStartButton;
 
-
     private SpecsIndex specsIndex;
     private SharedPreferences prefs;
 
@@ -66,9 +59,7 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         prefs = this.getSharedPreferences(ID.ROOT, MODE_PRIVATE);
-
         ensurePermissions();
         setupUI();
     }
@@ -90,15 +81,8 @@ public class MainActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_select_specs:
-
                 askToSelectSpecs();
                 return true;
-
-            case R.id.menu_copy_specs:
-
-                askToCopySpecs();
-                return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -174,12 +158,9 @@ public class MainActivity
 
         intent.putExtra(ID.MSG_MATCH_NUMBER,
                 Integer.parseInt(matchNumberField.getText().toString()));
-
         intent.putExtra(ID.MSG_TEAM_NUMBER,
                 Integer.parseInt(teamNumberField.getText().toString()));
-
         intent.putExtra(ID.MSG_SCOUT_NAME, name);
-
         intent.putExtra(ID.MSG_SPECS_FILE, mPassedSpecsFile);
 
         startActivity(intent);
@@ -246,28 +227,10 @@ public class MainActivity
         File indexFile = new File(root, "index.json");
 
         if (!indexFile.exists()) {
-            copySpecs();
+            ManagedPreferences.copyAssets(this);
         }
 
         loadIndex(indexFile);
-    }
-
-    private void askToCopySpecs() {
-        new AlertDialog.Builder(this)
-                .setTitle("Copy Default Metrics?")
-                .setMessage("Any custom files stored at \""
-                        + Specs.getSpecsRoot().getAbsolutePath()
-                        + "\" will be overwritten.")
-                .setNegativeButton("No", null)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        copySpecs();
-                    }
-                })
-                .create()
-                .show();
     }
 
     private void askToSelectSpecs() {
@@ -283,32 +246,6 @@ public class MainActivity
                     }
                 })
                 .show();
-    }
-
-    private void copySpecs() {
-        try {
-            File root = Specs.getSpecsRoot();
-            File indexFile = new File(root, "index.json");
-
-            AssetManager am = getAssets();
-            for (String fn : am.list("specs")) {
-
-                InputStream in = am.open("specs/" + fn);
-                byte[] buffer = new byte[in.available()];
-                in.read(buffer);
-                in.close();
-
-                File f = new File(root, fn);
-                OutputStream out = new FileOutputStream(f);
-                out.write(buffer);
-                out.close();
-            }
-
-            loadIndex(indexFile);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void loadIndex(File indexFile) {
@@ -363,11 +300,9 @@ public class MainActivity
         findViewById(R.id.team_hint)
                 .setVisibility(!t_empty ? View.VISIBLE : View.INVISIBLE);
 
-
         if (!(n_empty || m_empty || t_empty)) {
 
             verifier.setEnabled(true);
-
             if (Specs.getInstance().hasMatchSchedule()) {
                 if (matchDoesExist(m, t)) {
 
@@ -396,7 +331,6 @@ public class MainActivity
             verifier.setChecked(false);
         }
     }
-
 
     private boolean matchDoesExist(String m, String t) {
         return Specs.getInstance().matchIsInSchedule

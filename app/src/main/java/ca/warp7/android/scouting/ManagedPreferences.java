@@ -87,28 +87,28 @@ class ManagedPreferences {
                     .create()
                     .show();
         }
+    }
 
-        @SuppressWarnings("ResultOfMethodCallIgnored")
-        private void copyAssets(Context context) {
-            try {
-                File root = Specs.getSpecsRoot();
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    static void copyAssets(Context context) {
+        try {
+            File root = Specs.getSpecsRoot();
 
-                AssetManager assetManager = context.getAssets();
-                for (String fileName : assetManager.list("specs")) {
+            AssetManager assetManager = context.getAssets();
+            for (String fileName : assetManager.list("specs")) {
 
-                    InputStream inputStream = assetManager.open("specs/" + fileName);
-                    byte[] buffer = new byte[inputStream.available()];
-                    inputStream.read(buffer);
-                    inputStream.close();
+                InputStream inputStream = assetManager.open("specs/" + fileName);
+                byte[] buffer = new byte[inputStream.available()];
+                inputStream.read(buffer);
+                inputStream.close();
 
-                    File outFile = new File(root, fileName);
-                    OutputStream outputStream = new FileOutputStream(outFile);
-                    outputStream.write(buffer);
-                    outputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+                File outFile = new File(root, fileName);
+                OutputStream outputStream = new FileOutputStream(outFile);
+                outputStream.write(buffer);
+                outputStream.close();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
