@@ -2,6 +2,7 @@ package ca.warp7.android.scouting;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -12,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import ca.warp7.android.scouting.model.ID;
 import ca.warp7.android.scouting.model.MatchWithAllianceItem;
 import ca.warp7.android.scouting.model.RobotPosition;
 import ca.warp7.android.scouting.model.ScoutingSchedule;
@@ -120,6 +123,32 @@ public class ScheduleActivity extends AppCompatActivity {
                 mScoutingSchedule.getCurrentlyScheduled()));
 
         mScheduleListView.setAdapter(mScheduleAdapter);
+
+        mScheduleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object item = mScoutingSchedule.getCurrentlyScheduled().get(position);
+                Log.i("k", "1");
+                if (item != null && item instanceof MatchWithAllianceItem) {
+                    Log.i("k", "2");
+                    MatchWithAllianceItem matchItem = (MatchWithAllianceItem) item;
+                    if (matchItem.shouldFocus()) {
+                        Log.i("k", "3");
+                        int team = matchItem.getTeamAtPosition(matchItem.getFocusPosition());
+                        int match = matchItem.getMatchNumber();
+                        Intent intent;
+                        intent = new Intent(ScheduleActivity.this, ScoutingActivity.class);
+
+                        intent.putExtra(ID.MSG_MATCH_NUMBER, match);
+                        intent.putExtra(ID.MSG_TEAM_NUMBER, team);
+                        intent.putExtra(ID.MSG_SCOUT_NAME, "hi");
+                        intent.putExtra(ID.MSG_SPECS_FILE, "");
+
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

@@ -41,6 +41,24 @@ public class MatchWithAllianceItem implements ScoutingScheduleItem {
         return mTeams[i];
     }
 
+    public int getTeamAtPosition(RobotPosition position) {
+        switch (position) {
+            case RED1:
+                return mTeams[0];
+            case RED2:
+                return mTeams[1];
+            case RED3:
+                return mTeams[2];
+            case BLUE1:
+                return mTeams[3];
+            case BLUE2:
+                return mTeams[4];
+            case BLUE3:
+                return mTeams[5];
+        }
+        return 0;
+    }
+
     private int[] getTeams() {
         return mTeams;
     }
