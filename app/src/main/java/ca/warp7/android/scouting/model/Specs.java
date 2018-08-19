@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting;
+package ca.warp7.android.scouting.model;
 
 import android.os.Environment;
 
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Used as a singleton throughout the application
  */
 
-class Specs {
+public class Specs {
 
     private String specsId;
     private String boardName;
@@ -65,41 +65,41 @@ class Specs {
     }
 
 
-    boolean hasMatchSchedule() {
+    public boolean hasMatchSchedule() {
         return !matchSchedule.isEmpty();
     }
 
-    boolean hasIndexInConstants(int id) {
+    public boolean hasIndexInConstants(int id) {
         return id >= 0 && id < dataConstants.size();
     }
 
-    boolean matchIsInSchedule(int m, int t) {
+    public boolean matchIsInSchedule(int m, int t) {
         return hasMatchSchedule() &&
                 t == (m < matchSchedule.size() && m >= 0 ? matchSchedule.get(m) : -1);
     }
 
-    String getAlliance() {
+    public String getAlliance() {
         return alliance;
     }
 
-    String getBoardName() {
+    public String getBoardName() {
         return boardName;
     }
 
-    String getEvent() {
+    public String getEvent() {
         return event.isEmpty() ? "No Event" : event;
     }
 
-    String getSpecsId() {
+    public String getSpecsId() {
         return specsId;
     }
 
 
-    DataConstant getDataConstantByIndex(int id) {
+    public DataConstant getDataConstantByIndex(int id) {
         return dataConstants.get(id);
     }
 
-    DataConstant getDataConstantByStringID(String id) {
+    public DataConstant getDataConstantByStringID(String id) {
 
         for (DataConstant dc : dataConstants) {
             if (dc.getId().equals(id)) {
@@ -109,7 +109,7 @@ class Specs {
         return null;
     }
 
-    ArrayList<Layout> getLayouts() {
+    public ArrayList<Layout> getLayouts() {
         return layouts;
     }
 
@@ -117,7 +117,7 @@ class Specs {
     private static final String SPECS_ROOT = "Warp7/specs/";
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    static File getSpecsRoot() {
+    public static File getSpecsRoot() {
         File r = new File(Environment.getExternalStorageDirectory(), SPECS_ROOT);
         r.mkdirs();
         return r;
@@ -150,15 +150,15 @@ class Specs {
 
     private static Specs activeSpecs = null;
 
-    static boolean hasInstance() {
+    public static boolean hasInstance() {
         return activeSpecs != null;
     }
 
-    static Specs getInstance() {
+    public static Specs getInstance() {
         return activeSpecs;
     }
 
-    static Specs setInstance(String filename) {
+    public static Specs setInstance(String filename) {
         try {
 
             activeSpecs = new Specs(readFile(new File(getSpecsRoot(), filename)));
@@ -171,7 +171,7 @@ class Specs {
         return activeSpecs;
     }
 
-    static final class DataConstant {
+    public static final class DataConstant {
 
         private static final String
                 C_ID = "id",
@@ -190,7 +190,7 @@ class Specs {
                 T_DURATION = "duration";
 
 
-        static final int
+        public static final int
                 TIMESTAMP = 0,
                 CHOICE = 1,
                 RATING = 2,
@@ -264,39 +264,39 @@ class Specs {
             }
         }
 
-        int getIndex() {
+        public int getIndex() {
             return index;
         }
 
-        String getId() {
+        public String getId() {
             return id;
         }
 
-        String getLogTitle() {
+        public String getLogTitle() {
             return logTitle;
         }
 
-        String getLabel() {
+        public String getLabel() {
             return label;
         }
 
-        String getLabelOn() {
+        public String getLabelOn() {
             return labelOn;
         }
 
-        int getType() {
+        public int getType() {
             return type;
         }
 
-        int getMax() {
+        public int getMax() {
             return max;
         }
 
-        String[] getChoices() {
+        public String[] getChoices() {
             return choices;
         }
 
-        String format(int v) {
+        public String format(int v) {
             switch (type) {
                 case TIMESTAMP:
                 case DURATION:
@@ -319,7 +319,7 @@ class Specs {
 
     }
 
-    static final class Index {
+    public static final class Index {
 
         private ArrayList<String> files = new ArrayList<>();
 
@@ -328,7 +328,7 @@ class Specs {
         ArrayList<String> identifiers = new ArrayList<>();
 
 
-        Index(File file) {
+        public Index(File file) {
             try {
                 JSONObject index = new JSONObject(readFile(file));
 
@@ -347,16 +347,16 @@ class Specs {
             }
         }
 
-        ArrayList<String> getNames() {
+        public ArrayList<String> getNames() {
             return names;
         }
 
-        String getFileByName(String name) {
+        public String getFileByName(String name) {
             return files.get(names.indexOf(name));
         }
     }
 
-    static final class Layout {
+    public static final class Layout {
 
         String title;
 
@@ -383,11 +383,11 @@ class Specs {
             }
         }
 
-        String getTitle() {
+        public String getTitle() {
             return title;
         }
 
-        ArrayList<String[]> getFields() {
+        public ArrayList<String[]> getFields() {
             return fields;
         }
     }

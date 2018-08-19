@@ -35,6 +35,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import ca.warp7.android.scouting.model.Specs;
+
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class MainActivity

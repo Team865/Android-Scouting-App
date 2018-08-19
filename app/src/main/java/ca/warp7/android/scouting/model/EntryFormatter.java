@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting;
+package ca.warp7.android.scouting.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +11,7 @@ import java.util.TimeZone;
  * @author Team 865
  */
 
-class EntryFormatter {
+public class EntryFormatter {
 
     /**
      * Formats the entry into a text report
@@ -19,7 +19,7 @@ class EntryFormatter {
      * @param entry the entry to report on
      * @return a string to be displayed
      */
-    static String formatReport(Entry entry) {
+    public static String formatReport(Entry entry) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
@@ -101,7 +101,7 @@ class EntryFormatter {
      * @return an encoded string, following an underscore-delimited convention
      */
 
-    static String formatEncode(Entry entry) {
+    public static String formatEncode(Entry entry) {
         return formatHeader(entry) + "_" + formatDataCode(entry);
     }
 

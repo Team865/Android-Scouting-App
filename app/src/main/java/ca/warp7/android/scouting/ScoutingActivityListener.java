@@ -2,6 +2,8 @@ package ca.warp7.android.scouting;
 
 import android.os.Handler;
 
+import ca.warp7.android.scouting.model.Entry;
+
 /**
  * This interface is to be implemented by the activity that contains
  * these controls to engage in communication

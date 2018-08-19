@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting;
+package ca.warp7.android.scouting.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +30,10 @@ import java.util.List;
  * @author Team 865
  * @see EntryDatum
  * @see EntryFormatter
- * @see ScoutingActivity
  */
 
 
-class Entry {
+public class Entry {
 
     private static final int kMaxTypes = 64;
 
@@ -52,7 +51,7 @@ class Entry {
 
     private Timekeeper mTimekeeper;
 
-    Entry(int match, int team, String scout, Timekeeper timekeeper) {
+    public Entry(int match, int team, String scout, Timekeeper timekeeper) {
 
         mMatchNumber = match;
         mTeamNumber = team;
@@ -109,7 +108,7 @@ class Entry {
      * Pushes some data into the data stack
      */
 
-    void push(int dataType, int dataValue, int dataState) {
+    public void push(int dataType, int dataValue, int dataState) {
 
         if (dataType < 0 || dataType > kMaxTypes - 1) {
             return;
@@ -130,7 +129,7 @@ class Entry {
      * if nothing can be undone
      */
 
-    Specs.DataConstant undo() {
+    public Specs.DataConstant undo() {
 
         for (int i = mDataStack.size() - 1; i >= 0; i--) {
 
@@ -149,7 +148,7 @@ class Entry {
      * Gets the count of a specific data type, excluding undo
      */
 
-    int getCount(int dataType) {
+    public int getCount(int dataType) {
 
         int total = 0;
 
@@ -167,7 +166,7 @@ class Entry {
      * Gets the last recorded of a specific data type, excluding undo
      */
 
-    int getLastValue(int dataType) {
+    public int getLastValue(int dataType) {
 
         for (int i = maxIndexBeforeCurrentTime() - 1; i >= 0; i--) {
             EntryDatum datum = mDataStack.get(i);
@@ -182,7 +181,7 @@ class Entry {
      * Returns whether a data type should be focused at the current time
      */
 
-    boolean isFocused(int dataType) {
+    public boolean isFocused(int dataType) {
 
         int relTime = mTimekeeper.getCurrentRelativeTime();
 
@@ -199,7 +198,7 @@ class Entry {
      * Cleans out data that have been undone
      */
 
-    void clean() {
+    public void clean() {
 
         ArrayList<EntryDatum> cleanedList = new ArrayList<>();
 
@@ -231,7 +230,7 @@ class Entry {
     /**
      * A callback interface to get the current time
      */
-    interface Timekeeper {
+    public interface Timekeeper {
         int getCurrentRelativeTime();
     }
 }

@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import ca.warp7.android.scouting.model.Specs;
+
 /**
  * Includes a set of controls for input used in the inputs fragment
  * that implement custom behaviours for scouting purposes.

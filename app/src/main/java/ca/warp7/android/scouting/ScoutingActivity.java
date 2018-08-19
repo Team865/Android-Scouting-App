@@ -55,6 +55,10 @@ import com.google.zxing.common.BitMatrix;
 
 import java.util.List;
 
+import ca.warp7.android.scouting.model.Entry;
+import ca.warp7.android.scouting.model.EntryFormatter;
+import ca.warp7.android.scouting.model.Specs;
+
 
 /**
  * <p>The Scouting Activity -- A generic activity to collect data
