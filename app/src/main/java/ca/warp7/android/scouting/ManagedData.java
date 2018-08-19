@@ -7,19 +7,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.warp7.android.scouting.model.RobotPosition;
+import ca.warp7.android.scouting.model.ScoutingScheduleItem;
+
 class ManagedData {
 
-    enum RobotPosition {
-        RED1, RED2, RED3, BLUE1, BLUE2, BLUE3
-    }
-
-    static abstract class ScoutingScheduleItem {
-
-    }
-
-    static class MatchWithAllianceItem extends ScoutingScheduleItem {
+    static class MatchWithAllianceItem implements ScoutingScheduleItem {
         private int[] mTeams;
         private int mMatchNumber;
+        private boolean mShouldFocus;
+        private RobotPosition mFocusPosition;
 
         MatchWithAllianceItem(String matchCSV) {
             String[] split = matchCSV.split(",");
@@ -28,11 +25,27 @@ class ManagedData {
             for (int i = 1; i < 7; i++) {
                 mTeams[i - 1] = Integer.valueOf(split[i].trim());
             }
+            mShouldFocus = false;
         }
 
         MatchWithAllianceItem(MatchWithAllianceItem other) {
+            this(other, other.getFocusPosition());
+            mShouldFocus = other.shouldFocus();
+        }
+
+        MatchWithAllianceItem(MatchWithAllianceItem other, RobotPosition focusPosition) {
             mMatchNumber = other.getMatchNumber();
             mTeams = other.getTeams();
+            mShouldFocus = true;
+            mFocusPosition = focusPosition;
+        }
+
+        RobotPosition getFocusPosition() {
+            return mFocusPosition;
+        }
+
+        boolean shouldFocus() {
+            return mShouldFocus;
         }
 
         int getTeamAt(int i) {
@@ -79,6 +92,13 @@ class ManagedData {
             mCurrentlyScheduled.clear();
             for (MatchWithAllianceItem item : mFullSchedule) {
                 mCurrentlyScheduled.add(new MatchWithAllianceItem(item));
+            }
+        }
+
+        void scheduleAllAtRobotPosition(RobotPosition position) {
+            mCurrentlyScheduled.clear();
+            for (MatchWithAllianceItem item : mFullSchedule) {
+                mCurrentlyScheduled.add(new MatchWithAllianceItem(item, position));
             }
         }
 

@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -25,17 +26,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import ca.warp7.android.scouting.model.RobotPosition;
+import ca.warp7.android.scouting.model.ScoutingScheduleItem;
 import ca.warp7.android.scouting.model.Specs;
 
 
 public class ScheduleActivity extends AppCompatActivity {
 
-    static class ScoutingScheduleAdapter extends ArrayAdapter<ManagedData.ScoutingScheduleItem> {
+    static class ScoutingScheduleAdapter extends ArrayAdapter<ScoutingScheduleItem> {
 
         LayoutInflater mInflater;
 
         ScoutingScheduleAdapter(@NonNull Context context,
-                                List<ManagedData.ScoutingScheduleItem> scheduleItems) {
+                                List<ScoutingScheduleItem> scheduleItems) {
             super(context, 0, scheduleItems);
             mInflater = LayoutInflater.from(context);
         }
@@ -51,15 +54,14 @@ public class ScheduleActivity extends AppCompatActivity {
                 itemView = mInflater.inflate(R.layout.entry_list_item, parent, false);
             }
 
-            ManagedData.ScoutingScheduleItem scoutingScheduleItem = getItem(position);
+            ScoutingScheduleItem scoutingScheduleItem = getItem(position);
             if (scoutingScheduleItem != null &&
                     scoutingScheduleItem instanceof ManagedData.MatchWithAllianceItem) {
 
                 ManagedData.MatchWithAllianceItem matchItem =
                         (ManagedData.MatchWithAllianceItem) scoutingScheduleItem;
                 AllianceView allianceView = itemView.findViewById(R.id.alliance_view);
-                allianceView.setAllianceFromScheduledMatchItem(matchItem);
-                allianceView.setNoRobotFocused();
+                allianceView.setDataFromScheduledMatchItem(matchItem);
                 TextView matchNumberView = itemView.findViewById(R.id.match_number);
                 matchNumberView.setText(String.valueOf(matchItem.getMatchNumber()));
             }
@@ -71,6 +73,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
     ManagedData.ScoutingSchedule mScoutingSchedule;
     ListView mScheduleListView;
+    ScoutingScheduleAdapter mScheduleAdapter;
 
     private void onErrorDialog(Exception exception) {
         exception.printStackTrace();
@@ -94,10 +97,10 @@ public class ScheduleActivity extends AppCompatActivity {
         setTitle("Match Schedule");
 
         Spinner spinner = findViewById(R.id.board_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.board_choices, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
 
         mScheduleListView = findViewById(R.id.entry_list);
         mScoutingSchedule = new ManagedData.ScoutingSchedule();
@@ -111,22 +114,45 @@ public class ScheduleActivity extends AppCompatActivity {
 
         mScoutingSchedule.scheduleForDisplayOnly();
 
-        mScheduleListView.setAdapter(new ScoutingScheduleAdapter(this,
+        mScheduleAdapter = (new ScoutingScheduleAdapter(this,
                 mScoutingSchedule.getCurrentlyScheduled()));
 
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                mScheduleListView.setAdapter(new ArrayAdapter<>(ScheduleActivity.this,
-//                        android.R.layout.simple_list_item_1,
-//                        mScoutingSchedule.getTeamsArrayForBoard(position)));
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
+        mScheduleListView.setAdapter(mScheduleAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        mScoutingSchedule.scheduleForDisplayOnly();
+                        break;
+                    case 1:
+                        mScoutingSchedule.scheduleAllAtRobotPosition(RobotPosition.RED1);
+                        break;
+                    case 2:
+                        mScoutingSchedule.scheduleAllAtRobotPosition(RobotPosition.RED2);
+                        break;
+                    case 3:
+                        mScoutingSchedule.scheduleAllAtRobotPosition(RobotPosition.RED3);
+                        break;
+                    case 4:
+                        mScoutingSchedule.scheduleAllAtRobotPosition(RobotPosition.BLUE1);
+                        break;
+                    case 5:
+                        mScoutingSchedule.scheduleAllAtRobotPosition(RobotPosition.BLUE2);
+                        break;
+                    case 6:
+                        mScoutingSchedule.scheduleAllAtRobotPosition(RobotPosition.BLUE3);
+                        break;
+                }
+                mScheduleListView.setAdapter(new ScoutingScheduleAdapter(
+                        ScheduleActivity.this, mScoutingSchedule.getCurrentlyScheduled()));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     static class AllianceView extends View {
@@ -152,8 +178,8 @@ public class ScheduleActivity extends AppCompatActivity {
         private String mB2 = "Blue 2";
         private String mB3 = "Blue 3";
 
-        private ManagedData.RobotPosition mFocusedRobotPosition = ManagedData.RobotPosition.RED1;
-        private boolean mShouldFocusARobot = false;
+        private RobotPosition mFocusPosition = RobotPosition.RED1;
+        private boolean mShouldFocus = false;
 
 
         public AllianceView(Context context) {
@@ -194,22 +220,15 @@ public class ScheduleActivity extends AppCompatActivity {
             mMinimumWidth = mRedBoldTextPaint.measureText("8888");
         }
 
-        public void setFocusedRobotPosition(ManagedData.RobotPosition position) {
-            mFocusedRobotPosition = position;
-            mShouldFocusARobot = true;
-        }
-
-        public void setNoRobotFocused() {
-            mShouldFocusARobot = false;
-        }
-
-        public void setAllianceFromScheduledMatchItem(ManagedData.MatchWithAllianceItem matchItem) {
+        public void setDataFromScheduledMatchItem(ManagedData.MatchWithAllianceItem matchItem) {
             mR1 = String.valueOf(matchItem.getTeamAt(0));
             mR2 = String.valueOf(matchItem.getTeamAt(1));
             mR3 = String.valueOf(matchItem.getTeamAt(2));
             mB1 = String.valueOf(matchItem.getTeamAt(3));
             mB2 = String.valueOf(matchItem.getTeamAt(4));
             mB3 = String.valueOf(matchItem.getTeamAt(5));
+            mFocusPosition = matchItem.getFocusPosition();
+            mShouldFocus = matchItem.shouldFocus();
         }
 
         @Override
@@ -228,23 +247,17 @@ public class ScheduleActivity extends AppCompatActivity {
             canvas.drawLine(w / 3, 0, w / 3, h, mGrayTextPaint);
             canvas.drawLine(w / 3 * 2, 0, w / 3 * 2, h, mGrayTextPaint);
             canvas.drawLine(0, h / 2, w, h / 2, mGrayTextPaint);
-            Paint R1Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
-                    ManagedData.RobotPosition.RED1 ?
+            Paint R1Paint = mShouldFocus ? (mFocusPosition == RobotPosition.RED1 ?
                     mRedBoldTextPaint : mGrayTextPaint) : mAlmostBlackTextPaint;
-            Paint R2Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
-                    ManagedData.RobotPosition.RED2 ?
+            Paint R2Paint = mShouldFocus ? (mFocusPosition == RobotPosition.RED2 ?
                     mRedBoldTextPaint : mGrayTextPaint) : mAlmostBlackTextPaint;
-            Paint R3Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
-                    ManagedData.RobotPosition.RED3 ?
+            Paint R3Paint = mShouldFocus ? (mFocusPosition == RobotPosition.RED3 ?
                     mRedBoldTextPaint : mGrayTextPaint) : mAlmostBlackTextPaint;
-            Paint B1Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
-                    ManagedData.RobotPosition.BLUE1 ?
+            Paint B1Paint = mShouldFocus ? (mFocusPosition == RobotPosition.BLUE1 ?
                     mBlueBoldTextPaint : mGrayTextPaint) : mAlmostBlackTextPaint;
-            Paint B2Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
-                    ManagedData.RobotPosition.BLUE2 ?
+            Paint B2Paint = mShouldFocus ? (mFocusPosition == RobotPosition.BLUE2 ?
                     mBlueBoldTextPaint : mGrayTextPaint) : mAlmostBlackTextPaint;
-            Paint B3Paint = mShouldFocusARobot ? (mFocusedRobotPosition ==
-                    ManagedData.RobotPosition.BLUE3 ?
+            Paint B3Paint = mShouldFocus ? (mFocusPosition == RobotPosition.BLUE3 ?
                     mBlueBoldTextPaint : mGrayTextPaint) : mAlmostBlackTextPaint;
             canvas.drawText(mR1, (w / 3 - R1Paint
                     .measureText(mR1)) / 2, h / 2 - 16, R1Paint);
