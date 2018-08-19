@@ -38,63 +38,9 @@ import ca.warp7.android.scouting.model.Specs;
 
 public class ScheduleActivity extends AppCompatActivity {
 
-    static class ScoutingScheduleAdapter extends ArrayAdapter<ScoutingScheduleItem> {
-
-        LayoutInflater mInflater;
-
-        ScoutingScheduleAdapter(@NonNull Context context,
-                                List<ScoutingScheduleItem> scheduleItems) {
-            super(context, 0, scheduleItems);
-            mInflater = LayoutInflater.from(context);
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-            View itemView;
-            if (convertView != null && convertView instanceof LinearLayout) {
-                itemView = convertView;
-            } else {
-                itemView = mInflater.inflate(R.layout.schedule_alliance_item, parent, false);
-            }
-
-            ScoutingScheduleItem scoutingScheduleItem = getItem(position);
-            if (scoutingScheduleItem != null &&
-                    scoutingScheduleItem instanceof MatchWithAllianceItem) {
-
-                MatchWithAllianceItem matchItem =
-                        (MatchWithAllianceItem) scoutingScheduleItem;
-                AllianceView allianceView = itemView.findViewById(R.id.alliance_view);
-                allianceView.setDataFromScheduledMatchItem(matchItem);
-                allianceView.invalidate(); // Fix cached image in convert view
-
-                TextView matchNumberView = itemView.findViewById(R.id.match_number);
-                matchNumberView.setText(String.valueOf(matchItem.getMatchNumber()));
-            }
-
-            return itemView;
-        }
-    }
-
-
     ScoutingSchedule mScoutingSchedule;
     ListView mScheduleListView;
     ScoutingScheduleAdapter mScheduleAdapter;
-
-    private void onErrorDialog(Exception exception) {
-        exception.printStackTrace();
-        new AlertDialog.Builder(this)
-                .setTitle("An error occurred")
-                .setMessage(exception.toString())
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onBackPressed();
-                    }
-                })
-                .create().show();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,8 +124,7 @@ public class ScheduleActivity extends AppCompatActivity {
                         mScoutingSchedule.scheduleAllAtRobotPosition(RobotPosition.BLUE3);
                         break;
                 }
-                mScheduleListView.setAdapter(new ScoutingScheduleAdapter(
-                        ScheduleActivity.this, mScoutingSchedule.getCurrentlyScheduled()));
+                mScheduleAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -187,6 +132,61 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void onErrorDialog(Exception exception) {
+        exception.printStackTrace();
+        new AlertDialog.Builder(this)
+                .setTitle("An error occurred")
+                .setMessage(exception.toString())
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onBackPressed();
+                    }
+                })
+                .create().show();
+    }
+
+
+    static class ScoutingScheduleAdapter extends ArrayAdapter<ScoutingScheduleItem> {
+
+        LayoutInflater mInflater;
+
+        ScoutingScheduleAdapter(@NonNull Context context,
+                                List<ScoutingScheduleItem> scheduleItems) {
+            super(context, 0, scheduleItems);
+            mInflater = LayoutInflater.from(context);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+            View itemView;
+            if (convertView != null && convertView instanceof LinearLayout) {
+                itemView = convertView;
+            } else {
+                itemView = mInflater.inflate(R.layout.schedule_alliance_item, parent, false);
+            }
+
+            ScoutingScheduleItem scoutingScheduleItem = getItem(position);
+            if (scoutingScheduleItem != null &&
+                    scoutingScheduleItem instanceof MatchWithAllianceItem) {
+
+                MatchWithAllianceItem matchItem =
+                        (MatchWithAllianceItem) scoutingScheduleItem;
+                AllianceView allianceView = itemView.findViewById(R.id.alliance_view);
+                allianceView.setDataFromScheduledMatchItem(matchItem);
+                allianceView.invalidate(); // Fix cached image in convert view
+
+                TextView matchNumberView = itemView.findViewById(R.id.match_number);
+                matchNumberView.setText(String.valueOf(matchItem.getMatchNumber()));
+            }
+
+            return itemView;
+        }
+    }
+
 
     static class AllianceView extends View {
 
