@@ -53,7 +53,7 @@ public class ScheduleActivity extends AppCompatActivity {
             if (convertView != null && convertView instanceof LinearLayout) {
                 itemView = convertView;
             } else {
-                itemView = mInflater.inflate(R.layout.entry_list_item, parent, false);
+                itemView = mInflater.inflate(R.layout.schedule_alliance_item, parent, false);
             }
 
             ScoutingScheduleItem scoutingScheduleItem = getItem(position);
@@ -195,7 +195,7 @@ public class ScheduleActivity extends AppCompatActivity {
         }
 
         private void setTextPaintStyle(Paint paint, boolean bold) {
-            paint.setTextSize(36);
+            paint.setTextSize(32);
             paint.setAntiAlias(true);
             paint.setTypeface(bold ? Typeface.create(Typeface.SANS_SERIF,
                     Typeface.BOLD) : Typeface.SANS_SERIF);
@@ -261,25 +261,26 @@ public class ScheduleActivity extends AppCompatActivity {
                     mBlueBoldTextPaint : mGrayTextPaint) : mAlmostBlackTextPaint;
             Paint B3Paint = mShouldFocus ? (mFocusPosition == RobotPosition.BLUE3 ?
                     mBlueBoldTextPaint : mGrayTextPaint) : mAlmostBlackTextPaint;
+            int fromBottom = 10;
             canvas.drawText(mR1, (w / 3 - R1Paint
-                    .measureText(mR1)) / 2, h / 2 - 16, R1Paint);
+                    .measureText(mR1)) / 2, h / 2 - fromBottom, R1Paint);
             canvas.drawText(mR2, w / 3 + (w / 3 - R2Paint
-                    .measureText(mR2)) / 2, h / 2 - 16, R2Paint);
+                    .measureText(mR2)) / 2, h / 2 - fromBottom, R2Paint);
             canvas.drawText(mR3, w / 3 * 2 + (w / 3 - R3Paint
-                    .measureText(mR3)) / 2, h / 2 - 16, R3Paint);
+                    .measureText(mR3)) / 2, h / 2 - fromBottom, R3Paint);
             canvas.drawText(mB1, (w / 3 - B1Paint
-                    .measureText(mB1)) / 2, h - 16, B1Paint);
+                    .measureText(mB1)) / 2, h - fromBottom, B1Paint);
             canvas.drawText(mB2, w / 3 + (w / 3 - B2Paint
-                    .measureText(mB2)) / 2, h - 16, B2Paint);
+                    .measureText(mB2)) / 2, h - fromBottom, B2Paint);
             canvas.drawText(mB3, w / 3 * 2 + (w / 3 - B3Paint
-                    .measureText(mB3)) / 2, h - 16, B3Paint);
+                    .measureText(mB3)) / 2, h - fromBottom, B3Paint);
         }
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-            setMeasuredDimension((int) (mMinimumWidth * 3 + kPad * 6), 120);
+            setMeasuredDimension((int) (mMinimumWidth * 3 + kPad * 6), 84);
         }
     }
 }
