@@ -84,13 +84,13 @@ public class Widgets {
             mShouldFocusARobot = false;
         }
 
-        public void setAllianceFromMatchInfo(ManagedData.MatchInfo matchInfo) {
-            mR1Team = String.valueOf(matchInfo.getTeamAt(0));
-            mR2Team = String.valueOf(matchInfo.getTeamAt(1));
-            mR3Team = String.valueOf(matchInfo.getTeamAt(2));
-            mB1Team = String.valueOf(matchInfo.getTeamAt(3));
-            mB2Team = String.valueOf(matchInfo.getTeamAt(4));
-            mB3Team = String.valueOf(matchInfo.getTeamAt(5));
+        public void setAllianceFromScheduledMatchItem(ManagedData.MatchWithAllianceItem matchItem) {
+            mR1Team = String.valueOf(matchItem.getTeamAt(0));
+            mR2Team = String.valueOf(matchItem.getTeamAt(1));
+            mR3Team = String.valueOf(matchItem.getTeamAt(2));
+            mB1Team = String.valueOf(matchItem.getTeamAt(3));
+            mB2Team = String.valueOf(matchItem.getTeamAt(4));
+            mB3Team = String.valueOf(matchItem.getTeamAt(5));
         }
 
         @Override

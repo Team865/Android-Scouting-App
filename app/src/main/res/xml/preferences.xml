@@ -25,9 +25,9 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="Experimental Features">
         <Preference
-            android:key="pref_x_entry_selector"
-            android:title="Entry Selector"
-            android:summary="Allows the display of the match schedule" />
+            android:key="pref_x_schedule"
+            android:title="Match/Scouting Schedule"
+            android:summary="Displays the match schedule in a list" />
     </PreferenceCategory>
     <PreferenceCategory android:title="About">
         <Preference

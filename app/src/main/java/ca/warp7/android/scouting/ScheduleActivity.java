@@ -20,21 +20,21 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.List;
 
-public class EntrySelectorActivity extends AppCompatActivity {
+public class ScheduleActivity extends AppCompatActivity {
 
-    static class MatchTableAdapter extends ArrayAdapter<ManagedData.MatchInfo> {
+    static class ScoutingScheduleAdapter extends ArrayAdapter<ManagedData.ScoutingScheduleItem> {
 
         LayoutInflater mInflater;
 
-        MatchTableAdapter(@NonNull Context context, List<ManagedData.MatchInfo> matches) {
-            super(context, 0, matches);
+        ScoutingScheduleAdapter(@NonNull Context context,
+                                List<ManagedData.ScoutingScheduleItem> scheduleItems) {
+            super(context, 0, scheduleItems);
             mInflater = LayoutInflater.from(context);
         }
 
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
 
             View itemView;
             if (convertView != null && convertView instanceof LinearLayout) {
@@ -43,56 +43,74 @@ public class EntrySelectorActivity extends AppCompatActivity {
                 itemView = mInflater.inflate(R.layout.entry_list_item, parent, false);
             }
 
-            ManagedData.MatchInfo matchInfo = getItem(position);
+            ManagedData.ScoutingScheduleItem scoutingScheduleItem = getItem(position);
+            if (scoutingScheduleItem != null &&
+                    scoutingScheduleItem instanceof ManagedData.MatchWithAllianceItem) {
 
-            if (matchInfo != null) {
+                ManagedData.MatchWithAllianceItem matchItem =
+                        (ManagedData.MatchWithAllianceItem) scoutingScheduleItem;
                 Widgets.AllianceView allianceView = itemView.findViewById(R.id.alliance_view);
-                allianceView.setAllianceFromMatchInfo(matchInfo);
+                allianceView.setAllianceFromScheduledMatchItem(matchItem);
                 allianceView.setNoRobotFocused();
-                TextView matchNumber = itemView.findViewById(R.id.match_number);
-                matchNumber.setText(String.valueOf(matchInfo.getMatchNumber()));
+                TextView matchNumberView = itemView.findViewById(R.id.match_number);
+                matchNumberView.setText(String.valueOf(matchItem.getMatchNumber()));
             }
+
             return itemView;
         }
     }
 
-    ManagedData.MatchTable mMatchTable;
-    ListView mEntryList;
+
+    ManagedData.ScoutingSchedule mScoutingSchedule;
+    ListView mScheduleListView;
+
+    private void onErrorDialog(Exception exception) {
+        exception.printStackTrace();
+        new AlertDialog.Builder(this)
+                .setTitle("An error occurred")
+                .setMessage(exception.toString())
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onBackPressed();
+                    }
+                })
+                .create().show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_entry_selector);
+        setContentView(R.layout.activity_schedule);
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
-        setTitle("Entry Selector");
+        setTitle("Match Schedule");
+
         Spinner spinner = findViewById(R.id.board_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.board_choices, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        mEntryList = findViewById(R.id.entry_list);
+
+        mScheduleListView = findViewById(R.id.entry_list);
+        mScoutingSchedule = new ManagedData.ScoutingSchedule();
+
         try {
-            mMatchTable = new ManagedData.MatchTable();
-        } catch (IOException e) {
-            e.printStackTrace();
-            new AlertDialog.Builder(this)
-                    .setTitle("An error occurred")
-                    .setMessage(e.toString())
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            onBackPressed();
-                        }
-                    })
-                    .create().show();
+            mScoutingSchedule.loadFullScheduleFromMatchTableCSV();
+        } catch (IOException exception) {
+            onErrorDialog(exception);
         }
-        mEntryList.setAdapter(new MatchTableAdapter(this, mMatchTable.getMatches()));
+
+        mScoutingSchedule.scheduleForDisplayOnly();
+
+        mScheduleListView.setAdapter(new ScoutingScheduleAdapter(this,
+                mScoutingSchedule.getCurrentlyScheduled()));
+
 //        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
 //            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                mEntryList.setAdapter(new ArrayAdapter<>(EntrySelectorActivity.this,
+//                mScheduleListView.setAdapter(new ArrayAdapter<>(ScheduleActivity.this,
 //                        android.R.layout.simple_list_item_1,
-//                        mMatchTable.getTeamsArrayForBoard(position)));
+//                        mScoutingSchedule.getTeamsArrayForBoard(position)));
 //            }
 //
 //            @Override

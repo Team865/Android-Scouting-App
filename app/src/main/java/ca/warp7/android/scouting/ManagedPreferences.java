@@ -31,13 +31,14 @@ class ManagedPreferences {
             addPreferencesFromResource(R.xml.preferences);
             ClickListener listener = new ClickListener();
             findPreference(kCopyAssetsKey).setOnPreferenceClickListener(listener);
-            findPreference(kEntrySelectorKey).setOnPreferenceClickListener(listener);
+            findPreference(kScheduleKey).setOnPreferenceClickListener(listener);
 
             try {
                 PackageInfo packageInfo = getActivity().getPackageManager()
                         .getPackageInfo(getActivity().getPackageName(), 0);
 
                 Preference aboutApp = findPreference(kAboutAppKey);
+                //aboutApp.setEnabled(false);
                 aboutApp.setSummary("Version: "
                         + packageInfo.versionName);
 
@@ -52,22 +53,22 @@ class ManagedPreferences {
         public boolean onPreferenceClick(Preference preference) {
             switch (preference.getKey()) {
                 case kCopyAssetsKey:
-                    askToCopy(preference.getContext());
+                    onCopyAssets(preference.getContext());
                     return true;
-                case kEntrySelectorKey:
-                    entrySelectorIntent(preference.getContext());
+                case kScheduleKey:
+                    onScheduleActivityIntent(preference.getContext());
                     return true;
             }
             return false;
         }
 
-        private void entrySelectorIntent(Context context) {
+        private void onScheduleActivityIntent(Context context) {
             Intent intent;
-            intent = new Intent(context, EntrySelectorActivity.class);
+            intent = new Intent(context, ScheduleActivity.class);
             context.startActivity(intent);
         }
 
-        private void askToCopy(final Context context) {
+        private void onCopyAssets(final Context context) {
             new AlertDialog.Builder(context)
                     .setTitle("Are you sure?")
                     .setMessage("Any files stored at \""
@@ -174,6 +175,6 @@ class ManagedPreferences {
     private static final String kVibratorPreferenceKey = "pref_use_vibration";
     private static final String kCopyAssetsKey = "pref_copy_assets";
     private static final String kShowDOAKey = "pref_show_legacy_screen";
-    private static final String kEntrySelectorKey = "pref_x_entry_selector";
+    private static final String kScheduleKey = "pref_x_schedule";
     private static final String kAboutAppKey = "pref_about";
 }

@@ -13,11 +13,15 @@ class ManagedData {
         RED1, RED2, RED3, BLUE1, BLUE2, BLUE3
     }
 
-    static class MatchInfo {
+    static abstract class ScoutingScheduleItem {
+
+    }
+
+    static class MatchWithAllianceItem extends ScoutingScheduleItem {
         private int[] mTeams;
         private int mMatchNumber;
 
-        MatchInfo(String matchCSV) {
+        MatchWithAllianceItem(String matchCSV) {
             String[] split = matchCSV.split(",");
             mMatchNumber = Integer.valueOf(split[0]);
             mTeams = new int[6];
@@ -26,20 +30,37 @@ class ManagedData {
             }
         }
 
-        public int getTeamAt(int i) {
+        MatchWithAllianceItem(MatchWithAllianceItem other) {
+            mMatchNumber = other.getMatchNumber();
+            mTeams = other.getTeams();
+        }
+
+        int getTeamAt(int i) {
             return mTeams[i];
         }
 
-        public int getMatchNumber() {
+        int[] getTeams() {
+            return mTeams;
+        }
+
+        int getMatchNumber() {
             return mMatchNumber;
         }
     }
 
-    static class MatchTable {
-        private List<MatchInfo> mMatches = new ArrayList<>();
+    static class ScoutingSchedule {
+        private List<ScoutingScheduleItem> mCurrentlyScheduled;
+        private List<MatchWithAllianceItem> mFullSchedule;
 
 
-        MatchTable() throws IOException {
+        ScoutingSchedule() {
+            mCurrentlyScheduled = new ArrayList<>();
+            mFullSchedule = new ArrayList<>();
+        }
+
+        void loadFullScheduleFromMatchTableCSV() throws IOException {
+
+            mFullSchedule.clear();
 
             File mtf = new File(Specs.getSpecsRoot(), "match-table.csv");
             BufferedReader br = new BufferedReader(new FileReader(mtf));
@@ -48,33 +69,23 @@ class ManagedData {
             String line = br.readLine();
 
             while (line != null) {
-                mMatches.add(new MatchInfo(line));
+                mFullSchedule.add(new MatchWithAllianceItem(line));
                 line = br.readLine();
             }
 
             br.close();
         }
 
-        String[] getTeamsArrayForBoard(int board) {
-            String[] result = new String[mMatches.size()];
-            for (int i = 0; i < mMatches.size(); i++) {
-                result[i] = String.valueOf(mMatches.get(i).getTeamAt(board));
+        void scheduleForDisplayOnly() {
+            mCurrentlyScheduled.clear();
+            for (MatchWithAllianceItem item : mFullSchedule) {
+                mCurrentlyScheduled.add(new MatchWithAllianceItem(item));
             }
-            return result;
         }
 
-        int size() {
-            return mMatches.size();
-        }
-
-        MatchInfo getMatchInfo(int index) {
-            return mMatches.get(index);
-        }
-
-        List<MatchInfo> getMatches() {
-            return mMatches;
+        public List<ScoutingScheduleItem> getCurrentlyScheduled() {
+            return mCurrentlyScheduled;
         }
     }
-
 
 }

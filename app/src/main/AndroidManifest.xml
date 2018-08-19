@@ -29,7 +29,7 @@
             android:name=".ScoutingActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ManagedPreferences$Activity" />
-        <activity android:name=".EntrySelectorActivity" />
+        <activity android:name=".ScheduleActivity" />
     </application>
 
 </manifest>
