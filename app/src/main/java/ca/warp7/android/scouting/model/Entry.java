@@ -129,7 +129,7 @@ public class Entry {
      * if nothing can be undone
      */
 
-    public Specs.DataConstant undo() {
+    public DataConstant undo() {
 
         for (int i = mDataStack.size() - 1; i >= 0; i--) {
 

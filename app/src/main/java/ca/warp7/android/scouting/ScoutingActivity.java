@@ -55,8 +55,10 @@ import com.google.zxing.common.BitMatrix;
 
 import java.util.List;
 
+import ca.warp7.android.scouting.model.DataConstant;
 import ca.warp7.android.scouting.model.Entry;
 import ca.warp7.android.scouting.model.EntryFormatter;
+import ca.warp7.android.scouting.model.ScoutingLayout;
 import ca.warp7.android.scouting.model.Specs;
 
 
@@ -154,7 +156,7 @@ public class ScoutingActivity
 
     private Specs mSpecs;
     private Entry mEntry;
-    private List<Specs.Layout> mLayouts;
+    private List<ScoutingLayout> mLayouts;
     private StringBuilder mStatusLog;
 
 
@@ -1036,7 +1038,7 @@ public class ScoutingActivity
      * if the undo has been successful
      */
     private void performUndo() {
-        Specs.DataConstant dc = mEntry.undo();
+        DataConstant dc = mEntry.undo();
         if (dc == null) {
             pushStatus("Cannot Undo @" + mTimer + "s");
         } else {
@@ -1094,7 +1096,7 @@ public class ScoutingActivity
         private TableLayout mInputTable;
 
         private Specs mSpecs;
-        private Specs.Layout mLayout;
+        private ScoutingLayout mLayout;
 
 
         @Override
@@ -1160,32 +1162,32 @@ public class ScoutingActivity
          * @return a matching View from InputControls
          */
 
-        View createControlFromDataConstant(Specs.DataConstant dc, String idIfNull) {
+        View createControlFromDataConstant(DataConstant dc, String idIfNull) {
 
             if (dc == null) {
                 return new InputControls.UnknownControl(getContext(), idIfNull, mListener);
             }
 
             switch (dc.getType()) {
-                case Specs.DataConstant.TIMESTAMP:
+                case DataConstant.TIMESTAMP:
                     //return new InputControls.TimerButton(getContext(), dc, mListener);
                     return new InputControls.CountedControlLayout(getContext(), dc, mListener,
                             new InputControls.TimerButton(getContext(), dc, mListener));
 
-                case Specs.DataConstant.CHECKBOX:
+                case DataConstant.CHECKBOX:
                     return new InputControls.CenteredControlLayout(getContext(), dc, mListener,
                             new InputControls.Checkbox(getContext(), dc, mListener));
 
-                case Specs.DataConstant.DURATION:
+                case DataConstant.DURATION:
                     return new InputControls.DurationButton(getContext(), dc, mListener);
 
 
-                case Specs.DataConstant.RATING:
+                case DataConstant.RATING:
 
                     return new InputControls.LabeledControlLayout(getContext(), dc, mListener,
                             new InputControls.SeekBar(getContext(), dc, mListener));
 
-                case Specs.DataConstant.CHOICE:
+                case DataConstant.CHOICE:
 
                     return new InputControls.LabeledControlLayout(getContext(), dc, mListener,
                             new InputControls.ChoicesButton(getContext(), dc, mListener));
@@ -1203,7 +1205,7 @@ public class ScoutingActivity
          */
 
         View createSpecifiedControl(String id, int span) {
-            Specs.DataConstant dc = mSpecs.getDataConstantByStringID(id);
+            DataConstant dc = mSpecs.getDataConstantByStringID(id);
 
             View view = createControlFromDataConstant(dc, id);
 

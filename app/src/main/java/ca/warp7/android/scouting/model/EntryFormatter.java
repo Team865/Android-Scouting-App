@@ -65,7 +65,7 @@ public class EntryFormatter {
             int t = d.getType();
 
             if (specs.hasIndexInConstants(t)) {
-                Specs.DataConstant dc = specs.getDataConstantByIndex(t);
+                DataConstant dc = specs.getDataConstantByIndex(t);
                 sb
                         .append(formatLeftWithSpaces(dc.getLogTitle() +
                                 (d.getStateFlag() == 0 ? "<Off>" : "") + " ", 24))

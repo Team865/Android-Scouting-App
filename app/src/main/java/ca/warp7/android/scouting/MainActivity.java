@@ -36,6 +36,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import ca.warp7.android.scouting.model.Specs;
+import ca.warp7.android.scouting.model.SpecsIndex;
 
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -57,7 +58,7 @@ public class MainActivity
     private Button matchStartButton;
 
 
-    private Specs.Index specsIndex;
+    private SpecsIndex specsIndex;
     private SharedPreferences prefs;
 
     private String mPassedSpecsFile;
@@ -311,7 +312,7 @@ public class MainActivity
     }
 
     private void loadIndex(File indexFile) {
-        specsIndex = new Specs.Index(indexFile);
+        specsIndex = new SpecsIndex(indexFile);
 
         ArrayList<String> names = specsIndex.getNames();
 

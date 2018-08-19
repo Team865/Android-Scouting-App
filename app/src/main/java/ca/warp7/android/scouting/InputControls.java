@@ -21,7 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import ca.warp7.android.scouting.model.Specs;
+import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * Includes a set of controls for input used in the inputs fragment
@@ -66,7 +66,7 @@ class InputControls {
             ChildControl,
             View.OnClickListener {
 
-        Specs.DataConstant dc;
+        DataConstant dc;
         ScoutingActivityListener listener;
         ParentControlListener parentControlListener;
         View parentSupportView;
@@ -76,7 +76,7 @@ class InputControls {
         }
 
         public BaseButton(Context context,
-                          Specs.DataConstant dc,
+                          DataConstant dc,
                           ScoutingActivityListener listener) {
             super(context);
             this.dc = dc;
@@ -120,7 +120,7 @@ class InputControls {
         }
 
         public TimerButton(Context context,
-                           Specs.DataConstant dc,
+                           DataConstant dc,
                            ScoutingActivityListener listener) {
             super(context, dc, listener);
 
@@ -209,7 +209,7 @@ class InputControls {
         }
 
         public DurationButton(Context context,
-                              Specs.DataConstant dc,
+                              DataConstant dc,
                               ScoutingActivityListener listener) {
             super(context, dc, listener);
             updateControlState();
@@ -269,7 +269,7 @@ class InputControls {
             implements BaseControl,
             View.OnClickListener {
 
-        Specs.DataConstant dc;
+        DataConstant dc;
         ScoutingActivityListener listener;
 
         int lastWhich = 0;
@@ -279,7 +279,7 @@ class InputControls {
         }
 
         public ChoicesButton(Context context,
-                             Specs.DataConstant dc,
+                             DataConstant dc,
                              ScoutingActivityListener listener) {
             super(context);
             this.dc = dc;
@@ -332,7 +332,7 @@ class InputControls {
             implements BaseControl,
             View.OnClickListener {
 
-        Specs.DataConstant dc;
+        DataConstant dc;
         ScoutingActivityListener listener;
 
         public Checkbox(Context context) {
@@ -340,7 +340,7 @@ class InputControls {
         }
 
         public Checkbox(Context context,
-                        Specs.DataConstant dc,
+                        DataConstant dc,
                         ScoutingActivityListener listener) {
             super(context);
             this.dc = dc;
@@ -390,7 +390,7 @@ class InputControls {
             AppCompatSeekBar.OnSeekBarChangeListener {
 
 
-        Specs.DataConstant dc;
+        DataConstant dc;
         ScoutingActivityListener listener;
 
         int lastProgress;
@@ -400,7 +400,7 @@ class InputControls {
         }
 
         public SeekBar(Context context,
-                       Specs.DataConstant dc,
+                       DataConstant dc,
                        ScoutingActivityListener listener) {
             super(context);
             this.dc = dc;
@@ -455,7 +455,7 @@ class InputControls {
             extends LinearLayout
             implements BaseControl {
 
-        Specs.DataConstant dc;
+        DataConstant dc;
         ScoutingActivityListener listener;
 
         View subControl;
@@ -465,7 +465,7 @@ class InputControls {
         }
 
         public LabeledControlLayout(Context context,
-                                    Specs.DataConstant dc,
+                                    DataConstant dc,
                                     ScoutingActivityListener listener,
                                     View control) {
             super(context);
@@ -526,7 +526,7 @@ class InputControls {
             implements BaseControl,
             View.OnClickListener {
 
-        Specs.DataConstant dc;
+        DataConstant dc;
         ScoutingActivityListener listener;
 
         View subControl;
@@ -536,7 +536,7 @@ class InputControls {
         }
 
         public CenteredControlLayout(Context context,
-                                     Specs.DataConstant dc,
+                                     DataConstant dc,
                                      ScoutingActivityListener listener,
                                      View control) {
             super(context);
@@ -600,7 +600,7 @@ class InputControls {
             implements BaseControl,
             ParentControlListener {
 
-        Specs.DataConstant dc;
+        DataConstant dc;
         ScoutingActivityListener listener;
 
         TextView counter;
@@ -611,7 +611,7 @@ class InputControls {
         }
 
         public CountedControlLayout(Context context,
-                                    Specs.DataConstant dc,
+                                    DataConstant dc,
                                     ScoutingActivityListener listener,
                                     View control) {
             super(context);
