@@ -32,7 +32,7 @@
     <PreferenceCategory android:title="About">
         <Preference
             android:key="pref_about"
-            android:title="Scouting" />
+            android:title="@string/app_name" />
     </PreferenceCategory>
 
 </PreferenceScreen>

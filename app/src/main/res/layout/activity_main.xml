@@ -30,7 +30,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:onClick="onLogoClicked"
+        android:text="@string/app_name_2"
         android:textAllCaps="false"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"

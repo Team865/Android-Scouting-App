@@ -210,15 +210,13 @@ public class MainActivity
 
         scoutNameField.setText(prefs.getString(ID.SAVE_SCOUT_NAME, ""));
 
-        TextView appTitle = findViewById(R.id.app_title);
-
-        try {
-            String appTitleString = "Scouting App " +
-                    getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            appTitle.setText(appTitleString);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        findViewById(R.id.team_logo).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onLogoClicked(null);
+                return true;
+            }
+        });
     }
 
     private void setupSpecs() {
