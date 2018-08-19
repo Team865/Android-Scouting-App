@@ -26,7 +26,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import ca.warp7.android.scouting.model.MatchWithAllianceItem;
 import ca.warp7.android.scouting.model.RobotPosition;
+import ca.warp7.android.scouting.model.ScoutingSchedule;
 import ca.warp7.android.scouting.model.ScoutingScheduleItem;
 import ca.warp7.android.scouting.model.Specs;
 
@@ -56,10 +58,10 @@ public class ScheduleActivity extends AppCompatActivity {
 
             ScoutingScheduleItem scoutingScheduleItem = getItem(position);
             if (scoutingScheduleItem != null &&
-                    scoutingScheduleItem instanceof ManagedData.MatchWithAllianceItem) {
+                    scoutingScheduleItem instanceof MatchWithAllianceItem) {
 
-                ManagedData.MatchWithAllianceItem matchItem =
-                        (ManagedData.MatchWithAllianceItem) scoutingScheduleItem;
+                MatchWithAllianceItem matchItem =
+                        (MatchWithAllianceItem) scoutingScheduleItem;
                 AllianceView allianceView = itemView.findViewById(R.id.alliance_view);
                 allianceView.setDataFromScheduledMatchItem(matchItem);
                 TextView matchNumberView = itemView.findViewById(R.id.match_number);
@@ -71,7 +73,7 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
 
-    ManagedData.ScoutingSchedule mScoutingSchedule;
+    ScoutingSchedule mScoutingSchedule;
     ListView mScheduleListView;
     ScoutingScheduleAdapter mScheduleAdapter;
 
@@ -103,7 +105,7 @@ public class ScheduleActivity extends AppCompatActivity {
         spinner.setAdapter(spinnerAdapter);
 
         mScheduleListView = findViewById(R.id.entry_list);
-        mScoutingSchedule = new ManagedData.ScoutingSchedule();
+        mScoutingSchedule = new ScoutingSchedule();
 
         try {
             mScoutingSchedule.loadFullScheduleFromCSV(
@@ -220,7 +222,7 @@ public class ScheduleActivity extends AppCompatActivity {
             mMinimumWidth = mRedBoldTextPaint.measureText("8888");
         }
 
-        public void setDataFromScheduledMatchItem(ManagedData.MatchWithAllianceItem matchItem) {
+        public void setDataFromScheduledMatchItem(MatchWithAllianceItem matchItem) {
             mR1 = String.valueOf(matchItem.getTeamAt(0));
             mR2 = String.valueOf(matchItem.getTeamAt(1));
             mR3 = String.valueOf(matchItem.getTeamAt(2));
