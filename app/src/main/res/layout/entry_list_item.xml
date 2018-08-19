@@ -19,7 +19,7 @@
 
     <view
         android:id="@+id/alliance_view"
-        class="ca.warp7.android.scouting.Widgets$AllianceView"
+        class="ca.warp7.android.scouting.ScheduleActivity$AllianceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
