@@ -53,7 +53,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -150,7 +150,7 @@ public class ScoutingActivity
 
     private Specs mSpecs;
     private Entry mEntry;
-    private ArrayList<Specs.Layout> mLayouts;
+    private List<Specs.Layout> mLayouts;
     private StringBuilder mStatusLog;
 
 
@@ -1246,7 +1246,7 @@ public class ScoutingActivity
 
         void layoutTable() {
 
-            ArrayList<String[]> fields = mLayout.getFields();
+            List<String[]> fields = mLayout.getFields();
             mInputTable.setWeightSum(fields.size());
 
 

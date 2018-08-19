@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -100,7 +101,8 @@ public class ScheduleActivity extends AppCompatActivity {
         mScoutingSchedule = new ManagedData.ScoutingSchedule();
 
         try {
-            mScoutingSchedule.loadFullScheduleFromMatchTableCSV();
+            mScoutingSchedule.loadFullScheduleFromCSV(
+                    new File(Specs.getSpecsRoot(), "match-table.csv"));
         } catch (IOException exception) {
             onErrorDialog(exception);
         }

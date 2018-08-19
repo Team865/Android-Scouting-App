@@ -58,22 +58,21 @@ class ManagedData {
             mFullSchedule = new ArrayList<>();
         }
 
-        void loadFullScheduleFromMatchTableCSV() throws IOException {
+        void loadFullScheduleFromCSV(File matchTableFile) throws IOException {
 
             mFullSchedule.clear();
 
-            File mtf = new File(Specs.getSpecsRoot(), "match-table.csv");
-            BufferedReader br = new BufferedReader(new FileReader(mtf));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(matchTableFile));
 
-            br.readLine(); // Removes the headers line
-            String line = br.readLine();
+            bufferedReader.readLine(); // Removes the headers line
+            String line = bufferedReader.readLine();
 
             while (line != null) {
                 mFullSchedule.add(new MatchWithAllianceItem(line));
-                line = br.readLine();
+                line = bufferedReader.readLine();
             }
 
-            br.close();
+            bufferedReader.close();
         }
 
         void scheduleForDisplayOnly() {
