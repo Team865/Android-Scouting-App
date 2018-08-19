@@ -23,10 +23,10 @@ class ManagedData {
 
         MatchWithAllianceItem(String matchCSV) {
             String[] split = matchCSV.split(",");
-            mMatchNumber = Integer.valueOf(split[0]);
+            mMatchNumber = Integer.valueOf(split[0].trim());
             mTeams = new int[6];
             for (int i = 1; i < 7; i++) {
-                mTeams[i - 1] = Integer.valueOf(split[i]);
+                mTeams[i - 1] = Integer.valueOf(split[i].trim());
             }
         }
 

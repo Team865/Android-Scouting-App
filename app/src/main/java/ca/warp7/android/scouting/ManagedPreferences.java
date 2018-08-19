@@ -40,7 +40,7 @@ class ManagedPreferences {
                         .getPackageInfo(getActivity().getPackageName(), 0);
 
                 Preference aboutApp = findPreference(kAboutAppKey);
-                //aboutApp.setEnabled(false);
+                aboutApp.setIcon(R.mipmap.ic_launcher);
                 aboutApp.setSummary("Version: "
                         + packageInfo.versionName);
 
