@@ -733,7 +733,7 @@ public class ScoutingActivity
         mToolbarTeam.setText(alliance.equals("R") || alliance.equals("B") ?
                 String.valueOf(teamNumber) : mSpecs.getBoardName());
 
-        String m = "Match " + matchNumber;
+        String m = "" + matchNumber;
         mToolbarMatch.setText(m);
 
         mToolbarTeam.setTextColor(

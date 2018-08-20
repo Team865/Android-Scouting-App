@@ -16,7 +16,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="12dp"
         android:background="@drawable/oval_bg"
-        android:drawableTop="@drawable/ic_layers_gray"
+        android:drawableTop="@drawable/ic_layers_gray_small"
         android:gravity="center_vertical|center_horizontal"
         android:lineSpacingExtra="0dp"
         android:textColor="@color/colorAlmostBlack"
