@@ -22,6 +22,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import ca.warp7.android.scouting.model.DataConstant;
+import ca.warp7.android.scouting.model.ScoutingActivityListener;
 
 /**
  * Includes a set of controls for input used in the inputs fragment

@@ -1,8 +1,8 @@
-package ca.warp7.android.scouting;
+package ca.warp7.android.scouting.model;
 
 import android.os.Handler;
 
-import ca.warp7.android.scouting.model.Entry;
+import ca.warp7.android.scouting.ManagedPreferences;
 
 /**
  * This interface is to be implemented by the activity that contains
@@ -11,7 +11,7 @@ import ca.warp7.android.scouting.model.Entry;
  * @author Team 865
  */
 
-interface ScoutingActivityListener
+public interface ScoutingActivityListener
         extends Entry.Timekeeper {
 
     /**
@@ -42,7 +42,6 @@ interface ScoutingActivityListener
     /**
      * @return whether a specific control should focus at the current time
      */
-    @SuppressWarnings("unused")
     boolean dataShouldFocus(int dataType);
 
     /**

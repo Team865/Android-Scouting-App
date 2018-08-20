@@ -59,6 +59,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 import ca.warp7.android.scouting.model.Entry;
 import ca.warp7.android.scouting.model.EntryFormatter;
 import ca.warp7.android.scouting.model.ID;
+import ca.warp7.android.scouting.model.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.ScoutingLayout;
 import ca.warp7.android.scouting.model.Specs;
 

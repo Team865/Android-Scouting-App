@@ -24,7 +24,7 @@ import java.io.OutputStream;
 
 import ca.warp7.android.scouting.model.Specs;
 
-class ManagedPreferences {
+public class ManagedPreferences {
 
     public static class Fragment extends PreferenceFragment {
         @Override
