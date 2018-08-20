@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import ca.warp7.android.scouting.model.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.Specs;
 
 public class ManagedPreferences {
@@ -123,7 +124,7 @@ public class ManagedPreferences {
         }
     }
 
-    public static class ActionVibrator {
+    public static class ActionVibrator implements ScoutingActivityListener.AbstractActionVibrator {
         private Vibrator mActualVibrator;
         private boolean mVibrationOn;
 
@@ -132,13 +133,15 @@ public class ManagedPreferences {
             mVibrationOn = vibrationOn;
         }
 
-        void vibrateStart() {
+        @Override
+        public void vibrateStart() {
             if (mVibrationOn) {
                 mActualVibrator.vibrate(kStartVibration, -1);
             }
         }
 
-        void vibrateAction() {
+        @Override
+        public void vibrateAction() {
             if (mVibrationOn) {
                 mActualVibrator.vibrate(kActionEffectVibration);
             }

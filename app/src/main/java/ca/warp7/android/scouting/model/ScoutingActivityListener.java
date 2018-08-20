@@ -2,8 +2,6 @@ package ca.warp7.android.scouting.model;
 
 import android.os.Handler;
 
-import ca.warp7.android.scouting.ManagedPreferences;
-
 /**
  * This interface is to be implemented by the activity that contains
  * these controls to engage in communication
@@ -14,6 +12,19 @@ import ca.warp7.android.scouting.ManagedPreferences;
 public interface ScoutingActivityListener
         extends Entry.Timekeeper {
 
+    interface AbstractActionVibrator {
+
+        /**
+         * Vibrate to indicate scouting start
+         */
+        void vibrateStart();
+
+        /**
+         * Vibrate to indicate an action
+         */
+        void vibrateAction();
+    }
+
     /**
      * @return The time Handler of the activity
      */
@@ -22,7 +33,7 @@ public interface ScoutingActivityListener
     /**
      * @return The managed Vibrator service of the activity
      */
-    ManagedPreferences.ActionVibrator getManagedVibrator();
+    AbstractActionVibrator getManagedVibrator();
 
     /**
      * @return The entry model object tracking data history
