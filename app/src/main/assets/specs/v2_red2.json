@@ -1,302 +1,302 @@
 {
-    "id": "040020a2",
-    "board": "Red 2",
-    "alliance": "R",
-    "event": "Example Template",
-    "schedule": [],
-    "layout": [
-        {
-            "title": "Auto",
-            "fields": [
-                [
-                    "AUTO_START_POS"
-                ],
-                [
-                    "AUTO_LINE"
-                ],
-                [
-                    "AUTO_SCALE_ATTEMPT",
-                    "AUTO_SCALE_SUCCESS"
-                ],
-                [
-                    "AUTO_SWITCH_ATTEMPT",
-                    "AUTO_SWITCH_SUCCESS"
-                ]
-            ]
-        },
-        {
-            "title": "Tele-Op",
-            "fields": [
-                [
-                    "TELE_INTAKE"
-                ],
-                [
-                    "TELE_ALLIANCE_SWITCH",
-                    "TELE_OPPONENT_SWITCH"
-                ],
-                [
-                    "TELE_EXCHANGE",
-                    "TELE_SCALE"
-                ],
-                [
-                    "TELE_DEFENSE"
-                ]
-            ]
-        },
-        {
-            "title": "Endgame",
-            "fields": [
-                [
-                    "END_PLATFORM_TIMER",
-                    "END_CLIMBED_TIMER"
-                ],
-                [
-                    "END_ENDGAME_TYPE"
-                ],
-                [
-                    "END_OBJECTIVE"
-                ]
-            ]
-        },
-        {
-            "title": "Ratings",
-            "fields": [
-                [
-                    "END_PLATFORM",
-                    "END_CLIMB"
-                ],
-                [
-                    "END_ATTACHMENT",
-                    "END_CLIMB_SPEED"
-                ],
-                [
-                    "END_INTAKE_SPEED",
-                    "END_INTAKE_CONSISTENCY"
-                ],
-                [
-                    "END_EXCHANGE",
-                    "END_SWITCH"
-                ],
-                [
-                    "END_SCALE",
-                    "END_DRIVER"
-                ]
-            ]
-        }
-    ],
-    "data": [
-        {
-            "id": "AUTO_LINE",
-            "label": "Auto Line Crossed",
-            "log": "Auto line",
-            "type": "checkbox"
-        },
-        {
-            "id": "AUTO_SCALE_ATTEMPT",
-            "label": "Scale Attempt",
-            "log": "Auto scale attempt",
-            "type": "timestamp"
-        },
-        {
-            "id": "AUTO_SCALE_SUCCESS",
-            "label": "Scale Success",
-            "log": "Auto scale",
-            "type": "timestamp"
-        },
-        {
-            "id": "AUTO_SWITCH_ATTEMPT",
-            "label": "Switch Attempt",
-            "log": "Auto switch attempt",
-            "type": "timestamp"
-        },
-        {
-            "id": "AUTO_SWITCH_SUCCESS",
-            "label": "Switch Success",
-            "log": "Auto switch",
-            "type": "timestamp"
-        },
-        {
-            "id": "AUTO_EXCHANGE_ATTEMPT",
-            "label": "Exchange Attempt",
-            "log": "Auto exchange attempt",
-            "type": "timestamp"
-        },
-        {
-            "id": "AUTO_EXCHANGE_SUCCESS",
-            "label": "Exchange Success",
-            "log": "Auto exchange",
-            "type": "timestamp"
-        },
-        {
-            "id": "TELE_INTAKE",
-            "label": "Intake",
-            "log": "Tele intake",
-            "type": "timestamp"
-        },
-        {
-            "id": "TELE_DEFENSE",
-            "label": "Start Defense",
-            "log": "Defense",
-            "type": "duration",
-            "label_on": "End Defense"
-        },
-        {
-            "id": "TELE_EXCHANGE",
-            "label": "Exchange",
-            "log": "Tele exchange",
-            "type": "timestamp"
-        },
-        {
-            "id": "TELE_ALLIANCE_SWITCH",
-            "label": "Alliance Switch",
-            "log": "Tele alliance switch",
-            "type": "timestamp"
-        },
-        {
-            "id": "TELE_OPPONENT_SWITCH",
-            "label": "Opponent Switch",
-            "log": "Tele opponent switch",
-            "type": "timestamp"
-        },
-        {
-            "id": "TELE_SCALE",
-            "label": "Scale",
-            "log": "Tele scale",
-            "type": "timestamp"
-        },
-        {
-            "id": "END_PLATFORM",
-            "label": "Platform",
-            "log": "Platform",
-            "type": "choice",
-            "choices": [
-                "None",
-                "Attempt",
-                "Success"
-            ]
-        },
-        {
-            "id": "END_CLIMB",
-            "label": "Climb",
-            "log": "Climb",
-            "type": "choice",
-            "choices": [
-                "None",
-                "Attempt",
-                "Success"
-            ]
-        },
-        {
-            "id": "END_ATTACHMENT",
-            "label": "Attachment Speed",
-            "log": "Attachment speed",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_CLIMB_SPEED",
-            "label": "Climb Speed",
-            "log": "Climb speed",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_INTAKE_SPEED",
-            "label": "Intake Speed",
-            "log": "Intake speed",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_INTAKE_CONSISTENCY",
-            "label": "Intake Consistency",
-            "log": "Intake consistency",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_EXCHANGE",
-            "label": "Exchange Speed",
-            "log": "Exchange speed",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_SWITCH",
-            "label": "Switch Speed",
-            "log": "Switch speed",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_SCALE",
-            "label": "Scale Speed",
-            "log": "Scale speed",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "END_DRIVER",
-            "label": "Driver Skill",
-            "log": "Driver skill",
-            "type": "rating",
-            "max": 5
-        },
-        {
-            "id": "AUTO_START_POS",
-            "label": "Start Position",
-            "log": "Start position",
-            "type": "choice",
-            "choices": [
-                "Select",
-                "Left",
-                "Center",
-                "Right"
-            ]
-        },
-        {
-            "id": "END_PLATFORM_TIMER",
-            "label": "Platform",
-            "log": "Platform timer",
-            "type": "duration",
-            "label_on": "Platform"
-        },
-        {
-            "id": "END_CLIMBED_TIMER",
-            "label": "Climbed",
-            "log": "Climbed timer",
-            "type": "duration",
-            "label_on": "Climbed"
-        },
-        {
-            "id": "END_ENDGAME_TYPE",
-            "label": "Endgame Type",
-            "log": "Endgame type",
-            "type": "choice",
-            "choices": [
-                "None",
-                "Platform",
-                "Failed Climb",
-                "Single Climb",
-                "Double Climb",
-                "Single Climb, Lifting Another Robot",
-                "Lifted by Another Robot"
-            ]
-        },
-        {
-            "id": "END_OBJECTIVE",
-            "label": "Game objective",
-            "log": "Objective",
-            "type": "choice",
-            "choices": [
-                "Select",
-                "Scale",
-                "Alliance Switch",
-                "Opponent Switch",
-                "Exchange",
-                "Defense",
-                "Support"
-            ]
-        }
-    ]
+  "id": "040020a2",
+  "board": "Red 2",
+  "alliance": "R",
+  "event": "Example Template",
+  "schedule": [],
+  "layout": [
+    {
+      "title": "Auto",
+      "fields": [
+        [
+          "AUTO_START_POS"
+        ],
+        [
+          "AUTO_LINE"
+        ],
+        [
+          "AUTO_SCALE_ATTEMPT",
+          "AUTO_SCALE_SUCCESS"
+        ],
+        [
+          "AUTO_SWITCH_ATTEMPT",
+          "AUTO_SWITCH_SUCCESS"
+        ]
+      ]
+    },
+    {
+      "title": "Tele-Op",
+      "fields": [
+        [
+          "TELE_INTAKE"
+        ],
+        [
+          "TELE_ALLIANCE_SWITCH",
+          "TELE_OPPONENT_SWITCH"
+        ],
+        [
+          "TELE_EXCHANGE",
+          "TELE_SCALE"
+        ],
+        [
+          "TELE_DEFENSE"
+        ]
+      ]
+    },
+    {
+      "title": "Endgame",
+      "fields": [
+        [
+          "END_PLATFORM_TIMER",
+          "END_CLIMBED_TIMER"
+        ],
+        [
+          "END_ENDGAME_TYPE"
+        ],
+        [
+          "END_OBJECTIVE"
+        ]
+      ]
+    },
+    {
+      "title": "Ratings",
+      "fields": [
+        [
+          "END_PLATFORM",
+          "END_CLIMB"
+        ],
+        [
+          "END_ATTACHMENT",
+          "END_CLIMB_SPEED"
+        ],
+        [
+          "END_INTAKE_SPEED",
+          "END_INTAKE_CONSISTENCY"
+        ],
+        [
+          "END_EXCHANGE",
+          "END_SWITCH"
+        ],
+        [
+          "END_SCALE",
+          "END_DRIVER"
+        ]
+      ]
+    }
+  ],
+  "data": [
+    {
+      "id": "AUTO_LINE",
+      "label": "Auto Line Crossed",
+      "log": "Auto line",
+      "type": "checkbox"
+    },
+    {
+      "id": "AUTO_SCALE_ATTEMPT",
+      "label": "Scale Attempt",
+      "log": "Auto scale attempt",
+      "type": "timestamp"
+    },
+    {
+      "id": "AUTO_SCALE_SUCCESS",
+      "label": "Scale Success",
+      "log": "Auto scale",
+      "type": "timestamp"
+    },
+    {
+      "id": "AUTO_SWITCH_ATTEMPT",
+      "label": "Switch Attempt",
+      "log": "Auto switch attempt",
+      "type": "timestamp"
+    },
+    {
+      "id": "AUTO_SWITCH_SUCCESS",
+      "label": "Switch Success",
+      "log": "Auto switch",
+      "type": "timestamp"
+    },
+    {
+      "id": "AUTO_EXCHANGE_ATTEMPT",
+      "label": "Exchange Attempt",
+      "log": "Auto exchange attempt",
+      "type": "timestamp"
+    },
+    {
+      "id": "AUTO_EXCHANGE_SUCCESS",
+      "label": "Exchange Success",
+      "log": "Auto exchange",
+      "type": "timestamp"
+    },
+    {
+      "id": "TELE_INTAKE",
+      "label": "Intake",
+      "log": "Tele intake",
+      "type": "timestamp"
+    },
+    {
+      "id": "TELE_DEFENSE",
+      "label": "Start Defense",
+      "log": "Defense",
+      "type": "duration",
+      "label_on": "End Defense"
+    },
+    {
+      "id": "TELE_EXCHANGE",
+      "label": "Exchange",
+      "log": "Tele exchange",
+      "type": "timestamp"
+    },
+    {
+      "id": "TELE_ALLIANCE_SWITCH",
+      "label": "Alliance Switch",
+      "log": "Tele alliance switch",
+      "type": "timestamp"
+    },
+    {
+      "id": "TELE_OPPONENT_SWITCH",
+      "label": "Opponent Switch",
+      "log": "Tele opponent switch",
+      "type": "timestamp"
+    },
+    {
+      "id": "TELE_SCALE",
+      "label": "Scale",
+      "log": "Tele scale",
+      "type": "timestamp"
+    },
+    {
+      "id": "END_PLATFORM",
+      "label": "Platform",
+      "log": "Platform",
+      "type": "choice",
+      "choices": [
+        "None",
+        "Attempt",
+        "Success"
+      ]
+    },
+    {
+      "id": "END_CLIMB",
+      "label": "Climb",
+      "log": "Climb",
+      "type": "choice",
+      "choices": [
+        "None",
+        "Attempt",
+        "Success"
+      ]
+    },
+    {
+      "id": "END_ATTACHMENT",
+      "label": "Attachment Speed",
+      "log": "Attachment speed",
+      "type": "rating",
+      "max": 5
+    },
+    {
+      "id": "END_CLIMB_SPEED",
+      "label": "Climb Speed",
+      "log": "Climb speed",
+      "type": "rating",
+      "max": 5
+    },
+    {
+      "id": "END_INTAKE_SPEED",
+      "label": "Intake Speed",
+      "log": "Intake speed",
+      "type": "rating",
+      "max": 5
+    },
+    {
+      "id": "END_INTAKE_CONSISTENCY",
+      "label": "Intake Consistency",
+      "log": "Intake consistency",
+      "type": "rating",
+      "max": 5
+    },
+    {
+      "id": "END_EXCHANGE",
+      "label": "Exchange Speed",
+      "log": "Exchange speed",
+      "type": "rating",
+      "max": 5
+    },
+    {
+      "id": "END_SWITCH",
+      "label": "Switch Speed",
+      "log": "Switch speed",
+      "type": "rating",
+      "max": 5
+    },
+    {
+      "id": "END_SCALE",
+      "label": "Scale Speed",
+      "log": "Scale speed",
+      "type": "rating",
+      "max": 5
+    },
+    {
+      "id": "END_DRIVER",
+      "label": "Driver Skill",
+      "log": "Driver skill",
+      "type": "rating",
+      "max": 5
+    },
+    {
+      "id": "AUTO_START_POS",
+      "label": "Start Position",
+      "log": "Start position",
+      "type": "choice",
+      "choices": [
+        "Select",
+        "Left",
+        "Center",
+        "Right"
+      ]
+    },
+    {
+      "id": "END_PLATFORM_TIMER",
+      "label": "Platform",
+      "log": "Platform timer",
+      "type": "duration",
+      "label_on": "Platform"
+    },
+    {
+      "id": "END_CLIMBED_TIMER",
+      "label": "Climbed",
+      "log": "Climbed timer",
+      "type": "duration",
+      "label_on": "Climbed"
+    },
+    {
+      "id": "END_ENDGAME_TYPE",
+      "label": "Endgame Type",
+      "log": "Endgame type",
+      "type": "choice",
+      "choices": [
+        "None",
+        "Platform",
+        "Failed Climb",
+        "Single Climb",
+        "Double Climb",
+        "Single Climb, Lifting Another Robot",
+        "Lifted by Another Robot"
+      ]
+    },
+    {
+      "id": "END_OBJECTIVE",
+      "label": "Game objective",
+      "log": "Objective",
+      "type": "choice",
+      "choices": [
+        "Select",
+        "Scale",
+        "Alliance Switch",
+        "Opponent Switch",
+        "Exchange",
+        "Defense",
+        "Support"
+      ]
+    }
+  ]
 }

@@ -1,138 +1,137 @@
 {
-    "id": "65ed7e43",
-    "board": "Power Ups",
-    "alliance": "N",
-    "event": "Example Template",
-    "timer": 150,
-    "schedule": [],
-    "layout": [
-        {
-            "title": "Vaults",
-            "fields": [
-                [
-                    "RED_BOOST",
-                    "RED_LEVITATE",
-                    "RED_FORCE"
-                ],
-                [
-                    "RED_BOOST_ADD",
-                    "RED_LEVITATE_ADD",
-                    "RED_FORCE_ADD"
-                ],
-                [
-                    "BLUE_BOOST",
-                    "BLUE_LEVITATE",
-                    "BLUE_FORCE"
-                ],
-                [
-                    "BLUE_BOOST_ADD",
-                    "BLUE_LEVITATE_ADD",
-                    "BLUE_FORCE_ADD"
-                ]
-            ]
-        },
-        {
-            "title": "Vaults 2",
-            "fields": [
-                [
-                    "RED_BOOST",
-                    "RED_BOOST_ADD"
-                ],
-                [
-                    "RED_LEVITATE",
-                    "RED_LEVITATE_ADD"
-                ],
-                [
-                    "RED_FORCE",
-                    "RED_FORCE_ADD"
-                ],
-                [
-                    "BLUE_BOOST",
-                    "BLUE_BOOST_ADD"
-                ],
-                [
-                    "BLUE_LEVITATE",
-                    "BLUE_LEVITATE_ADD"
-                ],
-                [
-                    "BLUE_FORCE",
-                    "BLUE_FORCE_ADD"
-                ]
-            ]
-        }
-    ],
-    "data": [
-        {
-            "id": "RED_BOOST",
-            "label": "Red Boost",
-            "log": "Red boost",
-            "type": "timestamp"
-        },
-        {
-            "id": "RED_LEVITATE",
-            "label": "Red Levitate",
-            "log": "Red levitate",
-            "type": "timestamp"
-        },
-        {
-            "id": "RED_FORCE",
-            "label": "Red Force",
-            "log": "Red force",
-            "type": "timestamp"
-        },
-        {
-            "id": "BLUE_BOOST",
-            "label": "Blue Boost",
-            "log": "Blue boost",
-            "type": "timestamp"
-        },
-        {
-            "id": "BLUE_LEVITATE",
-            "label": "Blue Levitate",
-            "log": "Blue levitate",
-            "type": "timestamp"
-        },
-        {
-            "id": "BLUE_FORCE",
-            "label": "Blue Force",
-            "log": "blue force",
-            "type": "timestamp"
-        },
-        {
-            "id": "RED_BOOST_ADD",
-            "label": "+",
-            "log": "Red boost place",
-            "type": "timestamp"
-        },
-        {
-            "id": "RED_LEVITATE_ADD",
-            "label": "+",
-            "log": "Red levitate place",
-            "type": "timestamp"
-        },
-        {
-            "id": "RED_FORCE_ADD",
-            "label": "+",
-            "log": "Red force place",
-            "type": "timestamp"
-        },
-        {
-            "id": "BLUE_BOOST_ADD",
-            "label": "+",
-            "log": "Blue boost place",
-            "type": "timestamp"
-        },
-        {
-            "id": "BLUE_LEVITATE_ADD",
-            "label": "+",
-            "log": "Blue levitate place",
-            "type": "timestamp"
-        },
-        {
-            "id": "BLUE_FORCE_ADD",
-            "label": "+",
-            "log": "Blue force place",
-            "type": "timestamp"
-        }
-    ]
+  "id": "65ed7e43",
+  "board": "PowerUps",
+  "alliance": "N",
+  "event": "Example Template",
+  "schedule": [],
+  "layout": [
+    {
+      "title": "Vaults",
+      "fields": [
+        [
+          "RED_BOOST",
+          "RED_LEVITATE",
+          "RED_FORCE"
+        ],
+        [
+          "RED_BOOST_ADD",
+          "RED_LEVITATE_ADD",
+          "RED_FORCE_ADD"
+        ],
+        [
+          "BLUE_BOOST",
+          "BLUE_LEVITATE",
+          "BLUE_FORCE"
+        ],
+        [
+          "BLUE_BOOST_ADD",
+          "BLUE_LEVITATE_ADD",
+          "BLUE_FORCE_ADD"
+        ]
+      ]
+    },
+    {
+      "title": "Vaults 2",
+      "fields": [
+        [
+          "RED_BOOST",
+          "RED_BOOST_ADD"
+        ],
+        [
+          "RED_LEVITATE",
+          "RED_LEVITATE_ADD"
+        ],
+        [
+          "RED_FORCE",
+          "RED_FORCE_ADD"
+        ],
+        [
+          "BLUE_BOOST",
+          "BLUE_BOOST_ADD"
+        ],
+        [
+          "BLUE_LEVITATE",
+          "BLUE_LEVITATE_ADD"
+        ],
+        [
+          "BLUE_FORCE",
+          "BLUE_FORCE_ADD"
+        ]
+      ]
+    }
+  ],
+  "data": [
+    {
+      "id": "RED_BOOST",
+      "label": "Red Boost",
+      "log": "Red boost",
+      "type": "timestamp"
+    },
+    {
+      "id": "RED_LEVITATE",
+      "label": "Red Levitate",
+      "log": "Red levitate",
+      "type": "timestamp"
+    },
+    {
+      "id": "RED_FORCE",
+      "label": "Red Force",
+      "log": "Red force",
+      "type": "timestamp"
+    },
+    {
+      "id": "BLUE_BOOST",
+      "label": "Blue Boost",
+      "log": "Blue boost",
+      "type": "timestamp"
+    },
+    {
+      "id": "BLUE_LEVITATE",
+      "label": "Blue Levitate",
+      "log": "Blue levitate",
+      "type": "timestamp"
+    },
+    {
+      "id": "BLUE_FORCE",
+      "label": "Blue Force",
+      "log": "blue force",
+      "type": "timestamp"
+    },
+    {
+      "id": "RED_BOOST_ADD",
+      "label": "+",
+      "log": "Red boost place",
+      "type": "timestamp"
+    },
+    {
+      "id": "RED_LEVITATE_ADD",
+      "label": "+",
+      "log": "Red levitate place",
+      "type": "timestamp"
+    },
+    {
+      "id": "RED_FORCE_ADD",
+      "label": "+",
+      "log": "Red force place",
+      "type": "timestamp"
+    },
+    {
+      "id": "BLUE_BOOST_ADD",
+      "label": "+",
+      "log": "Blue boost place",
+      "type": "timestamp"
+    },
+    {
+      "id": "BLUE_LEVITATE_ADD",
+      "label": "+",
+      "log": "Blue levitate place",
+      "type": "timestamp"
+    },
+    {
+      "id": "BLUE_FORCE_ADD",
+      "label": "+",
+      "log": "Blue force place",
+      "type": "timestamp"
+    }
+  ]
 }

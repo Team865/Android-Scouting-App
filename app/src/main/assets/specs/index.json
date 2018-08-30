@@ -1,52 +1,29 @@
 {
-    "files": [
-        "v2_red1.json",
-        "v2_red2.json",
-        "v2_red3.json",
-        "v2_blue1.json",
-        "v2_blue2.json",
-        "v2_blue3.json",
-
-        "Blue1.json",
-        "Blue2.json",
-        "Blue3.json",
-        "Red1.json",
-        "Red2.json",
-        "Red3.json",
-        "PowerUp.json",
-        "XRobot.json"
-    ],
-    "names": [
-        "Red 1",
-        "Red 2",
-        "Red 3",
-        "Blue 1",
-        "Blue 2",
-        "Blue 3",
-        "Old Blue 1",
-        "Old Blue 2",
-        "Old Blue 3",
-        "Old Red 1",
-        "Old Red 2",
-        "Old Red 3",
-        "Vault/Power Ups",
-        "Experimental Board"
-    ],
-    "identifiers": [
-        "040020a1",
-        "040020a2",
-        "040020a3",
-        "040020b1",
-        "040020b2",
-        "040020b3",
-
-        "ff770361",
-        "e3bb3f98",
-        "32c1bf68",
-        "ba12a27b",
-        "2b7a62fb",
-        "894c9040",
-        "65ed7e43",
-        "12345678"
-    ]
+  "files": [
+    "v2_red1.json",
+    "v2_red2.json",
+    "v2_red3.json",
+    "v2_blue1.json",
+    "v2_blue2.json",
+    "v2_blue3.json",
+    "PowerUp.json"
+  ],
+  "names": [
+    "Red 1",
+    "Red 2",
+    "Red 3",
+    "Blue 1",
+    "Blue 2",
+    "Blue 3",
+    "PowerUps"
+  ],
+  "identifiers": [
+    "040020a1",
+    "040020a2",
+    "040020a3",
+    "040020b1",
+    "040020b2",
+    "040020b3",
+    "042010ff"
+  ]
 }
