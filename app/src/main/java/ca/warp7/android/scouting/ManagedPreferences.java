@@ -172,14 +172,9 @@ public class ManagedPreferences {
         return mSharedPreferences.getBoolean(kShowPausePreferenceKey, false);
     }
 
-    boolean shouldShowDataOutputsActivity() {
-        return mSharedPreferences.getBoolean(kShowDOAKey, false);
-    }
-
     private static final String kShowPausePreferenceKey = "pref_show_pause";
     private static final String kVibratorPreferenceKey = "pref_use_vibration";
     private static final String kCopyAssetsKey = "pref_copy_assets";
-    private static final String kShowDOAKey = "pref_show_legacy_screen";
     private static final String kScheduleKey = "pref_x_schedule";
     private static final String kAboutAppKey = "pref_about";
 }
