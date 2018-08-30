@@ -54,10 +54,10 @@ public class EntryFormatter {
                 .append(specs.getAlliance())
                 .append("\n\n")
 
-                .append(formatLeftWithSpaces("Data", 21))
+                .append(formatLeftWithSpaces("Data", 24))
                 .append("Value")
                 .append("\n")
-                .append(new String(new char[31]).replace("\0", "-"));
+                .append(new String(new char[31]).replace("\0", "- "));
 
         for (EntryDatum d : entry.getDataStack()) {
             sb.append("\n");
@@ -89,7 +89,7 @@ public class EntryFormatter {
                     .append("\n");
         }
 
-        sb.append(new String(new char[31]).replace("\0", "-"));
+        sb.append(new String(new char[31]).replace("\0", "- "));
 
         return sb.toString();
     }

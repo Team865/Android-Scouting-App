@@ -406,14 +406,15 @@ public class ScoutingActivity
     public void onToolbarTitleClicked(View view) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Entry Log")
-                .setMessage(mStatusLog.toString())
+                .setTitle("Entry Report/Log")
+                .setMessage(EntryFormatter.formatReport(mEntry) + mStatusLog.toString())
                 .setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
+
         if (mActivityState != ActivityState.STARTING && mPreferences.shouldShowPause()) {
             builder.setNeutralButton(mUsingPauseBetaFeature ? "Hide Pause" : "Show Pause",
                     new DialogInterface.OnClickListener() {
@@ -749,14 +750,9 @@ public class ScoutingActivity
 
         mStatusLog = new StringBuilder(); // initialize the log
 
-        pushStatus("Match: " + matchNumber);
-        pushStatus("Team: " + teamNumber);
-        pushStatus("Scouter: " + scoutName);
-        pushStatus("Board: " + mSpecs.getBoardName());
+        pushStatus("\n\n========LOG========");
         pushStatus("Board ID: " + mSpecs.getSpecsId());
-        pushStatus("Alliance: " + mSpecs.getAlliance());
         pushStatus("");
-
 
         // NOTE Entry uses Specs so must ensure specs instance exists
         mEntry = new Entry(matchNumber, teamNumber, scoutName, this);
