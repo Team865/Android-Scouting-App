@@ -469,30 +469,7 @@ public class ScoutingActivity
                     }
                 });
 
-        if (mPreferences.shouldShowDataOutputsActivity()) {
-            builder.setNeutralButton("Old Screen", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    onDataOutputIntent();
-                }
-            });
-        }
-
         builder.create().show();
-    }
-
-    /**
-     * Starts the data output activity
-     */
-
-    @SuppressWarnings("deprecation")
-    private void onDataOutputIntent() {
-
-        Intent intent;
-        intent = new Intent(this, DataOutputActivity.class);
-        intent.putExtra(ID.MSG_PRINT_DATA, EntryFormatter.formatReport(mEntry));
-        intent.putExtra(ID.MSG_ENCODE_DATA, EntryFormatter.formatEncode(mEntry));
-        startActivity(intent);
     }
 
     /**

@@ -23,9 +23,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DataOutputActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ScoutingActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ManagedPreferences$Activity" />
