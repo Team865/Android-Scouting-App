@@ -552,7 +552,7 @@ public class ScoutingActivity
      * LICENSED UNDER Apache 2.0
      */
 
-    public Bitmap createBitmap(BitMatrix matrix) {
+    private Bitmap createBitmap(BitMatrix matrix) {
 
         int width = matrix.getWidth();
         int height = matrix.getHeight();
@@ -1288,15 +1288,15 @@ public class ScoutingActivity
 
     // Static Fields
 
-    static final int kTimerLimit = 150;
-    static final int kAutonomousTime = 15;
-    static final int kFadeDuration = 100;
-    static final int kTotalTimerDigits = 3;
+    private static final int kTimerLimit = 150;
+    private static final int kAutonomousTime = 15;
+    private static final int kFadeDuration = 100;
+    private static final int kTotalTimerDigits = 3;
 
-    static final int kBlueAllianceColour = 0xFF0000FF;
-    static final int kRedAllianceColour = 0xFFFF0000;
-    static final int kNeutralAllianceColour = 0xFF808080;
-    static final int kAutonomousColour = 0xFFCC9900;
-    static final int kTeleOpColour = 0xFF006633;
-    static final int kFinishedColour = 0xFFFF0000;
+    private static final int kBlueAllianceColour = 0xFF0000FF;
+    private static final int kRedAllianceColour = 0xFFFF0000;
+    private static final int kNeutralAllianceColour = 0xFF808080;
+    private static final int kAutonomousColour = 0xFFCC9900;
+    private static final int kTeleOpColour = 0xFF006633;
+    private static final int kFinishedColour = 0xFFFF0000;
 }

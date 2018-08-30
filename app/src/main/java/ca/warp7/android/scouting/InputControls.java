@@ -72,13 +72,13 @@ class InputControls {
         ParentControlListener parentControlListener;
         View parentSupportView;
 
-        public BaseButton(Context context) {
+        BaseButton(Context context) {
             super(context);
         }
 
-        public BaseButton(Context context,
-                          DataConstant dc,
-                          ScoutingActivityListener listener) {
+        BaseButton(Context context,
+                   DataConstant dc,
+                   ScoutingActivityListener listener) {
             super(context);
             this.dc = dc;
             this.listener = listener;

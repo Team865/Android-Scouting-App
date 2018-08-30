@@ -2,13 +2,6 @@
     <string name="app_name">Scouting</string>
     <string name="app_name_2">Scouting App</string>
 
-
-    <string name="menu_done">Done Scouting</string>
-    <string name="menu_undo">Undo</string>
-    <string name="menu_prev">Previous Page</string>
-    <string name="menu_next">Next Page</string>
-    <string name="menu_close">Exit Scouting</string>
-    <string name="menu_details">Match Details</string>
     <string name="menu_copy_default_metrics">Copy Default Metrics</string>
     <string name="menu_select_specs">Select</string>
 
@@ -38,12 +31,7 @@
         so the data can be adjusted accordingly
     </string>
 
-
-    <string name="data_title">Data Sender</string>
-
-    <string name="send_show_qr" o="📷 ">Show QR Code</string>
-    <string name="send_show_report" o="📄 ">Show Report</string>
-    <string name="send">Send</string>
+    <string name="send_show_qr">Show QR Code</string>
     <string name="edit_comments">Edit Comments</string>
 
     <string name="layout_error">There was a problem with the layout</string>

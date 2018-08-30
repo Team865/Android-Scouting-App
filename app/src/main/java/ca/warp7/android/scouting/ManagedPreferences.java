@@ -51,7 +51,7 @@ public class ManagedPreferences {
         }
     }
 
-    public static class ClickListener implements Preference.OnPreferenceClickListener {
+    static class ClickListener implements Preference.OnPreferenceClickListener {
         @Override
         public boolean onPreferenceClick(Preference preference) {
             switch (preference.getKey()) {

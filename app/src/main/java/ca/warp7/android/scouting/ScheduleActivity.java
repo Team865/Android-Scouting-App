@@ -38,9 +38,8 @@ import ca.warp7.android.scouting.model.Specs;
 
 public class ScheduleActivity extends AppCompatActivity {
 
-    ScoutingSchedule mScoutingSchedule;
-    ListView mScheduleListView;
-    ScoutingScheduleAdapter mScheduleAdapter;
+    private ScoutingSchedule mScoutingSchedule;
+    private ScoutingScheduleAdapter mScheduleAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +54,7 @@ public class ScheduleActivity extends AppCompatActivity {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
 
-        mScheduleListView = findViewById(R.id.entry_list);
+        ListView scheduleListView = findViewById(R.id.entry_list);
         mScoutingSchedule = new ScoutingSchedule();
 
         try {
@@ -70,9 +69,9 @@ public class ScheduleActivity extends AppCompatActivity {
         mScheduleAdapter = (new ScoutingScheduleAdapter(this,
                 mScoutingSchedule.getCurrentlyScheduled()));
 
-        mScheduleListView.setAdapter(mScheduleAdapter);
+        scheduleListView.setAdapter(mScheduleAdapter);
 
-        mScheduleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        scheduleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object item = mScoutingSchedule.getCurrentlyScheduled().get(position);
@@ -253,7 +252,7 @@ public class ScheduleActivity extends AppCompatActivity {
             mMinimumWidth = mRedBoldTextPaint.measureText("8888");
         }
 
-        public void setDataFromScheduledMatchItem(MatchWithAllianceItem matchItem) {
+        void setDataFromScheduledMatchItem(MatchWithAllianceItem matchItem) {
             mR1 = String.valueOf(matchItem.getTeamAt(0));
             mR2 = String.valueOf(matchItem.getTeamAt(1));
             mR3 = String.valueOf(matchItem.getTeamAt(2));
