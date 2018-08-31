@@ -55,18 +55,29 @@ public class QRFragment extends Fragment {
             }
         });
 
+        view.findViewById(R.id.qr_image).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onSendIntent();
+                return true;
+            }
+        });
+
         view.findViewById(R.id.send_with_another_method)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String message = getArguments().getString("qr_message");
-                        Intent intent = new Intent(Intent.ACTION_SEND);
-                        intent.putExtra(Intent.EXTRA_TEXT, message);
-                        intent.setType("text/plain");
-
-                        startActivity(Intent.createChooser(intent, message));
+                        onSendIntent();
                     }
                 });
+    }
+
+    private void onSendIntent() {
+        String message = getArguments().getString("qr_message");
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        intent.setType("text/plain");
+        startActivity(Intent.createChooser(intent, message));
     }
 
     private void setQRImage(View view) {
@@ -96,7 +107,7 @@ public class QRFragment extends Fragment {
     /**
      * Creates a Bitmap from a BitMatrix
      * <p>
-     * Code taken and modified from
+     * Code modified from
      * https://github.com/journeyapps/zxing-android-embedded/
      * <p>
      * LICENSED UNDER Apache 2.0
