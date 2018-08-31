@@ -83,33 +83,15 @@ import ca.warp7.android.scouting.model.Specs;
  */
 
 
-/*
-CODE ORGANIZED BY FOLLOWING SECTIONS
-
-1. State Variables
-2. UI elements
-3. System Services
-4. Data Model Variables
-5. Timer Process
-6. Animation Objects
-7. Activity Methods
-8. ScoutingActivityListener methods
-9. Misc. Event Handlers
-10.Utility Methods
-11.Initialization Methods
-12.State Updater Methods
-13.Inner Class and Enum
-14.Static Fields
-
- */
-
-
 public class ScoutingActivity
         extends AppCompatActivity
         implements ScoutingActivityListener {
 
+
     // Beta Feature Variables
+
     private boolean mUsingPauseBetaFeature;
+
 
     // State Variables
 
@@ -538,10 +520,13 @@ public class ScoutingActivity
         return (getCurrentTime() - mStartingTimestamp) % (kTimerLimit + 1);
     }
 
+    /**
+     * Calculates whether the counting timer is in approximation with the current time
+     */
+
     private boolean isTimerAtCurrentTime() {
         return Math.abs(mTimer - calculateCurrentRelativeTime()) <= 1;
     }
-
 
     /**
      * Creates a Bitmap from a BitMatrix
@@ -886,7 +871,6 @@ public class ScoutingActivity
         mTimeProgress.setVisibility(View.GONE);
     }
 
-
     /**
      * Updates the activity's background colour
      */
@@ -1012,6 +996,7 @@ public class ScoutingActivity
      * Attempts to undo the previous action and vibrates
      * if the undo has been successful
      */
+
     private void performUndo() {
         DataConstant dc = mEntry.undo();
         if (dc == null) {

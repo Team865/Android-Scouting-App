@@ -46,4 +46,6 @@
         <item>Blue 3</item>
     </string-array>
 
+    <string name="send_with_another_method">Send with another method</string>
+
 </resources>
