@@ -12,19 +12,6 @@ import android.os.Handler;
 public interface ScoutingActivityListener
         extends Entry.Timekeeper {
 
-    interface AbstractActionVibrator {
-
-        /**
-         * Vibrate to indicate scouting start
-         */
-        void vibrateStart();
-
-        /**
-         * Vibrate to indicate an action
-         */
-        void vibrateAction();
-    }
-
     /**
      * @return The time Handler of the activity
      */

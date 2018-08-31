@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import ca.warp7.android.scouting.model.ScoutingActivityListener;
+import ca.warp7.android.scouting.model.AbstractActionVibrator;
 import ca.warp7.android.scouting.model.Specs;
 
 public class ManagedPreferences {
@@ -124,7 +124,7 @@ public class ManagedPreferences {
         }
     }
 
-    public static class ActionVibrator implements ScoutingActivityListener.AbstractActionVibrator {
+    public static class ActionVibrator implements AbstractActionVibrator {
         private Vibrator mActualVibrator;
         private boolean mVibrationOn;
 
