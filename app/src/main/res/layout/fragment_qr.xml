@@ -11,12 +11,14 @@
         android:id="@+id/qr_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="12dp"
         android:contentDescription="@string/layout_error" />
 
     <Button
+        android:id="@+id/send_with_another_method"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/send_with_another_method"
-        android:id="@+id/send_with_another_method"
         android:textAllCaps="false" />
 </LinearLayout>

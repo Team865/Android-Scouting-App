@@ -18,6 +18,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -88,14 +89,13 @@ public class QRFragment extends Fragment implements ScoutingTab {
 
     private void setQRImage(View view) {
         ImageView qrImage = view.findViewById(R.id.qr_image);
-        qrImage.setPadding(16, 16, 16, 16);
         int dim = qrImage.getWidth();
 
         qrImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher_background));
         try {
             Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
-            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
             hints.put(EncodeHintType.MARGIN, 1);
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
 
             qrImage.setImageBitmap(createBitmap(
                     new MultiFormatWriter().encode(

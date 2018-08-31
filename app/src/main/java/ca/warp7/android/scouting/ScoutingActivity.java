@@ -926,13 +926,18 @@ public class ScoutingActivity
 
     private void updateCurrentTab() {
 
-        if (!mLayouts.isEmpty() && mCurrentTab >= 0 && mCurrentTab < mLayouts.size()) {
+        String title = "";
 
-            setAnimatedTitleBanner(mLayouts.get(mCurrentTab).getTitle());
+        if (mCurrentTab >= 0 && mCurrentTab < mLayouts.size()) {
+            title = mLayouts.get(mCurrentTab).getTitle();
+        } else if (mCurrentTab == mLayouts.size()) {
+            title = "QR Code";
+        }
 
-            if (mPager.getCurrentItem() != mCurrentTab) {
-                mPager.setCurrentItem(mCurrentTab, true);
-            }
+        setAnimatedTitleBanner(title);
+
+        if (mPager.getCurrentItem() != mCurrentTab) {
+            mPager.setCurrentItem(mCurrentTab, true);
         }
     }
 
@@ -944,13 +949,13 @@ public class ScoutingActivity
     private void updateTabInputStates() {
 
         if (mCurrentTab != 0) {
-            mPagerAdapter.getFragment(mCurrentTab - 1).updateTabState();
+            mPagerAdapter.getTabAt(mCurrentTab - 1).updateTabState();
         }
 
-        mPagerAdapter.getFragment(mCurrentTab).updateTabState();
+        mPagerAdapter.getTabAt(mCurrentTab).updateTabState();
 
         if (mCurrentTab != mPagerAdapter.getCount() - 1) {
-            mPagerAdapter.getFragment(mCurrentTab + 1).updateTabState();
+            mPagerAdapter.getTabAt(mCurrentTab + 1).updateTabState();
         }
     }
 
@@ -1022,16 +1027,20 @@ public class ScoutingActivity
 
         @Override
         public Fragment getItem(int position) {
-            return ScoutingInputsFragment.createInstance(position);
+            if (position < mSpecs.getLayouts().size()) {
+                return ScoutingInputsFragment.createInstance(position);
+            } else {
+                return QRFragment.createInstance(EntryFormatter.formatEncode(mEntry));
+            }
         }
 
         @Override
         public int getCount() {
-            return mSpecs.getLayouts().size();
+            return mSpecs.getLayouts().size() + 1;
         }
 
-        ScoutingInputsFragment getFragment(int index) {
-            return (ScoutingInputsFragment) instantiateItem(mPager, index);
+        ScoutingTab getTabAt(int index) {
+            return (ScoutingTab) instantiateItem(mPager, index);
         }
 
     }
