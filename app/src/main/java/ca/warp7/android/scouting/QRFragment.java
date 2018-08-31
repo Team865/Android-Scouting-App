@@ -1,11 +1,12 @@
 package ca.warp7.android.scouting;
 
-import android.app.Fragment;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +22,12 @@ import com.google.zxing.common.BitMatrix;
 import java.util.EnumMap;
 import java.util.Map;
 
+import ca.warp7.android.scouting.model.ScoutingTab;
 
-public class QRFragment extends Fragment {
 
+public class QRFragment extends Fragment implements ScoutingTab {
+
+    private String mMessage = " ";
 
     public static QRFragment createInstance(String message) {
         QRFragment fragment = new QRFragment();
@@ -36,6 +40,9 @@ public class QRFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mMessage = getArguments().getString("qr_message");
+        }
     }
 
     @Override
@@ -45,7 +52,7 @@ public class QRFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -73,11 +80,10 @@ public class QRFragment extends Fragment {
     }
 
     private void onSendIntent() {
-        String message = getArguments().getString("qr_message");
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, message);
+        intent.putExtra(Intent.EXTRA_TEXT, mMessage);
         intent.setType("text/plain");
-        startActivity(Intent.createChooser(intent, message));
+        startActivity(Intent.createChooser(intent, mMessage));
     }
 
     private void setQRImage(View view) {
@@ -93,7 +99,7 @@ public class QRFragment extends Fragment {
 
             qrImage.setImageBitmap(createBitmap(
                     new MultiFormatWriter().encode(
-                            getArguments().getString("qr_message"),
+                            mMessage,
                             BarcodeFormat.QR_CODE,
                             dim,
                             dim,
@@ -129,5 +135,10 @@ public class QRFragment extends Fragment {
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmap;
+    }
+
+    @Override
+    public void updateTabState() {
+
     }
 }

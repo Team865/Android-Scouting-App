@@ -61,6 +61,7 @@ import ca.warp7.android.scouting.model.EntryFormatter;
 import ca.warp7.android.scouting.model.ID;
 import ca.warp7.android.scouting.model.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.ScoutingLayout;
+import ca.warp7.android.scouting.model.ScoutingTab;
 import ca.warp7.android.scouting.model.Specs;
 
 
@@ -76,7 +77,7 @@ import ca.warp7.android.scouting.model.Specs;
  * <p>
  *
  * @author Team 865
- * @see InputsFragment
+ * @see ScoutingInputsFragment
  * @see ScoutingActivityListener
  * @see Entry
  * </p>
@@ -127,7 +128,7 @@ public class ScoutingActivity
     private ImageButton mUndoSkipButton;
 
     private ViewPager mPager;
-    private InputTabsPagerAdapter mPagerAdapter;
+    private ScoutingTabsPagerAdapter mPagerAdapter;
 
 
     // System Services
@@ -157,7 +158,7 @@ public class ScoutingActivity
 
             mTimerIsRunning = true;
 
-            updateTimerStatusAndSeeker();
+            updateTimerStatusAndProgressBar();
             updateTabInputStates();
             mTimer++;
 
@@ -195,7 +196,7 @@ public class ScoutingActivity
         setupValuesFromIntent();
         setupPager();
 
-        updateTimerStatusAndSeeker();
+        updateTimerStatusAndProgressBar();
         updateCurrentTab();
 
         initStates(savedInstanceState);
@@ -378,7 +379,7 @@ public class ScoutingActivity
 
     public void onStatusTimerClicked(View view) {
         mTimerIsCountingUp = !mTimerIsCountingUp;
-        updateTimerStatusAndSeeker();
+        updateTimerStatusAndProgressBar();
     }
 
     /**
@@ -655,7 +656,7 @@ public class ScoutingActivity
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser && mActivityState == ActivityState.PAUSING) {
                     mTimer = progress;
-                    updateTimerStatusAndSeeker();
+                    updateTimerStatusAndProgressBar();
                     updateTabInputStates();
                 }
             }
@@ -728,7 +729,7 @@ public class ScoutingActivity
 
         mPager = findViewById(R.id.pager);
 
-        mPagerAdapter = new InputTabsPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new ScoutingTabsPagerAdapter(getSupportFragmentManager());
 
         mPager.setAdapter(mPagerAdapter);
 
@@ -937,22 +938,19 @@ public class ScoutingActivity
 
     /**
      * Updates the state on the views on the page to match undo
-     * and navigation. Current implementation calls the PageAdapter
-     * to destroy all instantiated tabs and recreate them (also in
-     * InputTabsPagerAdapter). Plans to upgrade to getting the specific
-     * fragments and update them (in InputsFragment)
+     * and navigation.
      */
 
     private void updateTabInputStates() {
 
         if (mCurrentTab != 0) {
-            mPagerAdapter.getFragment(mCurrentTab - 1).updateStates();
+            mPagerAdapter.getFragment(mCurrentTab - 1).updateTabState();
         }
 
-        mPagerAdapter.getFragment(mCurrentTab).updateStates();
+        mPagerAdapter.getFragment(mCurrentTab).updateTabState();
 
         if (mCurrentTab != mPagerAdapter.getCount() - 1) {
-            mPagerAdapter.getFragment(mCurrentTab + 1).updateStates();
+            mPagerAdapter.getFragment(mCurrentTab + 1).updateTabState();
         }
     }
 
@@ -960,7 +958,7 @@ public class ScoutingActivity
      * Reflect the value of mTimer on the timer view and seek bars
      */
 
-    private void updateTimerStatusAndSeeker() {
+    private void updateTimerStatusAndProgressBar() {
 
         String status;
         int time;
@@ -1015,16 +1013,16 @@ public class ScoutingActivity
      * Adapter that returns the proper fragment as pages are navigated
      */
 
-    private class InputTabsPagerAdapter
+    private class ScoutingTabsPagerAdapter
             extends FragmentPagerAdapter {
 
-        InputTabsPagerAdapter(FragmentManager fm) {
+        ScoutingTabsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            return InputsFragment.createInstance(position);
+            return ScoutingInputsFragment.createInstance(position);
         }
 
         @Override
@@ -1032,8 +1030,8 @@ public class ScoutingActivity
             return mSpecs.getLayouts().size();
         }
 
-        InputsFragment getFragment(int index) {
-            return (InputsFragment) instantiateItem(mPager, index);
+        ScoutingInputsFragment getFragment(int index) {
+            return (ScoutingInputsFragment) instantiateItem(mPager, index);
         }
 
     }
@@ -1047,8 +1045,8 @@ public class ScoutingActivity
      * @author Team 865
      */
 
-    public static class InputsFragment
-            extends Fragment {
+    public static class ScoutingInputsFragment
+            extends Fragment implements ScoutingTab {
 
 
         private ScoutingActivityListener mListener;
@@ -1104,7 +1102,7 @@ public class ScoutingActivity
                 mListener = (ScoutingActivityListener) context;
             } else {
                 throw new RuntimeException(context.toString()
-                        + " must implement InputControls.ScoutingActivityListener");
+                        + " must implement ScoutingActivityListener");
             }
         }
 
@@ -1122,7 +1120,7 @@ public class ScoutingActivity
          * @return a matching View from InputControls
          */
 
-        View createControlFromDataConstant(DataConstant dc, String idIfNull) {
+        private View createControlFromDataConstant(DataConstant dc, String idIfNull) {
 
             if (dc == null) {
                 return new InputControls.UnknownControl(getContext(), idIfNull, mListener);
@@ -1164,7 +1162,7 @@ public class ScoutingActivity
          * @return the specified view with added layout
          */
 
-        View createSpecifiedControl(String id, int span) {
+        private View createControlFromIdAndSpan(String id, int span) {
             DataConstant dc = mSpecs.getDataConstantByStringID(id);
 
             View view = createControlFromDataConstant(dc, id);
@@ -1187,7 +1185,7 @@ public class ScoutingActivity
          * @param fieldRow an array of identifiers
          */
 
-        void layoutRow(String[] fieldRow) {
+        private void layoutRow(String[] fieldRow) {
             TableRow tr = new TableRow(getContext());
 
             tr.setLayoutParams(new TableLayout.LayoutParams(
@@ -1195,11 +1193,11 @@ public class ScoutingActivity
                     TableLayout.LayoutParams.MATCH_PARENT, 1.0f));
 
             if (fieldRow.length == 1) {
-                tr.addView(createSpecifiedControl(fieldRow[0], 2));
+                tr.addView(createControlFromIdAndSpan(fieldRow[0], 2));
 
             } else {
                 for (String fieldID : fieldRow) {
-                    tr.addView(createSpecifiedControl(fieldID, 1));
+                    tr.addView(createControlFromIdAndSpan(fieldID, 1));
                 }
             }
 
@@ -1210,7 +1208,7 @@ public class ScoutingActivity
          * Get the layout and create the entire table
          */
 
-        void layoutTable() {
+        private void layoutTable() {
 
             List<String[]> fields = mLayout.getFields();
             mInputTable.setWeightSum(fields.size());
@@ -1221,11 +1219,8 @@ public class ScoutingActivity
             }
         }
 
-        /**
-         * Update the states of input views
-         */
-
-        void updateStates() {
+        @Override
+        public void updateTabState() {
 
             if (mInputTable != null) {
                 for (int i = 0; i < mInputTable.getChildCount(); i++) {
@@ -1250,8 +1245,8 @@ public class ScoutingActivity
          * @return the created instance
          */
 
-        static InputsFragment createInstance(int currentTab) {
-            InputsFragment f = new InputsFragment();
+        static ScoutingInputsFragment createInstance(int currentTab) {
+            ScoutingInputsFragment f = new ScoutingInputsFragment();
 
             Bundle args = new Bundle();
             args.putInt("tab", currentTab);
