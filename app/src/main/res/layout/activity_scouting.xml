@@ -46,7 +46,7 @@
                 android:layout_marginTop="2dp"
                 android:padding="4dp"
                 android:contentDescription="@string/hint_match"
-                android:src="@drawable/ic_layers_gray_small" />
+                android:src="@drawable/ic_layers_ablack_small" />
 
             <TextView
                 android:id="@+id/toolbar_match"
@@ -72,7 +72,7 @@
                 android:layout_marginTop="2dp"
                 android:padding="4dp"
                 android:contentDescription="@string/hint_team"
-                android:src="@drawable/ic_people_gray_small"
+                android:src="@drawable/ic_people_ablack_small"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp" />
 
@@ -87,6 +87,36 @@
                 android:textStyle="bold"
                 android:layout_marginRight="8dp"
                 android:layout_marginEnd="8dp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorGray" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:padding="4dp"
+                android:contentDescription="@string/start_timer"
+                android:src="@drawable/ic_timer_ablack_small"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp" />
+
+            <TextView
+                android:id="@+id/timer_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:ellipsize="end"
+                android:onClick="onStatusTimerClicked"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:typeface="sans"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp" />
 
         </LinearLayout>
 
@@ -156,14 +186,14 @@
             android:background="@drawable/cornered_bg_accent"
             android:onClick="onStartScouting"
             android:paddingBottom="6dp"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
             android:paddingTop="6dp"
             android:text="@string/start_timer"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/timer_status"
+            app:layout_constraintBaseline_toBaselineOf="@+id/title_banner"
             app:layout_constraintEnd_toStartOf="@+id/play_pause" />
 
         <ImageButton
@@ -205,10 +235,11 @@
             android:background="?android:attr/listDivider"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone" />
 
         <TextView
-            android:id="@+id/timer_status"
+            android:id="@+id/timer_status2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -222,7 +253,8 @@
             android:textSize="24sp"
             android:typeface="sans"
             app:layout_constraintBaseline_toBaselineOf="@+id/title_banner"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone" />
 
     </android.support.constraint.ConstraintLayout>
 

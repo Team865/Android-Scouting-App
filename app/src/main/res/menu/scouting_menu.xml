@@ -18,6 +18,7 @@
         android:id="@+id/menu_qr"
         android:icon="@drawable/ic_crop_free_green"
         android:title="@string/send_show_qr"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:visible="false" />
 
 </menu>
