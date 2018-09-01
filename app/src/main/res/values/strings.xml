@@ -47,5 +47,6 @@
     </string-array>
 
     <string name="send_with_another_method">Send with another method</string>
+    <string name="entry_info">Entry Info</string>
 
 </resources>

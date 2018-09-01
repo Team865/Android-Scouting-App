@@ -1,5 +1,10 @@
 package ca.warp7.android.scouting;
 
+/*
+This file contains code modified from
+https://github.com/journeyapps/zxing-android-embedded/,
+which is licensed under the Apache License, Version 2.0
+ */
 
 import android.content.Context;
 import android.content.Intent;
@@ -74,14 +79,6 @@ public class QRFragment extends Fragment implements ScoutingTab {
             public void onGlobalLayout() {
                 view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 setQRImage(view);
-            }
-        });
-
-        view.findViewById(R.id.qr_image).setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                onSendIntent();
-                return true;
             }
         });
 

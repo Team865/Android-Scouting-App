@@ -1,17 +1,11 @@
 package ca.warp7.android.scouting;
 
-/*
-This file contains code taken from
-https://github.com/journeyapps/zxing-android-embedded/,
-which is licensed under the Apache License, Version 2.0
- */
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -41,17 +35,11 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
 
 import java.util.List;
 
@@ -82,7 +70,6 @@ import ca.warp7.android.scouting.model.Specs;
  * @see Entry
  * </p>
  */
-
 
 public class ScoutingActivity
         extends AppCompatActivity
@@ -230,8 +217,14 @@ public class ScoutingActivity
                 onCommentsAndFlags();
                 return true;
 
+            case R.id.menu_logs:
+                onShowEntryLogs();
+                return true;
+
             case R.id.menu_qr:
-                onShowQRCode();
+                //onShowQRCode();
+                mCurrentTab = mLayouts.size();
+                updateCurrentTab();
                 return true;
 
             default:
@@ -383,11 +376,18 @@ public class ScoutingActivity
     }
 
     /**
-     * Shows the log on title click
+     * An overwrite to onBackPressed with a View argument to allow callback
      */
 
-    public void onToolbarTitleClicked(View view) {
+    public void onBackPressed(View view) {
+        onBackPressed();
+    }
 
+    /**
+     * Shows the entry log
+     */
+
+    private void onShowEntryLogs() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Entry Report/Log")
                 .setMessage(EntryFormatter.formatReport(mEntry) + mStatusLog.toString())
@@ -409,49 +409,6 @@ public class ScoutingActivity
                         }
                     });
         }
-        builder.create().show();
-    }
-
-    /**
-     * An overwrite to onBackPressed with a View argument to allow callback
-     */
-
-    public void onBackPressed(View view) {
-        onBackPressed();
-    }
-
-    /**
-     * Shows the QR dialog with sharing options
-     */
-
-    private void onShowQRCode() {
-
-        mEntry.clean();
-        final String encoded = EntryFormatter.formatEncode(mEntry);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("QR Code")
-                .setView(getQRImage(encoded))
-
-                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-
-                .setPositiveButton("Send To", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Show the sharing screen
-                        Intent intent = new Intent(Intent.ACTION_SEND);
-                        intent.putExtra(Intent.EXTRA_TEXT, encoded);
-                        intent.setType("text/plain");
-
-                        startActivity(Intent.createChooser(intent, encoded));
-                    }
-                });
-
         builder.create().show();
     }
 
@@ -527,59 +484,6 @@ public class ScoutingActivity
 
     private boolean isTimerAtCurrentTime() {
         return Math.abs(mTimer - calculateCurrentRelativeTime()) <= 1;
-    }
-
-    /**
-     * Creates a Bitmap from a BitMatrix
-     * <p>
-     * Code taken and modified from
-     * https://github.com/journeyapps/zxing-android-embedded/
-     * <p>
-     * LICENSED UNDER Apache 2.0
-     */
-
-    private Bitmap createBitmap(BitMatrix matrix) {
-
-        int width = matrix.getWidth();
-        int height = matrix.getHeight();
-        int[] pixels = new int[width * height];
-
-        for (int y = 0; y < height; y++) {
-            int offset = y * width;
-            for (int x = 0; x < width; x++) {
-                pixels[offset + x] = matrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF;
-            }
-        }
-
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-        return bitmap;
-    }
-
-
-    /**
-     * @return an ImageView of the current encode
-     */
-
-    private ImageView getQRImage(String encoded) {
-
-        ImageView qrImage = new ImageView(this);
-        int dim = mNavToolbox.getWidth();
-
-        try {
-
-            qrImage.setImageBitmap(createBitmap(
-                    new MultiFormatWriter().encode(
-                            encoded,
-                            BarcodeFormat.QR_CODE,
-                            dim,
-                            dim,
-                            null)));
-
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-        return qrImage;
     }
 
 

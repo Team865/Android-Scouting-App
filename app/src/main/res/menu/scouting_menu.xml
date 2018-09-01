@@ -7,6 +7,13 @@
         android:icon="@drawable/ic_comment_ablack"
         android:title="@string/edit_comments"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_logs"
+        android:icon="@drawable/ic_info_outline_ablack"
+        android:title="@string/entry_info"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/menu_qr"
         android:icon="@drawable/ic_crop_free_green"
