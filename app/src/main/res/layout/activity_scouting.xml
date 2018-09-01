@@ -1,108 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="ca.warp7.android.scouting.ScoutingActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?android:attr/actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingStart="16dp"
+        android:paddingRight="0dp"
+        android:paddingEnd="0dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:padding="4dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:contentDescription="@string/exit_confirmation"
+            android:src="@drawable/ic_close_ablack"
+            android:onClick="onBackPressed"
+            android:visibility="gone"
+            tools:ignore="NewApi" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:id="@+id/highlight_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cornered_bg"
+            android:orientation="horizontal"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:gravity="center_vertical">
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:background="?android:selectableItemBackgroundBorderless"
-                android:contentDescription="@string/exit_confirmation"
-                android:src="@drawable/ic_close_ablack"
-                android:onClick="onBackPressed"
-                tools:ignore="NewApi" />
-
-            <LinearLayout
-                android:id="@+id/highlight_bar"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/cornered_bg"
-                android:orientation="horizontal"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:gravity="center_vertical">
+                android:layout_marginTop="2dp"
+                android:padding="4dp"
+                android:contentDescription="@string/hint_match"
+                android:src="@drawable/ic_layers_gray_small" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:padding="4dp"
-                    android:contentDescription="@string/hint_match"
-                    android:src="@drawable/ic_layers_gray_small" />
+            <TextView
+                android:id="@+id/toolbar_match"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/colorAlmostBlack"
+                android:textSize="20sp"
+                android:typeface="sans"
+                android:textStyle="italic"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp" />
 
-                <TextView
-                    android:id="@+id/toolbar_match"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/colorAlmostBlack"
-                    android:textSize="20sp"
-                    android:typeface="sans"
-                    android:textStyle="italic"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginEnd="8dp" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorGray" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorGray" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:padding="4dp"
+                android:contentDescription="@string/hint_team"
+                android:src="@drawable/ic_people_gray_small"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:padding="4dp"
-                    android:contentDescription="@string/hint_team"
-                    android:src="@drawable/ic_people_gray_small"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp" />
-
-                <TextView
-                    android:id="@+id/toolbar_team"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="4dp"
-                    android:paddingTop="4dp"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginEnd="8dp" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/toolbar_team"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp" />
 
         </LinearLayout>
 
-    </android.support.v7.widget.Toolbar>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?android:attr/actionBarSize" />
 
+    </LinearLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/nav_toolbox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <ProgressBar
             android:id="@+id/time_progress"
@@ -229,15 +228,11 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="0dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nav_toolbox" />
+        android:layout_marginStart="4dp" />
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

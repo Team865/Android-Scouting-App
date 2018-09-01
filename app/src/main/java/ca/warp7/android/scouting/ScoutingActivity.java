@@ -525,8 +525,8 @@ public class ScoutingActivity
 
         mToolbar = findViewById(R.id.my_toolbar);
 
-        mToolbarTeam = mToolbar.findViewById(R.id.toolbar_team);
-        mToolbarMatch = mToolbar.findViewById(R.id.toolbar_match);
+        mToolbarTeam = findViewById(R.id.toolbar_team);
+        mToolbarMatch = findViewById(R.id.toolbar_match);
 
         setSupportActionBar(mToolbar);
 
@@ -1197,7 +1197,7 @@ public class ScoutingActivity
 
     private static final int kBlueAllianceColour = 0xFF0000FF;
     private static final int kRedAllianceColour = 0xFFFF0000;
-    private static final int kNeutralAllianceColour = 0xFF808080;
+    private static final int kNeutralAllianceColour = 0xFFFF00FF;
     private static final int kAutonomousColour = 0xFFCC9900;
     private static final int kTeleOpColour = 0xFF006633;
     private static final int kFinishedColour = 0xFFFF0000;
