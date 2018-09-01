@@ -20,7 +20,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Gravity;
@@ -53,6 +52,14 @@ import ca.warp7.android.scouting.model.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.ScoutingLayout;
 import ca.warp7.android.scouting.model.ScoutingTab;
 import ca.warp7.android.scouting.model.Specs;
+import ca.warp7.android.scouting.widgets.CenteredControlLayout;
+import ca.warp7.android.scouting.widgets.Checkbox;
+import ca.warp7.android.scouting.widgets.ChoicesButton;
+import ca.warp7.android.scouting.widgets.CountedInputControlLayout;
+import ca.warp7.android.scouting.widgets.DurationButton;
+import ca.warp7.android.scouting.widgets.LabeledControlLayout;
+import ca.warp7.android.scouting.widgets.TimerButton;
+import ca.warp7.android.scouting.widgets.UndefinedInputsIndicator;
 
 
 /**
@@ -918,45 +925,6 @@ public class ScoutingActivity
         }
     }
 
-    /**
-     * Creates a placeholder button that shows definition errors
-     */
-
-    static class UndefinedInputsIndicator
-            extends AppCompatButton
-            implements View.OnClickListener {
-
-        ScoutingActivityListener listener;
-
-        public UndefinedInputsIndicator(Context context) {
-            super(context);
-        }
-
-        public UndefinedInputsIndicator(Context context, String text,
-                                        ScoutingActivityListener listener) {
-            super(context);
-            setOnClickListener(this);
-            setTextSize(18);
-            setText(text);
-            this.listener = listener;
-        }
-
-        @Override
-        public void onClick(View v) {
-            setTextColor(getResources().getColor(R.color.colorWhite));
-            getBackground().setColorFilter(
-                    getResources().getColor(android.R.color.black), PorterDuff.Mode.MULTIPLY);
-            listener.getManagedVibrator().vibrateAction();
-            listener.getHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setTextColor(getResources().getColor(android.R.color.black));
-                    getBackground().clearColorFilter();
-                }
-            }, 1000);
-        }
-    }
-
 
     // Inner Class and Enum
     /**
@@ -1083,26 +1051,26 @@ public class ScoutingActivity
             switch (dc.getType()) {
                 case DataConstant.TIMESTAMP:
                     //return new InputControls.TimerButton(getContext(), dc, mListener);
-                    return new InputControls.CountedInputControlLayout(getContext(), dc, mListener,
-                            new InputControls.TimerButton(getContext(), dc, mListener));
+                    return new CountedInputControlLayout(getContext(), dc, mListener,
+                            new TimerButton(getContext(), dc, mListener));
 
                 case DataConstant.CHECKBOX:
-                    return new InputControls.CenteredControlLayout(getContext(), dc, mListener,
-                            new InputControls.Checkbox(getContext(), dc, mListener));
+                    return new CenteredControlLayout(getContext(), dc, mListener,
+                            new Checkbox(getContext(), dc, mListener));
 
                 case DataConstant.DURATION:
-                    return new InputControls.DurationButton(getContext(), dc, mListener);
+                    return new DurationButton(getContext(), dc, mListener);
 
 
                 case DataConstant.RATING:
 
-                    return new InputControls.LabeledControlLayout(getContext(), dc, mListener,
-                            new InputControls.SeekBar(getContext(), dc, mListener));
+                    return new LabeledControlLayout(getContext(), dc, mListener,
+                            new ca.warp7.android.scouting.widgets.SeekBar(getContext(), dc, mListener));
 
                 case DataConstant.CHOICE:
 
-                    return new InputControls.LabeledControlLayout(getContext(), dc, mListener,
-                            new InputControls.ChoicesButton(getContext(), dc, mListener));
+                    return new LabeledControlLayout(getContext(), dc, mListener,
+                            new ChoicesButton(getContext(), dc, mListener));
 
                 default:
                     return new UndefinedInputsIndicator(getContext(), dc.getLabel(), mListener);
