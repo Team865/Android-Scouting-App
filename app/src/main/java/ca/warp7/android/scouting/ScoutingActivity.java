@@ -20,6 +20,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Gravity;
@@ -43,6 +44,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ca.warp7.android.scouting.model.BaseInputControl;
 import ca.warp7.android.scouting.model.DataConstant;
 import ca.warp7.android.scouting.model.Entry;
 import ca.warp7.android.scouting.model.EntryFormatter;
@@ -916,9 +918,47 @@ public class ScoutingActivity
         }
     }
 
+    /**
+     * Creates a placeholder button that shows definition errors
+     */
+
+    static class UndefinedInputsIndicator
+            extends AppCompatButton
+            implements View.OnClickListener {
+
+        ScoutingActivityListener listener;
+
+        public UndefinedInputsIndicator(Context context) {
+            super(context);
+        }
+
+        public UndefinedInputsIndicator(Context context, String text,
+                                        ScoutingActivityListener listener) {
+            super(context);
+            setOnClickListener(this);
+            setTextSize(18);
+            setText(text);
+            this.listener = listener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            setTextColor(getResources().getColor(R.color.colorWhite));
+            getBackground().setColorFilter(
+                    getResources().getColor(android.R.color.black), PorterDuff.Mode.MULTIPLY);
+            listener.getManagedVibrator().vibrateAction();
+            listener.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setTextColor(getResources().getColor(android.R.color.black));
+                    getBackground().clearColorFilter();
+                }
+            }, 1000);
+        }
+    }
+
 
     // Inner Class and Enum
-
     /**
      * Adapter that returns the proper fragment as pages are navigated
      */
@@ -948,9 +988,8 @@ public class ScoutingActivity
             return (ScoutingTab) instantiateItem(mPager, index);
         }
 
+
     }
-
-
     /**
      * The fragment that is shown in the biggest portion
      * of ScoutingActivity -- it manages a TableLayout that
@@ -961,6 +1000,7 @@ public class ScoutingActivity
 
     public static class ScoutingInputsFragment
             extends Fragment implements ScoutingTab {
+
 
 
         private ScoutingActivityListener mListener;
@@ -1037,13 +1077,13 @@ public class ScoutingActivity
         private View createControlFromDataConstant(DataConstant dc, String idIfNull) {
 
             if (dc == null) {
-                return new InputControls.UnknownControl(getContext(), idIfNull, mListener);
+                return new UndefinedInputsIndicator(getContext(), idIfNull, mListener);
             }
 
             switch (dc.getType()) {
                 case DataConstant.TIMESTAMP:
                     //return new InputControls.TimerButton(getContext(), dc, mListener);
-                    return new InputControls.CountedControlLayout(getContext(), dc, mListener,
+                    return new InputControls.CountedInputControlLayout(getContext(), dc, mListener,
                             new InputControls.TimerButton(getContext(), dc, mListener));
 
                 case DataConstant.CHECKBOX:
@@ -1065,8 +1105,7 @@ public class ScoutingActivity
                             new InputControls.ChoicesButton(getContext(), dc, mListener));
 
                 default:
-                    return new InputControls.UnknownControl(getContext(),
-                            dc.getLabel(), mListener);
+                    return new UndefinedInputsIndicator(getContext(), dc.getLabel(), mListener);
             }
         }
 
@@ -1143,8 +1182,8 @@ public class ScoutingActivity
                         TableRow row = (TableRow) child;
                         for (int j = 0; j < row.getChildCount(); j++) {
                             View view = row.getChildAt(j);
-                            if (view instanceof InputControls.BaseControl) {
-                                ((InputControls.BaseControl) view).updateControlState();
+                            if (view instanceof BaseInputControl) {
+                                ((BaseInputControl) view).updateControlState();
                             }
                         }
                     }

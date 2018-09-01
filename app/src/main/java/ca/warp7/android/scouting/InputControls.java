@@ -21,7 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import ca.warp7.android.scouting.model.BaseInputControl;
+import ca.warp7.android.scouting.model.ChildInputControl;
 import ca.warp7.android.scouting.model.DataConstant;
+import ca.warp7.android.scouting.model.ParentInputControlListener;
 import ca.warp7.android.scouting.model.ScoutingActivityListener;
 
 /**
@@ -34,42 +37,18 @@ import ca.warp7.android.scouting.model.ScoutingActivityListener;
 class InputControls {
 
     /**
-     * Base interface for all custom controls
-     */
-    interface BaseControl {
-        void updateControlState();
-    }
-
-    /**
-     * Interface for containers to implement, which the child
-     * view can call to get the supporting view to act on it
-     */
-
-    interface ParentControlListener {
-        View getSupportView();
-    }
-
-    /**
-     * Child view interface to pass a ParentControlLister
-     */
-
-    interface ChildControl {
-        void setParentListener(ParentControlListener listener);
-    }
-
-    /**
      * A Base button for other buttons to extend onto
      */
 
     static abstract class BaseButton
             extends AppCompatButton
-            implements BaseControl,
-            ChildControl,
+            implements BaseInputControl,
+            ChildInputControl,
             View.OnClickListener {
 
         DataConstant dc;
         ScoutingActivityListener listener;
-        ParentControlListener parentControlListener;
+        ParentInputControlListener parentInputControlListener;
         View parentSupportView;
 
         BaseButton(Context context) {
@@ -101,8 +80,8 @@ class InputControls {
         }
 
         @Override
-        public void setParentListener(ParentControlListener listener) {
-            parentControlListener = listener;
+        public void setParentListener(ParentInputControlListener listener) {
+            parentInputControlListener = listener;
             parentSupportView = listener.getSupportView();
         }
     }
@@ -111,7 +90,7 @@ class InputControls {
      * A button that records time as it is pressed
      */
 
-    static final class TimerButton
+    static class TimerButton
             extends BaseButton {
 
         int counter;
@@ -151,7 +130,7 @@ class InputControls {
         }
 
         @Override
-        public void setParentListener(ParentControlListener listener) {
+        public void setParentListener(ParentInputControlListener listener) {
             super.setParentListener(listener);
             updateCounterView(false);
         }
@@ -200,7 +179,7 @@ class InputControls {
      * It records the time of when the button is
      */
 
-    static final class DurationButton
+    static class DurationButton
             extends BaseButton {
 
         boolean isOn;
@@ -265,9 +244,9 @@ class InputControls {
      * A button that gives the user a list of options to choose
      */
 
-    static final class ChoicesButton
+    static class ChoicesButton
             extends AppCompatTextView
-            implements BaseControl,
+            implements BaseInputControl,
             View.OnClickListener {
 
         DataConstant dc;
@@ -328,9 +307,9 @@ class InputControls {
      * A checkbox that gives true or false values
      */
 
-    static final class Checkbox
+    static class Checkbox
             extends AppCompatCheckBox
-            implements BaseControl,
+            implements BaseInputControl,
             View.OnClickListener {
 
         DataConstant dc;
@@ -385,9 +364,9 @@ class InputControls {
      * Creates a ratings bar based on the maximum value specified
      */
 
-    static final class SeekBar
+    static class SeekBar
             extends AppCompatSeekBar
-            implements BaseControl,
+            implements BaseInputControl,
             AppCompatSeekBar.OnSeekBarChangeListener {
 
 
@@ -408,11 +387,8 @@ class InputControls {
             this.listener = listener;
 
             setOnSeekBarChangeListener(this);
-
             setBackgroundColor(0);
-
             setMax(dc.getMax());
-
             updateControlState();
         }
 
@@ -420,12 +396,10 @@ class InputControls {
         public void onProgressChanged(android.widget.SeekBar seekBar,
                                       int progress,
                                       boolean fromUser) {
-
         }
 
         @Override
         public void onStartTrackingTouch(android.widget.SeekBar seekBar) {
-
         }
 
         @Override
@@ -436,7 +410,6 @@ class InputControls {
                 lastProgress = getProgress();
 
                 listener.getEntry().push(dc.getIndex(), lastProgress, 1);
-
                 listener.pushStatus(dc.getLabel() + " - " + lastProgress + "/" + dc.getMax());
             }
         }
@@ -452,9 +425,9 @@ class InputControls {
      * Creates a box container for a label and another control
      */
 
-    static final class LabeledControlLayout
+    static class LabeledControlLayout
             extends LinearLayout
-            implements BaseControl {
+            implements BaseInputControl {
 
         DataConstant dc;
         ScoutingActivityListener listener;
@@ -512,8 +485,8 @@ class InputControls {
 
         @Override
         public void updateControlState() {
-            if (subControl instanceof BaseControl) {
-                ((BaseControl) subControl).updateControlState();
+            if (subControl instanceof BaseInputControl) {
+                ((BaseInputControl) subControl).updateControlState();
             }
         }
     }
@@ -522,9 +495,9 @@ class InputControls {
      * Creates a box container that centers the control inside it
      */
 
-    static final class CenteredControlLayout
+    static class CenteredControlLayout
             extends ConstraintLayout
-            implements BaseControl,
+            implements BaseInputControl,
             View.OnClickListener {
 
         DataConstant dc;
@@ -586,8 +559,8 @@ class InputControls {
         @Override
         public void updateControlState() {
             setEnabled(!listener.timedInputsShouldDisable());
-            if (subControl instanceof BaseControl) {
-                ((BaseControl) subControl).updateControlState();
+            if (subControl instanceof BaseInputControl) {
+                ((BaseInputControl) subControl).updateControlState();
             }
         }
     }
@@ -596,10 +569,10 @@ class InputControls {
      * A counter for the buttons
      */
 
-    static final class CountedControlLayout
+    static class CountedInputControlLayout
             extends FrameLayout
-            implements BaseControl,
-            ParentControlListener {
+            implements BaseInputControl,
+            ParentInputControlListener {
 
         DataConstant dc;
         ScoutingActivityListener listener;
@@ -607,14 +580,14 @@ class InputControls {
         TextView counter;
         View subControl;
 
-        public CountedControlLayout(@NonNull Context context) {
+        public CountedInputControlLayout(@NonNull Context context) {
             super(context);
         }
 
-        public CountedControlLayout(Context context,
-                                    DataConstant dc,
-                                    ScoutingActivityListener listener,
-                                    View control) {
+        public CountedInputControlLayout(Context context,
+                                         DataConstant dc,
+                                         ScoutingActivityListener listener,
+                                         View control) {
             super(context);
             this.dc = dc;
             this.listener = listener;
@@ -638,8 +611,8 @@ class InputControls {
 
             addView(counter);
 
-            if (control instanceof ChildControl) {
-                ((ChildControl) control).setParentListener(this);
+            if (control instanceof ChildInputControl) {
+                ((ChildInputControl) control).setParentListener(this);
             }
 
             subControl = control;
@@ -653,58 +626,10 @@ class InputControls {
 
         @Override
         public void updateControlState() {
-            if (subControl instanceof BaseControl) {
-                ((BaseControl) subControl).updateControlState();
+            if (subControl instanceof BaseInputControl) {
+                ((BaseInputControl) subControl).updateControlState();
             }
         }
     }
 
-    /**
-     * Creates a placeholder button that shows button is not found
-     */
-
-    static final class UnknownControl
-            extends AppCompatButton
-            implements View.OnClickListener {
-
-        ScoutingActivityListener listener;
-
-        public UnknownControl(Context context) {
-            super(context);
-        }
-
-        public UnknownControl(Context context, String text, ScoutingActivityListener listener) {
-            super(context);
-
-            setOnClickListener(this);
-
-            setAllCaps(false);
-            setTextSize(18);
-            setLines(2);
-
-            setTypeface(Typeface.SANS_SERIF);
-
-            setTextColor(getResources().getColor(android.R.color.black));
-
-            setText(text.replace(" ", "\n"));
-
-            this.listener = listener;
-        }
-
-        @Override
-        public void onClick(View v) {
-            setTextColor(getResources().getColor(R.color.colorWhite));
-            getBackground().setColorFilter(
-                    getResources().getColor(android.R.color.black),
-                    PorterDuff.Mode.MULTIPLY);
-            listener.getManagedVibrator().vibrateAction();
-            listener.getHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setTextColor(getResources().getColor(android.R.color.black));
-                    getBackground().clearColorFilter();
-                }
-            }, 1000);
-        }
-    }
 }
