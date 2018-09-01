@@ -41,7 +41,7 @@ public class ScoutingSchedule {
         }
     }
 
-    public void scheduleAllAtRobotPosition(RobotPosition position) {
+    public void scheduleAllAtRobotPosition(int position) {
         mCurrentlyScheduled.clear();
         for (MatchWithAllianceItem item : mFullSchedule) {
             mCurrentlyScheduled.add(new MatchWithAllianceItem(item, position));

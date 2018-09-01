@@ -5,7 +5,7 @@ public class MatchWithAllianceItem implements ScoutingScheduleItem {
     private int[] mTeams;
     private int mMatchNumber;
     private boolean mShouldFocus;
-    private RobotPosition mFocusPosition;
+    private int mFocusPosition;
 
     MatchWithAllianceItem(String matchCSV) {
         String[] split = matchCSV.split(",");
@@ -22,14 +22,14 @@ public class MatchWithAllianceItem implements ScoutingScheduleItem {
         mShouldFocus = other.shouldFocus();
     }
 
-    MatchWithAllianceItem(MatchWithAllianceItem other, RobotPosition focusPosition) {
+    MatchWithAllianceItem(MatchWithAllianceItem other, int focusPosition) {
         mMatchNumber = other.getMatchNumber();
         mTeams = other.getTeams();
         mShouldFocus = true;
         mFocusPosition = focusPosition;
     }
 
-    public RobotPosition getFocusPosition() {
+    public int getFocusPosition() {
         return mFocusPosition;
     }
 
@@ -41,19 +41,19 @@ public class MatchWithAllianceItem implements ScoutingScheduleItem {
         return mTeams[i];
     }
 
-    public int getTeamAtPosition(RobotPosition position) {
+    public int getTeamAtPosition(int position) {
         switch (position) {
-            case RED1:
+            case RobotPosition.RED1:
                 return mTeams[0];
-            case RED2:
+            case RobotPosition.RED2:
                 return mTeams[1];
-            case RED3:
+            case RobotPosition.RED3:
                 return mTeams[2];
-            case BLUE1:
+            case RobotPosition.BLUE1:
                 return mTeams[3];
-            case BLUE2:
+            case RobotPosition.BLUE2:
                 return mTeams[4];
-            case BLUE3:
+            case RobotPosition.BLUE3:
                 return mTeams[5];
         }
         return 0;

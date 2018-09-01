@@ -1,5 +1,11 @@
 package ca.warp7.android.scouting.model;
 
-public enum RobotPosition {
-    RED1, RED2, RED3, BLUE1, BLUE2, BLUE3
+
+public class RobotPosition {
+    public static final int RED1 = 0;
+    public static final int RED2 = 1;
+    public static final int RED3 = 2;
+    public static final int BLUE1 = 3;
+    public static final int BLUE2 = 4;
+    public static final int BLUE3 = 5;
 }

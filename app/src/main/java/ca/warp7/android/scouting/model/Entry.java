@@ -49,9 +49,9 @@ public class Entry {
 
     private List<EntryDatum> mDataStack;
 
-    private Timekeeper mTimekeeper;
+    private EntryTimekeeper mTimekeeper;
 
-    public Entry(int match, int team, String scout, Timekeeper timekeeper) {
+    public Entry(int match, int team, String scout, EntryTimekeeper timekeeper) {
 
         mMatchNumber = match;
         mTeamNumber = team;
@@ -227,10 +227,4 @@ public class Entry {
         return index;
     }
 
-    /**
-     * A callback interface to get the current time
-     */
-    public interface Timekeeper {
-        int getCurrentRelativeTime();
-    }
 }

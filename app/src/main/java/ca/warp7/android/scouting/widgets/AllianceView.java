@@ -35,7 +35,7 @@ public class AllianceView extends View {
     private String mB2 = "Blue 2";
     private String mB3 = "Blue 3";
 
-    private RobotPosition mFocusPosition = RobotPosition.RED1;
+    private int mFocusPosition = RobotPosition.RED1;
     private boolean mShouldFocus = false;
 
 

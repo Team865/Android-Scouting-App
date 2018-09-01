@@ -10,7 +10,7 @@ import android.os.Handler;
  */
 
 public interface ScoutingActivityListener
-        extends Entry.Timekeeper {
+        extends EntryTimekeeper {
 
     /**
      * @return The time Handler of the activity

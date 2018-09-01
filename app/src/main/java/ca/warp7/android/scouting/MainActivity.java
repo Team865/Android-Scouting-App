@@ -35,7 +35,6 @@ import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.model.SpecsIndex;
 
 
-@SuppressWarnings("ResultOfMethodCallIgnored")
 public class MainActivity
         extends AppCompatActivity
         implements TextWatcher,
