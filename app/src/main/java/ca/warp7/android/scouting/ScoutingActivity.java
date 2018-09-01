@@ -159,7 +159,7 @@ public class ScoutingActivity
             mTimerIsRunning = true;
 
             updateTimerStatusAndProgressBar();
-            updateTabInputStates();
+            updateAdjacentTabStates();
             mTimer++;
 
             if (mTimer <= kTimerLimit) { // Check if match ended
@@ -320,7 +320,7 @@ public class ScoutingActivity
         mEntry.setStartingTimestamp(mStartingTimestamp);
 
         startActivityState(ActivityState.SCOUTING);
-        updateTabInputStates();
+        updateAdjacentTabStates();
 
         pushStatus("Timer Started\n");
 
@@ -356,7 +356,7 @@ public class ScoutingActivity
             case SCOUTING: // Undo button
 
                 if (isTimerAtCurrentTime()) {
-                    performUndo();
+                    attemptUndo();
                 } else {
                     mTimer = calculateCurrentRelativeTime();
                     getManagedVibrator().vibrateStart();
@@ -657,7 +657,7 @@ public class ScoutingActivity
                 if (fromUser && mActivityState == ActivityState.PAUSING) {
                     mTimer = progress;
                     updateTimerStatusAndProgressBar();
-                    updateTabInputStates();
+                    updateAdjacentTabStates();
                 }
             }
 
@@ -932,6 +932,7 @@ public class ScoutingActivity
             title = mLayouts.get(mCurrentTab).getTitle();
         } else if (mCurrentTab == mLayouts.size()) {
             title = "QR Code";
+            mPagerAdapter.getTabAt(mCurrentTab).updateTabState();
         }
 
         setAnimatedTitleBanner(title);
@@ -946,7 +947,7 @@ public class ScoutingActivity
      * and navigation.
      */
 
-    private void updateTabInputStates() {
+    private void updateAdjacentTabStates() {
 
         if (mCurrentTab != 0) {
             mPagerAdapter.getTabAt(mCurrentTab - 1).updateTabState();
@@ -1000,14 +1001,14 @@ public class ScoutingActivity
      * if the undo has been successful
      */
 
-    private void performUndo() {
+    private void attemptUndo() {
         DataConstant dc = mEntry.undo();
         if (dc == null) {
             pushStatus("Cannot Undo @" + mTimer + "s");
         } else {
             pushStatus("Undo \'" + dc.getLabel() + "\'");
             getManagedVibrator().vibrateAction();
-            updateTabInputStates();
+            updateAdjacentTabStates();
         }
     }
 
@@ -1030,7 +1031,7 @@ public class ScoutingActivity
             if (position < mSpecs.getLayouts().size()) {
                 return ScoutingInputsFragment.createInstance(position);
             } else {
-                return QRFragment.createInstance(EntryFormatter.formatEncode(mEntry));
+                return QRFragment.createInstance();
             }
         }
 

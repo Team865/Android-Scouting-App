@@ -1,6 +1,7 @@
 package ca.warp7.android.scouting;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -18,32 +19,45 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import java.util.EnumMap;
 import java.util.Map;
 
+import ca.warp7.android.scouting.model.EntryFormatter;
+import ca.warp7.android.scouting.model.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.ScoutingTab;
 
 
 public class QRFragment extends Fragment implements ScoutingTab {
 
     private String mMessage = " ";
+    private ScoutingActivityListener mListener;
 
-    public static QRFragment createInstance(String message) {
-        QRFragment fragment = new QRFragment();
-        Bundle args = new Bundle();
-        args.putString("qr_message", message);
-        fragment.setArguments(args);
-        return fragment;
+    public static QRFragment createInstance() {
+        return new QRFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mMessage = getArguments().getString("qr_message");
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof ScoutingActivityListener) {
+            mListener = (ScoutingActivityListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement ScoutingActivityListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     @Override
@@ -95,15 +109,10 @@ public class QRFragment extends Fragment implements ScoutingTab {
         try {
             Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
             hints.put(EncodeHintType.MARGIN, 1);
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
 
             qrImage.setImageBitmap(createBitmap(
                     new MultiFormatWriter().encode(
-                            mMessage,
-                            BarcodeFormat.QR_CODE,
-                            dim,
-                            dim,
-                            hints)));
+                            mMessage, BarcodeFormat.QR_CODE, dim, dim, hints)));
 
         } catch (WriterException e) {
             e.printStackTrace();
@@ -139,6 +148,16 @@ public class QRFragment extends Fragment implements ScoutingTab {
 
     @Override
     public void updateTabState() {
-
+        if (mListener != null) {
+            mListener.getEntry().clean();
+            String newMessage = EntryFormatter.formatEncode(mListener.getEntry());
+            if (!newMessage.equals(mMessage)) {
+                mMessage = newMessage;
+                View view = getView();
+                if (view != null) {
+                    setQRImage(view);
+                }
+            }
+        }
     }
 }
