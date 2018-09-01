@@ -624,6 +624,9 @@ public class ScoutingActivity
                                                 R.color.colorAlmostWhite)),
                         PorterDuff.Mode.MULTIPLY);
 
+        mToolbarTeam.setTypeface(Typeface.SANS_SERIF,
+                alliance.equals("R") || alliance.equals("B") ? Typeface.BOLD : Typeface.NORMAL);
+
         mStatusLog = new StringBuilder(); // initialize the log
 
         pushStatus("\n\n========LOG========");

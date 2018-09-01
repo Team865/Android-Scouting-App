@@ -223,38 +223,7 @@
             android:padding="6dp"
             android:src="@drawable/ic_undo_ablack"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/divider" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="72dp"
-            android:layout_marginRight="72dp"
-            android:layout_marginTop="32dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/timer_status2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:ellipsize="end"
-            android:gravity="end"
-            android:onClick="onStatusTimerClicked"
-            android:singleLine="true"
-            android:textAlignment="textEnd"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:typeface="sans"
-            app:layout_constraintBaseline_toBaselineOf="@+id/title_banner"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="gone" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
