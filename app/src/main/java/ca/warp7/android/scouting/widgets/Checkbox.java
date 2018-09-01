@@ -6,9 +6,9 @@ import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 
 import ca.warp7.android.scouting.R;
-import ca.warp7.android.scouting.model.BaseInputControl;
+import ca.warp7.android.scouting.interfaces.BaseInputControl;
+import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.DataConstant;
-import ca.warp7.android.scouting.model.ScoutingActivityListener;
 
 /**
  * A checkbox that gives true or false values

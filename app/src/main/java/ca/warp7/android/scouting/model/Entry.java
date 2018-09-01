@@ -3,6 +3,8 @@ package ca.warp7.android.scouting.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.warp7.android.scouting.interfaces.EntryTimekeeper;
+
 /**
  * Data model for the scouting app. Strictly, it follows
  * a per-match-per-board model, but it can be mostly

@@ -6,9 +6,9 @@ import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
 
-import ca.warp7.android.scouting.model.BaseInputControl;
+import ca.warp7.android.scouting.interfaces.BaseInputControl;
+import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.DataConstant;
-import ca.warp7.android.scouting.model.ScoutingActivityListener;
 
 /**
  * Creates a box container that centers the control inside it

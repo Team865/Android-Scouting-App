@@ -10,9 +10,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import ca.warp7.android.scouting.R;
-import ca.warp7.android.scouting.model.BaseInputControl;
+import ca.warp7.android.scouting.interfaces.BaseInputControl;
+import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.DataConstant;
-import ca.warp7.android.scouting.model.ScoutingActivityListener;
 
 /**
  * Creates a box container for a label and another control

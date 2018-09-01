@@ -24,11 +24,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import ca.warp7.android.scouting.model.ID;
+import ca.warp7.android.scouting.constants.ID;
+import ca.warp7.android.scouting.constants.RobotPosition;
+import ca.warp7.android.scouting.interfaces.ScoutingScheduleItem;
 import ca.warp7.android.scouting.model.MatchWithAllianceItem;
-import ca.warp7.android.scouting.model.RobotPosition;
 import ca.warp7.android.scouting.model.ScoutingSchedule;
-import ca.warp7.android.scouting.model.ScoutingScheduleItem;
 import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.widgets.AllianceView;
 

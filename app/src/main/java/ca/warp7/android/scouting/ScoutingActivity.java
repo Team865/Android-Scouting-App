@@ -43,14 +43,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ca.warp7.android.scouting.model.BaseInputControl;
+import ca.warp7.android.scouting.constants.ID;
+import ca.warp7.android.scouting.interfaces.BaseInputControl;
+import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
+import ca.warp7.android.scouting.interfaces.ScoutingTab;
 import ca.warp7.android.scouting.model.DataConstant;
 import ca.warp7.android.scouting.model.Entry;
 import ca.warp7.android.scouting.model.EntryFormatter;
-import ca.warp7.android.scouting.model.ID;
-import ca.warp7.android.scouting.model.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.ScoutingLayout;
-import ca.warp7.android.scouting.model.ScoutingTab;
 import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.widgets.CenteredControlLayout;
 import ca.warp7.android.scouting.widgets.Checkbox;
@@ -927,6 +927,7 @@ public class ScoutingActivity
 
 
     // Inner Class and Enum
+
     /**
      * Adapter that returns the proper fragment as pages are navigated
      */
@@ -958,6 +959,7 @@ public class ScoutingActivity
 
 
     }
+
     /**
      * The fragment that is shown in the biggest portion
      * of ScoutingActivity -- it manages a TableLayout that
@@ -968,7 +970,6 @@ public class ScoutingActivity
 
     public static class ScoutingInputsFragment
             extends Fragment implements ScoutingTab {
-
 
 
         private ScoutingActivityListener mListener;

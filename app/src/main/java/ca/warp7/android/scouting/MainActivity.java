@@ -30,7 +30,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
-import ca.warp7.android.scouting.model.ID;
+import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.model.SpecsIndex;
 

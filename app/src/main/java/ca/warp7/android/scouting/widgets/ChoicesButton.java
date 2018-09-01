@@ -9,9 +9,9 @@ import android.view.Gravity;
 import android.view.View;
 
 import ca.warp7.android.scouting.R;
-import ca.warp7.android.scouting.model.BaseInputControl;
+import ca.warp7.android.scouting.interfaces.BaseInputControl;
+import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.DataConstant;
-import ca.warp7.android.scouting.model.ScoutingActivityListener;
 
 /**
  * A button that gives the user a list of options to choose

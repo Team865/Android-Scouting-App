@@ -6,11 +6,11 @@ import android.os.Build;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 
-import ca.warp7.android.scouting.model.BaseInputControl;
-import ca.warp7.android.scouting.model.ChildInputControl;
+import ca.warp7.android.scouting.interfaces.BaseInputControl;
+import ca.warp7.android.scouting.interfaces.ChildInputControl;
+import ca.warp7.android.scouting.interfaces.ParentInputControlListener;
+import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.DataConstant;
-import ca.warp7.android.scouting.model.ParentInputControlListener;
-import ca.warp7.android.scouting.model.ScoutingActivityListener;
 
 /**
  * A Base button for other buttons to extend onto

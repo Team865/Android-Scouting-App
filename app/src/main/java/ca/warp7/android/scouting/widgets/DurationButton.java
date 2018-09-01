@@ -5,8 +5,8 @@ import android.graphics.PorterDuff;
 import android.view.View;
 
 import ca.warp7.android.scouting.R;
+import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.DataConstant;
-import ca.warp7.android.scouting.model.ScoutingActivityListener;
 
 /**
  * A button that measures duration,

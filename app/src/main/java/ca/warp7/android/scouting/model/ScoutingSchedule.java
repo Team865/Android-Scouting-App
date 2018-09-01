@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.warp7.android.scouting.interfaces.ScoutingScheduleItem;
+
 public class ScoutingSchedule {
     private List<ScoutingScheduleItem> mCurrentlyScheduled;
     private List<MatchWithAllianceItem> mFullSchedule;
