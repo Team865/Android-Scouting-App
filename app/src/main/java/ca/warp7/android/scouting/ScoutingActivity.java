@@ -43,8 +43,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ca.warp7.android.scouting.components.ActionVibrator;
 import ca.warp7.android.scouting.components.QRFragment;
 import ca.warp7.android.scouting.constants.ID;
+import ca.warp7.android.scouting.data.ManagedPreferences;
 import ca.warp7.android.scouting.interfaces.BaseInputControl;
 import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
 import ca.warp7.android.scouting.interfaces.ScoutingTab;
@@ -274,7 +276,7 @@ public class ScoutingActivity
     }
 
     @Override
-    public ManagedPreferences.ActionVibrator getManagedVibrator() {
+    public ActionVibrator getManagedVibrator() {
         return mPreferences.getVibrator();
     }
 
