@@ -6,6 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import ca.warp7.android.scouting.components.SettingsFragment;
 
+/**
+ * @since v0.4.2
+ */
+
 public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

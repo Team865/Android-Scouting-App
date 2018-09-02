@@ -9,6 +9,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * Creates a ratings bar based on the maximum value specified
+ * @since v0.2.0
  */
 
 public class SeekBar

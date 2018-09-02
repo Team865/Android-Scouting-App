@@ -32,6 +32,7 @@ import ca.warp7.android.scouting.interfaces.EntryTimekeeper;
  * @author Team 865
  * @see EntryDatum
  * @see EntryFormatter
+ * @since v0.1.0
  */
 
 

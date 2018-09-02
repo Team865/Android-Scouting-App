@@ -7,6 +7,10 @@ import android.preference.PreferenceManager;
 import ca.warp7.android.scouting.components.ActionVibrator;
 import ca.warp7.android.scouting.constants.PreferenceKeys;
 
+/**
+ * @since v0.4.1
+ */
+
 public class ManagedPreferences {
 
     private SharedPreferences mSharedPreferences;

@@ -9,6 +9,7 @@ import java.util.TimeZone;
  * Static Formatting Utilities for Entry
  *
  * @author Team 865
+ * @since 0.4.0
  */
 
 public class EntryFormatter {

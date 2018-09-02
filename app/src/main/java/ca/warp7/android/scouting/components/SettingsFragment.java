@@ -10,6 +10,10 @@ import android.support.annotation.Nullable;
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.constants.PreferenceKeys;
 
+/**
+ * @since v0.4.1
+ */
+
 public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

@@ -33,6 +33,9 @@ import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
 import ca.warp7.android.scouting.interfaces.ScoutingTab;
 import ca.warp7.android.scouting.model.EntryFormatter;
 
+/**
+ * @since v0.4.2
+ */
 
 public class QRFragment extends Fragment implements ScoutingTab {
 

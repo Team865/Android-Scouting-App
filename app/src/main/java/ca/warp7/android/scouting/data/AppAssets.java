@@ -11,6 +11,10 @@ import java.io.OutputStream;
 
 import ca.warp7.android.scouting.model.Specs;
 
+/**
+ * @since v0.4.2
+ */
+
 public class AppAssets {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void copyAssets(Context context) {

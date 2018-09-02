@@ -11,6 +11,10 @@ import ca.warp7.android.scouting.constants.PreferenceKeys;
 import ca.warp7.android.scouting.data.AppAssets;
 import ca.warp7.android.scouting.model.Specs;
 
+/**
+ * @since v0.4.1
+ */
+
 public class SettingsClickListener implements Preference.OnPreferenceClickListener {
     @Override
     public boolean onPreferenceClick(Preference preference) {

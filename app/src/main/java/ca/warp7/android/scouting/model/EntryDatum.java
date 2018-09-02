@@ -11,6 +11,7 @@ package ca.warp7.android.scouting.model;
  * (from left to right)
  *
  * @author Team 865
+ * @since v0.4.0
  */
 
 
@@ -49,10 +50,6 @@ class EntryDatum {
 
     int getStateFlag() {
         return mStateFlag;
-    }
-
-    void setValue(int value) {
-        this.mDataValue = value;
     }
 
     public int getRecordedTime() {

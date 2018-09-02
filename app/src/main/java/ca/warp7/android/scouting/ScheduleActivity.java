@@ -32,6 +32,9 @@ import ca.warp7.android.scouting.model.ScoutingSchedule;
 import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.widgets.AllianceView;
 
+/**
+ * @since v0.4.2
+ */
 
 public class ScheduleActivity extends AppCompatActivity {
 

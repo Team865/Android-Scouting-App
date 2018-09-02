@@ -12,6 +12,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * A button that records time as it is pressed
+ * @since v0.2.0
  */
 
 public class TimerButton

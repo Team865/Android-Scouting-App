@@ -10,6 +10,7 @@ import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
 
 /**
  * Creates a placeholder button that shows definition errors
+ * @since v0.2.0
  */
 
 public class UndefinedInputsIndicator

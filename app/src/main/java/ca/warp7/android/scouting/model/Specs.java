@@ -16,6 +16,7 @@ import java.util.ArrayList;
  * Data Model for reading metrics, settings,
  * match schedules, and constant strings.
  * Used as a singleton throughout the application
+ * @since v1.0.0
  */
 
 public class Specs {

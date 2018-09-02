@@ -12,6 +12,7 @@ import ca.warp7.android.scouting.model.DataConstant;
  * A button that measures duration,
  * equivalent in function as a ToggleButton.
  * It records the time of when the button is
+ * @since v0.2.0
  */
 
 public class DurationButton

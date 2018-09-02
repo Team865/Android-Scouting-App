@@ -6,6 +6,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * @since v0.2.0
+ */
+
 public class ScoutingLayout {
 
     private String title;

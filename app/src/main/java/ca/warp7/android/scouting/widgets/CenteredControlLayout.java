@@ -12,6 +12,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * Creates a box container that centers the control inside it
+ * @since v0.3.0
  */
 
 public class CenteredControlLayout

@@ -14,6 +14,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * A Base button for other buttons to extend onto
+ * @since v0.2.0
  */
 
 public abstract class BaseButton

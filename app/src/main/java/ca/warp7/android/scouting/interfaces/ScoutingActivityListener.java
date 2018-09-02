@@ -9,6 +9,7 @@ import ca.warp7.android.scouting.model.Entry;
  * these controls to engage in communication
  *
  * @author Team 865
+ * @since v0.2.0
  */
 
 public interface ScoutingActivityListener

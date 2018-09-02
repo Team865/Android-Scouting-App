@@ -4,6 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * @since v0.2.0
+ */
+
 public class DataConstant {
 
     private static final String

@@ -16,6 +16,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * Creates a box container for a label and another control
+ * @since v0.3.0
  */
 
 public class LabeledControlLayout

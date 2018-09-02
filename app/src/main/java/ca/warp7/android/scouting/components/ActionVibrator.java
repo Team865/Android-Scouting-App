@@ -5,6 +5,10 @@ import android.os.Vibrator;
 
 import ca.warp7.android.scouting.interfaces.AbstractActionVibrator;
 
+/**
+ * @since v0.4.1
+ */
+
 public class ActionVibrator implements AbstractActionVibrator {
     private Vibrator mActualVibrator;
     private boolean mVibrationOn;

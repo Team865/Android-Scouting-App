@@ -8,6 +8,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @since v0.2.0
+ */
+
 public class SpecsIndex {
 
     private ArrayList<String> files = new ArrayList<>();

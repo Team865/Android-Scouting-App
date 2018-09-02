@@ -15,6 +15,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * A button that gives the user a list of options to choose
+ * @since v0.2.0
  */
 
 public class ChoicesButton

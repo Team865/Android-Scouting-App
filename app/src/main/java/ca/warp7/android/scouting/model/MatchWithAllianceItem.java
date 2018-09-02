@@ -4,6 +4,10 @@ package ca.warp7.android.scouting.model;
 import ca.warp7.android.scouting.constants.RobotPosition;
 import ca.warp7.android.scouting.interfaces.ScoutingScheduleItem;
 
+/**
+ * @since v0.4.2
+ */
+
 public class MatchWithAllianceItem implements ScoutingScheduleItem {
     private int[] mTeams;
     private int mMatchNumber;

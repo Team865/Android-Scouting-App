@@ -15,6 +15,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * A counter for the buttons
+ * @since v0.3.0
  */
 
 public class CountedInputControlLayout

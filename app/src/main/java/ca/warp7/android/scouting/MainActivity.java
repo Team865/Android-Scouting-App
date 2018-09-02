@@ -35,6 +35,9 @@ import ca.warp7.android.scouting.data.AppAssets;
 import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.model.SpecsIndex;
 
+/**
+ * @since v0.1.0
+ */
 
 public class MainActivity
         extends AppCompatActivity

@@ -12,6 +12,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * A checkbox that gives true or false values
+ * @since v0.2.0
  */
 
 public class Checkbox

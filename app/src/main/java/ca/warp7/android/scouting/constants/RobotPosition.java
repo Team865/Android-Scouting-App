@@ -1,5 +1,8 @@
 package ca.warp7.android.scouting.constants;
 
+/**
+ * @since v0.4.2
+ */
 
 public class RobotPosition {
     public static final int RED1 = 0;
