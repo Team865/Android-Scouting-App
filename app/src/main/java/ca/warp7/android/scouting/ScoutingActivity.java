@@ -893,11 +893,7 @@ public class ScoutingActivity
             mTimerStatus.setTypeface(null, Typeface.NORMAL);
         }
 
-        if (mTimer < kTimerLimit) {
-            status = String.valueOf(time);
-        } else {
-            status = "FIN";
-        }
+        status = String.valueOf(time);
 
         char[] placeholder = new char[kTotalTimerDigits - status.length()];
         String filled_status = new String(placeholder).replace("\0", "0") + status;
@@ -905,8 +901,7 @@ public class ScoutingActivity
         mTimerStatus.setText(filled_status);
 
         mTimerStatus.setTextColor(mTimer <= kAutonomousTime ?
-                kAutonomousColour : mTimer < kTimerLimit ?
-                kTeleOpColour : kFinishedColour);
+                kAutonomousColour : kTeleOpColour);
 
         mTimeProgress.setProgress(mTimer);
         mTimeSeeker.setProgress(mTimer);
@@ -1203,5 +1198,4 @@ public class ScoutingActivity
     private static final int kNeutralAllianceColour = 0xFFFF00FF;
     private static final int kAutonomousColour = 0xFFCC9900;
     private static final int kTeleOpColour = 0xFF006633;
-    private static final int kFinishedColour = 0xFFFF0000;
 }
