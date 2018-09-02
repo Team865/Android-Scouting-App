@@ -43,6 +43,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ca.warp7.android.scouting.components.QRFragment;
 import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.interfaces.BaseInputControl;
 import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;

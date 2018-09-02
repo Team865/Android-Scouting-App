@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting;
+package ca.warp7.android.scouting.components;
 
 /*
 This file contains code modified from
@@ -28,6 +28,7 @@ import com.google.zxing.common.BitMatrix;
 import java.util.EnumMap;
 import java.util.Map;
 
+import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
 import ca.warp7.android.scouting.interfaces.ScoutingTab;
 import ca.warp7.android.scouting.model.EntryFormatter;

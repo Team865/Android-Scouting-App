@@ -31,6 +31,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import ca.warp7.android.scouting.constants.ID;
+import ca.warp7.android.scouting.data.AppAssets;
 import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.model.SpecsIndex;
 
@@ -168,7 +169,7 @@ public class MainActivity
     }
 
     public void onLogoClicked(View view) {
-        Intent intent = new Intent(this, ManagedPreferences.Activity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
@@ -225,7 +226,7 @@ public class MainActivity
         File indexFile = new File(root, "index.json");
 
         if (!indexFile.exists()) {
-            ManagedPreferences.copyAssets(this);
+            AppAssets.copyAssets(this);
         }
 
         loadIndex(indexFile);
