@@ -9,6 +9,7 @@
     <color name="colorRed">#ff0000</color>
     <color name="colorLightGreen">#009933</color>
     <color name="colorAlmostBlack">#404040</color>
+    <color name="colorDarkAlmostWhite">#d4d4d4</color>
     <color name="colorAlmostWhite">#e4e4e4</color>
     <color name="colorAlmostBlue">#e4e4ff</color>
     <color name="colorAlmostRed">#ffe4e4</color>
