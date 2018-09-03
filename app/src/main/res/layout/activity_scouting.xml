@@ -172,7 +172,7 @@
                 android:id="@+id/start_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/cornered_bg_accent"
+                android:background="@drawable/selector_accent_button"
                 android:onClick="onStartScouting"
                 android:paddingBottom="6dp"
                 android:paddingLeft="32dp"
