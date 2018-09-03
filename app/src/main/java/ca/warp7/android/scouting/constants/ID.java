@@ -21,6 +21,5 @@ public class ID {
     public static final String SAVE_SPECS = ROOT + ".save.specs";
 
     public static final String INSTANCE_START_TIME = ROOT + ".is.start_time";
-    public static final String INSTANCE_ACTIVITY_STATE = ROOT + ".is.activity_state";
     public static final String INSTANCE_TIMER = ROOT + ".is.timer";
 }
