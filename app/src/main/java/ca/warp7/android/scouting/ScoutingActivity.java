@@ -124,8 +124,12 @@ public class ScoutingActivity
     private SeekBar mTimeSeeker;
 
     private TextView mStartButton;
-    private ImageButton mPlayPauseButton;
-    private ImageButton mUndoSkipButton;
+    private ImageButton mPlayAndPauseImage;
+    private ImageButton mUndoAndNowImage;
+    private ViewGroup mPlayAndPauseView;
+    private ViewGroup mUndoAndNowView;
+    private TextView mPlayAndPauseText;
+    private TextView mUndoAndNowText;
 
     private ViewPager mPager;
     private ScoutingTabsPagerAdapter mPagerAdapter;
@@ -366,7 +370,8 @@ public class ScoutingActivity
                 } else {
                     mTimer = calculateCurrentRelativeTime();
                     getManagedVibrator().vibrateStart();
-                    mUndoSkipButton.setImageResource(R.drawable.ic_undo_ablack);
+                    mUndoAndNowImage.setImageResource(R.drawable.ic_undo_ablack);
+                    mUndoAndNowText.setText(R.string.btn_undo);
                 }
 
                 break;
@@ -410,7 +415,7 @@ public class ScoutingActivity
                         public void onClick(DialogInterface dialog, int which) {
                             mUsingPauseBetaFeature = !mUsingPauseBetaFeature;
                             getManagedVibrator().vibrateAction();
-                            mPlayPauseButton.setVisibility(mUsingPauseBetaFeature ? View.VISIBLE : View.GONE);
+                            mPlayAndPauseView.setVisibility(mUsingPauseBetaFeature ? View.VISIBLE : View.GONE);
                         }
                     });
         }
@@ -537,8 +542,12 @@ public class ScoutingActivity
             mStartButton.setElevation(4);
         }
 
-        mPlayPauseButton = findViewById(R.id.play_pause);
-        mUndoSkipButton = findViewById(R.id.undo_skip);
+        mPlayAndPauseImage = findViewById(R.id.play_pause_image);
+        mUndoAndNowImage = findViewById(R.id.undo_now_image);
+        mPlayAndPauseView = findViewById(R.id.play_pause_container);
+        mUndoAndNowView = findViewById(R.id.undo_now_container);
+        mPlayAndPauseText = findViewById(R.id.play_pause_text);
+        mUndoAndNowText = findViewById(R.id.undo_now_text);
 
         animate_in.setDuration(kFadeDuration);
         animate_out.setDuration(kFadeDuration);
@@ -735,8 +744,8 @@ public class ScoutingActivity
 
     private void setStartingNavToolbox() {
 
-        mPlayPauseButton.setVisibility(View.GONE);
-        mUndoSkipButton.setVisibility(View.GONE);
+        mPlayAndPauseView.setVisibility(View.GONE);
+        mUndoAndNowView.setVisibility(View.GONE);
 
         mTimeSeeker.setVisibility(View.GONE);
         mTimeProgress.setVisibility(View.VISIBLE);
@@ -748,19 +757,22 @@ public class ScoutingActivity
 
     private void setScoutingNavToolbox() {
 
-        // mPlayPauseButton.setVisibility(View.VISIBLE);
+        // mPlayAndPauseImage.setVisibility(View.VISIBLE);
 
-        mPlayPauseButton.setVisibility(mUsingPauseBetaFeature ? View.VISIBLE : View.GONE);
+        mPlayAndPauseView.setVisibility(mUsingPauseBetaFeature ? View.VISIBLE : View.GONE);
 
-        mUndoSkipButton.setVisibility(View.VISIBLE);
+        mUndoAndNowView.setVisibility(View.VISIBLE);
         mStartButton.setVisibility(View.GONE);
 
-        mPlayPauseButton.setImageResource(R.drawable.ic_pause_ablack);
+        mPlayAndPauseImage.setImageResource(R.drawable.ic_pause_ablack);
+        mPlayAndPauseText.setText(R.string.btn_pause);
 
         if (isTimerAtCurrentTime()) {
-            mUndoSkipButton.setImageResource(R.drawable.ic_undo_ablack);
+            mUndoAndNowImage.setImageResource(R.drawable.ic_undo_ablack);
+            mUndoAndNowText.setText(R.string.btn_undo);
         } else {
-            mUndoSkipButton.setImageResource(R.drawable.ic_skip_next_red);
+            mUndoAndNowImage.setImageResource(R.drawable.ic_skip_next_red);
+            mUndoAndNowText.setText(R.string.btn_now);
         }
 
         mTimeSeeker.setVisibility(View.GONE);
@@ -773,12 +785,14 @@ public class ScoutingActivity
 
     private void setPausingNavToolbox() {
 
-        mPlayPauseButton.setVisibility(View.VISIBLE);
-        mUndoSkipButton.setVisibility(View.VISIBLE);
+        mPlayAndPauseView.setVisibility(View.VISIBLE);
+        mUndoAndNowView.setVisibility(View.VISIBLE);
         mStartButton.setVisibility(View.GONE);
 
-        mPlayPauseButton.setImageResource(R.drawable.ic_play_arrow_ablack);
-        mUndoSkipButton.setImageResource(R.drawable.ic_skip_next_red);
+        mPlayAndPauseImage.setImageResource(R.drawable.ic_play_arrow_ablack);
+        mPlayAndPauseText.setText(R.string.btn_resume);
+        mUndoAndNowImage.setImageResource(R.drawable.ic_skip_next_red);
+        mUndoAndNowText.setText(R.string.btn_now);
 
         mTimeSeeker.setVisibility(View.VISIBLE);
         mTimeProgress.setVisibility(View.GONE);

@@ -50,5 +50,7 @@
     <string name="entry_info">Entry Info</string>
     <string name="btn_pause">Pause</string>
     <string name="btn_undo">Undo</string>
+    <string name="btn_now">Now</string>
+    <string name="btn_resume">Resume</string>
 
 </resources>
