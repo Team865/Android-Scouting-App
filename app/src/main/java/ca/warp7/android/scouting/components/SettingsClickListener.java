@@ -8,8 +8,8 @@ import android.preference.Preference;
 
 import ca.warp7.android.scouting.ScheduleActivity;
 import ca.warp7.android.scouting.constants.PreferenceKeys;
-import ca.warp7.android.scouting.data.AppAssets;
 import ca.warp7.android.scouting.model.Specs;
+import ca.warp7.android.scouting.resources.AppAssets;
 
 /**
  * @since v0.4.1

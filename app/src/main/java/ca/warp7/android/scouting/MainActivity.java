@@ -31,9 +31,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 import ca.warp7.android.scouting.constants.ID;
-import ca.warp7.android.scouting.data.AppAssets;
 import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.model.SpecsIndex;
+import ca.warp7.android.scouting.resources.AppAssets;
 
 /**
  * @since v0.1.0

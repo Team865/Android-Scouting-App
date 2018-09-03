@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.data;
+package ca.warp7.android.scouting.resources;
 
 import android.content.Context;
 import android.content.res.AssetManager;
