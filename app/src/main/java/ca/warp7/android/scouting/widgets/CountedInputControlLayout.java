@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import ca.warp7.android.scouting.interfaces.BaseInputControl;
-import ca.warp7.android.scouting.interfaces.ChildInputControl;
-import ca.warp7.android.scouting.interfaces.ParentInputControlListener;
-import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
+import ca.warp7.android.scouting.abstraction.BaseInputControl;
+import ca.warp7.android.scouting.abstraction.ChildInputControl;
+import ca.warp7.android.scouting.abstraction.ParentInputControlListener;
+import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.DataConstant;
 
 /**

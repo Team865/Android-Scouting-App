@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.interfaces;
+package ca.warp7.android.scouting.abstraction;
 
 /**
  * Child view interface to pass a ParentControlLister

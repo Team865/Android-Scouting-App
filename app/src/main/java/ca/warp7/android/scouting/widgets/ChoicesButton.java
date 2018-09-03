@@ -9,8 +9,8 @@ import android.view.Gravity;
 import android.view.View;
 
 import ca.warp7.android.scouting.R;
-import ca.warp7.android.scouting.interfaces.BaseInputControl;
-import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
+import ca.warp7.android.scouting.abstraction.BaseInputControl;
+import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.DataConstant;
 
 /**

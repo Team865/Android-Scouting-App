@@ -6,8 +6,8 @@ import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
 
-import ca.warp7.android.scouting.interfaces.BaseInputControl;
-import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
+import ca.warp7.android.scouting.abstraction.BaseInputControl;
+import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.DataConstant;
 
 /**

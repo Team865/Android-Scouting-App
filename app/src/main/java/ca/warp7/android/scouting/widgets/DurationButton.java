@@ -5,7 +5,7 @@ import android.graphics.PorterDuff;
 import android.view.View;
 
 import ca.warp7.android.scouting.R;
-import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
+import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.DataConstant;
 
 /**

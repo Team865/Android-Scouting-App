@@ -3,7 +3,7 @@ package ca.warp7.android.scouting.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.warp7.android.scouting.interfaces.EntryTimekeeper;
+import ca.warp7.android.scouting.abstraction.EntryTimekeeper;
 
 /**
  * Data model for the scouting app. Strictly, it follows

@@ -43,12 +43,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ca.warp7.android.scouting.abstraction.AbstractActionVibrator;
+import ca.warp7.android.scouting.abstraction.BaseInputControl;
+import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
+import ca.warp7.android.scouting.abstraction.ScoutingTab;
 import ca.warp7.android.scouting.components.QRFragment;
 import ca.warp7.android.scouting.constants.ID;
-import ca.warp7.android.scouting.interfaces.AbstractActionVibrator;
-import ca.warp7.android.scouting.interfaces.BaseInputControl;
-import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
-import ca.warp7.android.scouting.interfaces.ScoutingTab;
 import ca.warp7.android.scouting.model.DataConstant;
 import ca.warp7.android.scouting.model.Entry;
 import ca.warp7.android.scouting.model.EntryFormatter;

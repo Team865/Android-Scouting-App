@@ -6,7 +6,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 
 import ca.warp7.android.scouting.R;
-import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
+import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
 
 /**
  * Creates a placeholder button that shows definition errors

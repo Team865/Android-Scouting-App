@@ -6,10 +6,10 @@ import android.os.Build;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 
-import ca.warp7.android.scouting.interfaces.BaseInputControl;
-import ca.warp7.android.scouting.interfaces.ChildInputControl;
-import ca.warp7.android.scouting.interfaces.ParentInputControlListener;
-import ca.warp7.android.scouting.interfaces.ScoutingActivityListener;
+import ca.warp7.android.scouting.abstraction.BaseInputControl;
+import ca.warp7.android.scouting.abstraction.ChildInputControl;
+import ca.warp7.android.scouting.abstraction.ParentInputControlListener;
+import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.DataConstant;
 
 /**

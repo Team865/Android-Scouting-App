@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.warp7.android.scouting.interfaces.ScoutingScheduleItem;
+import ca.warp7.android.scouting.abstraction.ScoutingScheduleItem;
 
 /**
  * @since v0.4.2
