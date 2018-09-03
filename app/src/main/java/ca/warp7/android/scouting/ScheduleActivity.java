@@ -165,7 +165,7 @@ public class ScheduleActivity extends AppCompatActivity {
             if (convertView != null && convertView instanceof LinearLayout) {
                 itemView = convertView;
             } else {
-                itemView = mInflater.inflate(R.layout.schedule_alliance_item, parent, false);
+                itemView = mInflater.inflate(R.layout.listitem_schedule_match, parent, false);
             }
 
             ScoutingScheduleItem scoutingScheduleItem = getItem(position);

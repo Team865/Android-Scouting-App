@@ -15,7 +15,7 @@ import ca.warp7.android.scouting.model.Specs;
  * @since v0.4.2
  */
 
-public class AppAssets {
+public class DataFiles {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void copyAssets(Context context) {
         try {

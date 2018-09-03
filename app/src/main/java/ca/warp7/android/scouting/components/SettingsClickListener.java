@@ -9,7 +9,7 @@ import android.preference.Preference;
 import ca.warp7.android.scouting.ScheduleActivity;
 import ca.warp7.android.scouting.constants.PreferenceKeys;
 import ca.warp7.android.scouting.model.Specs;
-import ca.warp7.android.scouting.resources.AppAssets;
+import ca.warp7.android.scouting.resources.DataFiles;
 
 /**
  * @since v0.4.1
@@ -46,7 +46,7 @@ public class SettingsClickListener implements Preference.OnPreferenceClickListen
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        AppAssets.copyAssets(context);
+                        DataFiles.copyAssets(context);
                     }
                 })
                 .create()

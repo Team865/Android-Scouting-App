@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.model.SpecsIndex;
-import ca.warp7.android.scouting.resources.AppAssets;
+import ca.warp7.android.scouting.resources.DataFiles;
 
 /**
  * @since v0.1.0
@@ -229,7 +229,7 @@ public class MainActivity
         File indexFile = new File(root, "index.json");
 
         if (!indexFile.exists()) {
-            AppAssets.copyAssets(this);
+            DataFiles.copyAssets(this);
         }
 
         loadIndex(indexFile);
