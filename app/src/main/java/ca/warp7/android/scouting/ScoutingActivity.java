@@ -109,6 +109,7 @@ public class ScoutingActivity
 
     // UI elements (see layout file)
 
+    @SuppressWarnings("FieldCanBeLocal")
     private Toolbar mToolbar;
 
     private TextView mToolbarTeam;
@@ -385,14 +386,6 @@ public class ScoutingActivity
     public void onStatusTimerClicked(View view) {
         mTimerIsCountingUp = !mTimerIsCountingUp;
         updateTimerStatusAndProgressBar();
-    }
-
-    /**
-     * An overwrite to onBackPressed with a View argument to allow callback
-     */
-
-    public void onBackPressed(View view) {
-        onBackPressed();
     }
 
     /**
@@ -796,7 +789,6 @@ public class ScoutingActivity
      */
 
     private void setBackgroundColour(int colour) {
-        mToolbar.setBackgroundColor(colour);
         mNavToolbox.setBackgroundColor(colour);
         mPager.setBackgroundColor(colour);
     }
