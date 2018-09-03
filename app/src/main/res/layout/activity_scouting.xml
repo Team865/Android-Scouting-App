@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,23 +9,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="0dp"
         android:paddingLeft="16dp"
-        android:paddingStart="16dp"
         android:paddingRight="0dp"
-        android:paddingEnd="0dp">
+        android:paddingStart="16dp">
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:padding="4dp"
             android:background="?android:selectableItemBackgroundBorderless"
             android:contentDescription="@string/exit_confirmation"
-            android:src="@drawable/ic_close_ablack"
             android:onClick="onBackPressed"
+            android:padding="4dp"
+            android:src="@drawable/ic_close_ablack"
             android:visibility="gone"
             tools:ignore="NewApi" />
 
@@ -35,31 +34,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/cornered_bg"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:gravity="center_vertical">
+            android:paddingRight="4dp">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:padding="4dp"
                 android:contentDescription="@string/hint_match"
+                android:padding="4dp"
                 android:src="@drawable/ic_layers_ablack_small" />
 
             <TextView
                 android:id="@+id/toolbar_match"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:paddingBottom="4dp"
+                android:paddingTop="4dp"
                 android:textColor="@color/colorAlmostBlack"
                 android:textSize="20sp"
-                android:typeface="sans"
                 android:textStyle="italic"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp" />
+                android:typeface="sans" />
 
             <View
                 android:layout_width="1dp"
@@ -69,24 +68,24 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:padding="4dp"
-                android:contentDescription="@string/hint_team"
-                android:src="@drawable/ic_people_ablack_small"
                 android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp" />
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="2dp"
+                android:contentDescription="@string/hint_team"
+                android:padding="4dp"
+                android:src="@drawable/ic_people_ablack_small" />
 
             <TextView
                 android:id="@+id/toolbar_team"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
-                android:gravity="center"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp" />
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="1dp"
@@ -96,12 +95,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:padding="4dp"
-                android:contentDescription="@string/start_timer"
-                android:src="@drawable/ic_timer_ablack_small"
                 android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp" />
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="2dp"
+                android:contentDescription="@string/start_timer"
+                android:padding="4dp"
+                android:src="@drawable/ic_timer_ablack_small" />
 
             <TextView
                 android:id="@+id/timer_status"
@@ -111,12 +110,12 @@
                 android:layout_marginRight="4dp"
                 android:ellipsize="end"
                 android:onClick="onStatusTimerClicked"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
                 android:singleLine="true"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
-                android:typeface="sans"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp" />
+                android:typeface="sans" />
 
         </LinearLayout>
 
@@ -128,104 +127,103 @@
 
     </LinearLayout>
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/nav_toolbox"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="32dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <ProgressBar
             android:id="@+id/time_progress"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" />
 
         <SeekBar
             android:id="@+id/time_seeker"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/time_progress" />
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/nav_toolbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical">
 
         <TextView
             android:id="@+id/title_banner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:gravity="start"
-            android:minWidth="32dp"
-            android:singleLine="true"
-            android:textAlignment="textStart"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
             android:textColor="@color/colorAlmostBlack"
             android:textSize="26sp"
             android:typeface="sans"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:text="Tab Title" />
 
-        <TextView
-            android:id="@+id/start_timer"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:background="@drawable/cornered_bg_accent"
-            android:onClick="onStartScouting"
-            android:paddingBottom="6dp"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp"
-            android:paddingTop="6dp"
-            android:text="@string/start_timer"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="18sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/title_banner"
-            app:layout_constraintEnd_toStartOf="@+id/play_pause" />
+            android:gravity="end">
 
-        <ImageButton
-            android:id="@+id/play_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:background="?android:selectableItemBackground"
-            android:contentDescription="@string/layout_error"
-            android:onClick="onPlayPauseClicked"
-            android:padding="6dp"
-            android:src="@drawable/ic_pause_ablack"
-            app:layout_constraintBottom_toBottomOf="@+id/undo_skip"
-            app:layout_constraintEnd_toStartOf="@+id/undo_skip" />
+            <TextView
+                android:id="@+id/start_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cornered_bg_accent"
+                android:onClick="onStartScouting"
+                android:paddingBottom="6dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingTop="6dp"
+                android:text="@string/start_timer"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp" />
 
-        <ImageButton
-            android:id="@+id/undo_skip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:background="?android:selectableItemBackground"
-            android:contentDescription="@string/layout_error"
-            android:onClick="onUndoSkipClicked"
-            android:padding="6dp"
-            android:src="@drawable/ic_undo_ablack"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <ImageButton
+                android:id="@+id/play_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:contentDescription="@string/layout_error"
+                android:onClick="onPlayPauseClicked"
+                android:padding="6dp"
+                android:src="@drawable/ic_pause_ablack"
+                tools:ignore="NewApi" />
 
-    </android.support.constraint.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/undo_skip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:contentDescription="@string/layout_error"
+                android:onClick="onUndoSkipClicked"
+                android:padding="6dp"
+                android:src="@drawable/ic_undo_ablack"
+                tools:ignore="NewApi" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
