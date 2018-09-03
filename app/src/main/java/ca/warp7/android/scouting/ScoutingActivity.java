@@ -115,8 +115,6 @@ public class ScoutingActivity
     private TextView mToolbarTeam;
     private TextView mToolbarMatch;
 
-    private ViewGroup mNavToolbox;
-
     private TextView mTitleBanner;
     private TextView mTimerStatus;
 
@@ -531,8 +529,6 @@ public class ScoutingActivity
 
         setSupportActionBar(mToolbar);
 
-        mNavToolbox = findViewById(R.id.nav_toolbox);
-
         mTitleBanner = findViewById(R.id.title_banner);
         mTimerStatus = findViewById(R.id.timer_status);
 
@@ -803,8 +799,7 @@ public class ScoutingActivity
      */
 
     private void setBackgroundColour(int colour) {
-        mNavToolbox.setBackgroundColor(colour);
-        mPager.setBackgroundColor(colour);
+        findViewById(android.R.id.content).setBackgroundColor(colour);
     }
 
     /**

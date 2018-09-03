@@ -29,7 +29,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:contentDescription="@string/hint_match"
                 android:padding="4dp"
                 android:src="@drawable/ic_layers_ablack_small" />
@@ -43,7 +43,7 @@
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
                 android:textColor="@color/colorAlmostBlack"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="italic"
                 android:typeface="sans" />
 
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:contentDescription="@string/hint_team"
                 android:padding="4dp"
                 android:src="@drawable/ic_people_ablack_small" />
@@ -71,7 +71,7 @@
                 android:gravity="center"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <View
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:contentDescription="@string/start_timer"
                 android:padding="4dp"
                 android:src="@drawable/ic_timer_ablack_small" />
@@ -101,7 +101,7 @@
                 android:paddingTop="4dp"
                 android:singleLine="true"
                 android:textColor="@android:color/black"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:typeface="sans" />
 
         </LinearLayout>
@@ -143,7 +143,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/nav_toolbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
@@ -158,7 +157,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginStart="0dp"
             android:textColor="@color/colorAlmostBlack"
-            android:textSize="26sp"
+            android:textSize="24sp"
             android:typeface="sans"
             tools:text="Tab Title" />
 
@@ -178,12 +177,10 @@
                 android:gravity="center_vertical"
                 android:onClick="onPlayPauseClicked"
                 android:orientation="horizontal"
-                android:paddingBottom="1dp"
                 android:paddingEnd="12dp"
                 android:paddingLeft="6dp"
                 android:paddingRight="12dp"
                 android:paddingStart="6dp"
-                android:paddingTop="1dp"
                 android:visibility="gone">
 
                 <ImageButton
@@ -219,12 +216,10 @@
                 android:gravity="center_vertical"
                 android:onClick="onUndoSkipClicked"
                 android:orientation="horizontal"
-                android:paddingBottom="1dp"
                 android:paddingEnd="12dp"
                 android:paddingLeft="6dp"
                 android:paddingRight="12dp"
                 android:paddingStart="6dp"
-                android:paddingTop="1dp"
                 android:visibility="gone">
 
                 <ImageButton
@@ -251,10 +246,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_accent_button"
                 android:onClick="onStartScouting"
-                android:paddingBottom="9dp"
+                android:paddingBottom="8dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:paddingTop="9dp"
+                android:paddingTop="8dp"
                 android:text="@string/start_timer"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
