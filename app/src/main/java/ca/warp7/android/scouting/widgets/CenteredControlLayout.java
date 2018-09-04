@@ -1,11 +1,10 @@
 package ca.warp7.android.scouting.widgets;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
-import android.widget.Button;
 
+import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.abstraction.BaseInputControl;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
 import ca.warp7.android.scouting.model.DataConstant;
@@ -37,17 +36,7 @@ public class CenteredControlLayout
         this.dc = dc;
         this.listener = listener;
 
-        // Set the background of the view
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            setBackground(new Button(getContext()).getBackground());
-        } else {
-            setBackgroundResource(android.R.drawable.btn_default);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setElevation(4);
-        }
+        setBackgroundResource(R.drawable.layer_list_bg_group);
 
         LayoutParams childLayout;
 
