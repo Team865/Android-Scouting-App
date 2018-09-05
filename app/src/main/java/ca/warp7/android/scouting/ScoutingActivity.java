@@ -45,6 +45,11 @@ import ca.warp7.android.scouting.model.ScoutingLayout;
 import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.resources.ManagedPreferences;
 
+import static ca.warp7.android.scouting.constants.Constants.kAutonomousTime;
+import static ca.warp7.android.scouting.constants.Constants.kFadeDuration;
+import static ca.warp7.android.scouting.constants.Constants.kTimerLimit;
+import static ca.warp7.android.scouting.constants.Constants.kTotalTimerDigits;
+
 
 /**
  * <p>The Scouting Activity -- A generic activity to collect data
@@ -146,7 +151,7 @@ public class ScoutingActivity
             updateAdjacentTabStates();
             mTimer++;
 
-            if (mTimer <= kTimerLimit) { // Check if match ended
+            if (mTimer <= kTimerLimit) {
                 mTimeHandler.postDelayed(mTimerUpdater, 1000);
             } else {
                 mTimerIsRunning = false;
@@ -199,7 +204,6 @@ public class ScoutingActivity
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.scouting_menu, menu);
-
         return true;
     }
 
@@ -303,15 +307,11 @@ public class ScoutingActivity
      */
 
     public void onStartScouting(View view) {
-
         mStartingTimestamp = getCurrentTime();
         mEntry.setStartingTimestamp(mStartingTimestamp);
-
         startActivityState(ScoutingState.SCOUTING);
         updateAdjacentTabStates();
-
         pushStatus("Timer Started\n");
-
     }
 
     /**
@@ -351,10 +351,9 @@ public class ScoutingActivity
                     mUndoAndNowImage.setImageResource(R.drawable.ic_undo_ablack);
                     mUndoAndNowText.setText(R.string.btn_undo);
                 }
-
                 break;
 
-            case ScoutingState.PAUSING: // Skip button
+            case ScoutingState.PAUSING: // Now button
 
                 mTimer = calculateCurrentRelativeTime();
                 startActivityState(ScoutingState.SCOUTING);
@@ -407,7 +406,6 @@ public class ScoutingActivity
     private void onCommentsAndFlags() {
 
         final EditText input = new EditText(this);
-
         input.setInputType(InputType.TYPE_CLASS_TEXT |
                 InputType.TYPE_TEXT_FLAG_MULTI_LINE |
                 InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
@@ -424,9 +422,6 @@ public class ScoutingActivity
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        // Get the comment and make sure underscore isn't used
-
                         mEntry.setComments(input.getText().toString()
                                 .replaceAll("_", ""));
                     }
@@ -484,12 +479,10 @@ public class ScoutingActivity
     private void setupSpecs() {
 
         mSpecs = Specs.getInstance();
-
-        if (mSpecs == null) { // Fixes singlet not loaded issue
+        if (mSpecs == null) {
             Specs.setInstance(getIntent().getStringExtra(ID.MSG_SPECS_FILE));
             mSpecs = Specs.getInstance();
         }
-
         mLayouts = mSpecs.getLayouts();
     }
 
@@ -565,7 +558,6 @@ public class ScoutingActivity
 
             }
         });
-
     }
 
     /**
@@ -593,10 +585,10 @@ public class ScoutingActivity
 
         String m = "" + matchNumber;
         mToolbarMatch.setText(m);
-
         mToolbarTeam.setTextColor(
-                alliance.equals("R") ? kRedAllianceColour :
-                        (alliance.equals("B") ? kBlueAllianceColour : kNeutralAllianceColour));
+                getResources().getColor(alliance.equals("R") ? R.color.colorRed :
+                        (alliance.equals("B") ? R.color.colorBlue :
+                                R.color.colorPurple)));
 
         findViewById(R.id.highlight_bar).getBackground()
                 .setColorFilter(getResources()
@@ -608,13 +600,12 @@ public class ScoutingActivity
         mToolbarTeam.setTypeface(Typeface.SANS_SERIF,
                 alliance.equals("R") || alliance.equals("B") ? Typeface.BOLD : Typeface.NORMAL);
 
-        mStatusLog = new StringBuilder(); // initialize the log
+        mStatusLog = new StringBuilder();
 
         pushStatus("\n\n========LOG========");
         pushStatus("Board ID: " + mSpecs.getSpecsId());
         pushStatus("");
 
-        // NOTE Entry uses Specs so must ensure specs instance exists
         mEntry = new Entry(matchNumber, teamNumber, scoutName, this);
     }
 
@@ -625,9 +616,8 @@ public class ScoutingActivity
     private void setupPager() {
 
         mPager = findViewById(R.id.pager);
-
-        mPagerAdapter = new ScoutingTabsPagerAdapter(getSupportFragmentManager(),
-                mSpecs.getLayouts().size(), mPager);
+        mPagerAdapter = new ScoutingTabsPagerAdapter(
+                getSupportFragmentManager(), mSpecs.getLayouts().size(), mPager);
 
         mPager.setAdapter(mPagerAdapter);
 
@@ -681,36 +671,27 @@ public class ScoutingActivity
 
     private void startActivityState(int state) {
 
-        if (state == ScoutingState.SCOUTING &&
-                (mTimerIsRunning || mTimer >= kTimerLimit)) {
-            return; // Return if there is a timer running
+        if (state == ScoutingState.SCOUTING && (mTimerIsRunning || mTimer >= kTimerLimit)) {
+            return;
         }
 
         mActivityState = state;
 
         switch (mActivityState) {
-
             case ScoutingState.STARTING:
-
                 setStartingNavToolbox();
-
                 break;
 
             case ScoutingState.SCOUTING:
-
                 setScoutingNavToolbox();
                 setBackgroundColour(getResources().getColor(R.color.colorWhite));
-
-                getManagedVibrator().vibrateStart(); // Vibrate to signal start
+                getManagedVibrator().vibrateStart();
                 mTimerUpdater.run();
-
                 break;
 
             case ScoutingState.PAUSING:
-
                 setPausingNavToolbox();
                 setBackgroundColour(getResources().getColor(R.color.colorAlmostYellow));
-
                 break;
         }
     }
@@ -720,10 +701,8 @@ public class ScoutingActivity
      */
 
     private void setStartingNavToolbox() {
-
         mPlayAndPauseView.setVisibility(View.GONE);
         mUndoAndNowView.setVisibility(View.GONE);
-
         mTimeSeeker.setVisibility(View.GONE);
         mTimeProgress.setVisibility(View.VISIBLE);
     }
@@ -733,8 +712,6 @@ public class ScoutingActivity
      */
 
     private void setScoutingNavToolbox() {
-
-        // mPlayAndPauseImage.setVisibility(View.VISIBLE);
 
         mPlayAndPauseView.setVisibility(mUsingPauseBetaFeature ? View.VISIBLE : View.GONE);
 
@@ -885,8 +862,9 @@ public class ScoutingActivity
 
         mTimerStatus.setText(filled_status);
 
-        mTimerStatus.setTextColor(mTimer <= kAutonomousTime ?
-                kAutonomousColour : kTeleOpColour);
+        mTimerStatus.setTextColor(getResources().getColor(mTimer <= kAutonomousTime ?
+                R.color.colorAutoYellow :
+                R.color.colorTeleOpGreen));
 
         mTimeProgress.setProgress(mTimer);
         mTimeSeeker.setProgress(mTimer);
@@ -907,18 +885,4 @@ public class ScoutingActivity
             updateAdjacentTabStates();
         }
     }
-
-
-    // Static Fields
-
-    private static final int kTimerLimit = 150;
-    private static final int kAutonomousTime = 15;
-    private static final int kFadeDuration = 100;
-    private static final int kTotalTimerDigits = 3;
-
-    private static final int kBlueAllianceColour = 0xFF0000FF;
-    private static final int kRedAllianceColour = 0xFFFF0000;
-    private static final int kNeutralAllianceColour = 0xFFFF00FF;
-    private static final int kAutonomousColour = 0xFFCC9900;
-    private static final int kTeleOpColour = 0xFF006633;
 }
