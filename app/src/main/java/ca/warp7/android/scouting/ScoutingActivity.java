@@ -9,9 +9,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -37,9 +34,8 @@ import java.util.List;
 
 import ca.warp7.android.scouting.abstraction.AbstractActionVibrator;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.abstraction.ScoutingTab;
-import ca.warp7.android.scouting.components.QRFragment;
 import ca.warp7.android.scouting.components.ScoutingInputsFragment;
+import ca.warp7.android.scouting.components.ScoutingTabsPagerAdapter;
 import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.constants.ScoutingState;
 import ca.warp7.android.scouting.model.DataConstant;
@@ -630,7 +626,8 @@ public class ScoutingActivity
 
         mPager = findViewById(R.id.pager);
 
-        mPagerAdapter = new ScoutingTabsPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new ScoutingTabsPagerAdapter(getSupportFragmentManager(),
+                mSpecs.getLayouts().size(), mPager);
 
         mPager.setAdapter(mPagerAdapter);
 
@@ -909,41 +906,6 @@ public class ScoutingActivity
             getManagedVibrator().vibrateAction();
             updateAdjacentTabStates();
         }
-    }
-
-
-    // Inner Class and Enum
-
-    /**
-     * Adapter that returns the proper fragment as pages are navigated
-     */
-
-    private class ScoutingTabsPagerAdapter
-            extends FragmentPagerAdapter {
-
-        ScoutingTabsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if (position < mSpecs.getLayouts().size()) {
-                return ScoutingInputsFragment.createInstance(position);
-            } else {
-                return QRFragment.createInstance();
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return mSpecs.getLayouts().size() + 1;
-        }
-
-        ScoutingTab getTabAt(int index) {
-            return (ScoutingTab) instantiateItem(mPager, index);
-        }
-
-
     }
 
 
