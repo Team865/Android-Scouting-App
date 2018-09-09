@@ -35,7 +35,7 @@ public class ScoutingScheduleAdapter extends ArrayAdapter<ScoutingScheduleItem> 
         if (convertView != null && convertView instanceof LinearLayout) {
             itemView = convertView;
         } else {
-            itemView = mInflater.inflate(R.layout.listitem_schedule_match, parent, false);
+            itemView = mInflater.inflate(R.layout.list_item_schedule_match, parent, false);
         }
 
         ScoutingScheduleItem scoutingScheduleItem = getItem(position);

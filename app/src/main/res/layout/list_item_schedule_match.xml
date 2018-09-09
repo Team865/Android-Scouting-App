@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-    android:weightSum="1"
     android:orientation="horizontal"
     android:padding="4dp">
 
@@ -11,17 +10,16 @@
         android:id="@+id/match_number"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="12dp"
-        android:background="@drawable/oval_bg"
         android:drawableTop="@drawable/ic_layers_ablack_small"
         android:gravity="center_vertical|center_horizontal"
         android:lineSpacingExtra="0dp"
         android:textColor="@color/colorAlmostBlack"
-        android:textSize="16sp"
-        android:textStyle="italic" />
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent" />
 
     <view
         android:id="@+id/alliance_view"

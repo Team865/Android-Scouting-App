@@ -44,7 +44,6 @@
                 android:paddingTop="4dp"
                 android:textColor="@color/colorAlmostBlack"
                 android:textSize="18sp"
-                android:textStyle="italic"
                 android:typeface="sans" />
 
             <View
