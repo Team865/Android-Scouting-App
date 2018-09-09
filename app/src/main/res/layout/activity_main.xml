@@ -11,10 +11,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical|center_horizontal"
-        android:paddingTop="8dp"
+        android:orientation="horizontal"
         android:paddingBottom="8dp"
+        android:paddingTop="8dp"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
@@ -46,159 +46,97 @@
         android:minHeight="?android:attr/actionBarSize"
         app:titleTextColor="@color/colorAlmostBlack" />
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout2"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp">
-
-        <TextView
-            android:id="@+id/name_hint"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/hint_name"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="14sp"
-            android:visibility="invisible"
-            app:layout_constraintBaseline_toBaselineOf="@+id/name_and_initial"
-            app:layout_constraintStart_toStartOf="@+id/name_and_initial" />
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/name_and_initial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:drawableLeft="@drawable/ic_account_box_ablack_small"
+            android:drawableStart="@drawable/ic_account_box_ablack_small"
+            android:ems="9"
             android:hint="@string/hint_name"
             android:imeOptions="actionNext"
             android:inputType="textPersonName"
             android:textAlignment="center"
             android:textColor="@color/colorAlmostBlack"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/match_number"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.050000012"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/match_hint"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:text="@string/hint_match"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="14sp"
-            android:visibility="invisible"
-            app:layout_constraintBaseline_toBaselineOf="@+id/match_number"
-            app:layout_constraintStart_toStartOf="@+id/name_hint" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/match_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:drawableLeft="@drawable/ic_layers_ablack_small"
             android:drawableStart="@drawable/ic_layers_ablack_small"
-            android:ems="10"
+            android:ems="9"
             android:hint="@string/hint_match"
             android:imeOptions="actionNext"
             android:inputType="number"
             android:maxLength="3"
             android:textAlignment="center"
             android:textColor="@color/colorAlmostBlack"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/team_number"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name_and_initial" />
-
-        <TextView
-            android:id="@+id/team_hint"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:text="@string/hint_team"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="14sp"
-            android:visibility="invisible"
-            app:layout_constraintBaseline_toBaselineOf="@+id/team_number"
-            app:layout_constraintStart_toStartOf="@+id/match_hint" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/team_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:drawableLeft="@drawable/ic_people_ablack_small"
             android:drawableStart="@drawable/ic_people_ablack_small"
-            android:ems="10"
+            android:ems="9"
             android:hint="@string/hint_team"
             android:imeOptions="actionUnspecified|actionDone"
             android:inputType="number"
             android:maxLength="4"
             android:textAlignment="center"
             android:textColor="@color/colorAlmostBlack"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/mismatch_warning"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/match_number" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/mismatch_warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:text="@string/schedule_mismatch"
             android:textAlignment="center"
             android:textSize="14sp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/verify_check"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.506"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/team_number" />
+            android:visibility="invisible" />
 
         <CheckBox
             android:id="@+id/verify_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:checked="false"
             android:enabled="false"
             android:text="@string/verify_match_info"
             android:textAlignment="center"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/match_start_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mismatch_warning" />
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:background="@android:color/transparent" />
 
         <Button
             android:id="@+id/match_start_button"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:padding="16dp"
             android:text="@string/start_match"
             android:textAllCaps="false"
             android:textSize="20sp"
             android:typeface="sans"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/verify_check" />
+            android:visibility="invisible" />
 
-    </android.support.constraint.ConstraintLayout>
-
+    </LinearLayout>
 </LinearLayout>

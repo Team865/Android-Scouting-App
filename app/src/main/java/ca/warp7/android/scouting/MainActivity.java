@@ -295,13 +295,6 @@ public class MainActivity
         boolean m_empty = m.isEmpty();
         boolean t_empty = t.isEmpty();
 
-        findViewById(R.id.name_hint)
-                .setVisibility(!n_empty ? View.VISIBLE : View.INVISIBLE);
-        findViewById(R.id.match_hint)
-                .setVisibility(!m_empty ? View.VISIBLE : View.INVISIBLE);
-        findViewById(R.id.team_hint)
-                .setVisibility(!t_empty ? View.VISIBLE : View.INVISIBLE);
-
         if (!(n_empty || m_empty || t_empty)) {
 
             verifier.setEnabled(true);
