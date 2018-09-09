@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
+import ca.warp7.android.scouting.abstraction.AbstractActionVibrator;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
 import ca.warp7.android.scouting.resources.ManagedPreferences;
 
@@ -15,13 +16,13 @@ abstract public class ScoutingActivityWrapper extends AppCompatActivity
 
     // System Services
 
-    protected Handler mTimeHandler;
-    protected ManagedPreferences mPreferences;
+    private Handler mTimeHandler;
+    private ManagedPreferences mPreferences;
 
     // Animation Objects
 
-    protected final Animation animate_in = new AlphaAnimation(0.0f, 1.0f);
-    protected final Animation animate_out = new AlphaAnimation(1.0f, 0.0f);
+    protected final Animation mAlphaAnimationIn = new AlphaAnimation(0.0f, 1.0f);
+    protected final Animation mAlphaAnimationOut = new AlphaAnimation(1.0f, 0.0f);
 
     /**
      * @return The current time in seconds
@@ -35,5 +36,19 @@ abstract public class ScoutingActivityWrapper extends AppCompatActivity
         super.onCreate(savedInstanceState);
         mTimeHandler = new Handler();
         mPreferences = new ManagedPreferences(this);
+    }
+
+    @Override
+    public Handler getHandler() {
+        return mTimeHandler;
+    }
+
+    @Override
+    public AbstractActionVibrator getManagedVibrator() {
+        return mPreferences.getVibrator();
+    }
+
+    protected ManagedPreferences getManagedPreferences() {
+        return mPreferences;
     }
 }

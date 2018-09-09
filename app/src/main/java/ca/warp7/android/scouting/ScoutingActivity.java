@@ -8,7 +8,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -30,9 +29,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ca.warp7.android.scouting.abstraction.AbstractActionVibrator;
-import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.components.ScoutingInputsFragment;
 import ca.warp7.android.scouting.components.ScoutingTabsPagerAdapter;
 import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.constants.ScoutingState;
@@ -61,19 +57,12 @@ import static ca.warp7.android.scouting.constants.Constants.kTotalTimerDigits;
  * <p>
  *
  * @author Team 865
- * @see ScoutingInputsFragment
- * @see ScoutingActivityListener
  * @see Entry
  * @since v0.2
  * </p>
  */
 
 public class ScoutingActivity extends ScoutingActivityWrapper {
-
-    // Beta Feature Variables
-
-    private boolean mUsingPauseBetaFeature;
-
 
     // State Variables
 
@@ -91,15 +80,9 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
     // UI elements (see layout file)
 
-    private TextView mToolbarTeam;
-    private TextView mToolbarMatch;
-
-    private TextView mTitleBanner;
     private TextView mTimerStatus;
-
     private ProgressBar mTimeProgress;
     private SeekBar mTimeSeeker;
-
     private TextView mStartButton;
     private ImageButton mPlayAndPauseImage;
     private ImageButton mUndoAndNowImage;
@@ -107,7 +90,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     private ViewGroup mUndoAndNowView;
     private TextView mPlayAndPauseText;
     private TextView mUndoAndNowText;
-
     private ViewPager mPager;
     private ScoutingTabsPagerAdapter mPagerAdapter;
 
@@ -120,25 +102,24 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     private StringBuilder mStatusLog;
 
 
-    // Timer Process
+    // Beta Feature
+    private boolean mUsingPauseBetaFeature;
 
+
+    // Timer Process
     private Runnable mTimerUpdater = new Runnable() {
         @Override
         public void run() {
-
             if (mActivityState != ScoutingState.SCOUTING) {
                 mTimerIsRunning = false;
                 return;
             }
-
             mTimerIsRunning = true;
-
             updateTimerStatusAndProgressBar();
             updateAdjacentTabStates();
             mTimer++;
-
             if (mTimer <= kTimerLimit) {
-                mTimeHandler.postDelayed(mTimerUpdater, 1000);
+                getHandler().postDelayed(mTimerUpdater, 1000);
             } else {
                 mTimerIsRunning = false;
                 if (mUsingPauseBetaFeature) {
@@ -153,24 +134,19 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         setupSpecs();
         setupUI();
         setupNavigationSliders();
         setupValuesFromIntent();
         setupPager();
-
         updateTimerStatusAndProgressBar();
         updateCurrentTab();
-
         initStates(savedInstanceState);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-
         super.onSaveInstanceState(outState);
         outState.putInt(ID.INSTANCE_TIMER, mTimer);
         outState.putInt(ID.INSTANCE_START_TIME, mStartingTimestamp);
@@ -178,7 +154,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.scouting_menu, menu);
         return true;
@@ -188,7 +163,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-
             case R.id.menu_flags:
                 onCommentsAndFlags();
                 return true;
@@ -198,7 +172,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
                 return true;
 
             case R.id.menu_qr:
-                //onShowQRCode();
                 mCurrentTab = mLayouts.size();
                 updateCurrentTab();
                 return true;
@@ -210,7 +183,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
     @Override
     public void onBackPressed() {
-
         new AlertDialog.Builder(this)
                 .setTitle(R.string.exit_confirmation)
                 .setMessage(R.string.exit_confirmation_body)
@@ -234,15 +206,8 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         return mTimer;
     }
 
-    @Override
-    public Handler getHandler() {
-        return mTimeHandler;
-    }
-
-    @Override
-    public AbstractActionVibrator getManagedVibrator() {
-        return mPreferences.getVibrator();
-    }
+    // getHandler()
+    // getManagedVibrator()
 
     @Override
     public Entry getEntry() {
@@ -299,7 +264,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     public void onPlayPauseClicked(View view) {
 
         switch (mActivityState) {
-
             case ScoutingState.SCOUTING: // Pause button
                 startActivityState(ScoutingState.PAUSING);
                 break;
@@ -317,7 +281,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     public void onUndoSkipClicked(View view) {
 
         switch (mActivityState) {
-
             case ScoutingState.SCOUTING: // Undo button
 
                 if (isTimerAtCurrentTime()) {
@@ -362,7 +325,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
                     }
                 });
 
-        if (mActivityState != ScoutingState.STARTING && mPreferences.shouldShowPause()) {
+        if (mActivityState != ScoutingState.STARTING && getManagedPreferences().shouldShowPause()) {
             builder.setNeutralButton(mUsingPauseBetaFeature ? "Hide Pause" : "Show Pause",
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -381,8 +344,8 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      */
 
     private void onCommentsAndFlags() {
-
         final EditText input = new EditText(this);
+
         input.setInputType(InputType.TYPE_CLASS_TEXT |
                 InputType.TYPE_TEXT_FLAG_MULTI_LINE |
                 InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
@@ -391,7 +354,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         input.setSelection(mEntry.getComments().length());
         input.setGravity(Gravity.CENTER);
         input.setHint(R.string.comments_hint);
-
         AlertDialog dialog = new AlertDialog.Builder(this)
 
                 .setTitle(R.string.edit_comments)
@@ -410,8 +372,8 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
                     }
                 })
                 .create();
-        Window window = dialog.getWindow();
 
+        Window window = dialog.getWindow();
         if (window != null) {
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         }
@@ -446,7 +408,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      */
 
     private void setupSpecs() {
-
         mSpecs = Specs.getInstance();
         if (mSpecs == null) {
             Specs.setInstance(getIntent().getStringExtra(ID.MSG_SPECS_FILE));
@@ -460,20 +421,13 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      */
 
     private void setupUI() {
-
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_scouting);
 
         Toolbar mToolbar = findViewById(R.id.my_toolbar);
-
-        mToolbarTeam = findViewById(R.id.toolbar_team);
-        mToolbarMatch = findViewById(R.id.toolbar_match);
-
         setSupportActionBar(mToolbar);
 
-        mTitleBanner = findViewById(R.id.title_banner);
         mTimerStatus = findViewById(R.id.timer_status);
-
         mStartButton = findViewById(R.id.start_timer);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -486,9 +440,8 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         mUndoAndNowView = findViewById(R.id.undo_now_container);
         mPlayAndPauseText = findViewById(R.id.play_pause_text);
         mUndoAndNowText = findViewById(R.id.undo_now_text);
-
-        animate_in.setDuration(kFadeDuration);
-        animate_out.setDuration(kFadeDuration);
+        mAlphaAnimationIn.setDuration(kFadeDuration);
+        mAlphaAnimationOut.setDuration(kFadeDuration);
     }
 
     /**
@@ -496,18 +449,13 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      */
 
     private void setupNavigationSliders() {
-
         mTimeProgress = findViewById(R.id.time_progress);
         mTimeSeeker = findViewById(R.id.time_seeker);
-
         mTimeProgress.setMax(kTimerLimit);
         mTimeProgress.setProgress(0);
-
         mTimeSeeker.setMax(kTimerLimit);
         mTimeSeeker.setProgress(0);
-
         mTimeSeeker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser && mActivityState == ScoutingState.PAUSING) {
@@ -519,12 +467,10 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
     }
@@ -540,21 +486,22 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         int matchNumber = intent.getIntExtra(ID.MSG_MATCH_NUMBER, -1);
         int teamNumber = intent.getIntExtra(ID.MSG_TEAM_NUMBER, -1);
         String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
-
         String alliance = mSpecs.getAlliance();
 
         ActionBar actionBar = getSupportActionBar();
-
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
-        mToolbarTeam.setText(alliance.equals("R") || alliance.equals("B") ?
+        TextView toolbarTeam = findViewById(R.id.toolbar_team);
+        TextView toolbarMatch = findViewById(R.id.toolbar_match);
+
+        toolbarTeam.setText(alliance.equals("R") || alliance.equals("B") ?
                 String.valueOf(teamNumber) : mSpecs.getBoardName());
 
         String m = "" + matchNumber;
-        mToolbarMatch.setText(m);
-        mToolbarTeam.setTextColor(
+        toolbarMatch.setText(m);
+        toolbarTeam.setTextColor(
                 getResources().getColor(alliance.equals("R") ? R.color.colorRed :
                         (alliance.equals("B") ? R.color.colorBlue :
                                 R.color.colorPurple)));
@@ -566,7 +513,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
                                                 R.color.colorAlmostWhite)),
                         PorterDuff.Mode.MULTIPLY);
 
-        mToolbarTeam.setTypeface(Typeface.SANS_SERIF,
+        toolbarTeam.setTypeface(Typeface.SANS_SERIF,
                 alliance.equals("R") || alliance.equals("B") ? Typeface.BOLD : Typeface.NORMAL);
 
         mStatusLog = new StringBuilder();
@@ -623,7 +570,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         }
 
         mEntry.setStartingTimestamp(mStartingTimestamp);
-
         startActivityState(ScoutingState.STARTING);
     }
 
@@ -681,10 +627,8 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     private void setScoutingNavToolbox() {
 
         mPlayAndPauseView.setVisibility(mUsingPauseBetaFeature ? View.VISIBLE : View.GONE);
-
         mUndoAndNowView.setVisibility(View.VISIBLE);
         mStartButton.setVisibility(View.GONE);
-
         mPlayAndPauseImage.setImageResource(R.drawable.ic_pause_ablack);
         mPlayAndPauseText.setText(R.string.btn_pause);
 
@@ -709,12 +653,10 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         mPlayAndPauseView.setVisibility(View.VISIBLE);
         mUndoAndNowView.setVisibility(View.VISIBLE);
         mStartButton.setVisibility(View.GONE);
-
         mPlayAndPauseImage.setImageResource(R.drawable.ic_play_arrow_ablack);
         mPlayAndPauseText.setText(R.string.btn_resume);
         mUndoAndNowImage.setImageResource(R.drawable.ic_skip_next_red);
         mUndoAndNowText.setText(R.string.btn_now);
-
         mTimeSeeker.setVisibility(View.VISIBLE);
         mTimeProgress.setVisibility(View.GONE);
     }
@@ -735,34 +677,30 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
     private void setAnimatedTitleBanner(final String title) {
 
-        if (!mTitleBanner.getText().toString().isEmpty()) {
+        final TextView titleBanner = findViewById(R.id.title_banner);
 
-            animate_out.setAnimationListener(new Animation.AnimationListener() {
-
+        if (!titleBanner.getText().toString().isEmpty()) {
+            mAlphaAnimationOut.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    mTitleBanner.setText(title);
-                    mTitleBanner.startAnimation(animate_in);
+                    titleBanner.setText(title);
+                    titleBanner.startAnimation(mAlphaAnimationIn);
                 }
 
                 @Override
                 public void onAnimationRepeat(Animation animation) {
-
                 }
             });
-
-            mTitleBanner.startAnimation(animate_out);
+            titleBanner.startAnimation(mAlphaAnimationOut);
 
         } else {
-            mTitleBanner.setText(title);
-            mTitleBanner.startAnimation(animate_in);
+            titleBanner.setText(title);
+            titleBanner.startAnimation(mAlphaAnimationIn);
         }
-
     }
 
     /**
@@ -770,7 +708,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      */
 
     private void updateCurrentTab() {
-
         String title = "";
 
         if (mCurrentTab >= 0 && mCurrentTab < mLayouts.size()) {
@@ -793,7 +730,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      */
 
     private void updateAdjacentTabStates() {
-
         if (mCurrentTab != 0) {
             mPagerAdapter.getTabAt(mCurrentTab - 1).updateTabState();
         }
@@ -810,7 +746,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      */
 
     private void updateTimerStatusAndProgressBar() {
-
         String status;
         int time;
 
@@ -828,11 +763,9 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         String filled_status = new String(placeholder).replace("\0", "0") + status;
 
         mTimerStatus.setText(filled_status);
-
         mTimerStatus.setTextColor(getResources().getColor(mTimer <= kAutonomousTime ?
                 R.color.colorAutoYellow :
                 R.color.colorTeleOpGreen));
-
         mTimeProgress.setProgress(mTimer);
         mTimeSeeker.setProgress(mTimer);
     }
