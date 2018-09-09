@@ -12,7 +12,7 @@ import ca.warp7.android.scouting.model.Entry;
  * @since v0.2.0
  */
 
-public interface ScoutingActivityListener {
+public interface ScoutingActivityListener extends EntryTimekeeper {
 
     /**
      * @return The time Handler of the activity

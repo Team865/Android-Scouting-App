@@ -41,7 +41,6 @@ import ca.warp7.android.scouting.model.Entry;
 import ca.warp7.android.scouting.model.EntryFormatter;
 import ca.warp7.android.scouting.model.ScoutingLayout;
 import ca.warp7.android.scouting.model.Specs;
-import ca.warp7.android.scouting.resources.ManagedPreferences;
 import ca.warp7.android.scouting.wrappers.ScoutingActivityWrapper;
 
 import static ca.warp7.android.scouting.constants.Constants.kAutonomousTime;
@@ -71,7 +70,6 @@ import static ca.warp7.android.scouting.constants.Constants.kTotalTimerDigits;
 
 public class ScoutingActivity extends ScoutingActivityWrapper {
 
-
     // Beta Feature Variables
 
     private boolean mUsingPauseBetaFeature;
@@ -93,9 +91,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
     // UI elements (see layout file)
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private Toolbar mToolbar;
-
     private TextView mToolbarTeam;
     private TextView mToolbarMatch;
 
@@ -115,12 +110,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
     private ViewPager mPager;
     private ScoutingTabsPagerAdapter mPagerAdapter;
-
-
-    // System Services
-
-    private Handler mTimeHandler;
-    private ManagedPreferences mPreferences;
 
 
     // Data Model Variables
@@ -166,9 +155,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
-        mTimeHandler = new Handler();
-        mPreferences = new ManagedPreferences(this);
 
         setupSpecs();
         setupUI();
@@ -478,7 +464,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_scouting);
 
-        mToolbar = findViewById(R.id.my_toolbar);
+        Toolbar mToolbar = findViewById(R.id.my_toolbar);
 
         mToolbarTeam = findViewById(R.id.toolbar_team);
         mToolbarMatch = findViewById(R.id.toolbar_match);
