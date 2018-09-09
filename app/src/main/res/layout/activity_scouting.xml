@@ -158,7 +158,8 @@
             android:textColor="@color/colorAlmostBlack"
             android:textSize="24sp"
             android:typeface="sans"
-            tools:text="Tab Title" />
+            tools:text="Tab Title"
+            android:textStyle="bold" />
 
 
         <LinearLayout
