@@ -1,8 +1,9 @@
 package ca.warp7.android.scouting.widgets;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.abstraction.BaseInputControl;
@@ -11,11 +12,12 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * Creates a box container that centers the control inside it
+ *
  * @since v0.3.0
  */
 
 public class CenteredControlLayout
-        extends ConstraintLayout
+        extends LinearLayout
         implements BaseInputControl,
         View.OnClickListener {
 
@@ -39,15 +41,8 @@ public class CenteredControlLayout
         setBackgroundResource(R.drawable.layer_list_bg_group);
 
         LayoutParams childLayout;
-
-        childLayout = new LayoutParams(LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT);
-
-        childLayout.leftToLeft = LayoutParams.PARENT_ID;
-        childLayout.rightToRight = LayoutParams.PARENT_ID;
-        childLayout.topToTop = LayoutParams.PARENT_ID;
-        childLayout.bottomToBottom = LayoutParams.PARENT_ID;
-
+        childLayout = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        setGravity(Gravity.CENTER);
         control.setLayoutParams(childLayout);
 
         addView(control);
