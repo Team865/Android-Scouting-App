@@ -21,7 +21,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -53,7 +52,7 @@ public class MainActivity
 
     private TextView mismatchWarning;
     private CheckBox verifier;
-    private Button matchStartButton;
+    private View matchStartButton;
 
     private SpecsIndex specsIndex;
     private SharedPreferences prefs;
@@ -276,7 +275,6 @@ public class MainActivity
             ActionBar ab = getSupportActionBar();
             if (ab != null) {
                 ab.setTitle("Board: " + specs.getBoardName());
-                ab.setSubtitle(specs.getEvent());
             }
             updateTextFieldState();
 

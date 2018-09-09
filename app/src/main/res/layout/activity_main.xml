@@ -8,40 +8,18 @@
     android:orientation="vertical"
     tools:context="ca.warp7.android.scouting.MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical|center_horizontal"
-        android:orientation="horizontal"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp"
-        tools:ignore="UseCompoundDrawables">
-
-        <ImageView
-            android:id="@+id/team_logo"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/app_name"
-            android:onClick="onLogoClicked"
-            android:src="@mipmap/ic_launcher" />
-
-        <TextView
-            android:id="@+id/app_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:text="@string/app_name_2"
-            android:textAllCaps="false"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
+    <ImageView
+        android:id="@+id/team_logo"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:contentDescription="@string/app_name"
+        android:onClick="onLogoClicked"
+        android:padding="6dp"
+        android:src="@mipmap/ic_launcher" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/actionBarSize"
         app:titleTextColor="@color/colorAlmostBlack" />
@@ -49,10 +27,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
 
         <EditText
             android:id="@+id/name_and_initial"
@@ -102,8 +80,8 @@
             android:id="@+id/mismatch_warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:paddingTop="8dp"
             android:text="@string/schedule_mismatch"
             android:textAlignment="center"
             android:textSize="14sp"
@@ -113,10 +91,10 @@
             android:id="@+id/verify_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             android:checked="false"
             android:enabled="false"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
             android:text="@string/verify_match_info"
             android:textAlignment="center"
             android:textSize="16sp" />
@@ -126,13 +104,17 @@
             android:layout_height="24dp"
             android:background="@android:color/transparent" />
 
-        <Button
+        <TextView
             android:id="@+id/match_start_button"
-            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:text="@string/start_match"
+            android:background="@drawable/selector_awhite_button"
+            android:textColor="@color/colorAlmostBlack"
+            android:ems="9"
+            android:gravity="center"
             android:textAllCaps="false"
             android:textSize="20sp"
             android:typeface="sans"

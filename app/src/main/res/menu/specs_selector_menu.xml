@@ -5,11 +5,6 @@
     <item
         android:id="@+id/menu_select_specs"
         android:title="@string/menu_select_specs"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/menu_copy_specs"
-        android:title="@string/menu_copy_default_metrics"
-        android:visible="false"
+        android:icon="@drawable/ic_menu_ablack"
         app:showAsAction="ifRoom" />
 </menu>

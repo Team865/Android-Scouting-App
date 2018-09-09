@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">Scouting</string>
-    <string name="app_name_2">Scouting App</string>
 
     <string name="menu_copy_default_metrics">Copy Default Metrics</string>
-    <string name="menu_select_specs">Select</string>
+    <string name="menu_select_specs">Change</string>
 
     <string name="hint_match">Match #</string>
     <string name="hint_team">Team #</string>
@@ -15,7 +14,7 @@
     <string name="verify_match_info">Verify Match and Team</string>
     <string name="verify_match_proceed">Proceed Anyways</string>
 
-    <string name="start_match">Enter Match Scouting</string>
+    <string name="start_match">Start Scouting</string>
     <string name="start_timer">Start Timer</string>
 
 
