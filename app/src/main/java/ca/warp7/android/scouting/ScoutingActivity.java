@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Gravity;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -44,6 +42,7 @@ import ca.warp7.android.scouting.model.EntryFormatter;
 import ca.warp7.android.scouting.model.ScoutingLayout;
 import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.resources.ManagedPreferences;
+import ca.warp7.android.scouting.wrappers.ScoutingActivityWrapper;
 
 import static ca.warp7.android.scouting.constants.Constants.kAutonomousTime;
 import static ca.warp7.android.scouting.constants.Constants.kFadeDuration;
@@ -70,9 +69,7 @@ import static ca.warp7.android.scouting.constants.Constants.kTotalTimerDigits;
  * </p>
  */
 
-public class ScoutingActivity
-        extends AppCompatActivity
-        implements ScoutingActivityListener {
+public class ScoutingActivity extends ScoutingActivityWrapper {
 
 
     // Beta Feature Variables
@@ -161,12 +158,6 @@ public class ScoutingActivity
             }
         }
     };
-
-
-    // Animation Objects
-
-    private final Animation animate_in = new AlphaAnimation(0.0f, 1.0f);
-    private final Animation animate_out = new AlphaAnimation(1.0f, 0.0f);
 
 
     // Activity Methods
@@ -446,14 +437,6 @@ public class ScoutingActivity
     // Utility Methods
 
     /**
-     * @return The current time in seconds
-     */
-
-    private int getCurrentTime() {
-        return (int) (System.currentTimeMillis() / 1000);
-    }
-
-    /**
      * Calculates the relative time based on
      * the current time and the starting timestamp
      */
@@ -627,7 +610,6 @@ public class ScoutingActivity
             public void onPageScrolled(int position,
                                        float positionOffset,
                                        int positionOffsetPixels) {
-
             }
 
             @Override
@@ -638,7 +620,6 @@ public class ScoutingActivity
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
