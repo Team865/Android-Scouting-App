@@ -28,6 +28,21 @@
         <Preference
             android:key="pref_about"
             android:title="@string/app_name" />
+        <Preference android:title="Releases on Google Drive">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://drive.google.com/drive/folders/1MfxsFr-_dZDAveTws_s_ykEa_cjP66dY" />
+        </Preference>
+        <Preference
+            android:title="Repository on GitHub"
+            android:summary="Requires team account access">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/Team865/Android-Scouting-App" />
+        </Preference>
+        <Preference
+            android:title="Open Source Licenses"
+            android:key="pref_licenses" />
     </PreferenceCategory>
 
 </PreferenceScreen>
