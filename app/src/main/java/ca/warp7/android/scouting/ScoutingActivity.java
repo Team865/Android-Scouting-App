@@ -285,7 +285,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
                 if (isTimerAtCurrentTime()) {
                     attemptUndo();
-                } else {
+                } else { // Now if not at the current time
                     mTimer = calculateCurrentRelativeTime();
                     getManagedVibrator().vibrateStart();
                     mUndoAndNowImage.setImageResource(R.drawable.ic_undo_ablack);
@@ -389,7 +389,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      * the current time and the starting timestamp
      */
     private int calculateCurrentRelativeTime() {
-        return (getCurrentTime() - mStartingTimestamp) % (kTimerLimit + 1);
+        return Math.min(getCurrentTime() - mStartingTimestamp, kTimerLimit);
     }
 
     /**
