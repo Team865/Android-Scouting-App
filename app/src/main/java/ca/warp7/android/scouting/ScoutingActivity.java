@@ -49,11 +49,10 @@ import static ca.warp7.android.scouting.constants.Constants.kTotalTimerDigits;
  * <p>The Scouting Activity -- A generic activity to collect data
  * for an Entry based on a set Specs. It controls all sub-components
  * of the activity and implements a listener that can be used for
- * callback. It is responsible to manage the activity's state and
- * lifecycle, setting up components in the interface, receive
- * events from action buttons for navigation and commands, and
- * keeps track of an Entry object which stores the data </p>
- * <p>
+ * callback. It is responsible for setting up components in the
+ * interface, receive events from action buttons for navigation
+ * and commands, and keeps track of an Entry object which stores
+ * the data </p>
  * <p>
  *
  * @author Team 865
@@ -73,7 +72,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
     private int mTimer = 0;
     private int mCurrentTab = 0;
-
     private int mStartingTimestamp = 0;
     private int mLastRecordedTime = -1;
 
@@ -332,7 +330,11 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
                         public void onClick(DialogInterface dialog, int which) {
                             mUsingPauseBetaFeature = !mUsingPauseBetaFeature;
                             getManagedVibrator().vibrateAction();
-                            mPlayAndPauseView.setVisibility(mUsingPauseBetaFeature ? View.VISIBLE : View.GONE);
+                            if (mUsingPauseBetaFeature) {
+                                show(mPlayAndPauseView);
+                            } else {
+                                hide(mPlayAndPauseView);
+                            }
                         }
                     });
         }
@@ -614,10 +616,10 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      */
 
     private void setStartingNavToolbox() {
-        mPlayAndPauseView.setVisibility(View.GONE);
-        mUndoAndNowView.setVisibility(View.GONE);
-        mTimeSeeker.setVisibility(View.GONE);
-        mTimeProgress.setVisibility(View.VISIBLE);
+        hide(mPlayAndPauseView);
+        hide(mUndoAndNowView);
+        hide(mTimeSeeker);
+        show(mTimeProgress);
     }
 
     /**
@@ -625,10 +627,16 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      */
 
     private void setScoutingNavToolbox() {
+        if (mUsingPauseBetaFeature) {
+            show(mPlayAndPauseView);
+        } else {
+            hide(mPlayAndPauseView);
+        }
+        show(mUndoAndNowView);
+        hide(mStartButton);
+        hide(mTimeSeeker);
+        show(mTimeProgress);
 
-        mPlayAndPauseView.setVisibility(mUsingPauseBetaFeature ? View.VISIBLE : View.GONE);
-        mUndoAndNowView.setVisibility(View.VISIBLE);
-        mStartButton.setVisibility(View.GONE);
         mPlayAndPauseImage.setImageResource(R.drawable.ic_pause_ablack);
         mPlayAndPauseText.setText(R.string.btn_pause);
 
@@ -639,9 +647,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
             mUndoAndNowImage.setImageResource(R.drawable.ic_skip_next_red);
             mUndoAndNowText.setText(R.string.btn_now);
         }
-
-        mTimeSeeker.setVisibility(View.GONE);
-        mTimeProgress.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -650,15 +655,15 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
     private void setPausingNavToolbox() {
 
-        mPlayAndPauseView.setVisibility(View.VISIBLE);
-        mUndoAndNowView.setVisibility(View.VISIBLE);
-        mStartButton.setVisibility(View.GONE);
+        show(mPlayAndPauseView);
+        show(mUndoAndNowView);
+        hide(mStartButton);
         mPlayAndPauseImage.setImageResource(R.drawable.ic_play_arrow_ablack);
         mPlayAndPauseText.setText(R.string.btn_resume);
         mUndoAndNowImage.setImageResource(R.drawable.ic_skip_next_red);
         mUndoAndNowText.setText(R.string.btn_now);
-        mTimeSeeker.setVisibility(View.VISIBLE);
-        mTimeProgress.setVisibility(View.GONE);
+        show(mTimeSeeker);
+        hide(mTimeProgress);
     }
 
     /**

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
@@ -27,8 +28,16 @@ abstract public class ScoutingActivityWrapper extends AppCompatActivity
     /**
      * @return The current time in seconds
      */
-    protected int getCurrentTime() {
+    protected static int getCurrentTime() {
         return (int) (System.currentTimeMillis() / 1000);
+    }
+
+    protected static void show(View view) {
+        view.setVisibility(View.VISIBLE);
+    }
+
+    protected static void hide(View view) {
+        view.setVisibility(View.GONE);
     }
 
     @Override
