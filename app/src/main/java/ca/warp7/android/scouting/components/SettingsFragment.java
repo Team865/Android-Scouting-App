@@ -22,6 +22,7 @@ public class SettingsFragment extends PreferenceFragment {
         SettingsClickListener listener = new SettingsClickListener();
         findPreference(PreferenceKeys.kCopyAssetsKey).setOnPreferenceClickListener(listener);
         findPreference(PreferenceKeys.kScheduleKey).setOnPreferenceClickListener(listener);
+        findPreference(PreferenceKeys.kLicensesKey).setOnPreferenceClickListener(listener);
 
         try {
             PackageInfo packageInfo = getActivity().getPackageManager()
@@ -29,8 +30,7 @@ public class SettingsFragment extends PreferenceFragment {
 
             Preference aboutApp = findPreference(PreferenceKeys.kAboutAppKey);
             aboutApp.setIcon(R.mipmap.ic_launcher);
-            aboutApp.setSummary("Version: "
-                    + packageInfo.versionName);
+            aboutApp.setSummary("Version: " + packageInfo.versionName);
 
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();

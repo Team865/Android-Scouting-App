@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.preference.Preference;
 
+import ca.warp7.android.scouting.LicensesActivity;
 import ca.warp7.android.scouting.ScheduleActivity;
 import ca.warp7.android.scouting.constants.PreferenceKeys;
 import ca.warp7.android.scouting.model.Specs;
@@ -25,6 +26,9 @@ public class SettingsClickListener implements Preference.OnPreferenceClickListen
             case PreferenceKeys.kScheduleKey:
                 onScheduleActivityIntent(preference.getContext());
                 return true;
+            case PreferenceKeys.kLicensesKey:
+                onLicensesIntent(preference.getContext());
+                return true;
         }
         return false;
     }
@@ -32,6 +36,12 @@ public class SettingsClickListener implements Preference.OnPreferenceClickListen
     private void onScheduleActivityIntent(Context context) {
         Intent intent;
         intent = new Intent(context, ScheduleActivity.class);
+        context.startActivity(intent);
+    }
+
+    private void onLicensesIntent(Context context) {
+        Intent intent;
+        intent = new Intent(context, LicensesActivity.class);
         context.startActivity(intent);
     }
 
@@ -49,7 +59,6 @@ public class SettingsClickListener implements Preference.OnPreferenceClickListen
                         DataFiles.copyAssets(context);
                     }
                 })
-                .create()
-                .show();
+                .create().show();
     }
 }

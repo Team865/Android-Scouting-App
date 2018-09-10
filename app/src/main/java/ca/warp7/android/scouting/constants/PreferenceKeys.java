@@ -10,4 +10,5 @@ public class PreferenceKeys {
     public static final String kCopyAssetsKey = "pref_copy_assets";
     public static final String kScheduleKey = "pref_x_schedule";
     public static final String kAboutAppKey = "pref_about";
+    public static final String kLicensesKey = "pref_licenses";
 }

@@ -27,6 +27,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ScheduleActivity" />
+        <activity android:name=".LicensesActivity" />
     </application>
 
 </manifest>
