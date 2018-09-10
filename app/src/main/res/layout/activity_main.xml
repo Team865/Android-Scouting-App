@@ -24,101 +24,97 @@
         android:minHeight="?android:attr/actionBarSize"
         app:titleTextColor="@color/colorAlmostBlack" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp">
+    <View
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        android:background="@android:color/transparent" />
 
-        <EditText
-            android:id="@+id/name_and_initial"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_account_box_ablack_small"
-            android:drawableStart="@drawable/ic_account_box_ablack_small"
-            android:ems="9"
-            android:hint="@string/hint_name"
-            android:imeOptions="actionNext"
-            android:inputType="textPersonName"
-            android:textAlignment="center"
-            android:textColor="@color/colorAlmostBlack"
-            android:textSize="20sp" />
+    <EditText
+        android:id="@+id/name_and_initial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_account_box_ablack_small"
+        android:drawableStart="@drawable/ic_account_box_ablack_small"
+        android:ems="9"
+        android:hint="@string/hint_name"
+        android:imeOptions="actionNext"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textColor="@color/colorAlmostBlack"
+        android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/match_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_layers_ablack_small"
-            android:drawableStart="@drawable/ic_layers_ablack_small"
-            android:ems="9"
-            android:hint="@string/hint_match"
-            android:imeOptions="actionNext"
-            android:inputType="number"
-            android:maxLength="3"
-            android:textAlignment="center"
-            android:textColor="@color/colorAlmostBlack"
-            android:textSize="20sp" />
+    <EditText
+        android:id="@+id/match_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_layers_ablack_small"
+        android:drawableStart="@drawable/ic_layers_ablack_small"
+        android:ems="9"
+        android:hint="@string/hint_match"
+        android:imeOptions="actionNext"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textAlignment="center"
+        android:textColor="@color/colorAlmostBlack"
+        android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/team_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_people_ablack_small"
-            android:drawableStart="@drawable/ic_people_ablack_small"
-            android:ems="9"
-            android:hint="@string/hint_team"
-            android:imeOptions="actionUnspecified|actionDone"
-            android:inputType="number"
-            android:maxLength="4"
-            android:textAlignment="center"
-            android:textColor="@color/colorAlmostBlack"
-            android:textSize="20sp" />
+    <EditText
+        android:id="@+id/team_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_people_ablack_small"
+        android:drawableStart="@drawable/ic_people_ablack_small"
+        android:ems="9"
+        android:hint="@string/hint_team"
+        android:imeOptions="actionUnspecified|actionDone"
+        android:inputType="number"
+        android:maxLength="4"
+        android:textAlignment="center"
+        android:textColor="@color/colorAlmostBlack"
+        android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/mismatch_warning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/schedule_mismatch"
-            android:textAlignment="center"
-            android:textSize="14sp"
-            android:visibility="invisible" />
+    <TextView
+        android:id="@+id/mismatch_warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="@string/schedule_mismatch"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:visibility="invisible" />
 
-        <CheckBox
-            android:id="@+id/verify_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:enabled="false"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/verify_match_info"
-            android:textAlignment="center"
-            android:textSize="16sp" />
+    <CheckBox
+        android:id="@+id/verify_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:enabled="false"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="@string/verify_match_info"
+        android:textAlignment="center"
+        android:textSize="16sp" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:background="@android:color/transparent" />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:background="@android:color/transparent" />
 
-        <TextView
-            android:id="@+id/match_start_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:text="@string/start_match"
-            android:background="@drawable/selector_awhite_button"
-            android:textColor="@color/colorAlmostBlack"
-            android:ems="9"
-            android:gravity="center"
-            android:textAllCaps="false"
-            android:textSize="20sp"
-            android:typeface="sans"
-            android:visibility="invisible" />
+    <TextView
+        android:id="@+id/match_start_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_awhite_button"
+        android:ems="9"
+        android:gravity="center"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="@string/start_match"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAlmostBlack"
+        android:textSize="20sp"
+        android:typeface="sans"
+        android:visibility="invisible" />
 
-    </LinearLayout>
 </LinearLayout>
