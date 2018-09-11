@@ -569,6 +569,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
             mStartingTimestamp = getCurrentTime();
         } else {
             mStartingTimestamp = savedInstanceState.getInt(ID.INSTANCE_START_TIME);
+            mStartingTimestamp = getCurrentTime();
         }
 
         mEntry.setStartingTimestamp(mStartingTimestamp);

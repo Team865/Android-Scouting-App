@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Experimental Features">
+    <PreferenceCategory android:title="@string/pref_cat_exp">
         <Preference
-            android:key="pref_x_schedule"
-            android:title="Match/Scouting Schedule"
-            android:summary="Displays the match schedule in a list" />
+            android:key="@string/pref_x_schedule_key"
+            android:summary="@string/pref_x_schedule_summary"
+            android:title="@string/pref_x_schedule_title" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Scouting Options">
+    <PreferenceCategory android:title="@string/pref_cat_opt">
         <SwitchPreference
-            android:key="pref_use_vibration"
-            android:title="Use Vibration"
-            android:summary="Vibrate when the app successfully complete an action you requested (such as clicking a button or undo)"
-            android:defaultValue="true" />
+            android:defaultValue="true"
+            android:key="@string/pref_use_vibration_key"
+            android:summary="@string/pref_use_vibration_summary"
+            android:title="@string/pref_use_vibration_title" />
         <SwitchPreference
-            android:key="pref_show_pause"
-            android:title="Pause, Resume, and SeekBar"
-            android:summary="These features allows you to go back to edit data in an entry (Click on the team/match number at the top to enable in-match)"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            android:key="@string/pref_show_pause_key"
+            android:summary="@string/pref_show_pause_summary"
+            android:title="@string/pref_show_pause_title" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Actions">
+    <PreferenceCategory android:title="@string/pref_cat_actions">
         <Preference
-            android:key="pref_copy_assets"
-            android:title="Copy Asset Files"
-            android:summary="Copies any files (board/template/schedule) bundled with this app on installation into the usage folder" />
+            android:key="@string/pref_copy_assets_key"
+            android:summary="@string/pref_copy_assets_summary"
+            android:title="@string/pref_copy_assets_title" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="About">
+    <PreferenceCategory android:title="@string/pref_cat_about">
         <Preference
-            android:key="pref_about"
+            android:key="@string/pref_about_key"
             android:title="@string/app_name" />
-        <Preference android:title="Releases on Google Drive">
+        <Preference android:title="@string/pref_google_drive_title">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://drive.google.com/drive/folders/1MfxsFr-_dZDAveTws_s_ykEa_cjP66dY" />
         </Preference>
         <Preference
-            android:title="Repository on GitHub"
-            android:summary="Requires team account access">
+            android:summary="@string/pref_github_summary"
+            android:title="@string/pref_github_title">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://github.com/Team865/Android-Scouting-App" />
         </Preference>
         <Preference
-            android:title="Open Source Licenses"
-            android:key="pref_licenses" />
+            android:key="@string/pref_licenses_key"
+            android:title="@string/pref_licenses_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>

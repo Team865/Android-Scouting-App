@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_x_schedule_key">pref_x_schedule</string>
+    <string name="pref_x_schedule_title">Match/Scouting Schedule</string>
+    <string name="pref_x_schedule_summary">Displays the match schedule in a list</string>
+    <string name="pref_use_vibration_key">pref_use_vibration</string>
+    <string name="pref_use_vibration_title">Use Vibration</string>
+    <string name="pref_show_pause_title">Pause, Resume, and SeekBar</string>
+    <string name="pref_use_vibration_summary">Vibrate when the app successfully complete an action you requested (such as clicking a button or undo)</string>
+    <string name="pref_show_pause_key">pref_show_pause</string>
+    <string name="pref_show_pause_summary">These features allows you to go back to edit data in an entry (Click on the team/match number at the top to enable in-match)</string>
+    <string name="pref_copy_assets_key">pref_copy_assets</string>
+    <string name="pref_copy_assets_title">Copy Asset Files</string>
+    <string name="pref_copy_assets_summary">Copies any files (board/template/schedule) bundled with this app on installation into the usage folder</string>
+    <string name="pref_about_key">pref_about</string>
+    <string name="pref_google_drive_title">Releases on Google Drive</string>
+    <string name="pref_github_title">Repository on GitHub</string>
+    <string name="pref_github_summary">Requires team account access</string>
+    <string name="pref_licenses_key">pref_licenses</string>
+    <string name="pref_licenses_title">Open Source Licenses</string>
+    <string name="pref_cat_exp">Experimental Features</string>
+    <string name="pref_cat_opt">Scouting Options</string>
+    <string name="pref_cat_actions">Actions</string>
+    <string name="pref_cat_about">About</string>
+</resources>
