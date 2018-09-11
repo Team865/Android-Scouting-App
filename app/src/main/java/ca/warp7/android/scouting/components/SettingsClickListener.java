@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.preference.Preference;
 
 import ca.warp7.android.scouting.LicensesActivity;
+import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.ScheduleActivity;
-import ca.warp7.android.scouting.constants.PreferenceKeys;
 import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.resources.DataFiles;
 
@@ -19,18 +19,18 @@ import ca.warp7.android.scouting.resources.DataFiles;
 public class SettingsClickListener implements Preference.OnPreferenceClickListener {
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        switch (preference.getKey()) {
-            case PreferenceKeys.kCopyAssetsKey:
-                onCopyAssets(preference.getContext());
-                return true;
-            case PreferenceKeys.kScheduleKey:
-                onScheduleActivityIntent(preference.getContext());
-                return true;
-            case PreferenceKeys.kLicensesKey:
-                onLicensesIntent(preference.getContext());
-                return true;
+        Context context = preference.getContext();
+        String key = preference.getKey();
+        if (key.equals(context.getString(R.string.pref_copy_assets_key))) {
+            onCopyAssets(context);
+        } else if (key.equals(context.getString(R.string.pref_x_schedule_key))) {
+            onScheduleActivityIntent(context);
+        } else if (key.equals(context.getString(R.string.pref_licenses_key))) {
+            onLicensesIntent(context);
+        } else {
+            return false;
         }
-        return false;
+        return true;
     }
 
     private void onScheduleActivityIntent(Context context) {

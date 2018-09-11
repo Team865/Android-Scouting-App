@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import ca.warp7.android.scouting.constants.PreferenceKeys;
+import ca.warp7.android.scouting.R;
 
 /**
  * @since v0.4.1
@@ -23,13 +23,17 @@ public class ManagedPreferences {
 
     public ActionVibrator getVibrator() {
         if (mActionVibrator == null) {
-            mActionVibrator = new ActionVibrator(mContext,
-                    mSharedPreferences.getBoolean(PreferenceKeys.kVibratorPreferenceKey, true));
+            mActionVibrator = new ActionVibrator(mContext, mSharedPreferences
+                    .getBoolean(getString(R.string.pref_use_vibration_key), true));
         }
         return mActionVibrator;
     }
 
     public boolean shouldShowPause() {
-        return mSharedPreferences.getBoolean(PreferenceKeys.kShowPausePreferenceKey, false);
+        return mSharedPreferences.getBoolean(getString(R.string.pref_show_pause_key), false);
+    }
+
+    private String getString(int id) {
+        return mContext.getString(id);
     }
 }

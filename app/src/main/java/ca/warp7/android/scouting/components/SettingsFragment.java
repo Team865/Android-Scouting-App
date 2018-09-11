@@ -8,7 +8,6 @@ import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 
 import ca.warp7.android.scouting.R;
-import ca.warp7.android.scouting.constants.PreferenceKeys;
 
 /**
  * @since v0.4.1
@@ -20,20 +19,24 @@ public class SettingsFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         SettingsClickListener listener = new SettingsClickListener();
-        findPreference(PreferenceKeys.kCopyAssetsKey).setOnPreferenceClickListener(listener);
-        findPreference(PreferenceKeys.kScheduleKey).setOnPreferenceClickListener(listener);
-        findPreference(PreferenceKeys.kLicensesKey).setOnPreferenceClickListener(listener);
+        addListener(R.string.pref_copy_assets_key, listener);
+        addListener(R.string.pref_x_schedule_key, listener);
+        addListener(R.string.pref_licenses_key, listener);
 
         try {
             PackageInfo packageInfo = getActivity().getPackageManager()
                     .getPackageInfo(getActivity().getPackageName(), 0);
 
-            Preference aboutApp = findPreference(PreferenceKeys.kAboutAppKey);
+            Preference aboutApp = findPreference(getString(R.string.pref_about_key));
             aboutApp.setIcon(R.mipmap.ic_launcher);
             aboutApp.setSummary("Version: " + packageInfo.versionName);
 
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void addListener(int id, SettingsClickListener listener) {
+        findPreference(getString(id)).setOnPreferenceClickListener(listener);
     }
 }
