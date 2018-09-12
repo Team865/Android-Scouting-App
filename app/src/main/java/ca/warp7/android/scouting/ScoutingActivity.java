@@ -204,9 +204,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         return mTimer;
     }
 
-    // getHandler()
-    // getManagedVibrator()
-
     @Override
     public Entry getEntry() {
         return mEntry;

@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.resources;
+package ca.warp7.android.scouting.res;
 
 import android.content.Context;
 import android.os.Vibrator;

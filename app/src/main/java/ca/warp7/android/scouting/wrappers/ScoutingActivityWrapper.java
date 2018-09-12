@@ -10,7 +10,7 @@ import android.view.animation.Animation;
 
 import ca.warp7.android.scouting.abstraction.AbstractActionVibrator;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.resources.ManagedPreferences;
+import ca.warp7.android.scouting.res.ManagedPreferences;
 
 abstract public class ScoutingActivityWrapper extends AppCompatActivity
         implements ScoutingActivityListener {
