@@ -9,7 +9,6 @@ import android.preference.Preference;
 import ca.warp7.android.scouting.LicensesActivity;
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.ScheduleActivity;
-import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.res.AppResources;
 
 /**
@@ -49,14 +48,17 @@ public class SettingsClickListener implements Preference.OnPreferenceClickListen
         new AlertDialog.Builder(context)
                 .setTitle("Are you sure?")
                 .setMessage("Any files stored at \""
-                        + Specs.getSpecsRoot().getAbsolutePath()
+                        + AppResources.getSpecsRoot().getAbsolutePath()
+                        + "\" and \""
+                        + AppResources.getEventsRoot().getAbsolutePath()
                         + "\" will be overwritten.")
                 .setNegativeButton("No", null)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        AppResources.copyAssets(context);
+                        AppResources.copySpecsAssets(context);
+                        AppResources.copyEventAssets(context);
                     }
                 })
                 .create().show();

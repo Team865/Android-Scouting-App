@@ -3,6 +3,7 @@ package ca.warp7.android.scouting.res;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.os.Environment;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -14,18 +15,25 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-import ca.warp7.android.scouting.model.Specs;
-
 /**
  * @since v0.4.2
  */
 
+@SuppressWarnings({"ResultOfMethodCallIgnored", "WeakerAccess"})
 public class AppResources {
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void copyAssets(Context context) {
+    private static final String kSpecsRoot = "Warp7/specs/";
+    private static final String kEventsRoot = "Warp7/events/";
+
+    public static File getSpecsRoot() {
+        File root = new File(Environment.getExternalStorageDirectory(), kSpecsRoot);
+        root.mkdirs();
+        return root;
+    }
+
+    public static void copySpecsAssets(Context context) {
         try {
-            File root = Specs.getSpecsRoot();
+            File root = getSpecsRoot();
 
             AssetManager assetManager = context.getAssets();
             for (String fileName : assetManager.list("specs")) {
@@ -45,7 +53,6 @@ public class AppResources {
         }
     }
 
-    @SuppressWarnings("WeakerAccess")
     public static String getRaw(Context context, int id) {
         Resources resources = context.getResources();
         try {
@@ -69,5 +76,49 @@ public class AppResources {
 
     public static Spanned getHTML(Context context, int id) {
         return Html.fromHtml(getRaw(context, id));
+    }
+
+    public static File getEventsRoot() {
+        File root = new File(Environment.getExternalStorageDirectory(), kEventsRoot);
+        root.mkdirs();
+        return root;
+    }
+
+    private static boolean recursiveDelete(File f) {
+        boolean deleted = true;
+        if (f.isDirectory())
+            for (File ff : f.listFiles())
+                deleted = deleted && recursiveDelete(ff);
+        return deleted && f.delete();
+    }
+
+    public static void copyEventAssets(Context context) {
+        try {
+            AssetManager assetManager = context.getAssets();
+            File root = getEventsRoot();
+            File[] rootDirs = root.listFiles();
+            for (String assetEvent : assetManager.list("events")) {
+                for (File rootEventName : rootDirs) {
+                    if (rootEventName.isDirectory() && assetEvent.equals(rootEventName.getName())) {
+                        recursiveDelete(rootEventName);
+                    }
+                }
+                String eventPath = "events/" + assetEvent;
+                File eventDirectory = new File(root, assetEvent);
+                eventDirectory.mkdir();
+                for (String assetEventFile : assetManager.list(eventPath)) {
+                    InputStream inputStream = assetManager.open(eventPath + "/" + assetEventFile);
+                    byte[] buffer = new byte[inputStream.available()];
+                    inputStream.read(buffer);
+                    inputStream.close();
+                    File outFile = new File(eventDirectory, assetEventFile);
+                    OutputStream outputStream = new FileOutputStream(outFile);
+                    outputStream.write(buffer);
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

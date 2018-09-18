@@ -20,7 +20,7 @@ import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.constants.RobotPosition;
 import ca.warp7.android.scouting.model.MatchWithAllianceItem;
 import ca.warp7.android.scouting.model.ScoutingSchedule;
-import ca.warp7.android.scouting.model.Specs;
+import ca.warp7.android.scouting.res.AppResources;
 
 /**
  * @since v0.4.2
@@ -49,7 +49,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
         try {
             mScoutingSchedule.loadFullScheduleFromCSV(
-                    new File(Specs.getSpecsRoot(), "match-table.csv"));
+                    new File(AppResources.getSpecsRoot(), "match-table.csv"));
         } catch (IOException exception) {
             onErrorDialog(exception);
         }

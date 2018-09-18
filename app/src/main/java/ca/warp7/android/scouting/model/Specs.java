@@ -1,7 +1,5 @@
 package ca.warp7.android.scouting.model;
 
-import android.os.Environment;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,6 +9,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import ca.warp7.android.scouting.res.AppResources;
 
 /**
  * Data Model for reading metrics, settings,
@@ -115,15 +115,6 @@ public class Specs {
     }
 
 
-    private static final String SPECS_ROOT = "Warp7/specs/";
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static File getSpecsRoot() {
-        File r = new File(Environment.getExternalStorageDirectory(), SPECS_ROOT);
-        r.mkdirs();
-        return r;
-    }
-
     static String readFile(File f) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(f));
         StringBuilder sb = new StringBuilder();
@@ -162,7 +153,7 @@ public class Specs {
     public static Specs setInstance(String filename) {
         try {
 
-            activeSpecs = new Specs(readFile(new File(getSpecsRoot(), filename)));
+            activeSpecs = new Specs(readFile(new File(AppResources.getSpecsRoot(), filename)));
 
         } catch (IOException | JSONException e) {
 

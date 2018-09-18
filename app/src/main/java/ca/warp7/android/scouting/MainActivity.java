@@ -224,11 +224,11 @@ public class MainActivity
 
     private void setupSpecs() {
 
-        File root = Specs.getSpecsRoot();
+        File root = AppResources.getSpecsRoot();
         File indexFile = new File(root, "index.json");
 
         if (!indexFile.exists()) {
-            AppResources.copyAssets(this);
+            AppResources.copySpecsAssets(this);
         }
 
         loadIndex(indexFile);
