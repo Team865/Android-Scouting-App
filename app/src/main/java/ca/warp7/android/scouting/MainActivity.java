@@ -38,8 +38,7 @@ import ca.warp7.android.scouting.res.AppResources;
  * @since v0.1.0
  */
 
-public class MainActivity
-        extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements TextWatcher,
         View.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
@@ -49,11 +48,9 @@ public class MainActivity
     private EditText scoutNameField;
     private EditText matchNumberField;
     private EditText teamNumberField;
-
     private TextView mismatchWarning;
     private CheckBox verifier;
     private View matchStartButton;
-
     private SpecsIndex specsIndex;
     private SharedPreferences prefs;
 
@@ -94,18 +91,13 @@ public class MainActivity
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         matchStartButton.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
-
         View view = this.getCurrentFocus();
-
         if (view != null && verifier.isChecked()) {
-
             InputMethodManager imm = (InputMethodManager)
                     getSystemService(Context.INPUT_METHOD_SERVICE);
-
             if (imm != null) {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
-
             view.clearFocus();
         }
     }
@@ -115,7 +107,6 @@ public class MainActivity
             int requestCode,
             @NonNull String[] permissions,
             @NonNull int[] grantResults) {
-
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_FILES: {
                 if (grantResults.length > 0
@@ -141,13 +132,9 @@ public class MainActivity
 
     @Override
     public void onClick(View v) {
-
         String name = scoutNameField.getText().toString().replaceAll("_", "");
-
         SharedPreferences.Editor editor = prefs.edit();
-
         editor.putString(ID.SAVE_SCOUT_NAME, name);
-
         editor.apply();
 
         // Start Auto Activity
@@ -158,14 +145,12 @@ public class MainActivity
 
         Intent intent;
         intent = new Intent(this, ScoutingActivity.class);
-
         intent.putExtra(ID.MSG_MATCH_NUMBER,
                 Integer.parseInt(matchNumberField.getText().toString()));
         intent.putExtra(ID.MSG_TEAM_NUMBER,
                 Integer.parseInt(teamNumberField.getText().toString()));
         intent.putExtra(ID.MSG_SCOUT_NAME, name);
         intent.putExtra(ID.MSG_SPECS_FILE, mPassedSpecsFile);
-
         startActivity(intent);
 
     }
@@ -191,28 +176,23 @@ public class MainActivity
 
     private void setupUI() {
         setContentView(R.layout.activity_main);
-
         Toolbar myToolBar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolBar);
 
         scoutNameField = findViewById(R.id.name_and_initial);
         matchNumberField = findViewById(R.id.match_number);
         teamNumberField = findViewById(R.id.team_number);
-
         mismatchWarning = findViewById(R.id.mismatch_warning);
         verifier = findViewById(R.id.verify_check);
         matchStartButton = findViewById(R.id.match_start_button);
 
         verifier.setOnCheckedChangeListener(this);
-
         scoutNameField.addTextChangedListener(this);
         matchNumberField.addTextChangedListener(this);
         teamNumberField.addTextChangedListener(this);
-
         matchStartButton.setOnClickListener(this);
 
         scoutNameField.setText(prefs.getString(ID.SAVE_SCOUT_NAME, ""));
-
         findViewById(R.id.team_logo).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -251,15 +231,10 @@ public class MainActivity
 
     private void loadIndex(File indexFile) {
         specsIndex = new SpecsIndex(indexFile);
-
         ArrayList<String> names = specsIndex.getNames();
-
         if (!names.isEmpty()) {
-
             String savedName = prefs.getString(ID.SAVE_SPECS, "");
-
             loadSpecsFromName(names.contains(savedName) ? savedName : names.get(0));
-
         } else {
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) {
@@ -277,7 +252,6 @@ public class MainActivity
                 ab.setTitle("Board: " + specs.getBoardName());
             }
             updateTextFieldState();
-
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString(ID.SAVE_SPECS, name);
             editor.apply();
@@ -288,34 +262,27 @@ public class MainActivity
         String n = scoutNameField.getText().toString();
         String m = matchNumberField.getText().toString();
         String t = teamNumberField.getText().toString();
-
         boolean n_empty = n.isEmpty();
         boolean m_empty = m.isEmpty();
         boolean t_empty = t.isEmpty();
-
         if (!(n_empty || m_empty || t_empty)) {
-
             verifier.setEnabled(true);
             if (Specs.getInstance().hasMatchSchedule()) {
                 if (matchDoesExist(m, t)) {
-
                     mismatchWarning.setVisibility(View.INVISIBLE);
                     verifier.setText(R.string.verify_match_info);
                     verifier.setTextColor(getResources().getColor(R.color.colorAlmostBlack));
-
                 } else {
                     mismatchWarning.setText(R.string.schedule_mismatch);
                     mismatchWarning.setVisibility(View.VISIBLE);
                     verifier.setText(R.string.verify_match_proceed);
                     verifier.setTextColor(getResources().getColor(R.color.colorRed));
                     verifier.setChecked(false);
-
                 }
             } else {
                 mismatchWarning.setText(R.string.schedule_does_not_exist);
                 mismatchWarning.setVisibility(View.VISIBLE);
             }
-
         } else {
             mismatchWarning.setVisibility(View.INVISIBLE);
             verifier.setText(R.string.verify_match_info);

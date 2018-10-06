@@ -13,8 +13,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "v0.4.3"
-        resConfigs "en"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resConfigs "en-rUS", "hdpi"
     }
 
     buildTypes {
@@ -32,9 +31,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.zxing:core:3.3.3'
-    implementation 'com.android.volley:volley:1.1.1'
+    //implementation 'com.android.volley:volley:1.1.1'
 }

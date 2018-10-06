@@ -23,7 +23,7 @@ public class LicensesActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("Open Source Licenses");
+            actionBar.setTitle(R.string.open_source_licenses);
         }
     }
 
