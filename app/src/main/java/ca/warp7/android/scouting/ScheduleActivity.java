@@ -70,6 +70,8 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     private void createScreen(EventInfo selectedEvent) {
+        setTitle(selectedEvent.getEventName());
+
         Spinner spinner = findViewById(R.id.board_spinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.board_choices, android.R.layout.simple_spinner_item);
