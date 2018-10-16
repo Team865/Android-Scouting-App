@@ -1,12 +1,11 @@
 package ca.warp7.android.scouting.components;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 
+import ca.warp7.android.scouting.BuildConfig;
 import ca.warp7.android.scouting.R;
 
 /**
@@ -23,17 +22,9 @@ public class SettingsFragment extends PreferenceFragment {
         addListener(R.string.pref_x_schedule_key, listener);
         addListener(R.string.pref_licenses_key, listener);
 
-        try {
-            PackageInfo packageInfo = getActivity().getPackageManager()
-                    .getPackageInfo(getActivity().getPackageName(), 0);
-
-            Preference aboutApp = findPreference(getString(R.string.pref_about_key));
-            aboutApp.setIcon(R.mipmap.ic_launcher);
-            aboutApp.setSummary("Version: " + packageInfo.versionName);
-
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        Preference aboutApp = findPreference(getString(R.string.pref_about_key));
+        aboutApp.setIcon(R.mipmap.ic_launcher);
+        aboutApp.setSummary("Version: " + BuildConfig.VERSION_NAME);
     }
 
     private void addListener(int id, SettingsClickListener listener) {

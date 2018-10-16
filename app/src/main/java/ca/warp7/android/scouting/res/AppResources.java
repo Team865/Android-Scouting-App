@@ -10,16 +10,19 @@ import android.text.Spanned;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @since v0.4.2
  */
 
-@SuppressWarnings({"ResultOfMethodCallIgnored", "WeakerAccess"})
+@SuppressWarnings({"ResultOfMethodCallIgnored", "WeakerAccess", "ConstantConditions"})
 public class AppResources {
 
     private static final String kSpecsRoot = "Warp7/specs/";
@@ -120,5 +123,37 @@ public class AppResources {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String readFile(File f) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(f));
+        StringBuilder sb = new StringBuilder();
+
+        String line = br.readLine();
+
+        while (line != null) {
+            sb.append(line);
+            line = br.readLine();
+        }
+
+        br.close();
+        return sb.toString();
+    }
+
+    public static List<EventInfo> getEvents() {
+        File root = getEventsRoot();
+        File[] eventRoots = root.listFiles();
+        List<EventInfo> eventsList = new ArrayList<>();
+        for (File eventRoot : eventRoots) {
+            if (eventRoot.isDirectory()) {
+                try {
+                    EventInfo eventInfo = new EventInfo(eventRoot);
+                    eventsList.add(eventInfo);
+                } catch (EventInfo.NotProperEventFormat e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return eventsList;
     }
 }

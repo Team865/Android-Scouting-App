@@ -1,19 +1,25 @@
 package ca.warp7.android.scouting;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.warp7.android.scouting.components.ScoutingScheduleAdapter;
 import ca.warp7.android.scouting.constants.ID;
@@ -21,12 +27,15 @@ import ca.warp7.android.scouting.constants.RobotPosition;
 import ca.warp7.android.scouting.model.MatchWithAllianceItem;
 import ca.warp7.android.scouting.model.ScoutingSchedule;
 import ca.warp7.android.scouting.res.AppResources;
+import ca.warp7.android.scouting.res.EventInfo;
 
 /**
  * @since v0.4.2
  */
 
 public class ScheduleActivity extends AppCompatActivity {
+
+    private static final int MY_PERMISSIONS_REQUEST_FILES = 0;
 
     private ScoutingSchedule mScoutingSchedule;
     private ScoutingScheduleAdapter mScheduleAdapter;
@@ -35,9 +44,35 @@ public class ScheduleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
-        setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
+        setSupportActionBar(findViewById(R.id.my_toolbar));
         setTitle("Match Schedule");
 
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_FILES);
+        }
+
+        final List<EventInfo> events = AppResources.getEvents();
+
+        List<String> names = new ArrayList<>();
+        for (EventInfo event : events) {
+            names.add(event.getEventName());
+        }
+
+        new AlertDialog.Builder(this).setTitle("Select Event")
+                .setItems(names.toArray(new String[0]), (dialog, which) -> {
+                    createScreen(events.get(which));
+                })
+                .create().show();
+
+
+    }
+
+    private void createScreen(EventInfo selectedEvent) {
         Spinner spinner = findViewById(R.id.board_spinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.board_choices, android.R.layout.simple_spinner_item);
@@ -48,8 +83,7 @@ public class ScheduleActivity extends AppCompatActivity {
         mScoutingSchedule = new ScoutingSchedule();
 
         try {
-            mScoutingSchedule.loadFullScheduleFromCSV(
-                    new File(AppResources.getSpecsRoot(), "match-table.csv"));
+            mScoutingSchedule.loadFullScheduleFromCSV(selectedEvent.getMatchTableRoot());
         } catch (IOException exception) {
             onErrorDialog(exception);
         }
@@ -65,7 +99,7 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object item = mScoutingSchedule.getCurrentlyScheduled().get(position);
-                if (item != null && item instanceof MatchWithAllianceItem) {
+                if (item instanceof MatchWithAllianceItem) {
                     MatchWithAllianceItem matchItem = (MatchWithAllianceItem) item;
                     if (matchItem.shouldFocus()) {
                         int team = matchItem.getTeamAtPosition(matchItem.getFocusPosition());
@@ -133,4 +167,17 @@ public class ScheduleActivity extends AppCompatActivity {
                 .create().show();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_FILES: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.i("permission", "granted");
+                }
+            }
+        }
+    }
 }

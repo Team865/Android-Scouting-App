@@ -14,8 +14,7 @@
     <string name="pref_copy_assets_summary">Copies any files (board/template/schedule) bundled with this app on installation into the usage folder</string>
     <string name="pref_about_key">pref_about</string>
     <string name="pref_google_drive_title">Releases on Google Drive</string>
-    <string name="pref_github_title">Repository on GitHub</string>
-    <string name="pref_github_summary">Requires team account access</string>
+    <string name="pref_github_title">Code Repository on GitHub</string>
     <string name="pref_licenses_key">pref_licenses</string>
     <string name="pref_licenses_title">Open Source Licenses</string>
     <string name="pref_cat_exp">Experimental Features</string>

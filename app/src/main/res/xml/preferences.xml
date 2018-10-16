@@ -34,7 +34,6 @@
                 android:data="https://drive.google.com/drive/folders/1MfxsFr-_dZDAveTws_s_ykEa_cjP66dY" />
         </Preference>
         <Preference
-            android:summary="@string/pref_github_summary"
             android:title="@string/pref_github_title">
             <intent
                 android:action="android.intent.action.VIEW"
