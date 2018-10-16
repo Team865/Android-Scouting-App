@@ -2,6 +2,7 @@ package ca.warp7.android.scouting.widgets;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.Gravity;
@@ -41,7 +42,7 @@ public class ChoicesButton
 
         setOnClickListener(this);
 
-        setTextColor(getResources().getColor(R.color.colorAccent));
+        setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
 
         setAllCaps(false);
         setTextSize(18);

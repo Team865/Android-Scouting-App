@@ -263,12 +263,12 @@ public class MainActivity extends AppCompatActivity
                 if (matchDoesExist(m, t)) {
                     mismatchWarning.setVisibility(View.INVISIBLE);
                     verifier.setText(R.string.verify_match_info);
-                    verifier.setTextColor(getResources().getColor(R.color.colorAlmostBlack));
+                    verifier.setTextColor(ContextCompat.getColor(this, R.color.colorAlmostBlack));
                 } else {
                     mismatchWarning.setText(R.string.schedule_mismatch);
                     mismatchWarning.setVisibility(View.VISIBLE);
                     verifier.setText(R.string.verify_match_proceed);
-                    verifier.setTextColor(getResources().getColor(R.color.colorRed));
+                    verifier.setTextColor(ContextCompat.getColor(this, R.color.colorRed));
                     verifier.setChecked(false);
                 }
             } else {
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity
             mismatchWarning.setVisibility(View.INVISIBLE);
             verifier.setText(R.string.verify_match_info);
             verifier.setEnabled(false);
-            verifier.setTextColor(getResources().getColor(R.color.colorAlmostBlack));
+            verifier.setTextColor(ContextCompat.getColor(this, R.color.colorAlmostBlack));
             verifier.setChecked(false);
         }
     }

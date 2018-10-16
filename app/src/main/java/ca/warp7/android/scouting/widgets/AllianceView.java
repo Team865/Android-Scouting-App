@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -61,15 +62,16 @@ public class AllianceView extends View {
     }
 
     private void initPaints() {
-        mAlmostRedPaint.setColor(getResources().getColor(R.color.colorAlmostRed));
-        mAlmostBluePaint.setColor(getResources().getColor(R.color.colorAlmostBlue));
+        Context context = getContext();
+        mAlmostRedPaint.setColor(ContextCompat.getColor(context, R.color.colorAlmostRed));
+        mAlmostBluePaint.setColor(ContextCompat.getColor(context, R.color.colorAlmostBlue));
 
-        mAlmostBlackTextPaint.setColor(getResources().getColor(R.color.colorAlmostBlack));
-        mGrayTextPaint.setColor(getResources().getColor(R.color.colorGray));
-        mRedTextPaint.setColor(getResources().getColor(R.color.colorRed));
-        mBlueTextPaint.setColor(getResources().getColor(R.color.colorBlue));
-        mRedBoldTextPaint.setColor(getResources().getColor(R.color.colorRed));
-        mBlueBoldTextPaint.setColor(getResources().getColor(R.color.colorBlue));
+        mAlmostBlackTextPaint.setColor(ContextCompat.getColor(context, R.color.colorAlmostBlack));
+        mGrayTextPaint.setColor(ContextCompat.getColor(context, R.color.colorGray));
+        mRedTextPaint.setColor(ContextCompat.getColor(context, R.color.colorRed));
+        mBlueTextPaint.setColor(ContextCompat.getColor(context, R.color.colorBlue));
+        mRedBoldTextPaint.setColor(ContextCompat.getColor(context, R.color.colorRed));
+        mBlueBoldTextPaint.setColor(ContextCompat.getColor(context, R.color.colorBlue));
 
         setTextPaintStyle(mAlmostBlackTextPaint, false);
         setTextPaintStyle(mGrayTextPaint, false);

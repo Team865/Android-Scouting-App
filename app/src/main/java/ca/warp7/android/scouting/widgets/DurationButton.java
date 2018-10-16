@@ -2,6 +2,7 @@ package ca.warp7.android.scouting.widgets;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import ca.warp7.android.scouting.R;
@@ -54,7 +55,7 @@ public class DurationButton
 
         if (listener.timedInputsShouldDisable()) {
             setEnabled(false);
-            setTextColor(getResources().getColor(R.color.colorGray));
+            setTextColor(ContextCompat.getColor(getContext(), R.color.colorGray));
         } else {
             setEnabled(true);
         }
@@ -62,13 +63,13 @@ public class DurationButton
 
     private void updateLooks() {
         if (isOn) {
-            setTextColor(getResources().getColor(R.color.colorWhite));
+            setTextColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
             setText(dc.getLabelOn());
             getBackground().setColorFilter(
-                    getResources().getColor(R.color.colorRed),
+                    ContextCompat.getColor(getContext(), R.color.colorRed),
                     PorterDuff.Mode.MULTIPLY);
         } else {
-            setTextColor(getResources().getColor(R.color.colorLightGreen));
+            setTextColor(ContextCompat.getColor(getContext(), R.color.colorLightGreen));
             setText(dc.getLabel());
             getBackground().clearColorFilter();
         }

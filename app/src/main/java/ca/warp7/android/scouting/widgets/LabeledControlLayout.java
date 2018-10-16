@@ -1,6 +1,7 @@
 package ca.warp7.android.scouting.widgets;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -51,7 +52,7 @@ public class LabeledControlLayout
         // Add the views
 
         TextView label = new TextView(context);
-        label.setTextColor(getResources().getColor(R.color.colorAlmostBlack));
+        label.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAlmostBlack));
 
         label.setText(dc.getLabel());
         label.setGravity(Gravity.CENTER);

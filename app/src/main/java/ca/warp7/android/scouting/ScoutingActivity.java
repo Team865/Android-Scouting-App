@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -478,13 +479,13 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         String m = "" + matchNumber;
         toolbarMatch.setText(m);
         toolbarTeam.setTextColor(
-                getResources().getColor(alliance.equals("R") ? R.color.colorRed :
+                ContextCompat.getColor(this, alliance.equals("R") ? R.color.colorRed :
                         (alliance.equals("B") ? R.color.colorBlue :
                                 R.color.colorPurple)));
 
         findViewById(R.id.highlight_bar).getBackground()
-                .setColorFilter(getResources()
-                                .getColor(alliance.equals("R") ? R.color.colorAlmostRed :
+                .setColorFilter(ContextCompat.getColor(this, alliance.
+                                equals("R") ? R.color.colorAlmostRed :
                                         (alliance.equals("B") ? R.color.colorAlmostBlue :
                                                 R.color.colorAlmostWhite)),
                         PorterDuff.Mode.MULTIPLY);
@@ -574,14 +575,14 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
             case ScoutingState.SCOUTING:
                 setScoutingNavToolbox();
-                setBackgroundColour(getResources().getColor(R.color.colorWhite));
+                setBackgroundColour(ContextCompat.getColor(this, R.color.colorWhite));
                 getManagedVibrator().vibrateStart();
                 mTimerUpdater.run();
                 break;
 
             case ScoutingState.PAUSING:
                 setPausingNavToolbox();
-                setBackgroundColour(getResources().getColor(R.color.colorAlmostYellow));
+                setBackgroundColour(ContextCompat.getColor(this, R.color.colorAlmostYellow));
                 break;
         }
     }
@@ -743,7 +744,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         String filled_status = new String(placeholder).replace("\0", "0") + status;
 
         mTimerStatus.setText(filled_status);
-        mTimerStatus.setTextColor(getResources().getColor(mTimer <= kAutonomousTime ?
+        mTimerStatus.setTextColor(ContextCompat.getColor(this, mTimer <= kAutonomousTime ?
                 R.color.colorAutoYellow :
                 R.color.colorTeleOpGreen));
         mTimeProgress.setProgress(mTimer);

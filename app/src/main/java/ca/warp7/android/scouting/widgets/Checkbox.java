@@ -2,6 +2,7 @@ package ca.warp7.android.scouting.widgets;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 
@@ -59,10 +60,10 @@ public class Checkbox
         // Temporary Fix before board format changed
         if (listener.timedInputsShouldDisable()) {
             setEnabled(false);
-            setTextColor(getResources().getColor(R.color.colorGray));
+            setTextColor(ContextCompat.getColor(getContext(), R.color.colorGray));
         } else {
             setEnabled(true);
-            setTextColor(getResources().getColor(R.color.colorAccent));
+            setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
         }
         setChecked(listener.getEntry().getCount(dc.getIndex()) % 2 != 0);
     }

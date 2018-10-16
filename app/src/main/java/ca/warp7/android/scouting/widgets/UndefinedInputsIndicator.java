@@ -2,6 +2,7 @@ package ca.warp7.android.scouting.widgets;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 
@@ -34,12 +35,12 @@ public class UndefinedInputsIndicator
 
     @Override
     public void onClick(View v) {
-        setTextColor(getResources().getColor(R.color.colorWhite));
+        setTextColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
         getBackground().setColorFilter(
-                getResources().getColor(android.R.color.black), PorterDuff.Mode.MULTIPLY);
+                ContextCompat.getColor(getContext(), android.R.color.black), PorterDuff.Mode.MULTIPLY);
         listener.getManagedVibrator().vibrateAction();
         listener.getHandler().postDelayed(() -> {
-            setTextColor(getResources().getColor(android.R.color.black));
+            setTextColor(ContextCompat.getColor(getContext(), android.R.color.black));
             getBackground().clearColorFilter();
         }, 1000);
     }

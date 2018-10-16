@@ -2,6 +2,7 @@ package ca.warp7.android.scouting.widgets;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
@@ -60,19 +61,19 @@ public class TimerButton
 
         if (listener.timedInputsShouldDisable()) {
             setEnabled(false);
-            setTextColor(getResources().getColor(R.color.colorGray));
+            setTextColor(ContextCompat.getColor(getContext(), R.color.colorGray));
         } else {
 
             counter = listener.getEntry().getCount(dc.getIndex());
             if (listener.dataShouldFocus(dc.getIndex())) {
                 updateCounterView(true);
-                setTextColor(getResources().getColor(R.color.colorWhite));
+                setTextColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
                 getBackground().setColorFilter(
-                        getResources().getColor(R.color.colorAccent),
+                        ContextCompat.getColor(getContext(), R.color.colorAccent),
                         PorterDuff.Mode.MULTIPLY);
             } else {
                 getBackground().clearColorFilter();
-                setTextColor(getResources().getColor(R.color.colorAccent));
+                setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
                 updateCounterView(false);
             }
             setEnabled(true);
@@ -85,9 +86,9 @@ public class TimerButton
             counterView.setText(String.valueOf(counter));
 
             if (white) {
-                counterView.setTextColor(getResources().getColor(R.color.colorWhite));
+                counterView.setTextColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
             } else {
-                counterView.setTextColor(getResources().getColor(R.color.colorAlmostBlack));
+                counterView.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAlmostBlack));
             }
         }
     }
