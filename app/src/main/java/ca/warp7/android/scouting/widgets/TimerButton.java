@@ -18,7 +18,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 public class TimerButton
         extends BaseButton {
 
-    int counter;
+    private int counter;
 
     public TimerButton(Context context) {
         super(context);
@@ -41,12 +41,7 @@ public class TimerButton
 
             listener.pushCurrentTimeAsValue(dc.getIndex(), 1);
             updateControlState();
-            listener.getHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    updateControlState();
-                }
-            }, 1000);
+            listener.getHandler().postDelayed(this::updateControlState, 1000);
 
             listener.pushStatus(dc.getLabel() + " - {t}s");
         } else {

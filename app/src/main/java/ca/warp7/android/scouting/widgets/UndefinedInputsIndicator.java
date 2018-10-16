@@ -17,7 +17,7 @@ public class UndefinedInputsIndicator
         extends AppCompatButton
         implements View.OnClickListener {
 
-    ScoutingActivityListener listener;
+    private ScoutingActivityListener listener;
 
     public UndefinedInputsIndicator(Context context) {
         super(context);
@@ -38,12 +38,9 @@ public class UndefinedInputsIndicator
         getBackground().setColorFilter(
                 getResources().getColor(android.R.color.black), PorterDuff.Mode.MULTIPLY);
         listener.getManagedVibrator().vibrateAction();
-        listener.getHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setTextColor(getResources().getColor(android.R.color.black));
-                getBackground().clearColorFilter();
-            }
+        listener.getHandler().postDelayed(() -> {
+            setTextColor(getResources().getColor(android.R.color.black));
+            getBackground().clearColorFilter();
         }, 1000);
     }
 }

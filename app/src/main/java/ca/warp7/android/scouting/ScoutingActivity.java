@@ -2,7 +2,6 @@ package ca.warp7.android.scouting;
 
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -105,7 +104,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
 
     // Timer Process
-    private Runnable mTimerUpdater = new Runnable() {
+    private final Runnable mTimerUpdater = new Runnable() {
         @Override
         public void run() {
             if (mActivityState != ScoutingState.SCOUTING) {
@@ -185,13 +184,8 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
                 .setTitle(R.string.exit_confirmation)
                 .setMessage(R.string.exit_confirmation_body)
                 .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ScoutingActivity.super.onBackPressed();
-                    }
-                })
+                .setPositiveButton(android.R.string.yes, (dialog, which)
+                        -> ScoutingActivity.super.onBackPressed())
                 .create()
                 .show();
     }
@@ -313,25 +307,17 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Entry Report/Log")
                 .setMessage(EntryFormatter.formatReport(mEntry) + mStatusLog.toString())
-                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                .setPositiveButton("Done", (dialog, which) -> dialog.dismiss());
 
         if (mActivityState != ScoutingState.STARTING && getManagedPreferences().shouldShowPause()) {
             builder.setNeutralButton(mUsingPauseBetaFeature ? "Hide Pause" : "Show Pause",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mUsingPauseBetaFeature = !mUsingPauseBetaFeature;
-                            getManagedVibrator().vibrateAction();
-                            if (mUsingPauseBetaFeature) {
-                                show(mPlayAndPauseView);
-                            } else {
-                                hide(mPlayAndPauseView);
-                            }
+                    (dialog, which) -> {
+                        mUsingPauseBetaFeature = !mUsingPauseBetaFeature;
+                        getManagedVibrator().vibrateAction();
+                        if (mUsingPauseBetaFeature) {
+                            show(mPlayAndPauseView);
+                        } else {
+                            hide(mPlayAndPauseView);
                         }
                     });
         }
@@ -353,31 +339,22 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         input.setSelection(mEntry.getComments().length());
         input.setGravity(Gravity.CENTER);
         input.setHint(R.string.comments_hint);
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        AlertDialog commentsDialog = new AlertDialog.Builder(this)
 
                 .setTitle(R.string.edit_comments)
                 .setView(input)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setPositiveButton("OK", (dialog, which) ->
                         mEntry.setComments(input.getText().toString()
-                                .replaceAll("_", ""));
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
+                                .replaceAll("_", "")))
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel())
                 .create();
 
-        Window window = dialog.getWindow();
+        Window window = commentsDialog.getWindow();
         if (window != null) {
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         }
 
-        dialog.show();
+        commentsDialog.show();
     }
 
 

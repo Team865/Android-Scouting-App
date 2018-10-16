@@ -19,7 +19,7 @@ import ca.warp7.android.scouting.widgets.AllianceView;
 
 public class ScoutingScheduleAdapter extends ArrayAdapter<ScoutingScheduleItem> {
 
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     public ScoutingScheduleAdapter(@NonNull Context context,
                                    List<ScoutingScheduleItem> scheduleItems) {
@@ -32,15 +32,14 @@ public class ScoutingScheduleAdapter extends ArrayAdapter<ScoutingScheduleItem> 
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         View itemView;
-        if (convertView != null && convertView instanceof LinearLayout) {
+        if (convertView instanceof LinearLayout) {
             itemView = convertView;
         } else {
             itemView = mInflater.inflate(R.layout.list_item_schedule_match, parent, false);
         }
 
         ScoutingScheduleItem scoutingScheduleItem = getItem(position);
-        if (scoutingScheduleItem != null &&
-                scoutingScheduleItem instanceof MatchWithAllianceItem) {
+        if (scoutingScheduleItem instanceof MatchWithAllianceItem) {
 
             MatchWithAllianceItem matchItem =
                     (MatchWithAllianceItem) scoutingScheduleItem;

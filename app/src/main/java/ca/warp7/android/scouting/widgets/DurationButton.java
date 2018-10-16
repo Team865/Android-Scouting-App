@@ -18,7 +18,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 public class DurationButton
         extends BaseButton {
 
-    boolean isOn;
+    private boolean isOn;
 
     public DurationButton(Context context) {
         super(context);
@@ -60,7 +60,7 @@ public class DurationButton
         }
     }
 
-    void updateLooks() {
+    private void updateLooks() {
         if (isOn) {
             setTextColor(getResources().getColor(R.color.colorWhite));
             setText(dc.getLabelOn());

@@ -17,8 +17,8 @@ package ca.warp7.android.scouting.model;
 
 class EntryDatum {
 
-    private int mDataType;
-    private int mDataValue;
+    private final int mDataType;
+    private final int mDataValue;
     private int mUndoFlag;
     private int mStateFlag;
 
@@ -52,7 +52,7 @@ class EntryDatum {
         return mStateFlag;
     }
 
-    public int getRecordedTime() {
+    int getRecordedTime() {
         return mRecordedTime;
     }
 

@@ -10,8 +10,8 @@ import ca.warp7.android.scouting.abstraction.AbstractActionVibrator;
  */
 
 public class ActionVibrator implements AbstractActionVibrator {
-    private Vibrator mActualVibrator;
-    private boolean mVibrationOn;
+    private final Vibrator mActualVibrator;
+    private final boolean mVibrationOn;
 
     ActionVibrator(Context context, boolean vibrationOn) {
         mActualVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);

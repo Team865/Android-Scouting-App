@@ -17,10 +17,10 @@ public class SeekBar
         implements BaseInputControl,
         AppCompatSeekBar.OnSeekBarChangeListener {
 
-    DataConstant dc;
-    ScoutingActivityListener listener;
+    private DataConstant dc;
+    private ScoutingActivityListener listener;
 
-    int lastProgress;
+    private int lastProgress;
 
     public SeekBar(Context context) {
         super(context);

@@ -40,19 +40,19 @@ public class Entry {
 
     private static final int kMaxTypes = 64;
 
-    private int mMatchNumber;
-    private int mTeamNumber;
-    private String mScoutName;
+    private final int mMatchNumber;
+    private final int mTeamNumber;
+    private final String mScoutName;
 
     private int mStartingTimestamp;
 
     private String mComments;
 
-    private Specs mSpecs;
+    private final Specs mSpecs;
 
     private List<EntryDatum> mDataStack;
 
-    private EntryTimekeeper mTimekeeper;
+    private final EntryTimekeeper mTimekeeper;
 
     public Entry(int match, int team, String scout, EntryTimekeeper timekeeper) {
 
@@ -71,23 +71,23 @@ public class Entry {
         mComments = "";
     }
 
-    public int getMatchNumber() {
+    int getMatchNumber() {
         return mMatchNumber;
     }
 
-    public int getTeamNumber() {
+    int getTeamNumber() {
         return mTeamNumber;
     }
 
-    public String getScoutName() {
+    String getScoutName() {
         return mScoutName;
     }
 
-    public int getStartingTimestamp() {
+    int getStartingTimestamp() {
         return mStartingTimestamp;
     }
 
-    public Specs getSpecs() {
+    Specs getSpecs() {
         return mSpecs;
     }
 
@@ -95,7 +95,7 @@ public class Entry {
         return mComments;
     }
 
-    public List<EntryDatum> getDataStack() {
+    List<EntryDatum> getDataStack() {
         return mDataStack;
     }
 

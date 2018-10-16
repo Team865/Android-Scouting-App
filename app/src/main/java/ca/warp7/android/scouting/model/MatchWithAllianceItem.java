@@ -9,8 +9,8 @@ import ca.warp7.android.scouting.constants.RobotPosition;
  */
 
 public class MatchWithAllianceItem implements ScoutingScheduleItem {
-    private int[] mTeams;
-    private int mMatchNumber;
+    private final int[] mTeams;
+    private final int mMatchNumber;
     private boolean mShouldFocus;
     private int mFocusPosition;
 

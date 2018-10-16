@@ -2,7 +2,6 @@ package ca.warp7.android.scouting.components;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.preference.Preference;
 
@@ -15,7 +14,7 @@ import ca.warp7.android.scouting.res.AppResources;
  * @since v0.4.1
  */
 
-public class SettingsClickListener implements Preference.OnPreferenceClickListener {
+class SettingsClickListener implements Preference.OnPreferenceClickListener {
     @Override
     public boolean onPreferenceClick(Preference preference) {
         Context context = preference.getContext();
@@ -53,13 +52,9 @@ public class SettingsClickListener implements Preference.OnPreferenceClickListen
                         + AppResources.getEventsRoot().getAbsolutePath()
                         + "\" will be overwritten.")
                 .setNegativeButton("No", null)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        AppResources.copySpecsAssets(context);
-                        AppResources.copyEventAssets(context);
-                    }
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    AppResources.copySpecsAssets(context);
+                    AppResources.copyEventAssets(context);
                 })
                 .create().show();
     }

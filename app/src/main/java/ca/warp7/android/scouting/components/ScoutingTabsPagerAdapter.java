@@ -14,8 +14,8 @@ import ca.warp7.android.scouting.abstraction.ScoutingTab;
 public class ScoutingTabsPagerAdapter
         extends FragmentPagerAdapter {
 
-    private int mLayoutsSize;
-    private ViewPager mPager;
+    private final int mLayoutsSize;
+    private final ViewPager mPager;
 
     public ScoutingTabsPagerAdapter(FragmentManager fm, int size, ViewPager pager) {
         super(fm);

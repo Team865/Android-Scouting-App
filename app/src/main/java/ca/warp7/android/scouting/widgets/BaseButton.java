@@ -23,18 +23,21 @@ public abstract class BaseButton
         ChildInputControl,
         View.OnClickListener {
 
-    protected DataConstant dc;
-    protected ScoutingActivityListener listener;
-    protected ParentInputControlListener parentInputControlListener;
-    protected View parentSupportView;
+    DataConstant dc;
+    ScoutingActivityListener listener;
+
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
+    private ParentInputControlListener parentInputControlListener;
+
+    View parentSupportView;
 
     public BaseButton(Context context) {
         super(context);
     }
 
-    public BaseButton(Context context,
-                      DataConstant dc,
-                      ScoutingActivityListener listener) {
+    BaseButton(Context context,
+               DataConstant dc,
+               ScoutingActivityListener listener) {
         super(context);
         this.dc = dc;
         this.listener = listener;

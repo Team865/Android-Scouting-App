@@ -12,8 +12,8 @@ import ca.warp7.android.scouting.R;
 
 public class ManagedPreferences {
 
-    private SharedPreferences mSharedPreferences;
-    private Context mContext;
+    private final SharedPreferences mSharedPreferences;
+    private final Context mContext;
     private ActionVibrator mActionVibrator;
 
     public ManagedPreferences(Context context) {

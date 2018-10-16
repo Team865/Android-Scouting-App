@@ -11,7 +11,7 @@ public class EventInfo {
     static class NotProperEventFormat extends Exception {
     }
 
-    private File mEventRoot;
+    private final File mEventRoot;
     private String mEventName;
 
     EventInfo(File eventFilePath) throws NotProperEventFormat {

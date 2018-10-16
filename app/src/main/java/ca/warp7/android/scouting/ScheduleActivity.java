@@ -1,7 +1,6 @@
 package ca.warp7.android.scouting;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -64,9 +63,7 @@ public class ScheduleActivity extends AppCompatActivity {
         }
 
         new AlertDialog.Builder(this).setTitle("Select Event")
-                .setItems(names.toArray(new String[0]), (dialog, which) -> {
-                    createScreen(events.get(which));
-                })
+                .setItems(names.toArray(new String[0]), (dialog, which) -> createScreen(events.get(which)))
                 .create().show();
 
 
@@ -95,25 +92,22 @@ public class ScheduleActivity extends AppCompatActivity {
 
         scheduleListView.setAdapter(mScheduleAdapter);
 
-        scheduleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object item = mScoutingSchedule.getCurrentlyScheduled().get(position);
-                if (item instanceof MatchWithAllianceItem) {
-                    MatchWithAllianceItem matchItem = (MatchWithAllianceItem) item;
-                    if (matchItem.shouldFocus()) {
-                        int team = matchItem.getTeamAtPosition(matchItem.getFocusPosition());
-                        int match = matchItem.getMatchNumber();
-                        Intent intent;
-                        intent = new Intent(ScheduleActivity.this, ScoutingActivity.class);
+        scheduleListView.setOnItemClickListener((parent, view, position, id) -> {
+            Object item = mScoutingSchedule.getCurrentlyScheduled().get(position);
+            if (item instanceof MatchWithAllianceItem) {
+                MatchWithAllianceItem matchItem = (MatchWithAllianceItem) item;
+                if (matchItem.shouldFocus()) {
+                    int team = matchItem.getTeamAtPosition(matchItem.getFocusPosition());
+                    int match = matchItem.getMatchNumber();
+                    Intent intent;
+                    intent = new Intent(ScheduleActivity.this, ScoutingActivity.class);
 
-                        intent.putExtra(ID.MSG_MATCH_NUMBER, match);
-                        intent.putExtra(ID.MSG_TEAM_NUMBER, team);
-                        intent.putExtra(ID.MSG_SCOUT_NAME, "hi");
-                        intent.putExtra(ID.MSG_SPECS_FILE, "");
+                    intent.putExtra(ID.MSG_MATCH_NUMBER, match);
+                    intent.putExtra(ID.MSG_TEAM_NUMBER, team);
+                    intent.putExtra(ID.MSG_SCOUT_NAME, "hi");
+                    intent.putExtra(ID.MSG_SPECS_FILE, "");
 
-                        startActivity(intent);
-                    }
+                    startActivity(intent);
                 }
             }
         });
@@ -158,12 +152,7 @@ public class ScheduleActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("An error occurred")
                 .setMessage(exception.toString())
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onBackPressed();
-                    }
-                })
+                .setPositiveButton("OK", (dialog, which) -> onBackPressed())
                 .create().show();
     }
 

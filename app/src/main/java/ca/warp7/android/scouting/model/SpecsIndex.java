@@ -14,9 +14,9 @@ import java.util.ArrayList;
 
 public class SpecsIndex {
 
-    private ArrayList<String> files = new ArrayList<>();
+    private final ArrayList<String> files = new ArrayList<>();
 
-    private ArrayList<String> names = new ArrayList<>();
+    private final ArrayList<String> names = new ArrayList<>();
 
 
     public SpecsIndex(File file) {

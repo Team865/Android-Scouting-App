@@ -18,17 +18,17 @@ import ca.warp7.android.scouting.model.MatchWithAllianceItem;
 
 public class AllianceView extends View {
 
-    static final float kPad = 24;
-    static final int kRadius = 16;
+    private static final float kPad = 24;
+    private static final int kRadius = 16;
 
-    Paint mAlmostRedPaint = new Paint();
-    Paint mAlmostBluePaint = new Paint();
-    Paint mAlmostBlackTextPaint = new Paint();
-    Paint mGrayTextPaint = new Paint();
-    Paint mRedTextPaint = new Paint();
-    Paint mBlueTextPaint = new Paint();
-    Paint mRedBoldTextPaint = new Paint();
-    Paint mBlueBoldTextPaint = new Paint();
+    private final Paint mAlmostRedPaint = new Paint();
+    private final Paint mAlmostBluePaint = new Paint();
+    private final Paint mAlmostBlackTextPaint = new Paint();
+    private final Paint mGrayTextPaint = new Paint();
+    private final Paint mRedTextPaint = new Paint();
+    private final Paint mBlueTextPaint = new Paint();
+    private final Paint mRedBoldTextPaint = new Paint();
+    private final Paint mBlueBoldTextPaint = new Paint();
 
     private float mMinimumWidth;
 

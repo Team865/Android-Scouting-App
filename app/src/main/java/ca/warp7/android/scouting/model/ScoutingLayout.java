@@ -14,7 +14,7 @@ public class ScoutingLayout {
 
     private String title;
 
-    private ArrayList<String[]> fields = new ArrayList<>();
+    private final ArrayList<String[]> fields = new ArrayList<>();
 
 
     ScoutingLayout(JSONObject data) throws JSONException {

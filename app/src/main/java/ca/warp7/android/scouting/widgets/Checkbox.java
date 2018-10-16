@@ -20,8 +20,8 @@ public class Checkbox
         implements BaseInputControl,
         View.OnClickListener {
 
-    DataConstant dc;
-    ScoutingActivityListener listener;
+    private DataConstant dc;
+    private ScoutingActivityListener listener;
 
     public Checkbox(Context context) {
         super(context);

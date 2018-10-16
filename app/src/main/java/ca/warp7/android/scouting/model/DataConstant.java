@@ -109,7 +109,7 @@ public class DataConstant {
         return id;
     }
 
-    public String getLogTitle() {
+    String getLogTitle() {
         return logTitle;
     }
 
@@ -133,7 +133,7 @@ public class DataConstant {
         return choices;
     }
 
-    public String format(int v) {
+    String format(int v) {
         switch (type) {
             case TIMESTAMP:
             case DURATION:

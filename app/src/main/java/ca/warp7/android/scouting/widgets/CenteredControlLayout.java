@@ -16,15 +16,16 @@ import ca.warp7.android.scouting.model.DataConstant;
  * @since v0.3.0
  */
 
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class CenteredControlLayout
         extends LinearLayout
         implements BaseInputControl,
         View.OnClickListener {
 
-    DataConstant dc;
-    ScoutingActivityListener listener;
+    private DataConstant dc;
+    private ScoutingActivityListener listener;
 
-    View subControl;
+    private View subControl;
 
     public CenteredControlLayout(Context context) {
         super(context);

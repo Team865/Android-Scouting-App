@@ -18,16 +18,17 @@ import ca.warp7.android.scouting.model.DataConstant;
  * @since v0.3.0
  */
 
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class CountedInputControlLayout
         extends FrameLayout
         implements BaseInputControl,
         ParentInputControlListener {
 
-    DataConstant dc;
-    ScoutingActivityListener listener;
+    private DataConstant dc;
+    private ScoutingActivityListener listener;
 
-    TextView counter;
-    View subControl;
+    private TextView counter;
+    private View subControl;
 
     public CountedInputControlLayout(@NonNull Context context) {
         super(context);

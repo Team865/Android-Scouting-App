@@ -14,8 +14,8 @@ import ca.warp7.android.scouting.abstraction.ScoutingScheduleItem;
  */
 
 public class ScoutingSchedule {
-    private List<ScoutingScheduleItem> mCurrentlyScheduled;
-    private List<MatchWithAllianceItem> mFullSchedule;
+    private final List<ScoutingScheduleItem> mCurrentlyScheduled;
+    private final List<MatchWithAllianceItem> mFullSchedule;
 
 
     public ScoutingSchedule() {

@@ -23,14 +23,13 @@ public class Specs {
 
     private String specsId;
     private String boardName;
-    private String event;
     private String alliance;
 
-    private ArrayList<Integer> matchSchedule = new ArrayList<>();
+    private final ArrayList<Integer> matchSchedule = new ArrayList<>();
 
-    private ArrayList<DataConstant> dataConstants = new ArrayList<>();
+    private final ArrayList<DataConstant> dataConstants = new ArrayList<>();
 
-    private ArrayList<ScoutingLayout> layouts = new ArrayList<>();
+    private final ArrayList<ScoutingLayout> layouts = new ArrayList<>();
 
 
     private Specs(String json) throws JSONException {
@@ -40,7 +39,6 @@ public class Specs {
         specsId = specs_json.getString(ID);
         boardName = specs_json.getString(BOARD_NAME);
 
-        event = specs_json.optString(EVENT, "");
         alliance = specs_json.optString(ALLIANCE, "N");
 
         if (specs_json.has(MATCH_SCHEDULE)) {
@@ -70,7 +68,7 @@ public class Specs {
         return !matchSchedule.isEmpty();
     }
 
-    public boolean hasIndexInConstants(int id) {
+    boolean hasIndexInConstants(int id) {
         return id >= 0 && id < dataConstants.size();
     }
 
@@ -87,16 +85,11 @@ public class Specs {
         return boardName;
     }
 
-    public String getEvent() {
-        return event.isEmpty() ? "No Event" : event;
-    }
-
     public String getSpecsId() {
         return specsId;
     }
 
-
-    public DataConstant getDataConstantByIndex(int id) {
+    DataConstant getDataConstantByIndex(int id) {
         return dataConstants.get(id);
     }
 
@@ -130,14 +123,12 @@ public class Specs {
         return sb.toString();
     }
 
-    private static final String
-            ID = "id",
-            BOARD_NAME = "board",
-            ALLIANCE = "alliance",
-            EVENT = "event",
-            MATCH_SCHEDULE = "schedule",
-            LAYOUT = "layout",
-            CONSTANTS = "data";
+    private static final String ID = "id";
+    private static final String BOARD_NAME = "board";
+    private static final String ALLIANCE = "alliance";
+    private static final String MATCH_SCHEDULE = "schedule";
+    private static final String LAYOUT = "layout";
+    private static final String CONSTANTS = "data";
 
 
     private static Specs activeSpecs = null;

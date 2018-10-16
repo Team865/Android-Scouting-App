@@ -3,7 +3,6 @@ package ca.warp7.android.scouting;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -155,6 +154,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @SuppressWarnings("unused")
     public void onLogoClicked(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
@@ -193,12 +193,9 @@ public class MainActivity extends AppCompatActivity
         matchStartButton.setOnClickListener(this);
 
         scoutNameField.setText(prefs.getString(ID.SAVE_SCOUT_NAME, ""));
-        findViewById(R.id.team_logo).setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                onLogoClicked(null);
-                return true;
-            }
+        findViewById(R.id.team_logo).setOnLongClickListener(v -> {
+            onLogoClicked(null);
+            return true;
         });
     }
 
@@ -220,12 +217,7 @@ public class MainActivity extends AppCompatActivity
         new AlertDialog.Builder(this)
 
                 .setTitle("Select your board")
-                .setItems(specs, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        loadSpecsFromName(specs[which]);
-                    }
-                })
+                .setItems(specs, (dialog, which) -> loadSpecsFromName(specs[which]))
                 .show();
     }
 

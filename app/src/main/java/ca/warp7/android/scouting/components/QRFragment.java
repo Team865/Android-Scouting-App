@@ -82,12 +82,7 @@ public class QRFragment extends Fragment implements ScoutingTab {
         });
 
         view.findViewById(R.id.send_with_another_method)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onSendIntent();
-                    }
-                });
+                .setOnClickListener(v -> onSendIntent());
     }
 
     private void onSendIntent() {
