@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.io.File;
 import java.util.List;
 
 import ca.warp7.android.scouting.R;
@@ -63,7 +64,7 @@ public class ScoutingInputsFragment
         if (mSpecs == null) {
             Activity activity = getActivity();
             if (activity != null) {
-                Specs.setInstance(activity.getIntent().getStringExtra(ID.MSG_SPECS_FILE));
+                Specs.setInstance(new File(activity.getIntent().getStringExtra(ID.MSG_SPECS_FILE)));
                 mSpecs = Specs.getInstance();
             }
         }

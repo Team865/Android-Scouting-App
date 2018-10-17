@@ -25,6 +25,7 @@ import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.constants.RobotPosition;
 import ca.warp7.android.scouting.model.MatchWithAllianceItem;
 import ca.warp7.android.scouting.model.ScoutingSchedule;
+import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.res.AppResources;
 import ca.warp7.android.scouting.res.EventInfo;
 
@@ -55,6 +56,7 @@ public class ScheduleActivity extends AppCompatActivity {
                     MY_PERMISSIONS_REQUEST_FILES);
         }
 
+        Specs.removeInstance(); // make sure it doesn't have leftover from main
         final List<EventInfo> events = AppResources.getEvents();
 
         List<String> names = new ArrayList<>();

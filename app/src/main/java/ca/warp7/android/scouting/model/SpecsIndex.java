@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import ca.warp7.android.scouting.res.AppResources;
+
 /**
  * @since v0.2.0
  */
@@ -21,7 +23,7 @@ public class SpecsIndex {
 
     public SpecsIndex(File file) {
         try {
-            JSONObject index = new JSONObject(Specs.readFile(file));
+            JSONObject index = new JSONObject(AppResources.readFile(file));
 
             JSONArray files = index.getJSONArray("files");
             JSONArray names = index.getJSONArray("names");

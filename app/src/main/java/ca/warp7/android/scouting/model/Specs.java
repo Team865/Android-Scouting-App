@@ -4,9 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -64,7 +62,7 @@ public class Specs {
     }
 
 
-    public boolean hasMatchSchedule() {
+    public boolean hasSchedule() {
         return !matchSchedule.isEmpty();
     }
 
@@ -73,8 +71,7 @@ public class Specs {
     }
 
     public boolean matchIsInSchedule(int m, int t) {
-        return hasMatchSchedule() &&
-                t == (m < matchSchedule.size() && m >= 0 ? matchSchedule.get(m) : -1);
+        return hasSchedule() && t == (m < matchSchedule.size() && m >= 0 ? matchSchedule.get(m) : -1);
     }
 
     public String getAlliance() {
@@ -107,22 +104,6 @@ public class Specs {
         return layouts;
     }
 
-
-    static String readFile(File f) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(f));
-        StringBuilder sb = new StringBuilder();
-
-        String line = br.readLine();
-
-        while (line != null) {
-            sb.append(line);
-            line = br.readLine();
-        }
-
-        br.close();
-        return sb.toString();
-    }
-
     private static final String ID = "id";
     private static final String BOARD_NAME = "board";
     private static final String ALLIANCE = "alliance";
@@ -141,10 +122,11 @@ public class Specs {
         return activeSpecs;
     }
 
-    public static Specs setInstance(String filename) {
+    public static Specs setInstance(File file) {
         try {
 
-            activeSpecs = new Specs(readFile(new File(AppResources.getSpecsRoot(), filename)));
+            //activeSpecs = new Specs(readFile(new File(AppResources.getSpecsRoot(), filename)));
+            activeSpecs = new Specs(AppResources.readFile(file));
 
         } catch (IOException | JSONException e) {
 
@@ -154,4 +136,7 @@ public class Specs {
         return activeSpecs;
     }
 
+    public static void removeInstance(){
+        activeSpecs = null;
+    }
 }

@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.List;
 
 import ca.warp7.android.scouting.components.ScoutingTabsPagerAdapter;
@@ -45,37 +46,24 @@ import static ca.warp7.android.scouting.constants.Constants.kTotalTimerDigits;
 
 
 /**
- * <p>The Scouting Activity -- A generic activity to collect data
- * for an Entry based on a set Specs. It controls all sub-components
- * of the activity and implements a listener that can be used for
- * callback. It is responsible for setting up components in the
- * interface, receive events from action buttons for navigation
- * and commands, and keeps track of an Entry object which stores
- * the data </p>
- * <p>
+ * <p>The Scouting Activity -- A generic activity to collect data for an Entry based on a set Specs.
+ * It is responsible for setting up components in the interface, receive events from action buttons
+ * for navigation and commands, and keeps track of an Entry object which stores the data </p>
  *
  * @author Team 865
  * @see Entry
  * @since v0.2
- * </p>
  */
 
 public class ScoutingActivity extends ScoutingActivityWrapper {
 
-    // State Variables
-
-    private int mActivityState;
-
     private boolean mTimerIsCountingUp;
     private boolean mTimerIsRunning;
-
+    private int mActivityState;
     private int mTimer = 0;
     private int mCurrentTab = 0;
     private int mStartingTimestamp = 0;
     private int mLastRecordedTime = -1;
-
-
-    // UI elements (see layout file)
 
     private TextView mTimerStatus;
     private ProgressBar mTimeProgress;
@@ -90,20 +78,13 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     private ViewPager mPager;
     private ScoutingTabsPagerAdapter mPagerAdapter;
 
-
-    // Data Model Variables
-
     private Specs mSpecs;
     private Entry mEntry;
     private List<ScoutingLayout> mLayouts;
     private StringBuilder mStatusLog;
 
-
-    // Beta Feature
     private boolean mUsingPauseBetaFeature;
 
-
-    // Timer Process
     private final Runnable mTimerUpdater = new Runnable() {
         @Override
         public void run() {
@@ -125,9 +106,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
             }
         }
     };
-
-
-    // Activity Methods
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,21 +136,17 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.menu_flags:
                 onCommentsAndFlags();
                 return true;
-
             case R.id.menu_logs:
                 onShowEntryLogs();
                 return true;
-
             case R.id.menu_qr:
                 mCurrentTab = mLayouts.size();
                 updateCurrentTab();
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -189,9 +163,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
                 .create()
                 .show();
     }
-
-
-    // ScoutingActivityListener methods (documented there)
 
     @Override
     public int getCurrentRelativeTime() {
@@ -230,13 +201,9 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         mStatusLog.append("\n");
     }
 
-
-    // Misc. Event Handlers
-
     /**
      * Handles start of entry. Only called once
      */
-
     public void onStartScouting(View view) {
         mStartingTimestamp = getCurrentTime();
         mEntry.setStartingTimestamp(mStartingTimestamp);
@@ -249,14 +216,11 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      * Event Handler for the play/pause button,
      * which updates the activity state
      */
-
     public void onPlayPauseClicked(View view) {
-
         switch (mActivityState) {
             case ScoutingState.SCOUTING: // Pause button
                 startActivityState(ScoutingState.PAUSING);
                 break;
-
             case ScoutingState.PAUSING: // Play button
                 startActivityState(ScoutingState.SCOUTING);
                 break;
@@ -266,12 +230,9 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Event Handler for the undo/skip button
      */
-
     public void onUndoSkipClicked(View view) {
-
         switch (mActivityState) {
             case ScoutingState.SCOUTING: // Undo button
-
                 if (isTimerAtCurrentTime()) {
                     attemptUndo();
                 } else { // Now if not at the current time
@@ -281,9 +242,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
                     mUndoAndNowText.setText(R.string.btn_undo);
                 }
                 break;
-
             case ScoutingState.PAUSING: // Now button
-
                 mTimer = calculateCurrentRelativeTime();
                 startActivityState(ScoutingState.SCOUTING);
                 break;
@@ -293,7 +252,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Toggles the format of the timer, which is shown
      */
-
     public void onStatusTimerClicked(View view) {
         mTimerIsCountingUp = !mTimerIsCountingUp;
         updateTimerStatusAndProgressBar();
@@ -302,7 +260,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Shows the entry log
      */
-
     private void onShowEntryLogs() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Entry Report/Log")
@@ -327,10 +284,8 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Opens a comments dialog, flags in the future
      */
-
     private void onCommentsAndFlags() {
         final EditText input = new EditText(this);
-
         input.setInputType(InputType.TYPE_CLASS_TEXT |
                 InputType.TYPE_TEXT_FLAG_MULTI_LINE |
                 InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
@@ -357,9 +312,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         commentsDialog.show();
     }
 
-
-    // Utility Methods
-
     /**
      * Calculates the relative time based on
      * the current time and the starting timestamp
@@ -371,22 +323,17 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Calculates whether the counting timer is in approximation with the current time
      */
-
     private boolean isTimerAtCurrentTime() {
         return Math.abs(mTimer - calculateCurrentRelativeTime()) <= 1;
     }
 
-
-    // Initialization Methods
-
     /**
      * Set up fields from specs
      */
-
     private void setupSpecs() {
         mSpecs = Specs.getInstance();
         if (mSpecs == null) {
-            Specs.setInstance(getIntent().getStringExtra(ID.MSG_SPECS_FILE));
+            Specs.setInstance(new File(getIntent().getStringExtra(ID.MSG_SPECS_FILE)));
             mSpecs = Specs.getInstance();
         }
         mLayouts = mSpecs.getLayouts();
@@ -395,21 +342,14 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Set misc view fields
      */
-
     private void setupUI() {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_scouting);
-
         Toolbar mToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mToolbar);
 
         mTimerStatus = findViewById(R.id.timer_status);
         mStartButton = findViewById(R.id.start_timer);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mStartButton.setElevation(4);
-        }
-
         mPlayAndPauseImage = findViewById(R.id.play_pause_image);
         mUndoAndNowImage = findViewById(R.id.undo_now_image);
         mPlayAndPauseView = findViewById(R.id.play_pause_container);
@@ -418,12 +358,15 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         mUndoAndNowText = findViewById(R.id.undo_now_text);
         mAlphaAnimationIn.setDuration(kFadeDuration);
         mAlphaAnimationOut.setDuration(kFadeDuration);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mStartButton.setElevation(4);
+        }
     }
 
     /**
      * Set up the progress/seek bars
      */
-
     private void setupNavigationSliders() {
         mTimeProgress = findViewById(R.id.time_progress);
         mTimeSeeker = findViewById(R.id.time_seeker);
@@ -454,9 +397,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Get values from intent(except specs) and initialize the entry model
      */
-
     private void setupValuesFromIntent() {
-
         Intent intent = getIntent();
 
         int matchNumber = intent.getIntExtra(ID.MSG_MATCH_NUMBER, -1);
@@ -475,8 +416,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         toolbarTeam.setText(alliance.equals("R") || alliance.equals("B") ?
                 String.valueOf(teamNumber) : mSpecs.getBoardName());
 
-        String m = "" + matchNumber;
-        toolbarMatch.setText(m);
+        toolbarMatch.setText(String.valueOf(matchNumber));
         toolbarTeam.setTextColor(
                 ContextCompat.getColor(this, alliance.equals("R") ? R.color.colorRed :
                         (alliance.equals("B") ? R.color.colorBlue :
@@ -485,7 +425,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         toolbarTeam.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
 
         mStatusLog = new StringBuilder();
-
         pushStatus("\n\n========LOG========");
         pushStatus("Board ID: " + mSpecs.getSpecsId());
         pushStatus("");
@@ -496,21 +435,14 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Sets up the pager with adapters and event listeners
      */
-
     private void setupPager() {
-
         mPager = findViewById(R.id.pager);
         mPagerAdapter = new ScoutingTabsPagerAdapter(
                 getSupportFragmentManager(), mSpecs.getLayouts().size(), mPager);
-
         mPager.setAdapter(mPagerAdapter);
-
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
             @Override
-            public void onPageScrolled(int position,
-                                       float positionOffset,
-                                       int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
 
             @Override
@@ -528,9 +460,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Initializes states or restore it from savedInstanceState
      */
-
     private void initStates(Bundle savedInstanceState) {
-
         if (savedInstanceState == null) {
             mStartingTimestamp = getCurrentTime();
         } else {
@@ -542,17 +472,12 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         startActivityState(ScoutingState.STARTING);
     }
 
-
-    // State Updater Methods
-
     /**
      * Sets the current activity state and update views and timer
      *
      * @param state the activity state to start
      */
-
     private void startActivityState(int state) {
-
         if (state == ScoutingState.SCOUTING && (mTimerIsRunning || mTimer >= kTimerLimit)) {
             return;
         }
@@ -563,14 +488,12 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
             case ScoutingState.STARTING:
                 setStartingNavToolbox();
                 break;
-
             case ScoutingState.SCOUTING:
                 setScoutingNavToolbox();
                 setBackgroundColour(ContextCompat.getColor(this, R.color.colorWhite));
                 getManagedVibrator().vibrateStart();
                 mTimerUpdater.run();
                 break;
-
             case ScoutingState.PAUSING:
                 setPausingNavToolbox();
                 setBackgroundColour(ContextCompat.getColor(this, R.color.colorAlmostYellow));
@@ -581,7 +504,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Hide the navigation buttons on start
      */
-
     private void setStartingNavToolbox() {
         hide(mPlayAndPauseView);
         hide(mUndoAndNowView);
@@ -592,7 +514,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Toggles image icons and visibility for scouting state
      */
-
     private void setScoutingNavToolbox() {
         if (mUsingPauseBetaFeature) {
             show(mPlayAndPauseView);
@@ -619,9 +540,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Toggles image icons and visibility for pausing state
      */
-
     private void setPausingNavToolbox() {
-
         show(mPlayAndPauseView);
         show(mUndoAndNowView);
         hide(mStartButton);
@@ -636,7 +555,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Updates the activity's background colour
      */
-
     private void setBackgroundColour(int colour) {
         findViewById(android.R.id.content).setBackgroundColor(colour);
     }
@@ -646,9 +564,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      *
      * @param title the title to change
      */
-
     private void setAnimatedTitleBanner(final String title) {
-
         final TextView titleBanner = findViewById(R.id.title_banner);
 
         if (!titleBanner.getText().toString().isEmpty()) {
@@ -678,7 +594,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Updates the current tab as well as the title banner
      */
-
     private void updateCurrentTab() {
         String title = "";
 
@@ -700,7 +615,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      * Updates the state on the views on the page to match undo
      * and navigation.
      */
-
     private void updateAdjacentTabStates() {
         if (mCurrentTab != 0) {
             mPagerAdapter.getTabAt(mCurrentTab - 1).updateTabState();
@@ -716,7 +630,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
     /**
      * Reflect the value of mTimer on the timer view and seek bars
      */
-
     private void updateTimerStatusAndProgressBar() {
         String status;
         int time;
@@ -746,7 +659,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      * Attempts to undo the previous action and vibrates
      * if the undo has been successful
      */
-
     private void attemptUndo() {
         DataConstant dc = mEntry.undo();
         if (dc == null) {

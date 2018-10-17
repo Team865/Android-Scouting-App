@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     private SpecsIndex specsIndex;
     private SharedPreferences prefs;
 
-    private String mPassedSpecsFile;
+    private File mPassedSpecsFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(ID.MSG_TEAM_NUMBER,
                 Integer.parseInt(teamNumberField.getText().toString()));
         intent.putExtra(ID.MSG_SCOUT_NAME, name);
-        intent.putExtra(ID.MSG_SPECS_FILE, mPassedSpecsFile);
+        intent.putExtra(ID.MSG_SPECS_FILE, mPassedSpecsFile.getAbsolutePath());
         startActivity(intent);
 
     }
@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity
 
     private void loadSpecsFromName(String name) {
         if (specsIndex != null && specsIndex.getNames().contains(name)) {
-            mPassedSpecsFile = specsIndex.getFileByName(name);
+            mPassedSpecsFile = new File(AppResources.getSpecsRoot(), specsIndex.getFileByName(name));
             Specs specs = Specs.setInstance(mPassedSpecsFile);
             ActionBar ab = getSupportActionBar();
             if (ab != null) {
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity
         boolean t_empty = t.isEmpty();
         if (!(n_empty || m_empty || t_empty)) {
             verifier.setEnabled(true);
-            if (Specs.getInstance().hasMatchSchedule()) {
+            if (Specs.getInstance().hasSchedule()) {
                 if (matchDoesExist(m, t)) {
                     mismatchWarning.setVisibility(View.INVISIBLE);
                     verifier.setText(R.string.verify_match_info);
