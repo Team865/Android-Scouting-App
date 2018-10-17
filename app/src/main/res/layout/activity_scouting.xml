@@ -153,13 +153,13 @@
             android:id="@+id/title_banner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
             android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
             android:textColor="@color/colorAlmostBlack"
             android:textSize="24sp"
+            android:textStyle="bold"
             android:typeface="sans"
-            tools:text="Tab Title"
-            android:textStyle="bold" />
+            tools:text="Tab Title" />
 
 
         <LinearLayout
@@ -246,10 +246,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_accent_button"
                 android:onClick="onStartScouting"
-                android:paddingBottom="8dp"
                 android:paddingLeft="12dp"
-                android:paddingRight="12dp"
                 android:paddingTop="8dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="8dp"
                 android:text="@string/start_timer"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"

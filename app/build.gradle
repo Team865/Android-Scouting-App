@@ -13,14 +13,14 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "v0.4.3"
-        resConfigs "en-rUS", "hdpi"
+        resConfigs "en", "hdpi"
     }
 
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 

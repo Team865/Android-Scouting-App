@@ -3,7 +3,6 @@ package ca.warp7.android.scouting;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -483,15 +482,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
                         (alliance.equals("B") ? R.color.colorBlue :
                                 R.color.colorPurple)));
 
-        findViewById(R.id.highlight_bar).getBackground()
-                .setColorFilter(ContextCompat.getColor(this, alliance.
-                                equals("R") ? R.color.colorAlmostRed :
-                                        (alliance.equals("B") ? R.color.colorAlmostBlue :
-                                                R.color.colorAlmostWhite)),
-                        PorterDuff.Mode.MULTIPLY);
-
-        toolbarTeam.setTypeface(Typeface.SANS_SERIF,
-                alliance.equals("R") || alliance.equals("B") ? Typeface.BOLD : Typeface.NORMAL);
+        toolbarTeam.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
 
         mStatusLog = new StringBuilder();
 
