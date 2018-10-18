@@ -403,7 +403,9 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         int matchNumber = intent.getIntExtra(ID.MSG_MATCH_NUMBER, -1);
         int teamNumber = intent.getIntExtra(ID.MSG_TEAM_NUMBER, -1);
         String scoutName = intent.getStringExtra(ID.MSG_SCOUT_NAME);
-        String alliance = mSpecs.getAlliance();
+        String overrideAlliance = intent.getStringExtra(ID.MSG_ALLIANCE);
+        String alliance = (overrideAlliance.isEmpty() ? mSpecs.getAlliance() : overrideAlliance)
+                .toUpperCase();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -414,7 +416,8 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         TextView toolbarMatch = findViewById(R.id.toolbar_match);
 
         toolbarTeam.setText(alliance.equals("R") || alliance.equals("B") ?
-                String.valueOf(teamNumber) : mSpecs.getBoardName());
+                String.valueOf(teamNumber) : alliance.equals("N") ? mSpecs.getBoardName():
+                String.valueOf(teamNumber));
 
         toolbarMatch.setText(String.valueOf(matchNumber));
         toolbarTeam.setTextColor(

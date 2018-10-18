@@ -25,7 +25,6 @@ import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.constants.RobotPosition;
 import ca.warp7.android.scouting.model.MatchWithAllianceItem;
 import ca.warp7.android.scouting.model.ScoutingSchedule;
-import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.res.AppResources;
 import ca.warp7.android.scouting.res.EventInfo;
 
@@ -56,7 +55,6 @@ public class ScheduleActivity extends AppCompatActivity {
                     MY_PERMISSIONS_REQUEST_FILES);
         }
 
-        Specs.removeInstance(); // make sure it doesn't have leftover from main
         final List<EventInfo> events = AppResources.getEvents();
 
         List<String> names = new ArrayList<>();
@@ -67,8 +65,12 @@ public class ScheduleActivity extends AppCompatActivity {
         new AlertDialog.Builder(this).setTitle("Select Event")
                 .setItems(names.toArray(new String[0]), (dialog, which) -> createScreen(events.get(which)))
                 .create().show();
+    }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //Specs.removeInstance();
     }
 
     private void createScreen(EventInfo selectedEvent) {
@@ -108,6 +110,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
                     intent.putExtra(ID.MSG_MATCH_NUMBER, match);
                     intent.putExtra(ID.MSG_TEAM_NUMBER, team);
+                    intent.putExtra(ID.MSG_ALLIANCE, "~");
                     intent.putExtra(ID.MSG_SCOUT_NAME, "hi");
                     intent.putExtra(ID.MSG_SPECS_FILE, "");
 

@@ -42,6 +42,7 @@ public class ScoutingSchedule {
 
     public void scheduleForDisplayOnly() {
         mCurrentlyScheduled.clear();
+        mCurrentlyScheduled.add(new ButtonItem("hi"));
         for (MatchWithAllianceItem item : mFullSchedule) {
             mCurrentlyScheduled.add(new MatchWithAllianceItem(item));
         }

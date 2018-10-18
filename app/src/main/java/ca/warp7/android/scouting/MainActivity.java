@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(ID.MSG_TEAM_NUMBER,
                 Integer.parseInt(teamNumberField.getText().toString()));
         intent.putExtra(ID.MSG_SCOUT_NAME, name);
+        intent.putExtra(ID.MSG_ALLIANCE, "");
         intent.putExtra(ID.MSG_SPECS_FILE, mPassedSpecsFile.getAbsolutePath());
         startActivity(intent);
 

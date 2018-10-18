@@ -14,6 +14,7 @@ import java.util.List;
 
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.abstraction.ScoutingScheduleItem;
+import ca.warp7.android.scouting.model.ButtonItem;
 import ca.warp7.android.scouting.model.MatchWithAllianceItem;
 import ca.warp7.android.scouting.widgets.AllianceView;
 
@@ -31,26 +32,42 @@ public class ScoutingScheduleAdapter extends ArrayAdapter<ScoutingScheduleItem> 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        View itemView;
-        if (convertView instanceof LinearLayout) {
-            itemView = convertView;
-        } else {
-            itemView = mInflater.inflate(R.layout.list_item_schedule_match, parent, false);
-        }
-
         ScoutingScheduleItem scoutingScheduleItem = getItem(position);
         if (scoutingScheduleItem instanceof MatchWithAllianceItem) {
 
-            MatchWithAllianceItem matchItem =
-                    (MatchWithAllianceItem) scoutingScheduleItem;
+            View itemView;
+            if (convertView instanceof LinearLayout) {
+                itemView = convertView;
+            } else {
+                itemView = mInflater.inflate(R.layout.list_item_schedule_match, parent, false);
+            }
+
+            MatchWithAllianceItem matchItem = (MatchWithAllianceItem) scoutingScheduleItem;
             AllianceView allianceView = itemView.findViewById(R.id.alliance_view);
             allianceView.setDataFromScheduledMatchItem(matchItem);
             allianceView.invalidate(); // Fix cached image in convert view
 
             TextView matchNumberView = itemView.findViewById(R.id.match_number);
             matchNumberView.setText(String.valueOf(matchItem.getMatchNumber()));
-        }
 
-        return itemView;
+            return itemView;
+        } else if (scoutingScheduleItem instanceof ButtonItem) {
+            View itemView;
+            if (convertView instanceof LinearLayout) {
+                itemView = convertView;
+            } else {
+                itemView = mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            }
+            ButtonItem buttonItem = (ButtonItem) scoutingScheduleItem;
+
+            if (itemView instanceof TextView) {
+                TextView textView = (TextView) itemView;
+                textView.invalidate();
+                textView.setText(buttonItem.getText());
+            }
+
+            return itemView;
+        }
+        return new View(getContext());
     }
 }

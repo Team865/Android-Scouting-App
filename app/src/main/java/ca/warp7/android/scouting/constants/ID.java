@@ -14,6 +14,7 @@ public class ID {
     public static final String MSG_SCOUT_NAME = ROOT + ".msg.scout_name";
     public static final String MSG_TEAM_NUMBER = ROOT + ".msg.team_number";
     public static final String MSG_MATCH_NUMBER = ROOT + ".msg.match_number";
+    public static final String MSG_ALLIANCE = ROOT + ".msg.alliance";
 
     public static final String MSG_SPECS_FILE = ROOT + ".msg.specs_file";
 
