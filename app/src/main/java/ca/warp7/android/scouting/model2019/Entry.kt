@@ -2,17 +2,22 @@
 
 package ca.warp7.android.scouting.model2019
 
+import android.util.Base64
+
 data class Entry(
-    val event: String,
-    val match: Int,
-    val team: Int,
-    val scout: Int,
+    val match: String,
+    val team: String,
+    val scout: String,
+    val scoutPosition: ScoutPosition,
+    val timestamp: Int,
     val timeSource: () -> Byte,
     val isTiming: Boolean = true
 ) {
-    val tags: MutableList<Byte> = mutableListOf()
-    val timeStamp = timeSource.invoke()
+
     private val dataPoints: MutableList<DataPoint> = mutableListOf()
+    private val hexTimestamp = Integer.toHexString(timestamp)
+
+    var comments: String = ""
 
     /**
      * Get the maximum index of the datum recorded before or equal the current time,
@@ -29,7 +34,7 @@ data class Entry(
             return index
         }
 
-    fun push(dataPoint: DataPoint) = dataPoints.add(index = nextIndex, element = dataPoint)
+    fun add(dataPoint: DataPoint) = dataPoints.add(index = nextIndex, element = dataPoint)
 
     /**
      * Performs an undo action on the data stack
@@ -37,7 +42,7 @@ data class Entry(
      * @return the data constant(metrics) of the datum being undone, or null
      * if nothing can be undone
      */
-    fun undo() = nextIndex.let { if (it == 0) null else dataPoints.removeAt(it)  }
+    fun undo() = nextIndex.let { if (it == 0) null else dataPoints.removeAt(it) }
 
     /**
      * Gets the count of a specific data type, excluding undo
@@ -52,11 +57,22 @@ data class Entry(
     /**
      * Cleans out data that have been undone
      */
-    fun focused(dataType: Byte) = timeSource.invoke().let { time ->
-        dataPoints.any { it.type == dataType && it.time == time }
-    }
+    fun focused(dataType: Byte) =
+        timeSource.invoke().let { t -> dataPoints.any { it.type == dataType && it.time == t } }
 
-    override fun toString(): String {
-        return "$event:$match:$team"
-    }
+    private val encodedDataPoints: String
+        get() = Base64.encodeToString(dataPoints.flatMap { it.byteArray.asIterable() }.toByteArray(), Base64.DEFAULT)
+
+    private val constrainedComments
+        get() = comments
+            .let { if (it.length > 63) it.substring(0..64) else it }
+            .replace("[^A-Za-z0-9 ]".toRegex(), "")
+
+    private val constrainedScout
+        get() = scoutPosition.name
+            .let { if (it.length > 15) it.substring(0..16) else it }
+            .replace("[^A-Za-z0-9 ]".toRegex(), "")
+
+    val encodedString: String
+        get() = "$match:$team:$scout:${scoutPosition.name}:$hexTimestamp:$encodedDataPoints:$constrainedComments"
 }
