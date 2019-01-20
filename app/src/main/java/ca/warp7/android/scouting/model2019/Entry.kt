@@ -8,7 +8,7 @@ data class Entry(
     val match: String,
     val team: String,
     val scout: String,
-    val scoutPosition: ScoutPosition,
+    val board: Board,
     val timestamp: Int,
     val timeSource: () -> Byte,
     val isTiming: Boolean = true
@@ -61,18 +61,19 @@ data class Entry(
         timeSource.invoke().let { t -> dataPoints.any { it.type == dataType && it.time == t } }
 
     private val encodedDataPoints: String
-        get() = Base64.encodeToString(dataPoints.flatMap { it.byteArray.asIterable() }.toByteArray(), Base64.DEFAULT)
+        get() = Base64.encodeToString(dataPoints
+            .flatMap { byteArrayOf(it.type, it.value, it.time).asIterable() }.toByteArray(), Base64.DEFAULT)
 
     private val constrainedComments
         get() = comments
             .let { if (it.length > 63) it.substring(0..64) else it }
-            .replace("[^A-Za-z0-9 ]".toRegex(), "")
+            .replace("[^A-Za-z0-9 ]".toRegex(), "_")
 
     private val constrainedScout
-        get() = scoutPosition.name
+        get() = board.name
             .let { if (it.length > 15) it.substring(0..16) else it }
-            .replace("[^A-Za-z0-9 ]".toRegex(), "")
+            .replace("[^A-Za-z0-9 ]".toRegex(), "_")
 
     val encodedString: String
-        get() = "$match:$team:$scout:${scoutPosition.name}:$hexTimestamp:$encodedDataPoints:$constrainedComments"
+        get() = "$match:$team:$scout:${board.name}:$hexTimestamp:$encodedDataPoints:$constrainedComments"
 }
