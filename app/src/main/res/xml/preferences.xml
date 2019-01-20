@@ -28,11 +28,6 @@
         <Preference
             android:key="@string/pref_about_key"
             android:title="@string/app_name" />
-        <Preference android:title="@string/pref_google_drive_title">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="https://drive.google.com/drive/folders/1MfxsFr-_dZDAveTws_s_ykEa_cjP66dY" />
-        </Preference>
         <Preference
             android:title="@string/pref_github_title">
             <intent
