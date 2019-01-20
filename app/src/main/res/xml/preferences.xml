@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_cat_about">
+        <Preference
+                android:key="@string/pref_about_key"
+                android:title="@string/app_name" />
+        <Preference
+                android:title="@string/pref_github_title">
+            <intent
+                    android:action="android.intent.action.VIEW"
+                    android:data="https://github.com/Team865/Android-Scouting-App" />
+        </Preference>
+        <Preference
+                android:key="@string/pref_licenses_key"
+                android:title="@string/pref_licenses_title" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_cat_exp">
         <Preference
             android:key="@string/pref_x_schedule_key"
@@ -23,20 +37,6 @@
             android:key="@string/pref_copy_assets_key"
             android:summary="@string/pref_copy_assets_summary"
             android:title="@string/pref_copy_assets_title" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_cat_about">
-        <Preference
-            android:key="@string/pref_about_key"
-            android:title="@string/app_name" />
-        <Preference
-            android:title="@string/pref_github_title">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="https://github.com/Team865/Android-Scouting-App" />
-        </Preference>
-        <Preference
-            android:key="@string/pref_licenses_key"
-            android:title="@string/pref_licenses_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>
