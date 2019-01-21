@@ -1,6 +1,6 @@
 package ca.warp7.android.scouting.model2019.boardfile
 
-data class BoardFile(
+data class Boardfile(
     val eventName: String,
     val eventKey: String,
     val matchSchedule: MatchSchedule,
