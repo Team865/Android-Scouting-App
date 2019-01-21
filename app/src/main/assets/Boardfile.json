@@ -1,0 +1,133 @@
+{
+  "event_name": "Humber College 2019",
+  "event_key": "2018iri",
+  "robot_scout": [
+    {
+      "screen_name": "Sandstorm",
+      "layout": [
+        [
+          {
+            "name": "start_position",
+            "type": "choice",
+            "options": [
+              "None",
+              "Level 2 Left",
+              "Level 2 Right",
+              "Level 1 Left",
+              "Level 1 Center",
+              "Level 1 Right"
+            ]
+          },
+          {
+            "name": "hab_line",
+            "type": "checkbox"
+          }
+        ],
+        [
+          {
+            "name": "auto_field_area",
+            "type": "toggle",
+            "options": [
+              "Left Field",
+              "Right Field"
+            ]
+          },
+          {
+            "name": "camera_control",
+            "type": "switch"
+          }
+        ],
+        [
+          {
+            "name": "rocket",
+            "type": "button"
+          }
+        ],
+        [
+          {
+            "name": "front_cargo_ship",
+            "type": "button"
+          },
+          {
+            "name": "side_cargo_ship",
+            "type": "button"
+          }
+        ],
+        [
+          {
+            "name": "auto_game_piece",
+            "type": "toggle",
+            "options": [
+              "Cargo", "None", "Hatch Panel"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "screen_name": "Teleop",
+      "layout": [
+        [
+          {
+            "name": "start_position",
+            "type": "choice",
+            "options": [
+              "None",
+              "Level 2 Left",
+              "Level 2 Right",
+              "Level 1 Left",
+              "Level 1 Center",
+              "Level 1 Right"
+            ]
+          },
+          {
+            "name": "hab_line",
+            "type": "checkbox"
+          }
+        ],
+        [
+          {
+            "name": "auto_field_area",
+            "type": "toggle",
+            "options": [
+              "Left Field",
+              "Right Field"
+            ]
+          },
+          {
+            "name": "camera_control",
+            "type": "switch"
+          }
+        ],
+        [
+          {
+            "name": "rocket",
+            "type": "button"
+          }
+        ],
+        [
+          {
+            "name": "front_cargo_ship",
+            "type": "button"
+          },
+          {
+            "name": "side_cargo_ship",
+            "type": "button"
+          }
+        ],
+        [
+          {
+            "name": "auto_game_piece",
+            "type": "toggle",
+            "options": [
+              "Cargo", "None", "Hatch Panel"
+            ]
+          }
+        ]
+      ]
+    }
+  ],
+  "super_scout": null,
+  "match_scout": null,
+  "schedule": []
+}
