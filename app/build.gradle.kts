@@ -33,5 +33,4 @@ dependencies {
     implementation ("com.android.support:appcompat-v7:28.0.0")
     implementation("com.android.support:preference-v7:28.0.0")
     implementation ("com.google.zxing:core:3.3.3")
-    //implementation 'com.android.volley:volley:1.1.1'
 }

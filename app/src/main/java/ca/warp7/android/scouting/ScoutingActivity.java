@@ -11,38 +11,19 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.*;
 import android.view.animation.Animation;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.widget.*;
+import ca.warp7.android.scouting.components.ScoutingTabsPagerAdapter;
+import ca.warp7.android.scouting.constants.ID;
+import ca.warp7.android.scouting.constants.ScoutingState;
+import ca.warp7.android.scouting.model.*;
+import ca.warp7.android.scouting.wrappers.ScoutingActivityWrapper;
 
 import java.io.File;
 import java.util.List;
 
-import ca.warp7.android.scouting.components.ScoutingTabsPagerAdapter;
-import ca.warp7.android.scouting.constants.ID;
-import ca.warp7.android.scouting.constants.ScoutingState;
-import ca.warp7.android.scouting.model.DataConstant;
-import ca.warp7.android.scouting.model.Entry;
-import ca.warp7.android.scouting.model.EntryFormatter;
-import ca.warp7.android.scouting.model.ScoutingLayout;
-import ca.warp7.android.scouting.model.Specs;
-import ca.warp7.android.scouting.wrappers.ScoutingActivityWrapper;
-
-import static ca.warp7.android.scouting.constants.Constants.kAutonomousTime;
-import static ca.warp7.android.scouting.constants.Constants.kFadeDuration;
-import static ca.warp7.android.scouting.constants.Constants.kTimerLimit;
-import static ca.warp7.android.scouting.constants.Constants.kTotalTimerDigits;
+import static ca.warp7.android.scouting.constants.Constants.*;
 
 
 /**
@@ -117,20 +98,13 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         setupPager();
         updateTimerStatusAndProgressBar();
         updateCurrentTab();
-        initStates(savedInstanceState);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(ID.INSTANCE_TIMER, mTimer);
-        outState.putInt(ID.INSTANCE_START_TIME, mStartingTimestamp);
+        mEntry.setStartingTimestamp(getCurrentTime());
+        startActivityState(ScoutingState.STARTING);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.scouting_menu, menu);
+        getMenuInflater().inflate(R.menu.scouting_menu, menu);
         return true;
     }
 
@@ -142,10 +116,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
                 return true;
             case R.id.menu_logs:
                 onShowEntryLogs();
-                return true;
-            case R.id.menu_qr:
-                mCurrentTab = mLayouts.size();
-                updateCurrentTab();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -416,7 +386,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
         TextView toolbarMatch = findViewById(R.id.toolbar_match);
 
         toolbarTeam.setText(alliance.equals("R") || alliance.equals("B") ?
-                String.valueOf(teamNumber) : alliance.equals("N") ? mSpecs.getBoardName():
+                String.valueOf(teamNumber) : alliance.equals("N") ? mSpecs.getBoardName() :
                 String.valueOf(teamNumber));
 
         toolbarMatch.setText(String.valueOf(matchNumber));
@@ -458,21 +428,6 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
             public void onPageScrollStateChanged(int state) {
             }
         });
-    }
-
-    /**
-     * Initializes states or restore it from savedInstanceState
-     */
-    private void initStates(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            mStartingTimestamp = getCurrentTime();
-        } else {
-            mStartingTimestamp = savedInstanceState.getInt(ID.INSTANCE_START_TIME);
-            mStartingTimestamp = getCurrentTime();
-        }
-
-        mEntry.setStartingTimestamp(mStartingTimestamp);
-        startActivityState(ScoutingState.STARTING);
     }
 
     /**

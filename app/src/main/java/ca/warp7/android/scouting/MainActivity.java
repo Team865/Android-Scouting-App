@@ -24,14 +24,13 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.io.File;
-import java.util.ArrayList;
-
 import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.model.SpecsIndex;
 import ca.warp7.android.scouting.res.AppResources;
+
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * @since v0.1.0
@@ -136,11 +135,7 @@ public class MainActivity extends AppCompatActivity
         editor.putString(ID.SAVE_SCOUT_NAME, name);
         editor.apply();
 
-        // Start Auto Activity
-
-        if (!Specs.hasInstance()) {
-            return;
-        }
+        if (!Specs.hasInstance()) return;
 
         Intent intent;
         intent = new Intent(this, ScoutingActivity.class);

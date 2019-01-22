@@ -18,7 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-
+import ca.warp7.android.scouting.R;
+import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
+import ca.warp7.android.scouting.abstraction.ScoutingTab;
+import ca.warp7.android.scouting.model.EntryFormatter;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -27,11 +30,6 @@ import com.google.zxing.common.BitMatrix;
 
 import java.util.EnumMap;
 import java.util.Map;
-
-import ca.warp7.android.scouting.R;
-import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.abstraction.ScoutingTab;
-import ca.warp7.android.scouting.model.EntryFormatter;
 
 /**
  * @since v0.4.2
@@ -76,7 +74,7 @@ public class QRFragment extends Fragment implements ScoutingTab {
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 setQRImage(view);
             }
         });
