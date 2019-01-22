@@ -1,5 +1,6 @@
 package ca.warp7.android.scouting.model;
 
+import ca.warp7.android.scouting.res.AppResources;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,8 +8,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import ca.warp7.android.scouting.res.AppResources;
 
 /**
  * Data Model for reading metrics, settings,
@@ -136,7 +135,4 @@ public class Specs {
         return activeSpecs;
     }
 
-    public static void removeInstance(){
-        activeSpecs = null;
-    }
 }

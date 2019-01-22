@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import ca.warp7.android.scouting.constants.ID;
@@ -36,10 +35,7 @@ import java.util.ArrayList;
  * @since v0.1.0
  */
 
-public class MainActivity extends AppCompatActivity
-        implements TextWatcher,
-        View.OnClickListener,
-        CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_FILES = 0;
 
@@ -60,6 +56,7 @@ public class MainActivity extends AppCompatActivity
         prefs = this.getSharedPreferences(ID.ROOT, MODE_PRIVATE);
         ensurePermissions();
         setupUI();
+        setupListeners();
     }
 
     @Override
@@ -87,20 +84,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        matchStartButton.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
-        View view = this.getCurrentFocus();
-        if (view != null && verifier.isChecked()) {
-            InputMethodManager imm = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
-            view.clearFocus();
-        }
-    }
-
-    @Override
     public void onRequestPermissionsResult(
             int requestCode,
             @NonNull String[] permissions,
@@ -115,21 +98,26 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    public void onLogoClicked(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    private void checkChanged(boolean b) {
+        matchStartButton.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
+        View view = this.getCurrentFocus();
+        if (view != null && verifier.isChecked()) {
+            InputMethodManager imm = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            view.clearFocus();
+        }
     }
 
-    @Override
-    public void afterTextChanged(Editable editable) {
-        updateTextFieldState();
-    }
-
-    @Override
-    public void onClick(View v) {
+    private void startScouting() {
         String name = scoutNameField.getText().toString().replaceAll("_", "");
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(ID.SAVE_SCOUT_NAME, name);
@@ -147,15 +135,7 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(ID.MSG_ALLIANCE, "");
         intent.putExtra(ID.MSG_SPECS_FILE, mPassedSpecsFile.getAbsolutePath());
         startActivity(intent);
-
     }
-
-    @SuppressWarnings("unused")
-    public void onLogoClicked(View view) {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
-    }
-
 
     private void ensurePermissions() {
         // Ask for File Permissions
@@ -182,13 +162,31 @@ public class MainActivity extends AppCompatActivity
         verifier = findViewById(R.id.verify_check);
         matchStartButton = findViewById(R.id.match_start_button);
 
-        verifier.setOnCheckedChangeListener(this);
-        scoutNameField.addTextChangedListener(this);
-        matchNumberField.addTextChangedListener(this);
-        teamNumberField.addTextChangedListener(this);
-        matchStartButton.setOnClickListener(this);
-
         scoutNameField.setText(prefs.getString(ID.SAVE_SCOUT_NAME, ""));
+    }
+
+    private void setupListeners(){
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                updateTextFieldState();
+            }
+        };
+
+        scoutNameField.addTextChangedListener(watcher);
+        matchNumberField.addTextChangedListener(watcher);
+        teamNumberField.addTextChangedListener(watcher);
+        verifier.setOnCheckedChangeListener((c, b) -> checkChanged(b));
+        matchStartButton.setOnClickListener(v -> startScouting());
+
         findViewById(R.id.team_logo).setOnLongClickListener(v -> {
             onLogoClicked(null);
             return true;
@@ -281,7 +279,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private boolean matchDoesExist(String m, String t) {
-        return Specs.getInstance().matchIsInSchedule
-                (Integer.parseInt(m) - 1, Integer.parseInt(t));
+        return Specs.getInstance().matchIsInSchedule(Integer.parseInt(m) - 1, Integer.parseInt(t));
     }
 }
