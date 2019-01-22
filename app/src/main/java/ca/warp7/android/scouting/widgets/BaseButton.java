@@ -5,12 +5,11 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
-
 import ca.warp7.android.scouting.abstraction.BaseInputControl;
 import ca.warp7.android.scouting.abstraction.ChildInputControl;
 import ca.warp7.android.scouting.abstraction.ParentInputControlListener;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.model.DataConstant;
+import ca.warp7.android.scouting.model2018.DataConstant;
 
 /**
  * A Base button for other buttons to extend onto

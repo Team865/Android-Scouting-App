@@ -6,12 +6,11 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
 import ca.warp7.android.scouting.abstraction.BaseInputControl;
 import ca.warp7.android.scouting.abstraction.ChildInputControl;
 import ca.warp7.android.scouting.abstraction.ParentInputControlListener;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.model.DataConstant;
+import ca.warp7.android.scouting.model2018.DataConstant;
 
 /**
  * A counter for the buttons

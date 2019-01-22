@@ -17,7 +17,7 @@ import android.widget.*;
 import ca.warp7.android.scouting.components.ScoutingTabsPagerAdapter;
 import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.constants.ScoutingState;
-import ca.warp7.android.scouting.model.*;
+import ca.warp7.android.scouting.model2018.*;
 import ca.warp7.android.scouting.wrappers.ScoutingActivityWrapper;
 
 import java.io.File;

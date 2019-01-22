@@ -1,5 +1,6 @@
-package ca.warp7.android.scouting.model;
+package ca.warp7.android.scouting.model2018;
 
+import ca.warp7.android.scouting.res.AppResources;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,8 +8,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import ca.warp7.android.scouting.res.AppResources;
 
 /**
  * @since v0.2.0

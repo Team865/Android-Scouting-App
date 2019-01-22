@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.model;
+package ca.warp7.android.scouting.model2018;
 
 /**
  * Stores and integer-encodes a single datum in a match scouting session

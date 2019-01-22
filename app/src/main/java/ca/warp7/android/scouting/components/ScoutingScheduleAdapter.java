@@ -9,14 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.List;
-
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.abstraction.ScoutingScheduleItem;
-import ca.warp7.android.scouting.model.ButtonItem;
-import ca.warp7.android.scouting.model.MatchWithAllianceItem;
+import ca.warp7.android.scouting.model2018.ButtonItem;
+import ca.warp7.android.scouting.model2018.MatchWithAllianceItem;
 import ca.warp7.android.scouting.widgets.AllianceView;
+
+import java.util.List;
 
 public class ScoutingScheduleAdapter extends ArrayAdapter<ScoutingScheduleItem> {
 

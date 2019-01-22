@@ -1,8 +1,7 @@
 package ca.warp7.android.scouting.abstraction;
 
 import android.os.Handler;
-
-import ca.warp7.android.scouting.model.Entry;
+import ca.warp7.android.scouting.model2018.Entry;
 
 /**
  * This interface is to be implemented by the activity that contains

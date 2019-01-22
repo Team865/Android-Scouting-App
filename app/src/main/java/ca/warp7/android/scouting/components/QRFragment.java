@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
 import ca.warp7.android.scouting.abstraction.ScoutingTab;
-import ca.warp7.android.scouting.model.EntryFormatter;
+import ca.warp7.android.scouting.model2018.EntryFormatter;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;

@@ -15,18 +15,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import ca.warp7.android.scouting.components.ScoutingScheduleAdapter;
+import ca.warp7.android.scouting.constants.ID;
+import ca.warp7.android.scouting.constants.RobotPosition;
+import ca.warp7.android.scouting.model2018.MatchWithAllianceItem;
+import ca.warp7.android.scouting.model2018.ScoutingSchedule;
+import ca.warp7.android.scouting.res.AppResources;
+import ca.warp7.android.scouting.res.EventInfo;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import ca.warp7.android.scouting.components.ScoutingScheduleAdapter;
-import ca.warp7.android.scouting.constants.ID;
-import ca.warp7.android.scouting.constants.RobotPosition;
-import ca.warp7.android.scouting.model.MatchWithAllianceItem;
-import ca.warp7.android.scouting.model.ScoutingSchedule;
-import ca.warp7.android.scouting.res.AppResources;
-import ca.warp7.android.scouting.res.EventInfo;
 
 /**
  * @since v0.4.2

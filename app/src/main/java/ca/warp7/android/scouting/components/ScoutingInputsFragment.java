@@ -11,26 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-
-import java.io.File;
-import java.util.List;
-
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.abstraction.BaseInputControl;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
 import ca.warp7.android.scouting.abstraction.ScoutingTab;
 import ca.warp7.android.scouting.constants.ID;
-import ca.warp7.android.scouting.model.DataConstant;
-import ca.warp7.android.scouting.model.ScoutingLayout;
-import ca.warp7.android.scouting.model.Specs;
-import ca.warp7.android.scouting.widgets.CenteredControlLayout;
-import ca.warp7.android.scouting.widgets.Checkbox;
-import ca.warp7.android.scouting.widgets.ChoicesButton;
-import ca.warp7.android.scouting.widgets.CountedInputControlLayout;
-import ca.warp7.android.scouting.widgets.DurationButton;
-import ca.warp7.android.scouting.widgets.LabeledControlLayout;
-import ca.warp7.android.scouting.widgets.TimerButton;
-import ca.warp7.android.scouting.widgets.UndefinedInputsIndicator;
+import ca.warp7.android.scouting.model2018.DataConstant;
+import ca.warp7.android.scouting.model2018.ScoutingLayout;
+import ca.warp7.android.scouting.model2018.Specs;
+import ca.warp7.android.scouting.widgets.*;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * The fragment that is shown in the biggest portion

@@ -4,11 +4,10 @@ import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
-
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.abstraction.BaseInputControl;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.model.DataConstant;
+import ca.warp7.android.scouting.model2018.DataConstant;
 
 /**
  * Creates a box container that centers the control inside it

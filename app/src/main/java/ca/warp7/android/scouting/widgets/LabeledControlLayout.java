@@ -7,11 +7,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.abstraction.BaseInputControl;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.model.DataConstant;
+import ca.warp7.android.scouting.model2018.DataConstant;
 
 /**
  * Creates a box container for a label and another control

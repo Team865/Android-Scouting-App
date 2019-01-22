@@ -8,10 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.constants.RobotPosition;
-import ca.warp7.android.scouting.model.MatchWithAllianceItem;
+import ca.warp7.android.scouting.model2018.MatchWithAllianceItem;
 
 /**
  * @since v0.4.2
@@ -99,17 +98,17 @@ public class AllianceView extends View {
         super.onDraw(canvas);
         final int w = getMeasuredWidth();
         final int h = getMeasuredHeight();
-        canvas.drawRect(0, kRadius, w, h / 2, mAlmostRedPaint);
+        canvas.drawRect(0, kRadius, w, h / 2f, mAlmostRedPaint);
         canvas.drawRect(kRadius, 0, w - kRadius, kRadius, mAlmostRedPaint);
         canvas.drawCircle(kRadius, kRadius, kRadius, mAlmostRedPaint);
         canvas.drawCircle(w - kRadius, kRadius, kRadius, mAlmostRedPaint);
-        canvas.drawRect(0, h / 2, w, h - kRadius, mAlmostBluePaint);
+        canvas.drawRect(0, h / 2f, w, h - kRadius, mAlmostBluePaint);
         canvas.drawRect(kRadius, h - kRadius, w - kRadius, h, mAlmostBluePaint);
         canvas.drawCircle(kRadius, h - kRadius, kRadius, mAlmostBluePaint);
         canvas.drawCircle(w - kRadius, h - kRadius, kRadius, mAlmostBluePaint);
-        canvas.drawLine(w / 3, 0, w / 3, h, mGrayTextPaint);
-        canvas.drawLine(w / 3 * 2, 0, w / 3 * 2, h, mGrayTextPaint);
-        canvas.drawLine(0, h / 2, w, h / 2, mGrayTextPaint);
+        canvas.drawLine(w / 3f, 0, w / 3f, h, mGrayTextPaint);
+        canvas.drawLine(w / 3f * 2, 0, w / 3f * 2, h, mGrayTextPaint);
+        canvas.drawLine(0, h / 2f, w, h / 2f, mGrayTextPaint);
         Paint R1Paint = mShouldFocus ? (mFocusPosition == RobotPosition.RED1 ?
                 mRedBoldTextPaint : mGrayTextPaint) : mAlmostBlackTextPaint;
         Paint R2Paint = mShouldFocus ? (mFocusPosition == RobotPosition.RED2 ?
@@ -123,18 +122,18 @@ public class AllianceView extends View {
         Paint B3Paint = mShouldFocus ? (mFocusPosition == RobotPosition.BLUE3 ?
                 mBlueBoldTextPaint : mGrayTextPaint) : mAlmostBlackTextPaint;
         int fromBottom = 10;
-        canvas.drawText(mR1, (w / 3 - R1Paint
-                .measureText(mR1)) / 2, h / 2 - fromBottom, R1Paint);
-        canvas.drawText(mR2, w / 3 + (w / 3 - R2Paint
-                .measureText(mR2)) / 2, h / 2 - fromBottom, R2Paint);
-        canvas.drawText(mR3, w / 3 * 2 + (w / 3 - R3Paint
-                .measureText(mR3)) / 2, h / 2 - fromBottom, R3Paint);
-        canvas.drawText(mB1, (w / 3 - B1Paint
-                .measureText(mB1)) / 2, h - fromBottom, B1Paint);
-        canvas.drawText(mB2, w / 3 + (w / 3 - B2Paint
-                .measureText(mB2)) / 2, h - fromBottom, B2Paint);
-        canvas.drawText(mB3, w / 3 * 2 + (w / 3 - B3Paint
-                .measureText(mB3)) / 2, h - fromBottom, B3Paint);
+        canvas.drawText(mR1, (w / 3f - R1Paint
+                .measureText(mR1)) / 2f, h / 2f - fromBottom, R1Paint);
+        canvas.drawText(mR2, w / 3f + (w / 3f - R2Paint
+                .measureText(mR2)) / 2f, h / 2f - fromBottom, R2Paint);
+        canvas.drawText(mR3, w / 3f * 2 + (w / 3f - R3Paint
+                .measureText(mR3)) / 2f, h / 2f - fromBottom, R3Paint);
+        canvas.drawText(mB1, (w / 3f - B1Paint
+                .measureText(mB1)) / 2f, h - fromBottom, B1Paint);
+        canvas.drawText(mB2, w / 3f + (w / 3f - B2Paint
+                .measureText(mB2)) / 2f, h - fromBottom, B2Paint);
+        canvas.drawText(mB3, w / 3f * 2 + (w / 3f - B3Paint
+                .measureText(mB3)) / 2f, h - fromBottom, B3Paint);
     }
 
     @Override

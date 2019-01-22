@@ -1,4 +1,6 @@
-package ca.warp7.android.scouting.model;
+package ca.warp7.android.scouting.model2018;
+
+import ca.warp7.android.scouting.abstraction.ScoutingScheduleItem;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,8 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import ca.warp7.android.scouting.abstraction.ScoutingScheduleItem;
 
 /**
  * @since v0.4.2
