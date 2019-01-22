@@ -21,6 +21,5 @@ public class ID {
     public static final String SAVE_SCOUT_NAME = ROOT + ".save.scout_name";
     public static final String SAVE_SPECS = ROOT + ".save.specs";
 
-    public static final String INSTANCE_START_TIME = ROOT + ".is.start_time";
-    public static final String INSTANCE_TIMER = ROOT + ".is.timer";
+    public static final String IntentBoardfile = ROOT + ".v5.intent_board_file";
 }

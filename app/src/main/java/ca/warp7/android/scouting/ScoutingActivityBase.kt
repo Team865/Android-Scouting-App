@@ -11,7 +11,7 @@ interface ScoutingActivityBase {
     /**
      * Current time
      */
-    val currentTime: Int
+    val currentTime get() = (System.currentTimeMillis() / 1000).toInt()
 
     /**
      * The time Handler of the activity
