@@ -2,8 +2,10 @@
 
 package ca.warp7.android.scouting
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
@@ -17,10 +19,11 @@ import ca.warp7.android.scouting.abstraction.AbstractActionVibrator
 import ca.warp7.android.scouting.components.ScoutingTabsPagerAdapter
 import ca.warp7.android.scouting.constants.Constants.kFadeDuration
 import ca.warp7.android.scouting.constants.Constants.kTimerLimit
-import ca.warp7.android.scouting.constants.ID
 import ca.warp7.android.scouting.res.ManagedPreferences
 import ca.warp7.android.scouting.v5.boardfile.Boardfile
 import ca.warp7.android.scouting.v5.boardfile.toBoardfile
+import ca.warp7.android.scouting.v5.entry.Board
+import ca.warp7.android.scouting.v5.entry.Board.*
 import ca.warp7.android.scouting.v5.entry.MutableEntry
 import java.io.File
 
@@ -48,17 +51,21 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
     private lateinit var preferences: ManagedPreferences
     private lateinit var boardfile: Boardfile
 
+    private lateinit var match: String
+    private lateinit var team: String
+    private lateinit var scout: String
+    private lateinit var board: Board
+
     private var activityState = ScoutingActivityState.WaitingToStart
     private var relativeTime = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         handler = Handler()
-        preferences = ManagedPreferences(this)
-        boardfile = File(intent.getStringExtra(ID.IntentBoardfile)).toBoardfile()
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_scouting)
         setSupportActionBar(findViewById(R.id.my_toolbar))
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         timerStatus = findViewById(R.id.timer_status)
         startButton = findViewById(R.id.start_timer)
         startButton.elevation = 4f
@@ -75,6 +82,8 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
         timeSeeker.max = kTimerLimit
         timeSeeker.progress = 0
         timeSeeker.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+            override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser && activityState == ScoutingActivityState.Pausing) {
                     relativeTime = progress
@@ -82,10 +91,30 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
                     // FIXME updateAdjacentTabStates()
                 }
             }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
-            override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
         })
+        preferences = ManagedPreferences(this)
+        boardfile = File(intent.getStringExtra(IntentKey.Boardfile)).toBoardfile()
+        match = intent.getStringExtra(IntentKey.Match)
+        team = intent.getStringExtra(IntentKey.Team)
+        scout = intent.getStringExtra(IntentKey.Scout)
+        board = intent.getSerializableExtra(IntentKey.Board) as Board
+        findViewById<TextView>(R.id.toolbar_match).text = match
+        findViewById<TextView>(R.id.toolbar_team).also {
+            it.text = when (board) {
+                RS, BS -> "ALL"
+                else -> team
+            }
+            it.setTextColor(
+                ContextCompat.getColor(
+                    this, when (board) {
+                        R1, R2, R3, RS -> R.color.colorRed
+                        B1, B2, B3, BS -> R.color.colorBlue
+                    }
+                )
+            )
+            it.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD)
+        }
+        // FIXME mEntry = Entry(match, team, scoutName, this)
     }
 
     private val mAlphaAnimationIn: Animation = AlphaAnimation(0.0f, 1.0f).apply { duration = kFadeDuration.toLong() }
