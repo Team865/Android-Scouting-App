@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
@@ -24,7 +23,6 @@ import ca.warp7.android.scouting.constants.ID
 import ca.warp7.android.scouting.model.Specs
 import ca.warp7.android.scouting.model.SpecsIndex
 import ca.warp7.android.scouting.res.AppResources
-
 import java.io.File
 
 /**
@@ -58,8 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.specs_selector_menu, menu)
+        menuInflater.inflate(R.menu.specs_selector_menu, menu)
         return true
     }
 
@@ -73,11 +70,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             MY_PERMISSIONS_REQUEST_FILES -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -92,7 +85,6 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
     }
-
 
     private fun checkChanged(b: Boolean) {
         matchStartButton.visibility = if (b) View.VISIBLE else View.INVISIBLE
@@ -109,30 +101,19 @@ class MainActivity : AppCompatActivity() {
         val editor = preferences.edit()
         editor.putString(ID.SAVE_SCOUT_NAME, name)
         editor.apply()
-
         if (!Specs.hasInstance()) return
-
-        val intent = Intent(this, ScoutingActivity::class.java)
-        intent.putExtra(
-            ID.MSG_MATCH_NUMBER,
-            Integer.parseInt(matchNumberField.text.toString())
-        )
-        intent.putExtra(
-            ID.MSG_TEAM_NUMBER,
-            Integer.parseInt(teamNumberField.text.toString())
-        )
-        intent.putExtra(ID.MSG_SCOUT_NAME, name)
-        intent.putExtra(ID.MSG_ALLIANCE, "")
-        intent.putExtra(ID.MSG_SPECS_FILE, passedSpecsFile!!.absolutePath)
-        startActivity(intent)
+        Intent(this, ScoutingActivity::class.java).apply {
+            putExtra(ID.MSG_MATCH_NUMBER, matchNumberField.text.toString().toInt())
+            putExtra(ID.MSG_TEAM_NUMBER, teamNumberField.text.toString().toInt())
+            putExtra(ID.MSG_SCOUT_NAME, name)
+            putExtra(ID.MSG_ALLIANCE, "")
+            putExtra(ID.MSG_SPECS_FILE, passedSpecsFile!!.absolutePath)
+        }.let { startActivity(it) }
     }
 
     private fun ensurePermissions() {
-        // Ask for File Permissions
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
+        val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -143,16 +124,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupUI() {
         setContentView(R.layout.activity_main)
-        val myToolBar = findViewById<Toolbar>(R.id.my_toolbar)
-        setSupportActionBar(myToolBar)
-
+        setSupportActionBar(findViewById(R.id.my_toolbar))
         scoutNameField = findViewById(R.id.name_and_initial)
         matchNumberField = findViewById(R.id.match_number)
         teamNumberField = findViewById(R.id.team_number)
         mismatchWarning = findViewById(R.id.mismatch_warning)
         verifier = findViewById(R.id.verify_check)
         matchStartButton = findViewById(R.id.match_start_button)
-
         scoutNameField.setText(preferences.getString(ID.SAVE_SCOUT_NAME, ""))
     }
 
