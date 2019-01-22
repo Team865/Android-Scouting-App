@@ -13,4 +13,6 @@ interface MutableEntry: Entry {
      * if nothing can be undone
      */
     fun undo(): DataPoint?
+
+    var undone: Int
 }

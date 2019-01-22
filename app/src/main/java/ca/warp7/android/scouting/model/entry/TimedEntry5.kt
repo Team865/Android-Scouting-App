@@ -13,12 +13,13 @@ data class TimedEntry5(
     override val timestamp: Int,
     override val dataPoints: MutableList<DataPoint> = mutableListOf(),
     override var comments: String = "",
+    override var undone: Int = 0,
     val getTime: () -> Byte,
     val isTiming: Boolean = false
 ) : MutableEntry {
-    override val encoded get() = "$match:$team:$scout1:${board.name}:$hexTimestamp:$encodedData:$comments1"
+    override val encoded get() = "$match:$team:$scout1:${board.name}:$hexTimestamp:$undone:$encodedData:$comments1"
     override fun add(dataPoint: DataPoint) = this.dataPoints.add(index = nextIndex, element = dataPoint)
-    override fun undo() = nextIndex.let { if (it == 0) null else dataPoints.removeAt(it) }
+    override fun undo() = nextIndex.let { if (it == 0) null else dataPoints.removeAt(it).also { undone++ } }
     override fun count(type: Byte) = dataPoints.subList(0, nextIndex).filter { it.type == type }.size
     override fun lastValue(type: Byte) = dataPoints.subList(0, nextIndex).lastOrNull { it.type == type }
     override fun focused(type: Byte) = getTime().let { t -> dataPoints.any { it.type == type && it.time == t } }
