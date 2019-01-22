@@ -37,18 +37,16 @@ data class Entry(
     val scout: String,
     val board: Board,
     val timestamp: Int,
-    val timeSource: () -> Byte,
-    val data: MutableList<DataPoint> = mutableListOf(),
+    val getTime: () -> Byte,
+    val dataPoints: MutableList<DataPoint> = mutableListOf(),
     val isTiming: Boolean = false,
     var comments: String = ""
 ) {
-
-
     private val hexTimestamp = Integer.toHexString(timestamp)
-    private val encodedData: String get() = Base64.encodeToString(data.flatten().toByteArray(), Base64.DEFAULT)
+    private val encodedData: String get() = Base64.encodeToString(dataPoints.flatten().toByteArray(), Base64.DEFAULT)
     private val comments1 get() = comments.replace("[^A-Za-z0-9 ]".toRegex(), "_")
     private val scout1 get() = scout.replace("[^A-Za-z0-9 ]".toRegex(), "_")
-    val encodedString: String get() = "$match:$team:$scout1:${board.name}:$hexTimestamp:$encodedData:$comments1"
+    val encoded: String get() = "$match:$team:$scout1:${board.name}:$hexTimestamp:$encodedData:$comments1"
 
     /**
      * Get the maximum index of the datum recorded before or equal the current time,
@@ -56,17 +54,17 @@ data class Entry(
      */
     private val nextIndex: Int
         get() {
-            if (!isTiming) return data.size
-            val relTime = timeSource.invoke()
+            if (!isTiming) return dataPoints.size
+            val relTime = getTime()
             var index = 0
-            while (index < data.size && data[index].time <= relTime) index++
+            while (index < dataPoints.size && dataPoints[index].time <= relTime) index++
             return index
         }
 
     /**
      * Adds a data point to the entry
      */
-    fun add(dataPoint: DataPoint) = data.add(index = nextIndex, element = dataPoint)
+    fun add(dataPoint: DataPoint) = this.dataPoints.add(index = nextIndex, element = dataPoint)
 
     /**
      * Performs an undo action on the data stack
@@ -74,20 +72,20 @@ data class Entry(
      * @return the data constant(metrics) of the datum being undone, or null
      * if nothing can be undone
      */
-    fun undo() = nextIndex.let { if (it == 0) null else data.removeAt(it) }
+    fun undo() = nextIndex.let { if (it == 0) null else dataPoints.removeAt(it) }
 
     /**
      * Gets the count of a specific data type, excluding undo
      */
-    fun count(type: Byte) = data.subList(0, nextIndex).filter { it.type == type }.size
+    fun count(type: Byte) = dataPoints.subList(0, nextIndex).filter { it.type == type }.size
 
     /**
      * Gets the last recorded of a specific data type, excluding undo
      */
-    fun lastValue(type: Byte) = data.subList(0, nextIndex).lastOrNull { it.type == type }
+    fun lastValue(type: Byte) = dataPoints.subList(0, nextIndex).lastOrNull { it.type == type }
 
     /**
      * Cleans out data that have been undone
      */
-    fun focused(type: Byte) = timeSource.invoke().let { t -> data.any { it.type == type && it.time == t } }
+    fun focused(type: Byte) = getTime().let { t -> dataPoints.any { it.type == type && it.time == t } }
 }

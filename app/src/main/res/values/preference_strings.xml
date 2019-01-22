@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_app_name">Team 865 Android Scouting App</string>
     <string name="pref_x_schedule_key">pref_x_schedule</string>
     <string name="pref_x_schedule_title">Match/Scouting Schedule</string>
     <string name="pref_x_schedule_summary">Displays the match schedule in a list</string>
@@ -14,6 +15,7 @@
     <string name="pref_copy_assets_summary">Copies any files (board/template/schedule) bundled with this app on installation into the usage folder</string>
     <string name="pref_about_key">pref_about</string>
     <string name="pref_github_title">Repository on GitHub</string>
+    <string name="pref_github_summary">Including source code and new releases</string>
     <string name="pref_licenses_key">pref_licenses</string>
     <string name="pref_licenses_title">Open Source Licenses</string>
     <string name="pref_cat_exp">Experimental Features</string>

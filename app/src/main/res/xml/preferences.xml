@@ -3,9 +3,10 @@
     <PreferenceCategory android:title="@string/pref_cat_about">
         <Preference
                 android:key="@string/pref_about_key"
-                android:title="@string/app_name" />
+                android:title="@string/pref_app_name" />
         <Preference
-                android:title="@string/pref_github_title">
+                android:title="@string/pref_github_title"
+                android:summary="@string/pref_github_summary">
             <intent
                     android:action="android.intent.action.VIEW"
                     android:data="https://github.com/Team865/Android-Scouting-App" />
