@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.model.entry
+package ca.warp7.android.scouting.v5.entry
 
 
 /**

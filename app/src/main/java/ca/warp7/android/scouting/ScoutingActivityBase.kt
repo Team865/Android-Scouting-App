@@ -4,7 +4,7 @@ package ca.warp7.android.scouting
 
 import android.os.Handler
 import ca.warp7.android.scouting.abstraction.AbstractActionVibrator
-import ca.warp7.android.scouting.model.entry.MutableEntry
+import ca.warp7.android.scouting.v5.entry.MutableEntry
 
 interface ScoutingActivityBase {
 
