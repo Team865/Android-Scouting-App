@@ -1,8 +1,5 @@
-@file:Suppress("unused")
-
 package ca.warp7.android.scouting.model2019
 
-import android.util.Base64
 
 /**
  * Data model for the scouting app. Strictly, it follows
@@ -31,40 +28,23 @@ import android.util.Base64
  * @since v0.1.0 (revised 0.5.0)
  */
 
-data class Entry(
-    val match: String,
-    val team: String,
-    val scout: String,
-    val board: Board,
-    val timestamp: Int,
-    val getTime: () -> Byte,
-    val dataPoints: MutableList<DataPoint> = mutableListOf(),
-    val isTiming: Boolean = false,
-    var comments: String = ""
-) {
-    private val hexTimestamp = Integer.toHexString(timestamp)
-    private val encodedData: String get() = Base64.encodeToString(dataPoints.flatten().toByteArray(), Base64.DEFAULT)
-    private val comments1 get() = comments.replace("[^A-Za-z0-9 ]".toRegex(), "_")
-    private val scout1 get() = scout.replace("[^A-Za-z0-9 ]".toRegex(), "_")
-    val encoded: String get() = "$match:$team:$scout1:${board.name}:$hexTimestamp:$encodedData:$comments1"
-
+interface Entry {
+    val match: String
+    val team: String
+    val scout: String
+    val board: Board
+    val timestamp: Int
     /**
-     * Get the maximum index of the datum recorded before or equal the current time,
-     * or the last item in the data points
+     * Get the data in an encoded string
      */
-    private val nextIndex: Int
-        get() {
-            if (!isTiming) return dataPoints.size
-            val relTime = getTime()
-            var index = 0
-            while (index < dataPoints.size && dataPoints[index].time <= relTime) index++
-            return index
-        }
+    val encoded: String
+    val dataPoints: List<DataPoint>
+    var comments: String
 
     /**
      * Adds a data point to the entry
      */
-    fun add(dataPoint: DataPoint) = this.dataPoints.add(index = nextIndex, element = dataPoint)
+    fun add(dataPoint: DataPoint)
 
     /**
      * Performs an undo action on the data stack
@@ -72,20 +52,20 @@ data class Entry(
      * @return the data constant(metrics) of the datum being undone, or null
      * if nothing can be undone
      */
-    fun undo() = nextIndex.let { if (it == 0) null else dataPoints.removeAt(it) }
+    fun undo(): DataPoint?
 
     /**
      * Gets the count of a specific data type, excluding undo
      */
-    fun count(type: Byte) = dataPoints.subList(0, nextIndex).filter { it.type == type }.size
+    fun count(type: Byte): Int
 
     /**
      * Gets the last recorded of a specific data type, excluding undo
      */
-    fun lastValue(type: Byte) = dataPoints.subList(0, nextIndex).lastOrNull { it.type == type }
+    fun lastValue(type: Byte): DataPoint?
 
     /**
-     * Cleans out data that have been undone
+     * Check if a type should focus according to the current time
      */
-    fun focused(type: Byte) = getTime().let { t -> dataPoints.any { it.type == type && it.time == t } }
+    fun focused(type: Byte): Boolean
 }
