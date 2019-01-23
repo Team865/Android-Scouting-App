@@ -206,10 +206,10 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
 
         findViewById<TextView>(R.id.toolbar_match).text = match
         findViewById<TextView>(R.id.toolbar_team).also {
-            it.text = when (board) {
-                RS, BS -> "ALL"
-                else -> team
-            }
+            it.text = team
+        }
+        findViewById<TextView>(R.id.toolbar_board).also {
+            it.text = board.name
             it.setTextColor(
                 ContextCompat.getColor(
                     this, when (board) {
@@ -218,7 +218,6 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
                     }
                 )
             )
-            it.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD)
         }
 
         template = when (board) {

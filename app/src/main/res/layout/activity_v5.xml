@@ -12,7 +12,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingEnd="0dp"
-        android:paddingStart="12dp"
+        android:paddingStart="0dp"
         android:paddingTop="12dp"
         android:paddingBottom="4dp">
 
@@ -57,6 +57,31 @@
                 android:layout_marginTop="1dp"
                 android:contentDescription="@string/hint_team"
                 android:padding="4dp"
+                android:src="@drawable/ic_attachment_ablack_small"/>
+
+            <TextView
+                android:id="@+id/toolbar_board"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorGray"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="1dp"
+                android:contentDescription="@string/hint_team"
+                android:padding="4dp"
                 android:src="@drawable/ic_people_ablack_small"/>
 
             <TextView
@@ -68,7 +93,8 @@
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/colorAlmostBlack"/>
 
             <View
                 android:layout_width="1dp"
