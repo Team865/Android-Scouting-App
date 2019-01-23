@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TableLayout
 import android.widget.TableRow
-import ca.warp7.android.scouting.BaseScoutingActivity
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.abstraction.BaseInputControl
+import ca.warp7.android.scouting.v5.BaseScoutingActivity
 import ca.warp7.android.scouting.v5.boardfile.TemplateField
 import ca.warp7.android.scouting.v5.boardfile.TemplateScreen
 import ca.warp7.android.scouting.v5.boardfile.V5FieldType.*

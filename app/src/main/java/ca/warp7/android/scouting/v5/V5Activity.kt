@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting
+package ca.warp7.android.scouting.v5
 
 import android.app.AlertDialog
 import android.graphics.Typeface
@@ -12,9 +12,10 @@ import android.view.*
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.*
-import ca.warp7.android.scouting.ScoutingActivityState.*
+import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.constants.Constants.*
 import ca.warp7.android.scouting.res.ManagedPreferences
+import ca.warp7.android.scouting.v5.ScoutingActivityState.*
 import ca.warp7.android.scouting.v5.boardfile.Boardfile
 import ca.warp7.android.scouting.v5.boardfile.ScoutTemplate
 import ca.warp7.android.scouting.v5.boardfile.exampleBoardfile
@@ -33,8 +34,8 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
     override val isSecondLimit get() = relativeTime > kTimerLimit || relativeTime == lastRecordedTime
     override var entry: MutableEntry? = null
     override val timeEnabled get() = activityState != WaitingToStart
-    override lateinit var boardfile: Boardfile
-    override lateinit var template: ScoutTemplate
+    override var boardfile: Boardfile? = null
+    override var template: ScoutTemplate? = null
 
     override fun feedSecondLimit() {
         lastRecordedTime = relativeTime
@@ -54,7 +55,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
     private lateinit var pagerAdapter: V5TabsPagerAdapter
 
     private lateinit var preferences: ManagedPreferences
-    private val screens get() = template.screens
+    private val screens get() = template?.screens
 
     private lateinit var match: String
     private lateinit var team: String
@@ -194,9 +195,9 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
         }
 
         boardfile = exampleBoardfile()
-        match = "1"
-        team = "2"
-        scout = "scout"
+        match = "qm123"
+        team = "865"
+        scout = "Yu"
         board = R1
 
         findViewById<TextView>(R.id.toolbar_match).text = match
@@ -217,12 +218,11 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
         }
 
         template = when (board) {
-            RS, BS -> boardfile.superScoutTemplate
-            else -> boardfile.robotScoutTemplate
+            RS, BS -> boardfile?.superScoutTemplate
+            else -> boardfile?.robotScoutTemplate
         }
 
-        pagerAdapter =
-                V5TabsPagerAdapter(supportFragmentManager, screens.size, pager)
+        pagerAdapter = V5TabsPagerAdapter(supportFragmentManager, screens?.size ?: 0, pager)
         pager.adapter = pagerAdapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
@@ -338,9 +338,9 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
      * Updates the current tab as well as the title banner
      */
     private fun updateCurrentTab() {
-        val title = if (currentTab >= 0 && currentTab < screens.size) {
-            screens[currentTab].title
-        } else if (currentTab == screens.size) {
+        val title = if (currentTab >= 0 && currentTab < screens?.size ?: -1) {
+            screens?.get(currentTab)?.title ?: "Unknown"
+        } else if (currentTab == screens?.size ?: -1) {
             pagerAdapter[currentTab].updateTabState()
             "QR Code"
         } else "Unknown"
@@ -420,7 +420,9 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
                 timeSeeker.show()
                 timeProgress.hide()
                 findViewById<View>(android.R.id.content)
-                    .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAlmostYellow))
+                    .setBackgroundColor(ContextCompat.getColor(this,
+                        R.color.colorAlmostYellow
+                    ))
             }
         }
     }

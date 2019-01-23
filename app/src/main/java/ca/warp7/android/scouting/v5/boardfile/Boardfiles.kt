@@ -32,6 +32,25 @@ fun exampleBoardfile() = Boardfile(
                         TemplateField("auto_game_piece", V5FieldType.Unknown)
                     )
                 )
+            ),
+            TemplateScreen(
+                "Teleop", listOf(
+                    listOf(
+                        TemplateField("rocket_3", V5FieldType.Unknown),
+                        TemplateField("defending", V5FieldType.Unknown)
+                    ),
+                    listOf(
+                        TemplateField("rocket_2", V5FieldType.Unknown),
+                        TemplateField("defended", V5FieldType.Unknown)
+                    ),
+                    listOf(
+                        TemplateField("rocket_1", V5FieldType.Unknown),
+                        TemplateField("cargo_ship", V5FieldType.Unknown)
+                    ),
+                    listOf(
+                        TemplateField("game_piece", V5FieldType.Unknown)
+                    )
+                )
             )
         ), listOf()
     ),

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ca.warp7.android.scouting.V5Activity">
+    tools:context="ca.warp7.android.scouting.v5.V5Activity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -100,8 +100,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/my_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?android:attr/actionBarSize" />
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

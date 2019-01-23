@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package ca.warp7.android.scouting
+package ca.warp7.android.scouting.v5
 
 import android.os.Handler
 import ca.warp7.android.scouting.abstraction.AbstractActionVibrator
@@ -43,12 +43,12 @@ interface BaseScoutingActivity {
     /**
      * Boardfile
      */
-    val boardfile: Boardfile
+    val boardfile: Boardfile?
 
     /**
      * Scout template
      */
-    val template: ScoutTemplate
+    val template: ScoutTemplate?
 
     /**
      * Feeds the second limit

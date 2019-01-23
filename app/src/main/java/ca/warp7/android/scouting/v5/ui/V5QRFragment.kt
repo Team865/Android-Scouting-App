@@ -16,8 +16,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.ImageView
-import ca.warp7.android.scouting.BaseScoutingActivity
 import ca.warp7.android.scouting.R
+import ca.warp7.android.scouting.v5.BaseScoutingActivity
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
