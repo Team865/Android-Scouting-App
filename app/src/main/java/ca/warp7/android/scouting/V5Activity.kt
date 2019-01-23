@@ -18,6 +18,7 @@ import ca.warp7.android.scouting.components.V5TabsPagerAdapter
 import ca.warp7.android.scouting.constants.Constants.*
 import ca.warp7.android.scouting.res.ManagedPreferences
 import ca.warp7.android.scouting.v5.boardfile.Boardfile
+import ca.warp7.android.scouting.v5.boardfile.ScoutTemplate
 import ca.warp7.android.scouting.v5.boardfile.toBoardfile
 import ca.warp7.android.scouting.v5.entry.Board
 import ca.warp7.android.scouting.v5.entry.Board.*
@@ -47,6 +48,8 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
 
     private lateinit var preferences: ManagedPreferences
     private lateinit var boardfile: Boardfile
+    private lateinit var template: ScoutTemplate
+    private val screens get() = template.screens
 
     private lateinit var match: String
     private lateinit var team: String
@@ -122,8 +125,13 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
             it.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD)
         }
 
+        template = when (board) {
+            RS, BS -> boardfile.superScoutTemplate
+            else -> boardfile.robotScoutTemplate
+        }
+
         // FIXME mEntry = Entry(match, team, scoutName, this)
-        pagerAdapter = V5TabsPagerAdapter(supportFragmentManager, 0, pager) // FIXME size=0
+        pagerAdapter = V5TabsPagerAdapter(supportFragmentManager, screens.size, pager)
         pager.adapter = pagerAdapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
@@ -135,6 +143,7 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
         })
 
         updateStatus()
+        updateCurrentTab()
     }
 
     /**
@@ -164,6 +173,39 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
         timeSeeker.progress = relativeTime
     }
 
-    private val mAlphaAnimationIn: Animation = AlphaAnimation(0.0f, 1.0f).apply { duration = kFadeDuration.toLong() }
-    private val mAlphaAnimationOut: Animation = AlphaAnimation(1.0f, 0.0f).apply { duration = kFadeDuration.toLong() }
+    /**
+     * Updates the current tab as well as the title banner
+     */
+    private fun updateCurrentTab() {
+        val title = if (currentTab >= 0 && currentTab < screens.size) {
+            screens[currentTab].title
+        } else if (currentTab == screens.size) {
+            pagerAdapter.getTabAt(currentTab).updateTabState()
+            "QR Code"
+        } else "Unknown"
+
+        val titleBanner = findViewById<TextView>(R.id.title_banner)
+        if (!titleBanner.text.toString().isEmpty()) {
+            alphaAnimationOut.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) = Unit
+                override fun onAnimationRepeat(animation: Animation) = Unit
+                override fun onAnimationEnd(animation: Animation) {
+                    titleBanner.text = title
+                    titleBanner.startAnimation(alphaAnimationIn)
+                }
+            })
+            titleBanner.startAnimation(alphaAnimationOut)
+
+        } else {
+            titleBanner.text = title
+            titleBanner.startAnimation(alphaAnimationIn)
+        }
+
+        if (pager.currentItem != currentTab) {
+            pager.setCurrentItem(currentTab, true)
+        }
+    }
+
+    private val alphaAnimationIn: Animation = AlphaAnimation(0.0f, 1.0f).apply { duration = kFadeDuration.toLong() }
+    private val alphaAnimationOut: Animation = AlphaAnimation(1.0f, 0.0f).apply { duration = kFadeDuration.toLong() }
 }
