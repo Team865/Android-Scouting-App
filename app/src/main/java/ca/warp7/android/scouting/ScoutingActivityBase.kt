@@ -37,4 +37,9 @@ interface ScoutingActivityBase {
      * whether the activity is in a state not accepting timed data
      */
     val timeEnabled: Boolean
+
+    /**
+     * Feeds the second limit
+     */
+    fun feedSecondLimit()
 }

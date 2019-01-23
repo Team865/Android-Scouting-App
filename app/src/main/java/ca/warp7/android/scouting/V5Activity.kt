@@ -31,9 +31,13 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
 
     override lateinit var handler: Handler
     override val actionVibrator get() = preferences.vibrator
-    override val isSecondLimit: Boolean = false
+    override val isSecondLimit get() = relativeTime > kTimerLimit || relativeTime == lastRecordedTime
     override var entry: MutableEntry? = null
-    override var timeEnabled: Boolean = true
+    override val timeEnabled get() = activityState != WaitingToStart
+
+    override fun feedSecondLimit() {
+        lastRecordedTime = relativeTime
+    }
 
     private lateinit var timerStatus: TextView
     private lateinit var timeProgress: ProgressBar
@@ -79,6 +83,25 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
      */
     private val relativeTimeMatchesCurrentTime: Boolean get() = Math.abs(relativeTime - calculateRelativeTime) <= 1
 
+    private val timedUpdater = Runnable {
+        if (activityState != TimedScouting) {
+            timerIsRunning = false
+        } else {
+            timerIsRunning = true
+            updateActivityStatus()
+            updateTabStates()
+            relativeTime++
+            if (relativeTime <= kTimerLimit) postTimerUpdate()
+            else {
+                timerIsRunning = false
+                if (usingPauseBetaFeature) startActivityState(Pausing)
+            }
+        }
+    }
+
+    private fun postTimerUpdate() {
+        handler.postDelayed(timedUpdater, 1000)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -246,7 +269,7 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
      * Attempts to undo the previous action and vibrates
      * if the undo has been successful
      */
-    private fun attemptUndo() {
+    private fun tryUndo() {
         entry?.apply {
             val dataPoint = undo()
             dataPoint?.also {
@@ -265,70 +288,46 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
         if (state == TimedScouting && (timerIsRunning || relativeTime >= kTimerLimit)) return
         activityState = state
         when (activityState) {
-            WaitingToStart -> setStartingNavToolbox()
+            WaitingToStart -> {
+                playAndPauseView.hide()
+                undoAndNowView.hide()
+                timeSeeker.hide()
+                timeProgress.hide()
+            }
             TimedScouting -> {
-                setScoutingNavToolbox()
-                setBackgroundColour(ContextCompat.getColor(this, R.color.colorWhite))
+                if (usingPauseBetaFeature) playAndPauseView.show() else playAndPauseView.hide()
+                undoAndNowView.show()
+                startButton.hide()
+                timeSeeker.hide()
+                timeProgress.show()
+                playAndPauseImage.setImageResource(R.drawable.ic_pause_ablack)
+                playAndPauseText.setText(R.string.btn_pause)
+                if (relativeTimeMatchesCurrentTime) {
+                    undoAndNowImage.setImageResource(R.drawable.ic_undo_ablack)
+                    undoAndNowText.setText(R.string.btn_undo)
+                } else {
+                    undoAndNowImage.setImageResource(R.drawable.ic_skip_next_red)
+                    undoAndNowText.setText(R.string.btn_now)
+                }
+                findViewById<View>(android.R.id.content)
+                    .setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite))
                 actionVibrator.vibrateStart()
-                // FIXME mTimerUpdater.run()
+                timedUpdater.run()
             }
             Pausing -> {
-                setPausingNavToolbox()
-                setBackgroundColour(ContextCompat.getColor(this, R.color.colorAlmostYellow))
+                playAndPauseView.show()
+                undoAndNowView.show()
+                startButton.hide()
+                playAndPauseImage.setImageResource(R.drawable.ic_play_arrow_ablack)
+                playAndPauseText.setText(R.string.btn_resume)
+                undoAndNowImage.setImageResource(R.drawable.ic_skip_next_red)
+                undoAndNowText.setText(R.string.btn_now)
+                timeSeeker.show()
+                timeProgress.hide()
+                findViewById<View>(android.R.id.content)
+                    .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAlmostYellow))
             }
         }
     }
-
-    /**
-     * Hide the navigation buttons on start
-     */
-    private fun setStartingNavToolbox() {
-        playAndPauseView.hide()
-        undoAndNowView.hide()
-        timeSeeker.hide()
-        timeProgress.hide()
-    }
-
-    /**
-     * Toggles image icons and visibility for scouting state
-     */
-    private fun setScoutingNavToolbox() {
-        if (usingPauseBetaFeature) playAndPauseView.show() else playAndPauseView.hide()
-        undoAndNowView.show()
-        startButton.hide()
-        timeSeeker.hide()
-        timeProgress.show()
-        playAndPauseImage.setImageResource(R.drawable.ic_pause_ablack)
-        playAndPauseText.setText(R.string.btn_pause)
-        if (relativeTimeMatchesCurrentTime) {
-            undoAndNowImage.setImageResource(R.drawable.ic_undo_ablack)
-            undoAndNowText.setText(R.string.btn_undo)
-        } else {
-            undoAndNowImage.setImageResource(R.drawable.ic_skip_next_red)
-            undoAndNowText.setText(R.string.btn_now)
-        }
-    }
-
-    /**
-     * Toggles image icons and visibility for pausing state
-     */
-    private fun setPausingNavToolbox() {
-        playAndPauseView.show()
-        undoAndNowView.show()
-        startButton.hide()
-        playAndPauseImage.setImageResource(R.drawable.ic_play_arrow_ablack)
-        playAndPauseText.setText(R.string.btn_resume)
-        undoAndNowImage.setImageResource(R.drawable.ic_skip_next_red)
-        undoAndNowText.setText(R.string.btn_now)
-        timeSeeker.show()
-        timeProgress.hide()
-    }
-
-    /**
-     * Updates the activity's background colour
-     */
-    private fun setBackgroundColour(colour: Int) {
-        findViewById<View>(android.R.id.content).setBackgroundColor(colour)
-    }
-
 }
+
