@@ -8,7 +8,10 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
-import android.view.*
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.*
@@ -108,8 +111,6 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
         handler = Handler()
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_v5)
-        setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         timerStatus = findViewById(R.id.timer_status)
         startButton = findViewById(R.id.start_timer)
@@ -259,19 +260,6 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
             .setPositiveButton(android.R.string.yes) { _, _ -> super.onBackPressed() }
             .create()
             .show()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.v5_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.menu_flags -> {
-            showCommentsDialog()
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
     }
 
     private fun showCommentsDialog(){
