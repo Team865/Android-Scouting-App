@@ -15,17 +15,14 @@ import android.widget.*
 import ca.warp7.android.scouting.ScoutingActivityState.*
 import ca.warp7.android.scouting.constants.Constants.*
 import ca.warp7.android.scouting.res.ManagedPreferences
-import ca.warp7.android.scouting.v5.boardfile.Boardfile
-import ca.warp7.android.scouting.v5.boardfile.ScoutTemplate
-import ca.warp7.android.scouting.v5.boardfile.toBoardfile
+import ca.warp7.android.scouting.v5.boardfile.*
 import ca.warp7.android.scouting.v5.entry.Board
 import ca.warp7.android.scouting.v5.entry.Board.*
 import ca.warp7.android.scouting.v5.entry.MutableEntry
 import ca.warp7.android.scouting.v5.entry.V5TimedEntry
 import ca.warp7.android.scouting.v5ui.V5TabsPagerAdapter
-import java.io.File
 
-abstract class V5Activity : AppCompatActivity(), BaseScoutingActivity {
+class V5Activity : AppCompatActivity(), BaseScoutingActivity {
 
     override lateinit var handler: Handler
     override val actionVibrator get() = preferences.vibrator
@@ -105,7 +102,7 @@ abstract class V5Activity : AppCompatActivity(), BaseScoutingActivity {
         super.onCreate(savedInstanceState)
         handler = Handler()
         setTheme(R.style.AppTheme)
-        setContentView(R.layout.activity_scouting)
+        setContentView(R.layout.activity_v5)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
@@ -182,11 +179,33 @@ abstract class V5Activity : AppCompatActivity(), BaseScoutingActivity {
         })
 
         preferences = ManagedPreferences(this)
-        boardfile = File(intent.getStringExtra(IntentKey.Boardfile)).toBoardfile()
-        match = intent.getStringExtra(IntentKey.Match)
-        team = intent.getStringExtra(IntentKey.Team)
-        scout = intent.getStringExtra(IntentKey.Scout)
-        board = intent.getSerializableExtra(IntentKey.Board) as Board
+//        boardfile = intent.getStringExtra(IntentKey.Boardfile).let { File(it).toBoardfile() }
+//        match = intent.getStringExtra(IntentKey.Match)
+//        team = intent.getStringExtra(IntentKey.Team)
+//        scout = intent.getStringExtra(IntentKey.Scout)
+//        board = intent.getSerializableExtra(IntentKey.Board) as Board
+
+        match = "1"
+        team = "2"
+        scout = "scout"
+        board = R1
+        boardfile = Boardfile(
+            eventName = "Humber College",
+            eventKey = "2019onto3",
+            matchSchedule = MatchSchedule(listOf()),
+            robotScoutTemplate = ScoutTemplate(
+                listOf(
+                    TemplateScreen(
+                        "Auto", listOf(
+                            listOf(
+                                TemplateField("Rocket", V5FieldType.Unknown)
+                            )
+                        )
+                    )
+                ), listOf()
+            ),
+            superScoutTemplate = ScoutTemplate(listOf(), listOf())
+        )
 
         findViewById<TextView>(R.id.toolbar_match).text = match
         findViewById<TextView>(R.id.toolbar_team).also {

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="ca.warp7.android.scouting.V5Activity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="0dp"
+        android:paddingStart="12dp">
+
+        <LinearLayout
+            android:id="@+id/highlight_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cornered_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:contentDescription="@string/hint_match"
+                android:padding="4dp"
+                android:src="@drawable/ic_layers_ablack_small" />
+
+            <TextView
+                android:id="@+id/toolbar_match"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/colorAlmostBlack"
+                android:textSize="18sp"
+                android:typeface="sans" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorGray" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="1dp"
+                android:contentDescription="@string/hint_team"
+                android:padding="4dp"
+                android:src="@drawable/ic_people_ablack_small" />
+
+            <TextView
+                android:id="@+id/toolbar_team"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorGray" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="1dp"
+                android:contentDescription="@string/start_timer"
+                android:padding="4dp"
+                android:src="@drawable/ic_timer_ablack_small" />
+
+            <TextView
+                android:id="@+id/timer_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:typeface="sans" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?android:attr/actionBarSize" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/time_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" />
+
+        <SeekBar
+            android:id="@+id/time_seeker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <TextView
+            android:id="@+id/title_banner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:textColor="@color/colorAlmostBlack"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:typeface="sans"
+            tools:text="Tab Title" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end|center_vertical">
+
+            <LinearLayout
+                android:id="@+id/play_pause_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_awhite_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingEnd="12dp"
+                android:paddingStart="6dp"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/play_pause_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/btn_pause"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_pause_ablack" />
+
+                <TextView
+                    android:id="@+id/play_pause_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_pause"
+                    android:textColor="@color/colorAlmostBlack"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="12dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
+
+            <LinearLayout
+                android:id="@+id/undo_now_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_awhite_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingEnd="12dp"
+                android:paddingStart="6dp"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/undo_now_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/btn_undo"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_undo_ablack" />
+
+                <TextView
+                    android:id="@+id/undo_now_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_undo"
+                    android:textColor="@color/colorAlmostBlack"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/start_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_accent_button"
+                android:paddingLeft="12dp"
+                android:paddingTop="8dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="8dp"
+                android:text="@string/start_timer"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp" />
+
+
+</LinearLayout>
