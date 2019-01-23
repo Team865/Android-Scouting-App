@@ -1,19 +1,17 @@
 package ca.warp7.android.scouting
 
+import android.app.AlertDialog
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.view.View
-import android.view.ViewGroup
+import android.text.InputType
+import android.view.*
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.SeekBar
-import android.widget.TextView
+import android.widget.*
 import ca.warp7.android.scouting.ScoutingActivityState.*
 import ca.warp7.android.scouting.components.V5TabsPagerAdapter
 import ca.warp7.android.scouting.constants.Constants.*
@@ -193,6 +191,61 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
             getTime = { relativeTime })
 
         startActivityState(WaitingToStart)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.scouting_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_flags -> {
+                showCommentsDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    /**
+     * Opens a comments dialog, flags in the future
+     */
+    private fun showCommentsDialog() {
+        entry?.also {
+            val input = EditText(this).apply {
+                inputType = InputType.TYPE_CLASS_TEXT or
+                        InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                        InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+                setText(it.comments)
+                setSelection(it.comments.length)
+                gravity = Gravity.CENTER
+                setHint(R.string.comments_hint)
+            }
+            AlertDialog.Builder(this)
+                .setTitle(R.string.edit_comments)
+                .setView(input)
+                .setPositiveButton("OK") { _, _ -> it.comments = input.text.toString() }
+                .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                .apply {
+                    if (activityState != WaitingToStart && preferences.shouldShowPause()) {
+                        setNeutralButton(if (usingPauseBetaFeature) "Hide Pause" else "Show Pause") { _, _ ->
+                            usingPauseBetaFeature = !usingPauseBetaFeature
+                            actionVibrator.vibrateAction()
+                            if (usingPauseBetaFeature) {
+                                playAndPauseView.show()
+                            } else {
+                                playAndPauseView.hide()
+                            }
+                        }
+                    }
+                }
+                .create()
+                .apply {
+                    window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+                    show()
+                }
+        }
     }
 
     /**
