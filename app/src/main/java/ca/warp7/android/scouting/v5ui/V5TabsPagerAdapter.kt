@@ -1,10 +1,9 @@
-package ca.warp7.android.scouting.components
+package ca.warp7.android.scouting.v5ui
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
-import ca.warp7.android.scouting.abstraction.ScoutingTab
 
 /**
  * Adapter that returns the proper fragment as pages are navigated
@@ -15,12 +14,13 @@ import ca.warp7.android.scouting.abstraction.ScoutingTab
 class V5TabsPagerAdapter(
     fragmentManager: FragmentManager,
     private val layoutsSize: Int,
-    private val pager: ViewPager) :
+    private val pager: ViewPager
+) :
     FragmentPagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment {
         return if (position < layoutsSize) {
-            ScoutingInputsFragment.createInstance(position)
+            V5ScreenFragment.createInstance(position)
         } else {
             V5QRFragment()
         }
@@ -30,7 +30,7 @@ class V5TabsPagerAdapter(
         return layoutsSize + 1
     }
 
-    operator fun get(index: Int): ScoutingTab {
-        return instantiateItem(pager, index) as ScoutingTab
+    operator fun get(index: Int): V5Tab {
+        return instantiateItem(pager, index) as V5Tab
     }
 }

@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.components
+package ca.warp7.android.scouting.v5ui
 
 /*
 This file contains code modified from
@@ -16,9 +16,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.ImageView
+import ca.warp7.android.scouting.BaseScoutingActivity
 import ca.warp7.android.scouting.R
-import ca.warp7.android.scouting.ScoutingActivityBase
-import ca.warp7.android.scouting.abstraction.ScoutingTab
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -30,14 +29,14 @@ import java.util.*
  * @since v0.4.2
  */
 
-class V5QRFragment : Fragment(), ScoutingTab {
+class V5QRFragment : Fragment(), V5Tab {
 
     private var message = " "
-    private var scoutingActivity: ScoutingActivityBase? = null
+    private var scoutingActivity: BaseScoutingActivity? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is ScoutingActivityBase) scoutingActivity = context
+        if (context is BaseScoutingActivity) scoutingActivity = context
     }
 
     override fun onDetach() {

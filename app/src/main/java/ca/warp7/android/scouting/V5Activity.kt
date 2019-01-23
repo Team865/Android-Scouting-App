@@ -13,7 +13,6 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.*
 import ca.warp7.android.scouting.ScoutingActivityState.*
-import ca.warp7.android.scouting.components.V5TabsPagerAdapter
 import ca.warp7.android.scouting.constants.Constants.*
 import ca.warp7.android.scouting.res.ManagedPreferences
 import ca.warp7.android.scouting.v5.boardfile.Boardfile
@@ -23,15 +22,18 @@ import ca.warp7.android.scouting.v5.entry.Board
 import ca.warp7.android.scouting.v5.entry.Board.*
 import ca.warp7.android.scouting.v5.entry.MutableEntry
 import ca.warp7.android.scouting.v5.entry.V5TimedEntry
+import ca.warp7.android.scouting.v5ui.V5TabsPagerAdapter
 import java.io.File
 
-abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
+abstract class V5Activity : AppCompatActivity(), BaseScoutingActivity {
 
     override lateinit var handler: Handler
     override val actionVibrator get() = preferences.vibrator
     override val isSecondLimit get() = relativeTime > kTimerLimit || relativeTime == lastRecordedTime
     override var entry: MutableEntry? = null
     override val timeEnabled get() = activityState != WaitingToStart
+    override lateinit var boardfile: Boardfile
+    override lateinit var template: ScoutTemplate
 
     override fun feedSecondLimit() {
         lastRecordedTime = relativeTime
@@ -51,8 +53,6 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
     private lateinit var pagerAdapter: V5TabsPagerAdapter
 
     private lateinit var preferences: ManagedPreferences
-    private lateinit var boardfile: Boardfile
-    private lateinit var template: ScoutTemplate
     private val screens get() = template.screens
 
     private lateinit var match: String
@@ -210,7 +210,8 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
             else -> boardfile.robotScoutTemplate
         }
 
-        pagerAdapter = V5TabsPagerAdapter(supportFragmentManager, screens.size, pager)
+        pagerAdapter =
+                V5TabsPagerAdapter(supportFragmentManager, screens.size, pager)
         pager.adapter = pagerAdapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit

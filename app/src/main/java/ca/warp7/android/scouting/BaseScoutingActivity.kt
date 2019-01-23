@@ -4,9 +4,11 @@ package ca.warp7.android.scouting
 
 import android.os.Handler
 import ca.warp7.android.scouting.abstraction.AbstractActionVibrator
+import ca.warp7.android.scouting.v5.boardfile.Boardfile
+import ca.warp7.android.scouting.v5.boardfile.ScoutTemplate
 import ca.warp7.android.scouting.v5.entry.MutableEntry
 
-interface ScoutingActivityBase {
+interface BaseScoutingActivity {
 
     /**
      * Current time
@@ -37,6 +39,16 @@ interface ScoutingActivityBase {
      * whether the activity is in a state not accepting timed data
      */
     val timeEnabled: Boolean
+
+    /**
+     * Boardfile
+     */
+    val boardfile: Boardfile
+
+    /**
+     * Scout template
+     */
+    val template: ScoutTemplate
 
     /**
      * Feeds the second limit
