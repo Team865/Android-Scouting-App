@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package ca.warp7.android.scouting
 
 import android.graphics.Typeface
@@ -16,7 +14,7 @@ import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView
 import ca.warp7.android.scouting.abstraction.AbstractActionVibrator
-import ca.warp7.android.scouting.components.ScoutingTabsPagerAdapter
+import ca.warp7.android.scouting.components.V5TabsPagerAdapter
 import ca.warp7.android.scouting.constants.Constants.*
 import ca.warp7.android.scouting.res.ManagedPreferences
 import ca.warp7.android.scouting.v5.boardfile.Boardfile
@@ -45,7 +43,7 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
     private lateinit var playAndPauseText: TextView
     private lateinit var undoAndNowText: TextView
     private lateinit var pager: ViewPager
-    private lateinit var pagerAdapter: ScoutingTabsPagerAdapter
+    private lateinit var pagerAdapter: V5TabsPagerAdapter
 
     private lateinit var preferences: ManagedPreferences
     private lateinit var boardfile: Boardfile
@@ -125,17 +123,18 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
         }
 
         // FIXME mEntry = Entry(match, team, scoutName, this)
-        pagerAdapter = ScoutingTabsPagerAdapter(supportFragmentManager, 0, pager) // FIXME size
+        pagerAdapter = V5TabsPagerAdapter(supportFragmentManager, 0, pager) // FIXME size=0
         pager.adapter = pagerAdapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
+            override fun onPageScrollStateChanged(state: Int) = Unit
             override fun onPageSelected(position: Int) {
                 // FIXME mCurrentTab = position
                 // FIXME updateCurrentTab()
             }
         })
 
+        updateStatus()
     }
 
     /**
@@ -149,7 +148,6 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
             timerStatus.setTypeface(null, Typeface.NORMAL)
             if (relativeTime <= kAutonomousTime) kAutonomousTime - relativeTime else kTimerLimit - relativeTime
         }
-
         val status = time.toString()
         val placeholder = CharArray(kTotalTimerDigits - status.length)
         val filledStatus = String(placeholder).replace("\u0000", "0") + status

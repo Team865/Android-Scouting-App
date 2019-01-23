@@ -4,15 +4,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-
 import ca.warp7.android.scouting.abstraction.ScoutingTab;
 
 /**
  * Adapter that returns the proper fragment as pages are navigated
  */
 
-public class ScoutingTabsPagerAdapter
-        extends FragmentPagerAdapter {
+public class ScoutingTabsPagerAdapter extends FragmentPagerAdapter {
 
     private final int mLayoutsSize;
     private final ViewPager mPager;

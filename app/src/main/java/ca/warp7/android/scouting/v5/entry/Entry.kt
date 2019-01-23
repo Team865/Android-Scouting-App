@@ -39,7 +39,7 @@ interface Entry {
      */
     val encoded: String
     val dataPoints: List<DataPoint>
-    var comments: String
+    val comments: String
 
     /**
      * Gets the count of a specific data type, excluding undo
