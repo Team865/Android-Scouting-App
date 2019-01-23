@@ -16,9 +16,9 @@ import ca.warp7.android.scouting.abstraction.BaseInputControl;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
 import ca.warp7.android.scouting.abstraction.ScoutingTab;
 import ca.warp7.android.scouting.constants.ID;
-import ca.warp7.android.scouting.model2018.DataConstant;
-import ca.warp7.android.scouting.model2018.ScoutingLayout;
-import ca.warp7.android.scouting.model2018.Specs;
+import ca.warp7.android.scouting.model.DataConstant;
+import ca.warp7.android.scouting.model.ScoutingLayout;
+import ca.warp7.android.scouting.model.Specs;
 import ca.warp7.android.scouting.widgets.*;
 
 import java.io.File;

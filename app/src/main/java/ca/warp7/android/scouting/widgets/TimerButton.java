@@ -8,7 +8,7 @@ import android.widget.TextView;
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.abstraction.ParentInputControlListener;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.model2018.DataConstant;
+import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * A button that records time as it is pressed

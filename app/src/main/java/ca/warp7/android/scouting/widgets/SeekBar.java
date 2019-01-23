@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.AppCompatSeekBar;
 import ca.warp7.android.scouting.abstraction.BaseInputControl;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.model2018.DataConstant;
+import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * Creates a ratings bar based on the maximum value specified

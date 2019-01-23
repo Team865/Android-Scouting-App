@@ -181,8 +181,8 @@
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingEnd="12dp"
-                android:paddingStart="6dp"
+                android:paddingEnd="9dp"
+                android:paddingStart="3dp"
                 android:visibility="gone">
 
                 <ImageButton
@@ -204,7 +204,7 @@
             </LinearLayout>
 
             <View
-                android:layout_width="12dp"
+                android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"/>
 
@@ -217,8 +217,8 @@
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingEnd="12dp"
-                android:paddingStart="6dp"
+                android:paddingEnd="9dp"
+                android:paddingStart="3dp"
                 android:visibility="gone">
 
                 <ImageButton
@@ -244,9 +244,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_accent_button"
-                android:paddingLeft="12dp"
+                android:paddingLeft="9dp"
                 android:paddingTop="7dp"
-                android:paddingRight="12dp"
+                android:paddingRight="9dp"
                 android:paddingBottom="8dp"
                 android:text="@string/start_timer"
                 android:textAllCaps="false"
@@ -254,7 +254,7 @@
                 android:textSize="14sp"/>
 
             <View
-                android:layout_width="12dp"
+                android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"/>
 
@@ -266,8 +266,8 @@
                 android:background="@drawable/selector_awhite_button"
                 android:contentDescription="@string/btn_pause"
                 android:padding="6dp"
-                android:paddingStart="18dp"
-                android:paddingEnd="18dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:src="@drawable/ic_comment_ablack"/>
 
         </LinearLayout>

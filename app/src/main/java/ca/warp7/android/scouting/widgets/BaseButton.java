@@ -9,7 +9,7 @@ import ca.warp7.android.scouting.abstraction.BaseInputControl;
 import ca.warp7.android.scouting.abstraction.ChildInputControl;
 import ca.warp7.android.scouting.abstraction.ParentInputControlListener;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.model2018.DataConstant;
+import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * A Base button for other buttons to extend onto

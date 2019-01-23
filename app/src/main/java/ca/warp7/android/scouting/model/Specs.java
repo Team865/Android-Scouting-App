@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.model2018;
+package ca.warp7.android.scouting.model;
 
 import ca.warp7.android.scouting.res.AppResources;
 import org.json.JSONArray;

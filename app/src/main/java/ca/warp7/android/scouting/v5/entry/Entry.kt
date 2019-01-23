@@ -44,15 +44,15 @@ interface Entry {
     /**
      * Gets the count of a specific data type, excluding undo
      */
-    fun count(type: Byte): Int
+    fun count(type: Int): Int
 
     /**
      * Gets the last recorded of a specific data type, excluding undo
      */
-    fun lastValue(type: Byte): DataPoint?
+    fun lastValue(type: Int): DataPoint?
 
     /**
      * Check if a type should focus according to the current time
      */
-    fun focused(type: Byte): Boolean
+    fun focused(type: Int): Boolean
 }

@@ -21,8 +21,8 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import ca.warp7.android.scouting.constants.ID
-import ca.warp7.android.scouting.model2018.Specs
-import ca.warp7.android.scouting.model2018.SpecsIndex
+import ca.warp7.android.scouting.model.Specs
+import ca.warp7.android.scouting.model.SpecsIndex
 import ca.warp7.android.scouting.res.AppResources
 import ca.warp7.android.scouting.v5.V5Activity
 import java.io.File

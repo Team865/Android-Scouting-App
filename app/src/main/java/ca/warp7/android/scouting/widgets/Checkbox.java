@@ -8,7 +8,7 @@ import android.view.View;
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.abstraction.BaseInputControl;
 import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.model2018.DataConstant;
+import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * A checkbox that gives true or false values

@@ -11,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.abstraction.ScoutingScheduleItem;
-import ca.warp7.android.scouting.model2018.ButtonItem;
-import ca.warp7.android.scouting.model2018.MatchWithAllianceItem;
+import ca.warp7.android.scouting.model.ButtonItem;
+import ca.warp7.android.scouting.model.MatchWithAllianceItem;
 import ca.warp7.android.scouting.widgets.AllianceView;
 
 import java.util.List;

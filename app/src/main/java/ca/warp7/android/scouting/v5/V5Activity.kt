@@ -66,8 +66,8 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
     private lateinit var board: Board
 
     private var activityState = WaitingToStart
-    private var relativeTime: Byte = 0
-    private var lastRecordedTime: Byte = 0
+    private var relativeTime = 0
+    private var lastRecordedTime = 0
     private var timerIsCountingUp = false
     private var timerIsRunning = false
     private var currentTab = 0
@@ -79,7 +79,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
      * Calculates the relative time based on
      * the current time and the starting timestamp
      */
-    private val calculateRelativeTime get() = Math.min(currentTime - startingTimestamp, kTimerLimit).toByte()
+    private val calculateRelativeTime get() = Math.min(currentTime - startingTimestamp, kTimerLimit)
 
     /**
      * Calculates whether the counting timer is in approximation with the current time
@@ -181,7 +181,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
             override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser && activityState == Pausing) {
-                    relativeTime = progress.toByte()
+                    relativeTime = progress
                     updateActivityStatus()
                     updateTabStates()
                 }
@@ -305,7 +305,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
     private fun updateActivityStatus() {
         val time = if (timerIsCountingUp) {
             timerStatus.setTypeface(null, Typeface.BOLD)
-            relativeTime.toInt()
+            relativeTime
         } else {
             timerStatus.setTypeface(null, Typeface.NORMAL)
             if (relativeTime <= kAutonomousTime) kAutonomousTime - relativeTime else kTimerLimit - relativeTime
@@ -322,8 +322,8 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
                 }
             )
         )
-        timeProgress.progress = relativeTime.toInt()
-        timeSeeker.progress = relativeTime.toInt()
+        timeProgress.progress = relativeTime
+        timeSeeker.progress = relativeTime
     }
 
     private val alphaAnimationIn: Animation = AlphaAnimation(0.0f, 1.0f).apply { duration = kFadeDuration.toLong() }
