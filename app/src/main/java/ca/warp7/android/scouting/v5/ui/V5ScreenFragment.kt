@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.v5ui
+package ca.warp7.android.scouting.v5.ui
 
 import android.content.Context
 import android.os.Bundle

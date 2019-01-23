@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.v5ui
+package ca.warp7.android.scouting.v5.ui
 
 import android.content.Context
 import android.graphics.PorterDuff
@@ -18,7 +18,7 @@ class UndefinedButton : AppCompatButton {
 
     constructor(group: FieldGroup) : super(group.context) {
         textSize = 18f
-        text = text
+        text = group.templateField.name
         setOnClickListener{
             setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
             background.setColorFilter(

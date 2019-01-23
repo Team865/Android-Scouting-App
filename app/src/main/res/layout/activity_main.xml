@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="ca.warp7.android.scouting.MainActivity">
+    tools:context="ca.warp7.android.scouting.MainActivity"
+    tools:ignore="Autofill">
 
     <ImageView
         android:id="@+id/team_logo"
@@ -15,25 +17,24 @@
         android:contentDescription="@string/app_name"
         android:onClick="onLogoClicked"
         android:padding="6dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"/>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/actionBarSize"
-        app:titleTextColor="@color/colorAlmostBlack" />
+        app:titleTextColor="@color/colorAlmostBlack"/>
 
     <View
         android:layout_width="0dp"
         android:layout_height="8dp"
-        android:background="@android:color/transparent" />
+        android:background="@android:color/transparent"/>
 
     <EditText
         android:id="@+id/name_and_initial"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_account_box_ablack_small"
         android:drawableStart="@drawable/ic_account_box_ablack_small"
         android:ems="9"
         android:hint="@string/hint_name"
@@ -41,13 +42,12 @@
         android:inputType="textPersonName"
         android:textAlignment="center"
         android:textColor="@color/colorAlmostBlack"
-        android:textSize="20sp" />
+        android:textSize="20sp"/>
 
     <EditText
         android:id="@+id/match_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_layers_ablack_small"
         android:drawableStart="@drawable/ic_layers_ablack_small"
         android:ems="9"
         android:hint="@string/hint_match"
@@ -56,13 +56,12 @@
         android:maxLength="3"
         android:textAlignment="center"
         android:textColor="@color/colorAlmostBlack"
-        android:textSize="20sp" />
+        android:textSize="20sp"/>
 
     <EditText
         android:id="@+id/team_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_people_ablack_small"
         android:drawableStart="@drawable/ic_people_ablack_small"
         android:ems="9"
         android:hint="@string/hint_team"
@@ -71,7 +70,7 @@
         android:maxLength="4"
         android:textAlignment="center"
         android:textColor="@color/colorAlmostBlack"
-        android:textSize="20sp" />
+        android:textSize="20sp"/>
 
     <TextView
         android:id="@+id/mismatch_warning"
@@ -82,7 +81,7 @@
         android:text="@string/schedule_mismatch"
         android:textAlignment="center"
         android:textSize="14sp"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
 
     <CheckBox
         android:id="@+id/verify_check"
@@ -94,12 +93,12 @@
         android:paddingTop="8dp"
         android:text="@string/verify_match_info"
         android:textAlignment="center"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 
     <View
         android:layout_width="0dp"
         android:layout_height="24dp"
-        android:background="@android:color/transparent" />
+        android:background="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/match_start_button"
@@ -115,6 +114,21 @@
         android:textColor="@color/colorAlmostBlack"
         android:textSize="20sp"
         android:typeface="sans"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/v5_starter"
+        android:text="@string/start_match"
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_accent_button"
+        android:textColor="@color/colorWhite"
+        android:textAllCaps="false"
+        android:elevation="0dp"
+        android:ems="9"
+        android:textSize="20sp"
+        android:typeface="sans"
+        />
 
 </LinearLayout>
