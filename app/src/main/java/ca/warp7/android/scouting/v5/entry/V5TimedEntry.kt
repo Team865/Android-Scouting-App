@@ -5,16 +5,16 @@ package ca.warp7.android.scouting.v5.entry
 import android.util.Base64
 
 
-data class TimedEntry5(
+data class V5TimedEntry(
     override val match: String,
     override val team: String,
     override val scout: String,
     override val board: Board,
     override val dataPoints: MutableList<DataPoint> = mutableListOf(),
     override var timestamp: Int,
+    val getTime: () -> Byte,
     override var comments: String = "",
     override var undone: Int = 0,
-    val getTime: () -> Byte,
     val isTiming: Boolean = false
 ) : MutableEntry {
     override val encoded get() = "$match:$team:$scout1:${board.name}:$hexTimestamp:$undone:$encodedData:$comments1"

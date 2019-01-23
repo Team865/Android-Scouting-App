@@ -30,7 +30,7 @@ class V5TabsPagerAdapter(
         return layoutsSize + 1
     }
 
-    fun getTabAt(index: Int): ScoutingTab {
+    operator fun get(index: Int): ScoutingTab {
         return instantiateItem(pager, index) as ScoutingTab
     }
 }

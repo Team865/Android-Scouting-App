@@ -6,6 +6,7 @@ import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
@@ -13,7 +14,7 @@ import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView
-import ca.warp7.android.scouting.abstraction.AbstractActionVibrator
+import ca.warp7.android.scouting.ScoutingActivityState.*
 import ca.warp7.android.scouting.components.V5TabsPagerAdapter
 import ca.warp7.android.scouting.constants.Constants.*
 import ca.warp7.android.scouting.res.ManagedPreferences
@@ -23,12 +24,13 @@ import ca.warp7.android.scouting.v5.boardfile.toBoardfile
 import ca.warp7.android.scouting.v5.entry.Board
 import ca.warp7.android.scouting.v5.entry.Board.*
 import ca.warp7.android.scouting.v5.entry.MutableEntry
+import ca.warp7.android.scouting.v5.entry.V5TimedEntry
 import java.io.File
 
 abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
 
     override lateinit var handler: Handler
-    override val actionVibrator: AbstractActionVibrator get() = preferences.vibrator
+    override val actionVibrator get() = preferences.vibrator
     override val isSecondLimit: Boolean = false
     override var entry: MutableEntry? = null
     override var timeEnabled: Boolean = true
@@ -56,13 +58,27 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
     private lateinit var scout: String
     private lateinit var board: Board
 
-    private var activityState = ScoutingActivityState.WaitingToStart
-    private var relativeTime = 0
+    private var activityState = WaitingToStart
+    private var relativeTime: Byte = 0
+    private var lastRecordedTime: Byte = 0
     private var timerIsCountingUp = false
     private var timerIsRunning = false
     private var currentTab = 0
     private var startingTimestamp = 0
-    private var lastRecordedTime = -1
+
+    private var usingPauseBetaFeature: Boolean = false
+
+    /**
+     * Calculates the relative time based on
+     * the current time and the starting timestamp
+     */
+    private val calculateRelativeTime: Int get() = Math.min(currentTime - startingTimestamp, kTimerLimit)
+
+    /**
+     * Calculates whether the counting timer is in approximation with the current time
+     */
+    private val relativeTimeMatchesCurrentTime: Boolean get() = Math.abs(relativeTime - calculateRelativeTime) <= 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,10 +109,10 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
             override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
             override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                if (fromUser && activityState == ScoutingActivityState.Pausing) {
-                    relativeTime = progress
-                    // FIXME updateStatus()
-                    // FIXME updateAdjacentTabStates()
+                if (fromUser && activityState == Pausing) {
+                    relativeTime = progress.toByte()
+                    updateActivityStatus()
+                    updateTabStates()
                 }
             }
         })
@@ -130,29 +146,39 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
             else -> boardfile.robotScoutTemplate
         }
 
-        // FIXME mEntry = Entry(match, team, scoutName, this)
         pagerAdapter = V5TabsPagerAdapter(supportFragmentManager, screens.size, pager)
         pager.adapter = pagerAdapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
             override fun onPageScrollStateChanged(state: Int) = Unit
             override fun onPageSelected(position: Int) {
-                // FIXME mCurrentTab = position
-                // FIXME updateCurrentTab()
+                currentTab = position
+                updateCurrentTab()
             }
         })
 
-        updateStatus()
+        updateActivityStatus()
         updateCurrentTab()
+
+        entry = V5TimedEntry(
+            match = match,
+            team = team,
+            scout = scout,
+            board = board,
+            dataPoints = mutableListOf(),
+            timestamp = currentTime,
+            getTime = { relativeTime })
+
+        startActivityState(WaitingToStart)
     }
 
     /**
      * Reflect the value of mTimer on the timer view and seek bars
      */
-    private fun updateStatus() {
+    private fun updateActivityStatus() {
         val time = if (timerIsCountingUp) {
             timerStatus.setTypeface(null, Typeface.BOLD)
-            relativeTime
+            relativeTime.toInt()
         } else {
             timerStatus.setTypeface(null, Typeface.NORMAL)
             if (relativeTime <= kAutonomousTime) kAutonomousTime - relativeTime else kTimerLimit - relativeTime
@@ -169,9 +195,12 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
                 }
             )
         )
-        timeProgress.progress = relativeTime
-        timeSeeker.progress = relativeTime
+        timeProgress.progress = relativeTime.toInt()
+        timeSeeker.progress = relativeTime.toInt()
     }
+
+    private val alphaAnimationIn: Animation = AlphaAnimation(0.0f, 1.0f).apply { duration = kFadeDuration.toLong() }
+    private val alphaAnimationOut: Animation = AlphaAnimation(1.0f, 0.0f).apply { duration = kFadeDuration.toLong() }
 
     /**
      * Updates the current tab as well as the title banner
@@ -180,10 +209,9 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
         val title = if (currentTab >= 0 && currentTab < screens.size) {
             screens[currentTab].title
         } else if (currentTab == screens.size) {
-            pagerAdapter.getTabAt(currentTab).updateTabState()
+            pagerAdapter[currentTab].updateTabState()
             "QR Code"
         } else "Unknown"
-
         val titleBanner = findViewById<TextView>(R.id.title_banner)
         if (!titleBanner.text.toString().isEmpty()) {
             alphaAnimationOut.setAnimationListener(object : Animation.AnimationListener {
@@ -195,17 +223,112 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
                 }
             })
             titleBanner.startAnimation(alphaAnimationOut)
-
         } else {
             titleBanner.text = title
             titleBanner.startAnimation(alphaAnimationIn)
         }
-
         if (pager.currentItem != currentTab) {
             pager.setCurrentItem(currentTab, true)
         }
     }
 
-    private val alphaAnimationIn: Animation = AlphaAnimation(0.0f, 1.0f).apply { duration = kFadeDuration.toLong() }
-    private val alphaAnimationOut: Animation = AlphaAnimation(1.0f, 0.0f).apply { duration = kFadeDuration.toLong() }
+    /**
+     * Updates the state on the views on the page to match undo
+     * and navigation.
+     */
+    private fun updateTabStates() {
+        if (currentTab != 0) pagerAdapter[currentTab - 1].updateTabState()
+        pagerAdapter[currentTab].updateTabState()
+        if (currentTab != pagerAdapter.count - 1) pagerAdapter[currentTab + 1].updateTabState()
+    }
+
+    /**
+     * Attempts to undo the previous action and vibrates
+     * if the undo has been successful
+     */
+    private fun attemptUndo() {
+        entry?.apply {
+            val dataPoint = undo()
+            dataPoint?.also {
+                actionVibrator.vibrateAction()
+                updateTabStates()
+            }
+        }
+    }
+
+    /**
+     * Sets the current activity state and update views and timer
+     *
+     * @param state the activity state to start
+     */
+    private fun startActivityState(state: ScoutingActivityState) {
+        if (state == TimedScouting && (timerIsRunning || relativeTime >= kTimerLimit)) return
+        activityState = state
+        when (activityState) {
+            WaitingToStart -> setStartingNavToolbox()
+            TimedScouting -> {
+                setScoutingNavToolbox()
+                setBackgroundColour(ContextCompat.getColor(this, R.color.colorWhite))
+                actionVibrator.vibrateStart()
+                // FIXME mTimerUpdater.run()
+            }
+            Pausing -> {
+                setPausingNavToolbox()
+                setBackgroundColour(ContextCompat.getColor(this, R.color.colorAlmostYellow))
+            }
+        }
+    }
+
+    /**
+     * Hide the navigation buttons on start
+     */
+    private fun setStartingNavToolbox() {
+        playAndPauseView.hide()
+        undoAndNowView.hide()
+        timeSeeker.hide()
+        timeProgress.hide()
+    }
+
+    /**
+     * Toggles image icons and visibility for scouting state
+     */
+    private fun setScoutingNavToolbox() {
+        if (usingPauseBetaFeature) playAndPauseView.show() else playAndPauseView.hide()
+        undoAndNowView.show()
+        startButton.hide()
+        timeSeeker.hide()
+        timeProgress.show()
+        playAndPauseImage.setImageResource(R.drawable.ic_pause_ablack)
+        playAndPauseText.setText(R.string.btn_pause)
+        if (relativeTimeMatchesCurrentTime) {
+            undoAndNowImage.setImageResource(R.drawable.ic_undo_ablack)
+            undoAndNowText.setText(R.string.btn_undo)
+        } else {
+            undoAndNowImage.setImageResource(R.drawable.ic_skip_next_red)
+            undoAndNowText.setText(R.string.btn_now)
+        }
+    }
+
+    /**
+     * Toggles image icons and visibility for pausing state
+     */
+    private fun setPausingNavToolbox() {
+        playAndPauseView.show()
+        undoAndNowView.show()
+        startButton.hide()
+        playAndPauseImage.setImageResource(R.drawable.ic_play_arrow_ablack)
+        playAndPauseText.setText(R.string.btn_resume)
+        undoAndNowImage.setImageResource(R.drawable.ic_skip_next_red)
+        undoAndNowText.setText(R.string.btn_now)
+        timeSeeker.show()
+        timeProgress.hide()
+    }
+
+    /**
+     * Updates the activity's background colour
+     */
+    private fun setBackgroundColour(colour: Int) {
+        findViewById<View>(android.R.id.content).setBackgroundColor(colour)
+    }
+
 }
