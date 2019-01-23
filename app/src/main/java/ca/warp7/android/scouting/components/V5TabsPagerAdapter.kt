@@ -22,7 +22,7 @@ class V5TabsPagerAdapter(
         return if (position < layoutsSize) {
             ScoutingInputsFragment.createInstance(position)
         } else {
-            QRFragment.createInstance()
+            V5QRFragment()
         }
     }
 
