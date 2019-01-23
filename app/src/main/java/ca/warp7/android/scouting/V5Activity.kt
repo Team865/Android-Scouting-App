@@ -74,7 +74,7 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
      * Calculates the relative time based on
      * the current time and the starting timestamp
      */
-    private val calculateRelativeTime: Int get() = Math.min(currentTime - startingTimestamp, kTimerLimit)
+    private val calculateRelativeTime get() = Math.min(currentTime - startingTimestamp, kTimerLimit).toByte()
 
     /**
      * Calculates whether the counting timer is in approximation with the current time
@@ -111,7 +111,6 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
 
         timerStatus = findViewById(R.id.timer_status)
         startButton = findViewById(R.id.start_timer)
-        startButton.elevation = 4f
         playAndPauseImage = findViewById(R.id.play_pause_image)
         undoAndNowImage = findViewById(R.id.undo_now_image)
         playAndPauseView = findViewById(R.id.play_pause_container)
@@ -121,6 +120,50 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
         timeProgress = findViewById(R.id.time_progress)
         timeSeeker = findViewById(R.id.time_seeker)
         pager = findViewById(R.id.pager)
+
+        startButton.setOnClickListener {
+            startingTimestamp = currentTime
+            entry?.timestamp = startingTimestamp
+            startActivityState(TimedScouting)
+            updateTabStates()
+        }
+
+        playAndPauseView.setOnClickListener {
+            when (activityState) {
+                TimedScouting -> startActivityState(Pausing)
+                Pausing -> startActivityState(TimedScouting)
+                else -> Unit
+            }
+        }
+
+        undoAndNowView.setOnClickListener {
+            when (activityState) {
+                TimedScouting -> if (relativeTimeMatchesCurrentTime) {
+                    entry?.apply {
+                        val dataPoint = undo()
+                        dataPoint?.also {
+                            actionVibrator.vibrateAction()
+                            updateTabStates()
+                        }
+                    }
+                } else {
+                    relativeTime = calculateRelativeTime
+                    actionVibrator.vibrateStart()
+                    undoAndNowImage.setImageResource(R.drawable.ic_undo_ablack)
+                    undoAndNowText.setText(R.string.btn_undo)
+                }
+                Pausing -> {
+                    relativeTime = calculateRelativeTime
+                    startActivityState(TimedScouting)
+                }
+                else -> Unit
+            }
+        }
+
+        timerStatus.setOnClickListener {
+            timerIsCountingUp = !timerIsCountingUp
+            updateActivityStatus()
+        }
 
         timeProgress.max = kTimerLimit
         timeProgress.progress = 0
@@ -193,59 +236,60 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
         startActivityState(WaitingToStart)
     }
 
+    override fun onBackPressed() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.exit_confirmation)
+            .setMessage(R.string.exit_confirmation_body)
+            .setNegativeButton(android.R.string.no, null)
+            .setPositiveButton(android.R.string.yes) { _, _ -> super.onBackPressed() }
+            .create()
+            .show()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.scouting_menu, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_flags -> {
-                showCommentsDialog()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    /**
-     * Opens a comments dialog, flags in the future
-     */
-    private fun showCommentsDialog() {
-        entry?.also {
-            val input = EditText(this).apply {
-                inputType = InputType.TYPE_CLASS_TEXT or
-                        InputType.TYPE_TEXT_FLAG_MULTI_LINE or
-                        InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-                setText(it.comments)
-                setSelection(it.comments.length)
-                gravity = Gravity.CENTER
-                setHint(R.string.comments_hint)
-            }
-            AlertDialog.Builder(this)
-                .setTitle(R.string.edit_comments)
-                .setView(input)
-                .setPositiveButton("OK") { _, _ -> it.comments = input.text.toString() }
-                .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-                .apply {
-                    if (activityState != WaitingToStart && preferences.shouldShowPause()) {
-                        setNeutralButton(if (usingPauseBetaFeature) "Hide Pause" else "Show Pause") { _, _ ->
-                            usingPauseBetaFeature = !usingPauseBetaFeature
-                            actionVibrator.vibrateAction()
-                            if (usingPauseBetaFeature) {
-                                playAndPauseView.show()
-                            } else {
-                                playAndPauseView.hide()
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.menu_flags -> {
+            entry?.also {
+                val input = EditText(this).apply {
+                    inputType = InputType.TYPE_CLASS_TEXT or
+                            InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                            InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+                    setText(it.comments)
+                    setSelection(it.comments.length)
+                    gravity = Gravity.CENTER
+                    setHint(R.string.comments_hint)
+                }
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.edit_comments)
+                    .setView(input)
+                    .setPositiveButton("OK") { _, _ -> it.comments = input.text.toString() }
+                    .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                    .apply {
+                        if (activityState != WaitingToStart && preferences.shouldShowPause()) {
+                            setNeutralButton(if (usingPauseBetaFeature) "Hide Pause" else "Show Pause") { _, _ ->
+                                usingPauseBetaFeature = !usingPauseBetaFeature
+                                actionVibrator.vibrateAction()
+                                if (usingPauseBetaFeature) {
+                                    playAndPauseView.show()
+                                } else {
+                                    playAndPauseView.hide()
+                                }
                             }
                         }
                     }
-                }
-                .create()
-                .apply {
-                    window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-                    show()
-                }
+                    .create()
+                    .apply {
+                        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+                        show()
+                    }
+            }
+            true
         }
+        else -> super.onOptionsItemSelected(item)
     }
 
     /**
@@ -316,20 +360,6 @@ abstract class V5Activity : AppCompatActivity(), ScoutingActivityBase {
         if (currentTab != 0) pagerAdapter[currentTab - 1].updateTabState()
         pagerAdapter[currentTab].updateTabState()
         if (currentTab != pagerAdapter.count - 1) pagerAdapter[currentTab + 1].updateTabState()
-    }
-
-    /**
-     * Attempts to undo the previous action and vibrates
-     * if the undo has been successful
-     */
-    private fun tryUndo() {
-        entry?.apply {
-            val dataPoint = undo()
-            dataPoint?.also {
-                actionVibrator.vibrateAction()
-                updateTabStates()
-            }
-        }
     }
 
     /**
