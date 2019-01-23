@@ -1,3 +1,3 @@
 package ca.warp7.android.scouting.v5.boardfile
 
-data class TemplateField(val name: String, val type:String, val options: List<Any>)
+data class TemplateField(val name: String, val type:V5FieldType, val options: List<Any>)

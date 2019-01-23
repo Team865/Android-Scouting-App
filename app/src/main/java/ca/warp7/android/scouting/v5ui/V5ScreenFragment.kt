@@ -13,6 +13,7 @@ import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.abstraction.BaseInputControl
 import ca.warp7.android.scouting.v5.boardfile.TemplateField
 import ca.warp7.android.scouting.v5.boardfile.TemplateScreen
+import ca.warp7.android.scouting.v5.boardfile.V5FieldType.*
 
 /**
  * The fragment that is shown in the biggest portion
@@ -72,40 +73,20 @@ class V5ScreenFragment : Fragment(), V5Tab {
 //            return UndefinedInputsIndicator(context!!, idIfNull, scoutingActivity!!)
 //        }
 
+        val scoutingActivity = scoutingActivity
+        val context = context
+        if (scoutingActivity!= null && context!= null){
+            val group = FieldGroup(context, templateField, scoutingActivity)
+            return when (templateField.type) {
+                Choice -> TODO()
+                Checkbox -> TODO()
+                Button -> TODO()
+                Toggle -> TODO()
+                Switch -> TODO()
+                else -> UndefinedButton(group)
+            }
+        }
         return View(context)
-
-//        when (dc.type) {
-//            DataConstant.TIMESTAMP ->
-//                //return new InputControls.TimerButton(getContext(), dc, mListener);
-//                return CountedInputControlLayout(
-//                    context, dc, scoutingActivity,
-//                    TimerButton(context, dc, scoutingActivity)
-//                )
-//
-//            DataConstant.CHECKBOX -> return CenteredControlLayout(
-//                context, dc, scoutingActivity,
-//                Checkbox(context, dc, scoutingActivity)
-//            )
-//
-//            DataConstant.DURATION -> return DurationButton(context, dc, scoutingActivity)
-//
-//
-//            DataConstant.RATING ->
-//
-//                return LabeledControlLayout(
-//                    context, dc, scoutingActivity,
-//                    SeekBar(context, dc, scoutingActivity)
-//                )
-//
-//            DataConstant.CHOICE ->
-//
-//                return LabeledControlLayout(
-//                    context, dc, scoutingActivity,
-//                    ChoicesButton(context, dc, scoutingActivity)
-//                )
-//
-//            else -> return UndefinedInputsIndicator(context!!, dc.label, scoutingActivity!!)
-//        }
     }
 
     /**
