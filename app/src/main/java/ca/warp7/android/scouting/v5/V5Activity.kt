@@ -162,6 +162,10 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
             }
         }
 
+        findViewById<ImageButton>(R.id.v5_comment_button).setOnClickListener {
+            showCommentsDialog()
+        }
+
         timerStatus.setOnClickListener {
             timerIsCountingUp = !timerIsCountingUp
             updateActivityStatus()
@@ -265,43 +269,47 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.menu_flags -> {
-            entry?.also {
-                val input = EditText(this).apply {
-                    inputType = InputType.TYPE_CLASS_TEXT or
-                            InputType.TYPE_TEXT_FLAG_MULTI_LINE or
-                            InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-                    setText(it.comments)
-                    setSelection(it.comments.length)
-                    gravity = Gravity.CENTER
-                    setHint(R.string.comments_hint)
-                }
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.edit_comments)
-                    .setView(input)
-                    .setPositiveButton("OK") { _, _ -> it.comments = input.text.toString() }
-                    .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-                    .apply {
-                        if (activityState != WaitingToStart && preferences.shouldShowPause()) {
-                            setNeutralButton(if (usingPauseBetaFeature) "Hide Pause" else "Show Pause") { _, _ ->
-                                usingPauseBetaFeature = !usingPauseBetaFeature
-                                actionVibrator.vibrateAction()
-                                if (usingPauseBetaFeature) {
-                                    playAndPauseView.show()
-                                } else {
-                                    playAndPauseView.hide()
-                                }
-                            }
-                        }
-                    }
-                    .create()
-                    .apply {
-                        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-                        show()
-                    }
-            }
+            showCommentsDialog()
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun showCommentsDialog(){
+        entry?.also {
+            val input = EditText(this).apply {
+                inputType = InputType.TYPE_CLASS_TEXT or
+                        InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                        InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+                setText(it.comments)
+                setSelection(it.comments.length)
+                gravity = Gravity.CENTER
+                setHint(R.string.comments_hint)
+            }
+            AlertDialog.Builder(this)
+                .setTitle(R.string.edit_comments)
+                .setView(input)
+                .setPositiveButton("OK") { _, _ -> it.comments = input.text.toString() }
+                .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                .apply {
+                    if (activityState != WaitingToStart && preferences.shouldShowPause()) {
+                        setNeutralButton(if (usingPauseBetaFeature) "Hide Pause" else "Show Pause") { _, _ ->
+                            usingPauseBetaFeature = !usingPauseBetaFeature
+                            actionVibrator.vibrateAction()
+                            if (usingPauseBetaFeature) {
+                                playAndPauseView.show()
+                            } else {
+                                playAndPauseView.hide()
+                            }
+                        }
+                    }
+                }
+                .create()
+                .apply {
+                    window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+                    show()
+                }
+        }
     }
 
     /**
