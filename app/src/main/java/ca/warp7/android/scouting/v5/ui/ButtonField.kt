@@ -15,7 +15,7 @@ import ca.warp7.android.scouting.v5.entry.DataPoint
  * @since v0.2.0
  */
 
-class CountedButtonField : FrameLayout, BaseFieldWidget {
+class ButtonField : FrameLayout, BaseFieldWidget {
 
     override val fieldData: FieldData?
     private val counter: TextView?

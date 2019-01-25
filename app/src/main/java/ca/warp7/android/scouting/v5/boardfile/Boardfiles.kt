@@ -38,18 +38,34 @@ fun exampleBoardfile(): Boardfile {
                     "Teleop", listOf(
                         listOf(
                             TemplateField("rocket_3", V5FieldType.Button),
-                            TemplateField("defending", V5FieldType.Unknown)
+                            TemplateField("defending", V5FieldType.Switch)
                         ),
                         listOf(
                             TemplateField("rocket_2", V5FieldType.Button),
-                            TemplateField("defended", V5FieldType.Unknown)
+                            TemplateField("defended", V5FieldType.Switch)
                         ),
                         listOf(
                             TemplateField("rocket_1", V5FieldType.Button),
-                            TemplateField("cargo_ship", V5FieldType.Unknown)
+                            TemplateField("cargo_ship", V5FieldType.Button)
                         ),
                         listOf(
                             TemplateField("game_piece", V5FieldType.Unknown)
+                        )
+                    )
+                ),
+                TemplateScreen(
+                    "Endgame", listOf(
+                        listOf(
+                            TemplateField("climb_level", V5FieldType.Unknown)
+                        ),
+                        listOf(
+                            TemplateField("assisted_climb", V5FieldType.Checkbox)
+                        ),
+                        listOf(
+                            TemplateField("lifting_1", V5FieldType.Unknown)
+                        ),
+                        listOf(
+                            TemplateField("lifting_@", V5FieldType.Unknown)
                         )
                     )
                 )

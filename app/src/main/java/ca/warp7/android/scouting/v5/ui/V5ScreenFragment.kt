@@ -12,8 +12,7 @@ import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.v5.BaseScoutingActivity
 import ca.warp7.android.scouting.v5.boardfile.TemplateField
 import ca.warp7.android.scouting.v5.boardfile.TemplateScreen
-import ca.warp7.android.scouting.v5.boardfile.V5FieldType.Button
-import ca.warp7.android.scouting.v5.boardfile.V5FieldType.Checkbox
+import ca.warp7.android.scouting.v5.boardfile.V5FieldType.*
 
 /**
  * The fragment that is shown in the biggest portion
@@ -79,8 +78,9 @@ class V5ScreenFragment : Fragment(), V5Tab {
             val data = FieldData(context, templateField, scoutingActivity, modifyName(templateField.name),
                 scoutingActivity.template?.lookup(templateField) ?: 0 + 1)
             return when (templateField.type) {
-                Button -> CountedButtonField(data)
+                Button -> ButtonField(data)
                 Checkbox -> CheckboxField(data)
+                Switch -> SwitchField(data)
                 else -> FieldUndefined(data)
             }
         }
