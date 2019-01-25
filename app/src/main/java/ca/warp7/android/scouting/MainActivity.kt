@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSpecs() {
-        val root = AppResources.getSpecsRoot()
+        val root = AppResources.specsRoot
         val indexFile = File(root, "index.json")
         if (!indexFile.exists()) {
             AppResources.copySpecsAssets(this)
@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadSpecsFromName(name: String?) {
         if (specsIndex.names.contains(name)) {
-            passedSpecsFile = File(AppResources.getSpecsRoot(), specsIndex.getFileByName(name))
+            passedSpecsFile = File(AppResources.specsRoot, specsIndex.getFileByName(name))
             val specs = Specs.setInstance(passedSpecsFile)
             val ab = supportActionBar
             if (ab != null) {

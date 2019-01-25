@@ -18,7 +18,7 @@ public class EventInfo {
         mEventRoot = eventFilePath;
         File eventJSONPath = new File(mEventRoot, "event.json");
         try {
-            String eventJSONString = AppResources.readFile(eventJSONPath);
+            String eventJSONString = AppResources.INSTANCE.readFile(eventJSONPath);
             JSONObject eventJSON = new JSONObject(eventJSONString);
             mEventName = eventJSON.getString("event_name");
         } catch (IOException | JSONException e) {

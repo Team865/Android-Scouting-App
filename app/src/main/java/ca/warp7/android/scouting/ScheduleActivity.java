@@ -54,7 +54,7 @@ public class ScheduleActivity extends AppCompatActivity {
                     MY_PERMISSIONS_REQUEST_FILES);
         }
 
-        final List<EventInfo> events = AppResources.getEvents();
+        final List<EventInfo> events = AppResources.INSTANCE.getEvents();
 
         List<String> names = new ArrayList<>();
         for (EventInfo event : events) {

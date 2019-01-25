@@ -125,7 +125,7 @@ public class Specs {
         try {
 
             //activeSpecs = new Specs(readFile(new File(AppResources.getSpecsRoot(), filename)));
-            activeSpecs = new Specs(AppResources.readFile(file));
+            activeSpecs = new Specs(AppResources.INSTANCE.readFile(file));
 
         } catch (IOException | JSONException e) {
 

@@ -22,7 +22,7 @@ public class SpecsIndex {
 
     public SpecsIndex(File file) {
         try {
-            JSONObject index = new JSONObject(AppResources.readFile(file));
+            JSONObject index = new JSONObject(AppResources.INSTANCE.readFile(file));
 
             JSONArray files = index.getJSONArray("files");
             JSONArray names = index.getJSONArray("names");

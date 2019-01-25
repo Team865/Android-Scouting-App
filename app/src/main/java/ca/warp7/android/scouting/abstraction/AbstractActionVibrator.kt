@@ -1,18 +1,18 @@
-package ca.warp7.android.scouting.abstraction;
+package ca.warp7.android.scouting.abstraction
 
 /**
  * @since v0.4.2
  */
 
-public interface AbstractActionVibrator {
+interface AbstractActionVibrator {
 
     /**
      * Vibrate to indicate scouting start
      */
-    void vibrateStart();
+    fun vibrateStart()
 
     /**
      * Vibrate to indicate an action
      */
-    void vibrateAction();
+    fun vibrateAction()
 }

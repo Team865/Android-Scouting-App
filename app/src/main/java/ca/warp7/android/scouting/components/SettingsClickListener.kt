@@ -41,9 +41,9 @@ internal class SettingsClickListener : Preference.OnPreferenceClickListener {
             .setTitle("Are you sure?")
             .setMessage(
                 "Any files stored at \""
-                        + AppResources.getSpecsRoot().absolutePath
+                        + AppResources.specsRoot.absolutePath
                         + "\" and \""
-                        + AppResources.getEventsRoot().absolutePath
+                        + AppResources.eventsRoot.absolutePath
                         + "\" will be overwritten."
             )
             .setNegativeButton("No", null)
