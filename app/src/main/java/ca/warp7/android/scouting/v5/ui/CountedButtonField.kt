@@ -44,12 +44,13 @@ class CountedButtonField : FrameLayout, BaseFieldWidget {
             setLines(2)
             setOnClickListener {
                 data.scoutingActivity.apply {
-                    //if (!isSecondLimit) {
+                    if (timeEnabled && !isSecondLimit) {
                         actionVibrator?.vibrateAction()
                         entry!!.add(DataPoint(data.typeIndex, 1, relativeTime))
+                        feedSecondLimit()
                         updateControlState()
                         handler.postDelayed({ updateControlState() }, 1000)
-                    //}
+                    }
                 }
             }
         }.also { addView(it) }
@@ -72,19 +73,19 @@ class CountedButtonField : FrameLayout, BaseFieldWidget {
     override fun updateControlState() {
         fieldData?.apply {
             if (!scoutingActivity.timeEnabled) {
-                isEnabled = false
-                button!!.setTextColor(ContextCompat.getColor(context, R.color.colorGray))
+                button!!.isEnabled = false
+                button.setTextColor(ContextCompat.getColor(context, R.color.colorGray))
             } else {
-                isEnabled = true
+                button!!.isEnabled = true
                 scoutingActivity.entry?.apply {
                     val count = count(typeIndex)
                     counter?.text = count.toString()
                     if (focused(typeIndex)){
-                        button!!.setTextColor(white)
+                        button.setTextColor(white)
                         button.background.setColorFilter(accent, PorterDuff.Mode.MULTIPLY)
                         counter!!.setTextColor(white)
                     } else {
-                        button!!.setTextColor(accent)
+                        button.setTextColor(accent)
                         button.background.clearColorFilter()
                         counter!!.setTextColor(almostBlack)
                     }
