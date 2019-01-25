@@ -27,7 +27,7 @@ fun exampleBoardfile(): Boardfile {
                         ),
                         listOf(
                             TemplateField("rocket", V5FieldType.Button),
-                            TemplateField("front_cargo_ship", V5FieldType.Unknown)
+                            TemplateField("front_cargo_ship", V5FieldType.Button)
                         ),
                         listOf(
                             TemplateField("auto_game_piece", V5FieldType.Unknown)
@@ -37,15 +37,15 @@ fun exampleBoardfile(): Boardfile {
                 TemplateScreen(
                     "Teleop", listOf(
                         listOf(
-                            TemplateField("rocket_3", V5FieldType.Unknown),
+                            TemplateField("rocket_3", V5FieldType.Button),
                             TemplateField("defending", V5FieldType.Unknown)
                         ),
                         listOf(
-                            TemplateField("rocket_2", V5FieldType.Unknown),
+                            TemplateField("rocket_2", V5FieldType.Button),
                             TemplateField("defended", V5FieldType.Unknown)
                         ),
                         listOf(
-                            TemplateField("rocket_1", V5FieldType.Unknown),
+                            TemplateField("rocket_1", V5FieldType.Button),
                             TemplateField("cargo_ship", V5FieldType.Unknown)
                         ),
                         listOf(

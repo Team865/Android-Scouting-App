@@ -90,7 +90,7 @@ class V5ScreenFragment : Fragment(), V5Tab {
     }
 
     private fun modifyName(name: String): String {
-        return name.split("_".toRegex()).joinToString(" ") { it.capitalize() }
+        return name.split("_".toRegex()).joinToString(" ") { it.toLowerCase().capitalize() }
     }
 
     /**
