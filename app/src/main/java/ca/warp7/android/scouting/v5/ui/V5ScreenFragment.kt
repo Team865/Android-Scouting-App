@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TableLayout
 import android.widget.TableRow
 import ca.warp7.android.scouting.R
-import ca.warp7.android.scouting.abstraction.BaseInputControl
 import ca.warp7.android.scouting.v5.BaseScoutingActivity
 import ca.warp7.android.scouting.v5.boardfile.TemplateField
 import ca.warp7.android.scouting.v5.boardfile.TemplateScreen
@@ -75,12 +74,12 @@ class V5ScreenFragment : Fragment(), V5Tab {
 
         val scoutingActivity = scoutingActivity
         val context = context
-        if (scoutingActivity!= null && context!= null){
-            val data = FieldData(context, templateField, scoutingActivity, "",0)
+        if (scoutingActivity != null && context != null) {
+            val data = FieldData(context, templateField, scoutingActivity, "", 0)
             return when (templateField.type) {
                 Choice -> TODO()
                 Checkbox -> TODO()
-                Button -> FieldButton(data)
+                Button -> CountedButtonField(data)
                 Toggle -> TODO()
                 Switch -> TODO()
                 else -> FieldUndefined(data)
@@ -146,7 +145,7 @@ class V5ScreenFragment : Fragment(), V5Tab {
                 val child = getChildAt(i)
                 if (child is TableRow) {
                     for (j in 0 until child.childCount) {
-                        (child.getChildAt(j) as? BaseInputControl)?.updateControlState()
+                        (child.getChildAt(j) as? BaseFieldWidget)?.updateControlState()
                     }
                 }
             }
