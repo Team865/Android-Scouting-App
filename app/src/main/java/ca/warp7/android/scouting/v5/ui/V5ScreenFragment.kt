@@ -75,7 +75,7 @@ class V5ScreenFragment : Fragment(), V5Tab {
         val scoutingActivity = scoutingActivity
         val context = context
         if (scoutingActivity != null && context != null) {
-            val data = FieldData(context, templateField, scoutingActivity, "", 0)
+            val data = FieldData(context, templateField, scoutingActivity, modifyName(templateField.name), 0)
             return when (templateField.type) {
                 Choice -> TODO()
                 Checkbox -> TODO()
@@ -86,6 +86,10 @@ class V5ScreenFragment : Fragment(), V5Tab {
             }
         }
         return View(context)
+    }
+
+    private fun modifyName(name: String): String {
+        return name.split("_".toRegex()).joinToString(" ") { it.capitalize() }
     }
 
     /**

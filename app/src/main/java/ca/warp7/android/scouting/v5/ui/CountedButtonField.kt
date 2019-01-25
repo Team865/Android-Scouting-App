@@ -42,6 +42,16 @@ class CountedButtonField : FrameLayout, BaseFieldWidget {
             elevation = 4f
             text = data.modifiedName
             setLines(2)
+            setOnClickListener {
+                data.scoutingActivity.apply {
+                    //if (!isSecondLimit) {
+                        actionVibrator?.vibrateAction()
+                        entry!!.add(DataPoint(data.typeIndex, 1, currentTime))
+                        updateControlState()
+                        handler.postDelayed({ updateControlState() }, 1000)
+                    //}
+                }
+            }
         }.also { addView(it) }
 
         counter = TextView(data.context).apply {
@@ -56,16 +66,7 @@ class CountedButtonField : FrameLayout, BaseFieldWidget {
             }
         }.also { addView(it) }
 
-        setOnClickListener {
-            data.scoutingActivity.apply {
-                if (!isSecondLimit) {
-                    actionVibrator?.vibrateAction()
-                    entry!!.add(DataPoint(data.typeIndex, 1, currentTime))
-                    updateControlState()
-                    handler.postDelayed({ updateControlState() }, 1000)
-                }
-            }
-        }
+        updateControlState()
     }
 
     override fun updateControlState() {

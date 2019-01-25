@@ -33,7 +33,7 @@ data class V5TimedEntry(
 
     override fun add(dataPoint: DataPoint) = this.dataPoints.add(index = nextIndex, element = dataPoint)
 
-    override fun undo() = nextIndex.let { if (it == 0) null else dataPoints.removeAt(it).also { undone++ } }
+    override fun undo() = nextIndex.let { if (it == 0) null else dataPoints.removeAt(it - 1).also { undone++ } }
 
     override fun count(type: Int) = dataPoints.subList(0, nextIndex).filter { it.type == type }.size
 

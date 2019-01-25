@@ -26,7 +26,7 @@ fun exampleBoardfile(): Boardfile {
                             TemplateField("camera_control", V5FieldType.Unknown)
                         ),
                         listOf(
-                            TemplateField("rocket", V5FieldType.Unknown),
+                            TemplateField("rocket", V5FieldType.Button),
                             TemplateField("front_cargo_ship", V5FieldType.Unknown)
                         ),
                         listOf(
