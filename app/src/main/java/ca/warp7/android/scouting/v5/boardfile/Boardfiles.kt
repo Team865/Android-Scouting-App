@@ -19,11 +19,11 @@ fun exampleBoardfile(): Boardfile {
                     "Sandstorm", listOf(
                         listOf(
                             TemplateField("start_position", V5FieldType.Unknown),
-                            TemplateField("hab_line", V5FieldType.Unknown)
+                            TemplateField("hab_line", V5FieldType.Checkbox)
                         ),
                         listOf(
                             TemplateField("auto_field_area", V5FieldType.Unknown),
-                            TemplateField("camera_control", V5FieldType.Unknown)
+                            TemplateField("camera_control", V5FieldType.Checkbox)
                         ),
                         listOf(
                             TemplateField("rocket", V5FieldType.Button),
