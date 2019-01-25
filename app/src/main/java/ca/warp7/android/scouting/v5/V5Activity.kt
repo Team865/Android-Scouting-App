@@ -39,6 +39,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
     override val timeEnabled get() = activityState != WaitingToStart
     override var boardfile: Boardfile? = null
     override var template: ScoutTemplate? = null
+    override var relativeTime = 0
 
     override fun feedSecondLimit() {
         lastRecordedTime = relativeTime
@@ -66,7 +67,6 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
     private lateinit var board: Board
 
     private var activityState = WaitingToStart
-    private var relativeTime = 0
     private var lastRecordedTime = 0
     private var timerIsCountingUp = false
     private var timerIsRunning = false

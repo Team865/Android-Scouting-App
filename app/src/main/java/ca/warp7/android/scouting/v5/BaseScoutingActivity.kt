@@ -16,6 +16,11 @@ interface BaseScoutingActivity {
     val currentTime get() = (System.currentTimeMillis() / 1000).toInt()
 
     /**
+     * Relative time
+     */
+    val relativeTime: Int
+
+    /**
      * The time Handler of the activity
      */
     val handler: Handler

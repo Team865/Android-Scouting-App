@@ -75,7 +75,8 @@ class V5ScreenFragment : Fragment(), V5Tab {
         val scoutingActivity = scoutingActivity
         val context = context
         if (scoutingActivity != null && context != null) {
-            val data = FieldData(context, templateField, scoutingActivity, modifyName(templateField.name), 0)
+            val data = FieldData(context, templateField, scoutingActivity, modifyName(templateField.name),
+                scoutingActivity.template?.lookup(templateField) ?: 0 + 1)
             return when (templateField.type) {
                 Choice -> TODO()
                 Checkbox -> TODO()

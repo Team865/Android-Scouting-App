@@ -46,7 +46,7 @@ class CountedButtonField : FrameLayout, BaseFieldWidget {
                 data.scoutingActivity.apply {
                     //if (!isSecondLimit) {
                         actionVibrator?.vibrateAction()
-                        entry!!.add(DataPoint(data.typeIndex, 1, currentTime))
+                        entry!!.add(DataPoint(data.typeIndex, 1, relativeTime))
                         updateControlState()
                         handler.postDelayed({ updateControlState() }, 1000)
                     //}
@@ -81,7 +81,7 @@ class CountedButtonField : FrameLayout, BaseFieldWidget {
                     counter?.text = count.toString()
                     if (focused(typeIndex)){
                         button!!.setTextColor(white)
-                        button.background.setColorFilter(accent, PorterDuff.Mode.CLEAR)
+                        button.background.setColorFilter(accent, PorterDuff.Mode.MULTIPLY)
                         counter!!.setTextColor(white)
                     } else {
                         button!!.setTextColor(accent)
