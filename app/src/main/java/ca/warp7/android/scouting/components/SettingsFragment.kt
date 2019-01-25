@@ -12,11 +12,7 @@ import ca.warp7.android.scouting.R
 class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
-    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        addPreferencesFromResource(R.xml.preferences)
         val listener = SettingsClickListener()
         addListener(R.string.pref_copy_assets_key, listener)
         addListener(R.string.pref_x_schedule_key, listener)

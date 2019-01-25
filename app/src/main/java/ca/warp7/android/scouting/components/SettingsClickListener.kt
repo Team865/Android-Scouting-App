@@ -47,7 +47,7 @@ internal class SettingsClickListener : Preference.OnPreferenceClickListener {
                         + "\" will be overwritten."
             )
             .setNegativeButton("No", null)
-            .setPositiveButton("Yes") { dialog, which ->
+            .setPositiveButton("Yes") { _, _ ->
                 AppResources.copySpecsAssets(context)
                 AppResources.copyEventAssets(context)
             }
