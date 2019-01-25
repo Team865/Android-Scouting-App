@@ -6,16 +6,27 @@ import android.util.Base64
 
 
 data class V5TimedEntry(
+
     override val match: String,
+
     override val team: String,
+
     override val scout: String,
+
     override val board: Board,
+
     override val dataPoints: MutableList<DataPoint> = mutableListOf(),
+
     override var timestamp: Int,
+
     val getTime: () -> Int,
+
     override var comments: String = "",
+
     override var undone: Int = 0,
+
     val isTiming: Boolean = false
+
 ) : MutableEntry {
 
     override val encoded get() = "$match:$team:$scout1:${board.name}:$hexTimestamp:$undone:$encodedData:$comments1"

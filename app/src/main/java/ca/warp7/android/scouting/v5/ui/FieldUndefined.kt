@@ -11,20 +11,17 @@ import ca.warp7.android.scouting.R
  * @since v0.2.0
  */
 
-class UndefinedButton : AppCompatButton {
-
-
+class FieldUndefined : AppCompatButton {
     constructor(context: Context) : super(context)
-
-    constructor(group: FieldGroup) : super(group.context) {
+    constructor(data: FieldData) : super(data.context) {
         textSize = 18f
-        text = group.templateField.name
-        setOnClickListener{
+        text = data.templateField.name
+        setOnClickListener {
             setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
             background.setColorFilter(
                 ContextCompat.getColor(context, android.R.color.black), PorterDuff.Mode.MULTIPLY
             )
-            group.scoutingActivity.apply {
+            data.scoutingActivity.apply {
                 actionVibrator?.vibrateAction()
                 handler.postDelayed({
                     setTextColor(ContextCompat.getColor(context, android.R.color.black))

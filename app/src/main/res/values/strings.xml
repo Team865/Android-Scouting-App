@@ -24,10 +24,9 @@
     </string>
 
     <string name="comments_hint">
-        Add comments here if there is an error with your scouting
-        (started late, missed an event, entry needs re-scout, etc.)
-        or if the robot fell, is missing, or did other weird things
-        so the data can be adjusted accordingly
+        Comment here if there is an error with this entry
+        (started late, missed click, needs re-scout, etc.)
+        or if the robot behaved abnormally in the match.
     </string>
 
     <string name="send_show_qr">Show QR Code</string>

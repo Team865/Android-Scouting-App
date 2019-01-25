@@ -200,7 +200,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
         }
 
         boardfile = exampleBoardfile()
-        match = "qm123"
+        match = "QM123"
         team = "865"
         scout = "Yu"
         board = R1
@@ -214,15 +214,15 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
             it.setTextColor(
                 ContextCompat.getColor(
                     this, when (board) {
-                        R1, R2, R3, RS -> R.color.colorRed
-                        B1, B2, B3, BS -> R.color.colorBlue
+                        R1, R2, R3, RX -> R.color.colorRed
+                        B1, B2, B3, BX -> R.color.colorBlue
                     }
                 )
             )
         }
 
         template = when (board) {
-            RS, BS -> boardfile?.superScoutTemplate
+            RX, BX -> boardfile?.superScoutTemplate
             else -> boardfile?.robotScoutTemplate
         }
 

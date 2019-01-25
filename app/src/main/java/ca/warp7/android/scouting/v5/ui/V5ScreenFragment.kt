@@ -76,14 +76,14 @@ class V5ScreenFragment : Fragment(), V5Tab {
         val scoutingActivity = scoutingActivity
         val context = context
         if (scoutingActivity!= null && context!= null){
-            val group = FieldGroup(context, templateField, scoutingActivity)
+            val data = FieldData(context, templateField, scoutingActivity, "",0)
             return when (templateField.type) {
                 Choice -> TODO()
                 Checkbox -> TODO()
-                Button -> TODO()
+                Button -> FieldButton(data)
                 Toggle -> TODO()
                 Switch -> TODO()
-                else -> UndefinedButton(group)
+                else -> FieldUndefined(data)
             }
         }
         return View(context)
