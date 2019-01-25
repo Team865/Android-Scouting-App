@@ -2,7 +2,7 @@ package ca.warp7.android.scouting.res
 
 import android.content.Context
 import android.os.Vibrator
-import ca.warp7.android.scouting.abstraction.AbstractActionVibrator
+import ca.warp7.android.scouting.AbstractActionVibrator
 
 /**
  * @since v0.4.1

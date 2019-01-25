@@ -94,7 +94,8 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
             updateActivityStatus()
             updateTabStates()
             relativeTime++
-            if (relativeTime <= kTimerLimit) postTimerUpdate()
+            feedSecondLimit()
+            if (relativeTime < kTimerLimit) postTimerUpdate()
             else {
                 timerIsRunning = false
                 if (usingPauseBetaFeature) startActivityState(Pausing)

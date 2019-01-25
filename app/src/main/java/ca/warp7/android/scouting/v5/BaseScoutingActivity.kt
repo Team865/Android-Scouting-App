@@ -3,7 +3,7 @@
 package ca.warp7.android.scouting.v5
 
 import android.os.Handler
-import ca.warp7.android.scouting.abstraction.AbstractActionVibrator
+import ca.warp7.android.scouting.AbstractActionVibrator
 import ca.warp7.android.scouting.v5.boardfile.Boardfile
 import ca.warp7.android.scouting.v5.boardfile.ScoutTemplate
 import ca.warp7.android.scouting.v5.entry.MutableEntry

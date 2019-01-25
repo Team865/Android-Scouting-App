@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.abstraction
+package ca.warp7.android.scouting
 
 /**
  * @since v0.4.2

@@ -21,25 +21,18 @@ class CountedButtonField : FrameLayout, BaseFieldWidget {
     private val counter: TextView?
     private val button: Button?
 
-    private val white: Int
-    private val almostBlack: Int
-    private val accent: Int
-
+    private val white = ContextCompat.getColor(context, R.color.colorWhite)
+    private val almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)
+    private val accent = ContextCompat.getColor(context, R.color.colorAccent)
 
     constructor(context: Context) : super(context) {
         fieldData = null
         counter = null
         button = null
-        white = ContextCompat.getColor(context, R.color.colorWhite)
-        almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)
-        accent = ContextCompat.getColor(context, R.color.colorAccent)
     }
 
     internal constructor(data: FieldData) : super(data.context) {
         fieldData = data
-        white = ContextCompat.getColor(context, R.color.colorWhite)
-        almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)
-        accent = ContextCompat.getColor(context, R.color.colorAccent)
 
         button = Button(data.context).apply {
             isAllCaps = false
@@ -88,7 +81,6 @@ class CountedButtonField : FrameLayout, BaseFieldWidget {
                     if (focused(typeIndex)){
                         button!!.setTextColor(white)
                         button.background.setColorFilter(accent, PorterDuff.Mode.CLEAR)
-
                         counter!!.setTextColor(white)
                     } else {
                         button!!.setTextColor(accent)
