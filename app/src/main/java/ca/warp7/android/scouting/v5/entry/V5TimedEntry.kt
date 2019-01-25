@@ -41,7 +41,7 @@ data class V5TimedEntry(
 
     override fun focused(type: Int) = getTime().let { t -> dataPoints.any { it.type == type && it.time == t } }
 
-    private val hexTimestamp = Integer.toHexString(timestamp)
+    private val hexTimestamp get() = Integer.toHexString(timestamp)
 
     private val encodedData get() = Base64.encodeToString(dataPoints.flatten().toByteArray(), Base64.DEFAULT)
 

@@ -57,7 +57,7 @@ class CountedButtonField : FrameLayout, BaseFieldWidget {
 
         counter = TextView(data.context).apply {
             text = "0"
-            textSize = 15f
+            textSize = 18f
             elevation = 10f
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
