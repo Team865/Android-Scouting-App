@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Typeface
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
+import android.view.View
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import ca.warp7.android.scouting.R
@@ -19,8 +20,6 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
     override val fieldData: FieldData?
     private val checkBox: CheckBox?
 
-    private val white = ContextCompat.getColor(context, R.color.colorWhite)
-    private val almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
     private val gray = ContextCompat.getColor(context, R.color.colorGray)
 
@@ -45,17 +44,20 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
             setLines(2)
             typeface = Typeface.SANS_SERIF
             text = data.modifiedName
-            setOnClickListener {
-                data.scoutingActivity.apply {
-                    if (timeEnabled){
-                        actionVibrator?.vibrateAction()
-                        entry!!.add(DataPoint(data.typeIndex, if (isChecked) 1 else 0, relativeTime))
-                        updateControlState()
-                    }
-                }
-            }
         }.also { addView(it) }
 
+        val clickListener = View.OnClickListener {
+            data.scoutingActivity.apply {
+                if (timeEnabled) {
+                    actionVibrator?.vibrateAction()
+                    entry!!.add(DataPoint(data.typeIndex, if (checkBox.isChecked) 1 else 0, relativeTime))
+                    updateControlState()
+                }
+            }
+        }
+
+        checkBox.setOnClickListener(clickListener)
+        this.setOnClickListener(clickListener)
         updateControlState()
     }
 
