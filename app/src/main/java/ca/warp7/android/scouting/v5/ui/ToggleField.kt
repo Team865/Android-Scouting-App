@@ -38,9 +38,21 @@ class ToggleField : ToggleSwitchCompat, BaseFieldWidget {
 
         elevation = 4f
 
-        setEntries(arrayOf("Left", "Right"))
+        var defaultIndex = 0
+        val options = mutableListOf<String>()
 
-        setCheckedPosition(0)
+        data.templateField.options?.forEachIndexed { i, v ->
+            val s = v.toString()
+            if (s.startsWith("default:")) {
+                defaultIndex = i
+                options.add(s.substring(8))
+            } else {
+                options.add(s)
+            }
+        }
+
+        setEntries(options)
+        setCheckedPosition(defaultIndex)
         layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
 
         //layoutWidth = ViewGroup.LayoutParams.MATCH_PARENT

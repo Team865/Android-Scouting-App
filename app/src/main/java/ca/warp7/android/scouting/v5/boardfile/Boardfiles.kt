@@ -33,18 +33,27 @@ fun exampleBoardfile(): Boardfile {
                         listOf(
                             TemplateField(
                                 "auto_field_area", V5FieldType.Toggle, listOf(
-                                    "Left",
+                                    "default:Left",
                                     "Right"
                                 )
                             ),
                             TemplateField("camera_control", V5FieldType.Checkbox)
                         ),
                         listOf(
-                            TemplateField("rocket", V5FieldType.Button),
-                            TemplateField("front_cargo_ship", V5FieldType.Button)
+                            TemplateField("rocket", V5FieldType.Button)
                         ),
                         listOf(
-                            TemplateField("auto_game_piece", V5FieldType.Unknown)
+                            TemplateField("front_cargo_ship", V5FieldType.Button),
+                            TemplateField("side_cargo_ship", V5FieldType.Button)
+                        ),
+                        listOf(
+                            TemplateField(
+                                "auto_game_piece", V5FieldType.Toggle, listOf(
+                                    "Cargo",
+                                    "default:None",
+                                    "Hatch"
+                                )
+                            )
                         )
                     )
                 ),
