@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatButton
+import android.view.Gravity
 import ca.warp7.android.scouting.R
 
 /**
@@ -16,6 +17,7 @@ class UndefinedField : AppCompatButton {
     constructor(data: FieldData) : super(data.context) {
         textSize = 18f
         text = data.templateField.name
+        gravity = Gravity.CENTER
         setOnClickListener {
             setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
             background.setColorFilter(

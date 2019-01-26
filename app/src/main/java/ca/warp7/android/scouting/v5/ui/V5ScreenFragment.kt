@@ -13,7 +13,7 @@ import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.v5.BaseScoutingActivity
 import ca.warp7.android.scouting.v5.boardfile.TemplateField
 import ca.warp7.android.scouting.v5.boardfile.TemplateScreen
-import ca.warp7.android.scouting.v5.boardfile.V5FieldType.*
+import ca.warp7.android.scouting.v5.boardfile.V5FieldType.Checkbox
 
 /**
  * The fragment that is shown in the biggest portion
@@ -28,7 +28,7 @@ class V5ScreenFragment : Fragment(), V5Tab {
 
 
     private var scoutingActivity: BaseScoutingActivity? = null
-    private var screenTable: TableLayout? = null
+    private var screenTable: ViewGroup? = null
 
     private var screen: TemplateScreen? = null
 
@@ -43,13 +43,12 @@ class V5ScreenFragment : Fragment(), V5Tab {
 
         screenFrameLayout = view.findViewById(R.id.screen_frame)
 
-        screenTable = TableLayout(context).apply {
-            isStretchAllColumns = true
+        screenTable = EqualizedVLayout(context).apply {
+            //isStretchAllColumns = true
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
             )
-            isMeasureWithLargestChildEnabled = true
         }.also { screenFrameLayout?.addView(it) }
 
         if (screen != null) {
@@ -88,11 +87,11 @@ class V5ScreenFragment : Fragment(), V5Tab {
                 scoutingActivity.template?.lookup(templateField) ?: 0 + 1
             )
             return when (templateField.type) {
-                Button -> ButtonField(data)
+//                Button -> ButtonField(data)
                 Checkbox -> CheckboxField(data)
-                Switch -> SwitchField(data)
-                Toggle -> ToggleField(data)
-                Choice -> ChoicesField(data)
+//                Switch -> SwitchField(data)
+//                Toggle -> ToggleField(data)
+//                Choice -> ChoicesField(data)
                 else -> UndefinedField(data)
             }
         }
@@ -149,14 +148,23 @@ class V5ScreenFragment : Fragment(), V5Tab {
         screenTable?.addView(tr)
     }
 
+    private fun layoutRow0(row: List<TemplateField>) {
+        screenTable?.addView(EqualizedHLayout(context).apply {
+            row.forEach { addView(createControlFromTemplateField(it)) }
+        })
+//        screenTable?.addView(createControlFromTemplateField(row[0]))
+        //screenTable?.addView(TextView(context).apply { text = "Hi" })
+    }
+
     /**
      * Get the layout and create the entire table
      */
 
     private fun layoutTable() {
         screen?.apply {
-            fields.forEach { layoutRow(it) }
+            fields.forEach { layoutRow0(it) }
         }
+        screenTable?.requestLayout()
     }
 
     override fun updateTabState() {

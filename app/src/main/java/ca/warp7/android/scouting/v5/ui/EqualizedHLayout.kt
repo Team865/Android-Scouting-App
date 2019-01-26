@@ -10,10 +10,20 @@ class EqualizedHLayout : ViewGroup {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val desiredWidth = suggestedMinimumWidth + paddingLeft + paddingRight
         val desiredHeight = suggestedMinimumHeight + paddingTop + paddingBottom
-        setMeasuredDimension(
-            resolveIgnoreDesired(desiredWidth, widthMeasureSpec),
-            resolveIgnoreDesired(desiredHeight, heightMeasureSpec)
-        )
+        val resolvedWidth = resolveIgnoreDesired(desiredWidth, widthMeasureSpec)
+        val resolvedHeight = resolveIgnoreDesired(desiredHeight, heightMeasureSpec)
+        val columnWidth = resolvedWidth / childCount
+        for (i in 0 until childCount) {
+            getChildAt(i).also {
+                if (it.visibility != View.GONE) {
+                    it.measure(
+                        MeasureSpec.makeMeasureSpec(columnWidth, MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(resolvedHeight, MeasureSpec.EXACTLY)
+                    )
+                }
+            }
+        }
+        setMeasuredDimension(resolvedWidth, resolvedHeight)
     }
 
     private fun resolveIgnoreDesired(desiredSize: Int, measureSpec: Int): Int {
@@ -28,14 +38,26 @@ class EqualizedHLayout : ViewGroup {
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        val parentHeight = b - t
-        val rowHeight = parentHeight / childCount.toDouble()
+        val parentWidth = r - l
+        val columnWidth = parentWidth / childCount.toDouble()
         for (i in 0 until childCount) {
-            getChildAt(i).layout(l, (i * rowHeight).toInt(), r, (i * rowHeight + 1).toInt())
+            getChildAt(i).apply {
+                if (visibility != View.GONE) {
+                    layout((i * columnWidth + l).toInt(), t, ((i + 1) * columnWidth + l).toInt(), b)
+                }
+            }
         }
     }
 
-    constructor(context: Context) : super(context)
+    override fun shouldDelayChildPressedState(): Boolean {
+        return false
+    }
 
-    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
+    constructor(context: Context?) : super(context)
+
+    constructor(context: Context?, attributeSet: AttributeSet) : super(context, attributeSet)
+
+    init {
+        setAddStatesFromChildren(true)
+    }
 }

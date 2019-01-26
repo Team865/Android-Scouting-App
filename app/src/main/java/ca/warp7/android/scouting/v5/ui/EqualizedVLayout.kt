@@ -10,10 +10,20 @@ class EqualizedVLayout : ViewGroup {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val desiredWidth = suggestedMinimumWidth + paddingLeft + paddingRight
         val desiredHeight = suggestedMinimumHeight + paddingTop + paddingBottom
-        setMeasuredDimension(
-            resolveIgnoreDesired(desiredWidth, widthMeasureSpec),
-            resolveIgnoreDesired(desiredHeight, heightMeasureSpec)
-        )
+        val resolvedWidth = resolveIgnoreDesired(desiredWidth, widthMeasureSpec)
+        val resolvedHeight = resolveIgnoreDesired(desiredHeight, heightMeasureSpec)
+        val rowHeight = resolvedHeight / childCount
+        for (i in 0 until childCount) {
+            getChildAt(i).also {
+                if (it.visibility != View.GONE) {
+                    it.measure(
+                        MeasureSpec.makeMeasureSpec(resolvedWidth, MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(rowHeight, MeasureSpec.EXACTLY)
+                    )
+                }
+            }
+        }
+        setMeasuredDimension(resolvedWidth, resolvedHeight)
     }
 
     private fun resolveIgnoreDesired(desiredSize: Int, measureSpec: Int): Int {
@@ -31,11 +41,24 @@ class EqualizedVLayout : ViewGroup {
         val parentHeight = b - t
         val rowHeight = parentHeight / childCount.toDouble()
         for (i in 0 until childCount) {
-            getChildAt(i).layout(l, (i * rowHeight).toInt(), r, (i * rowHeight + 1).toInt())
+            getChildAt(i).apply {
+                if (visibility != View.GONE) {
+                    layout(l, (i * rowHeight + t).toInt(), r, ((i + 1) * rowHeight + t).toInt())
+                }
+            }
         }
     }
 
-    constructor(context: Context) : super(context)
+    override fun shouldDelayChildPressedState(): Boolean {
 
-    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
+        return false
+    }
+
+    constructor(context: Context?) : super(context)
+
+    constructor(context: Context?, attributeSet: AttributeSet) : super(context, attributeSet)
+
+    init {
+        setAddStatesFromChildren(true)
+    }
 }
