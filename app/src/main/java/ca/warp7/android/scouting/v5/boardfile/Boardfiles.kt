@@ -97,10 +97,24 @@ val exampleBoardfile = Boardfile(
                         TemplateField("assisted_climb", V5FieldType.Checkbox)
                     ),
                     listOf(
-                        TemplateField("lifting_1", V5FieldType.Unknown)
+                        TemplateField(
+                            "lifting_robot_1", V5FieldType.Toggle,
+                            listOf(
+                                "default:None",
+                                "2",
+                                "3"
+                            )
+                        )
                     ),
                     listOf(
-                        TemplateField("lifting_2", V5FieldType.Unknown)
+                        TemplateField(
+                            "lifting_robot_2", V5FieldType.Toggle,
+                            listOf(
+                                "default:None",
+                                "2",
+                                "3"
+                            )
+                        )
                     )
                 )
             )

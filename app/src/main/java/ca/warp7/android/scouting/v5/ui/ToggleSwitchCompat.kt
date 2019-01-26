@@ -17,8 +17,7 @@ open class ToggleSwitchCompat : BaseToggleSwitch {
     }
 
     private var checkedPosition: Int? = null
-    private var onChangeListener: OnChangeListener? = null
-
+    private var onChangeListener: ((Int) -> Unit)? = null
 
     override fun onRedrawn() {
         if (checkedPosition != null) {
@@ -27,6 +26,10 @@ open class ToggleSwitchCompat : BaseToggleSwitch {
             currentToggleSwitch.isClickable = false
         }
         manageSeparatorVisiblity()
+    }
+
+    fun setOnChangeListener(listener: (Int) -> Unit) {
+        onChangeListener = listener
     }
 
     override fun onToggleSwitchClicked(button: ToggleSwitchButton) {
@@ -42,7 +45,7 @@ open class ToggleSwitchCompat : BaseToggleSwitch {
 
             manageSeparatorVisiblity()
 
-            onChangeListener?.onToggleSwitchChanged(checkedPosition!!)
+            onChangeListener?.invoke(checkedPosition!!)
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import ca.warp7.android.scouting.R
+import ca.warp7.android.scouting.v5.entry.DataPoint
 
 /*
 https://github.com/llollox/Android-Toggle-Switch
@@ -23,6 +24,8 @@ class ToggleField : LinearLayout, BaseFieldWidget {
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
 
     private val toggleSwitch: ToggleSwitchCompat?
+    private var checkedPosition = -1
+    private var defaultPosition = 0
 
     constructor(context: Context) : super(context) {
         fieldData = null
@@ -53,59 +56,42 @@ class ToggleField : LinearLayout, BaseFieldWidget {
             textSize = sp2Px(18)
             uncheckedTextColor = accent
             elevation = 4f
-            var defaultIndex = 0
             val options = mutableListOf<String>()
             data.templateField.options?.forEachIndexed { i, v ->
                 if (v.startsWith("default:")) {
-                    defaultIndex = i
+                    defaultPosition = i
                     options.add(v.substring(8))
                 } else options.add(v)
             }
             setEntries(options)
-            setCheckedPosition(defaultIndex)
             layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
             //layoutWidth = ViewGroup.LayoutParams.MATCH_PARENT
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             setPadding(7, 7, 7, 7)
+            setOnChangeListener {
+                if (it != checkedPosition) {
+                    checkedPosition = it
+                    data.scoutingActivity.apply {
+                        actionVibrator?.vibrateAction()
+                        entry!!.add(DataPoint(data.typeIndex, checkedPosition, relativeTime))
+                        updateControlState()
+                    }
+                }
+            }
 
         }.also { addView(it) }
-
-        //layoutWidth = ViewGroup.LayoutParams.MATCH_PARENT
-
-
-        setOnClickListener {
-            //            data.scoutingActivity.apply {
-//                if (timeEnabled && !isSecondLimit) {
-//                    actionVibrator?.vibrateAction()
-//                    entry!!.add(DataPoint(data.typeIndex, if (isOn) 1 else 0, relativeTime))
-//                    feedSecondLimit()
-//                    updateControlState()
-//                    handler.postDelayed({ updateControlState() }, 1000)
-//                }
-//            }
-        }
-
         updateControlState()
     }
 
     override fun updateControlState() {
-//        fieldData?.apply {
-//            if (!scoutingActivity.timeEnabled) {
-//                isEnabled = false
-//                setTextColor(gray)
-//            } else {
-//                isEnabled = true
-//                scoutingActivity.entry?.apply {
-//                    isOn = count(typeIndex) % 2 != 0
-//                    if (isOn) {
-//                        setTextColor(white)
-//                        background.setColorFilter(red, PorterDuff.Mode.MULTIPLY)
-//                    } else {
-//                        setTextColor(lightGreen)
-//                        background.clearColorFilter()
-//                    }
-//                }
-//            }
-//        }
+        fieldData?.apply {
+            scoutingActivity.entry?.apply {
+                val newPos = lastValue(typeIndex)?.value ?: defaultPosition
+                if (newPos != checkedPosition) {
+                    checkedPosition = newPos
+                    toggleSwitch?.setCheckedPosition(checkedPosition)
+                }
+            }
+        }
     }
 }
