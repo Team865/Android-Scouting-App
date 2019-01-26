@@ -42,12 +42,11 @@ class ToggleField : ToggleSwitchCompat, BaseFieldWidget {
         val options = mutableListOf<String>()
 
         data.templateField.options?.forEachIndexed { i, v ->
-            val s = v.toString()
-            if (s.startsWith("default:")) {
+            if (v.startsWith("default:")) {
                 defaultIndex = i
-                options.add(s.substring(8))
+                options.add(v.substring(8))
             } else {
-                options.add(s)
+                options.add(v)
             }
         }
 

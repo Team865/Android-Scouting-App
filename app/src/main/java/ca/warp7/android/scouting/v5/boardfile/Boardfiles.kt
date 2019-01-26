@@ -27,8 +27,11 @@ fun exampleBoardfile(): Boardfile {
                                     "Level 1 Center",
                                     "Level 1 Right"
                                 )
-                            ),
-                            TemplateField("hab_line", V5FieldType.Checkbox)
+                            )
+                        ),
+                        listOf(
+                            TemplateField("hab_line", V5FieldType.Checkbox),
+                            TemplateField("camera_control", V5FieldType.Checkbox)
                         ),
                         listOf(
                             TemplateField(
@@ -37,9 +40,6 @@ fun exampleBoardfile(): Boardfile {
                                     "Right"
                                 )
                             ),
-                            TemplateField("camera_control", V5FieldType.Checkbox)
-                        ),
-                        listOf(
                             TemplateField("rocket", V5FieldType.Button)
                         ),
                         listOf(

@@ -82,6 +82,7 @@ class V5ScreenFragment : Fragment(), V5Tab {
                 Checkbox -> CheckboxField(data)
                 Switch -> SwitchField(data)
                 Toggle -> ToggleField(data)
+                Choice -> ChoicesField(data)
                 else -> UndefinedField(data)
             }
         }
@@ -138,7 +139,6 @@ class V5ScreenFragment : Fragment(), V5Tab {
 
     private fun layoutTable() {
         screen?.apply {
-            screenTable?.weightSum = fields.size.toFloat()
             fields.forEach { layoutRow(it) }
         }
     }
