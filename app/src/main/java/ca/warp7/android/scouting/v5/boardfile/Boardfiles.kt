@@ -36,8 +36,8 @@ fun exampleBoardfile(): Boardfile {
                         listOf(
                             TemplateField(
                                 "auto_field_area", V5FieldType.Toggle, listOf(
-                                    "default:Left",
-                                    "Right"
+                                    "default:Left\nField",
+                                    "Right\nField"
                                 )
                             ),
                             TemplateField("rocket", V5FieldType.Button)
@@ -72,14 +72,27 @@ fun exampleBoardfile(): Boardfile {
                             TemplateField("cargo_ship", V5FieldType.Button)
                         ),
                         listOf(
-                            TemplateField("game_piece", V5FieldType.Unknown)
+                            TemplateField(
+                                "game_piece", V5FieldType.Toggle, listOf(
+                                    "Cargo",
+                                    "default:None",
+                                    "Hatch"
+                                )
+                            )
                         )
                     )
                 ),
                 TemplateScreen(
                     "Endgame", listOf(
                         listOf(
-                            TemplateField("climb_level", V5FieldType.Unknown)
+                            TemplateField(
+                                "climb_level", V5FieldType.Toggle, listOf(
+                                    "default:None",
+                                    "1",
+                                    "2",
+                                    "3"
+                                )
+                            )
                         ),
                         listOf(
                             TemplateField("assisted_climb", V5FieldType.Checkbox)

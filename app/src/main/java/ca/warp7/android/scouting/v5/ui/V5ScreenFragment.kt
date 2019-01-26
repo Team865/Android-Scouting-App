@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.TableLayout
-import android.widget.TableRow
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.v5.BaseScoutingActivity
 import ca.warp7.android.scouting.v5.boardfile.TemplateField
@@ -75,11 +73,6 @@ class V5ScreenFragment : Fragment(), V5Tab {
      */
 
     private fun createControlFromTemplateField(templateField: TemplateField): View {
-
-//        if (dc == null) {
-//            return UndefinedInputsIndicator(context!!, idIfNull, scoutingActivity!!)
-//        }
-
         val scoutingActivity = scoutingActivity
         val context = context
         if (scoutingActivity != null && context != null) {
@@ -103,60 +96,8 @@ class V5ScreenFragment : Fragment(), V5Tab {
         return name.split("_".toRegex()).joinToString(" ") { it.toLowerCase().capitalize() }
     }
 
-    /**
-     * Get a specific view by its ID and its span in the table
-     *
-     * @return the specified view with added layout
-     */
-
-    private fun createControlFromIdAndSpan(field: TemplateField, span: Int): View {
-        val view = createControlFromTemplateField(field)
-        val params = view.layoutParams
-        if (params != null && params is TableRow.LayoutParams) {
-            params.span = span
-            params.width = 0
-        } else {
-            val lp = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
-            lp.span = span
-            lp.width = 0
-            view.layoutParams = lp
-        }
-        return view
-    }
-
-    /**
-     * Layouts a row in the table
-     *
-     * @param row an array of identifiers
-     */
-
     private fun layoutRow(row: List<TemplateField>) {
-        val tr = TableRow(context)
-
-        tr.layoutParams = TableLayout.LayoutParams(
-            TableLayout.LayoutParams.MATCH_PARENT,
-            TableLayout.LayoutParams.MATCH_PARENT, 1.0f
-        )
-
-        if (row.size == 1) {
-            tr.addView(createControlFromIdAndSpan(row[0], 2))
-        } else {
-            for (i in 0..1) {
-                tr.addView(createControlFromIdAndSpan(row[i], 1))
-            }
-        }
-
-        screenTable?.addView(tr)
-    }
-
-    private fun layoutRow0(row: List<TemplateField>) {
-//        screenTable?.addView(EqualizedHLayout(context).apply {
-//            row.forEach { addView(createControlFromTemplateField(it)) }
-//        })
         screenTable?.addView(LinearLayout(context).apply {
-            //            layoutParams = ViewGroup.LayoutParams(
-//                ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.MATCH_PARENT)
             row.forEach {
                 addView(createControlFromTemplateField(it).apply {
                     layoutParams = LinearLayout.LayoutParams(
@@ -176,7 +117,7 @@ class V5ScreenFragment : Fragment(), V5Tab {
 
     private fun layoutTable() {
         screen?.apply {
-            fields.forEach { layoutRow0(it) }
+            fields.forEach { layoutRow(it) }
         }
         screenTable?.requestLayout()
     }
@@ -185,7 +126,7 @@ class V5ScreenFragment : Fragment(), V5Tab {
         screenTable?.apply {
             for (i in 0 until childCount) {
                 val child = getChildAt(i)
-                if (child is TableRow) {
+                if (child is ViewGroup) {
                     for (j in 0 until child.childCount) {
                         (child.getChildAt(j) as? BaseFieldWidget)?.updateControlState()
                     }
