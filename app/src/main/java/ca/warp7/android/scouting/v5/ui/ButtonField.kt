@@ -47,10 +47,9 @@ class ButtonField : FrameLayout, BaseFieldWidget {
             setBackgroundColor(0)
             setOnClickListener {
                 data.scoutingActivity.apply {
-                    if (timeEnabled && !isSecondLimit) {
+                    if (timeEnabled) {
                         actionVibrator?.vibrateAction()
                         entry!!.add(DataPoint(data.typeIndex, 1, relativeTime))
-                        feedSecondLimit()
                         updateControlState()
                         handler.postDelayed({ updateControlState() }, 1000)
                     }

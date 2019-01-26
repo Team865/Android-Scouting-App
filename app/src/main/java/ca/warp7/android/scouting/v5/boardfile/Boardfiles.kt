@@ -20,11 +20,11 @@ val exampleBoardfile = Boardfile(
                         TemplateField(
                             "start_position", V5FieldType.Toggle, listOf(
                                 "default:None",
-                                "L-1",
-                                "C-1",
-                                "R-1",
-                                "L-2",
-                                "R-2"
+                                "L1",
+                                "C1",
+                                "R1",
+                                "L2",
+                                "R2"
                             )
                         )
                     ),

@@ -94,7 +94,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
             updateActivityStatus()
             updateTabStates()
             relativeTime++
-            if (relativeTime < kTimerLimit) postTimerUpdate()
+            if (relativeTime <= kTimerLimit) postTimerUpdate()
             else {
                 timerIsRunning = false
                 if (usingPauseBetaFeature) startActivityState(Pausing)
@@ -247,7 +247,9 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
             board = board,
             dataPoints = mutableListOf(),
             timestamp = currentTime,
-            getTime = { relativeTime })
+            getTime = { relativeTime },
+            isTiming = true
+        )
 
         startActivityState(WaitingToStart)
     }
