@@ -18,11 +18,25 @@ fun exampleBoardfile(): Boardfile {
                 TemplateScreen(
                     "Sandstorm", listOf(
                         listOf(
-                            TemplateField("start_position", V5FieldType.Unknown),
+                            TemplateField(
+                                "start_position", V5FieldType.Choice, listOf(
+                                    "None",
+                                    "Level 2 Left",
+                                    "Level 2 Right",
+                                    "Level 1 Left",
+                                    "Level 1 Center",
+                                    "Level 1 Right"
+                                )
+                            ),
                             TemplateField("hab_line", V5FieldType.Checkbox)
                         ),
                         listOf(
-                            TemplateField("auto_field_area", V5FieldType.Unknown),
+                            TemplateField(
+                                "auto_field_area", V5FieldType.Toggle, listOf(
+                                    "Left",
+                                    "Right"
+                                )
+                            ),
                             TemplateField("camera_control", V5FieldType.Checkbox)
                         ),
                         listOf(

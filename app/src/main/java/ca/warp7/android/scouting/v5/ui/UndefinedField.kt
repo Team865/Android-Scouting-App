@@ -11,7 +11,7 @@ import ca.warp7.android.scouting.R
  * @since v0.2.0
  */
 
-class FieldUndefined : AppCompatButton {
+class UndefinedField : AppCompatButton {
     constructor(context: Context) : super(context)
     constructor(data: FieldData) : super(data.context) {
         textSize = 18f
