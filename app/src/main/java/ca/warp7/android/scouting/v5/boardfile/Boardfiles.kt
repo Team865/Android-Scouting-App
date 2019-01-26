@@ -88,7 +88,7 @@ fun exampleBoardfile(): Boardfile {
                             TemplateField("lifting_1", V5FieldType.Unknown)
                         ),
                         listOf(
-                            TemplateField("lifting_@", V5FieldType.Unknown)
+                            TemplateField("lifting_2", V5FieldType.Unknown)
                         )
                     )
                 )

@@ -3,7 +3,9 @@ package ca.warp7.android.scouting.v5.ui
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.ViewGroup
+import android.widget.TableRow
 import ca.warp7.android.scouting.R
 
 /*
@@ -52,7 +54,12 @@ class ToggleField : ToggleSwitchCompat, BaseFieldWidget {
 
         setEntries(options)
         setCheckedPosition(defaultIndex)
-        layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
+        layoutHeight = ViewGroup.LayoutParams.WRAP_CONTENT
+
+
+        layoutParams = TableRow.LayoutParams().apply {
+            gravity = Gravity.CENTER
+        }
 
         //layoutWidth = ViewGroup.LayoutParams.MATCH_PARENT
 

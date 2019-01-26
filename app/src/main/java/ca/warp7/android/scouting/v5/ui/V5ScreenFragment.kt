@@ -31,11 +31,7 @@ class V5ScreenFragment : Fragment(), V5Tab {
 
     private var screen: TemplateScreen? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_inputs, container, false)
     }
 
@@ -75,8 +71,10 @@ class V5ScreenFragment : Fragment(), V5Tab {
         val scoutingActivity = scoutingActivity
         val context = context
         if (scoutingActivity != null && context != null) {
-            val data = FieldData(context, templateField, scoutingActivity, modifyName(templateField.name),
-                scoutingActivity.template?.lookup(templateField) ?: 0 + 1)
+            val data = FieldData(
+                context, templateField, scoutingActivity, modifyName(templateField.name),
+                scoutingActivity.template?.lookup(templateField) ?: 0 + 1
+            )
             return when (templateField.type) {
                 Button -> ButtonField(data)
                 Checkbox -> CheckboxField(data)
@@ -101,10 +99,16 @@ class V5ScreenFragment : Fragment(), V5Tab {
 
     private fun createControlFromIdAndSpan(field: TemplateField, span: Int): View {
         val view = createControlFromTemplateField(field)
-        val lp = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
-        lp.span = span
-        lp.width = 0
-        view.layoutParams = lp
+        val params = view.layoutParams
+        if (params != null && params is TableRow.LayoutParams) {
+            params.span = span
+            params.width = 0
+        } else {
+            val lp = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
+            lp.span = span
+            lp.width = 0
+            view.layoutParams = lp
+        }
         return view
     }
 

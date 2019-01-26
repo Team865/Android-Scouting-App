@@ -5,7 +5,6 @@ import android.graphics.Typeface
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import android.widget.TableRow
@@ -59,7 +58,7 @@ class ChoicesField : LinearLayout, BaseInputControl {
             }
         })
 
-        layoutParams = LayoutParams(WRAP_CONTENT, MATCH_PARENT)
+        layoutParams = TableRow.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
 
         button = TextView(data.context).apply {
             text = data.templateField.options?.getOrNull(0) ?: "None"

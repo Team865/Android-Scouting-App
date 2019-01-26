@@ -12,5 +12,6 @@
         android:paddingBottom="4dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:stretchColumns="*" />
+        android:stretchColumns="*"
+        android:measureWithLargestChild="true"/>
 </FrameLayout>
