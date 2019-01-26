@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TableLayout
 import android.widget.TableRow
 import ca.warp7.android.scouting.R
@@ -31,14 +32,25 @@ class V5ScreenFragment : Fragment(), V5Tab {
 
     private var screen: TemplateScreen? = null
 
+    private var screenFrameLayout: FrameLayout? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_inputs, container, false)
+        return inflater.inflate(R.layout.screen_v5, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        screenTable = view.findViewById(R.id.input_table)
+        screenFrameLayout = view.findViewById(R.id.screen_frame)
+
+        screenTable = TableLayout(context).apply {
+            isStretchAllColumns = true
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            isMeasureWithLargestChildEnabled = true
+        }.also { screenFrameLayout?.addView(it) }
 
         if (screen != null) {
             layoutTable()

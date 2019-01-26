@@ -1,0 +1,18 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/screen_frame"
+    tools:context="ca.warp7.android.scouting.v5.ui.V5ScreenFragment">
+
+    <!--<TableLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:paddingTop="4dp"-->
+    <!--android:paddingBottom="4dp"-->
+    <!--android:paddingLeft="8dp"-->
+    <!--android:paddingRight="8dp"-->
+    <!--android:stretchColumns="*"-->
+    <!--android:measureWithLargestChild="true"/>-->
+</FrameLayout>

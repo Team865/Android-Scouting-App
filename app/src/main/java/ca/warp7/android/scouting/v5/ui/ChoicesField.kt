@@ -58,7 +58,7 @@ class ChoicesField : LinearLayout, BaseInputControl {
             }
         })
 
-        layoutParams = TableRow.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+        //layoutParams = TableRow.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
 
         button = TextView(data.context).apply {
             text = data.templateField.options?.getOrNull(0) ?: "None"
