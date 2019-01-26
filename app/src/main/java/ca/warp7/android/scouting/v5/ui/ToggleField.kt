@@ -55,6 +55,7 @@ class ToggleField : LinearLayout, BaseFieldWidget {
             uncheckedBackgroundColor = almostWhite
             textSize = sp2Px(18)
             uncheckedTextColor = accent
+            separatorVisible = false
             elevation = 4f
             val options = mutableListOf<String>()
             data.templateField.options?.forEachIndexed { i, v ->

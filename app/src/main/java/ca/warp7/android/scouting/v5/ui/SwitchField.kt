@@ -4,7 +4,8 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.support.v4.content.ContextCompat
-import android.support.v7.widget.AppCompatButton
+import android.widget.Button
+import android.widget.FrameLayout
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.v5.entry.DataPoint
 
@@ -13,7 +14,7 @@ import ca.warp7.android.scouting.v5.entry.DataPoint
  * @since v0.2.0
  */
 
-class SwitchField : AppCompatButton, BaseFieldWidget {
+class SwitchField : FrameLayout, BaseFieldWidget {
 
     override val fieldData: FieldData?
 
@@ -21,8 +22,10 @@ class SwitchField : AppCompatButton, BaseFieldWidget {
     private val gray = ContextCompat.getColor(context, R.color.colorGray)
     private val red = ContextCompat.getColor(context, R.color.colorRed)
     private val lightGreen = ContextCompat.getColor(context, R.color.colorLightGreen)
+    private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
 
     private var isOn = false
+    private var button: Button? = null
 
     constructor(context: Context) : super(context) {
         fieldData = null
@@ -31,43 +34,48 @@ class SwitchField : AppCompatButton, BaseFieldWidget {
     internal constructor(data: FieldData) : super(data.context) {
         fieldData = data
 
-        isAllCaps = false
-        textSize = 18f
-        typeface = Typeface.SANS_SERIF
-        stateListAnimator = null
-        elevation = 4f
-        text = data.modifiedName
-        setLines(2)
-        setOnClickListener {
-            data.scoutingActivity.apply {
-                if (timeEnabled && !isSecondLimit) {
-                    actionVibrator?.vibrateAction()
-                    entry!!.add(DataPoint(data.typeIndex, if (isOn) 1 else 0, relativeTime))
-                    feedSecondLimit()
-                    updateControlState()
-                    handler.postDelayed({ updateControlState() }, 1000)
+        setBackgroundResource(R.drawable.layer_list_bg_group)
+
+        button = Button(data.context).apply {
+            isAllCaps = false
+            textSize = 18f
+            typeface = Typeface.SANS_SERIF
+            stateListAnimator = null
+            text = data.modifiedName
+            setLines(2)
+            setOnClickListener {
+                data.scoutingActivity.apply {
+                    if (timeEnabled && !isSecondLimit) {
+                        actionVibrator?.vibrateAction()
+                        entry!!.add(DataPoint(data.typeIndex, if (isOn) 1 else 0, relativeTime))
+                        feedSecondLimit()
+                        updateControlState()
+                        handler.postDelayed({ updateControlState() }, 1000)
+                    }
                 }
             }
-        }
+        }.also { addView(it) }
 
         updateControlState()
     }
 
     override fun updateControlState() {
         fieldData?.apply {
+            val button = button!!
             if (!scoutingActivity.timeEnabled) {
-                isEnabled = false
-                setTextColor(gray)
+                button.isEnabled = false
+                button.setTextColor(gray)
+                button.background.setColorFilter(almostWhite, PorterDuff.Mode.MULTIPLY)
             } else {
-                isEnabled = true
+                button.isEnabled = true
                 scoutingActivity.entry?.apply {
                     isOn = count(typeIndex) % 2 != 0
                     if (isOn) {
-                        setTextColor(white)
-                        background.setColorFilter(red, PorterDuff.Mode.MULTIPLY)
+                        button.setTextColor(white)
+                        button.background.setColorFilter(red, PorterDuff.Mode.MULTIPLY)
                     } else {
-                        setTextColor(lightGreen)
-                        background.clearColorFilter()
+                        button.setTextColor(lightGreen)
+                        button.background.setColorFilter(almostWhite, PorterDuff.Mode.MULTIPLY)
                     }
                 }
             }

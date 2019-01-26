@@ -23,6 +23,7 @@ class ButtonField : FrameLayout, BaseFieldWidget {
 
     private val white = ContextCompat.getColor(context, R.color.colorWhite)
     private val almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)
+    private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
 
     constructor(context: Context) : super(context) {
@@ -34,12 +35,13 @@ class ButtonField : FrameLayout, BaseFieldWidget {
     internal constructor(data: FieldData) : super(data.context) {
         fieldData = data
 
+        setBackgroundResource(R.drawable.layer_list_bg_group)
+
         button = Button(data.context).apply {
             isAllCaps = false
             textSize = 18f
             typeface = Typeface.SANS_SERIF
             stateListAnimator = null
-            elevation = 4f
             text = data.modifiedName
             setLines(2)
             setOnClickListener {
@@ -57,14 +59,15 @@ class ButtonField : FrameLayout, BaseFieldWidget {
 
         counter = TextView(data.context).apply {
             text = "0"
-            textSize = 18f
+            textSize = 15f
             elevation = 10f
+            setTextColor(almostBlack)
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                leftMargin = 24
-                topMargin = 16
+                leftMargin = 18
+                topMargin = 12
             }
         }.also { addView(it) }
 
@@ -76,6 +79,7 @@ class ButtonField : FrameLayout, BaseFieldWidget {
             if (!scoutingActivity.timeEnabled) {
                 button!!.isEnabled = false
                 button.setTextColor(ContextCompat.getColor(context, R.color.colorGray))
+                button.background.setColorFilter(almostWhite, PorterDuff.Mode.MULTIPLY)
             } else {
                 button!!.isEnabled = true
                 scoutingActivity.entry?.apply {
@@ -87,7 +91,7 @@ class ButtonField : FrameLayout, BaseFieldWidget {
                         counter!!.setTextColor(white)
                     } else {
                         button.setTextColor(accent)
-                        button.background.clearColorFilter()
+                        button.background.setColorFilter(almostWhite, PorterDuff.Mode.MULTIPLY)
                         counter!!.setTextColor(almostBlack)
                     }
                 }
