@@ -199,7 +199,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
             board = intent.getSerializableExtra(IntentKey.Board) as Board
         }
 
-        boardfile = exampleBoardfile()
+        boardfile = exampleBoardfile
         match = "QM123"
         team = "865"
         scout = "Yu"

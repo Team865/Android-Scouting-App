@@ -85,7 +85,6 @@ class V5ScreenFragment : Fragment(), V5Tab {
                 Checkbox -> CheckboxField(data)
                 Switch -> SwitchField(data)
                 Toggle -> ToggleField(data)
-                Choice -> ChoicesField(data)
                 else -> UndefinedField(data)
             }
         }

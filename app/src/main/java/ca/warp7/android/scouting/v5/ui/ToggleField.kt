@@ -5,24 +5,28 @@ import android.support.v4.content.ContextCompat
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.ViewGroup
-import android.widget.TableRow
+import android.widget.LinearLayout
+import android.widget.TextView
 import ca.warp7.android.scouting.R
 
 /*
 https://github.com/llollox/Android-Toggle-Switch
  */
-class ToggleField : ToggleSwitchCompat, BaseFieldWidget {
+class ToggleField : LinearLayout, BaseFieldWidget {
 
     override val fieldData: FieldData?
 
-    private val white = ContextCompat.getColor(context, R.color.colorAlmostWhite)
+    private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
     private val gray = ContextCompat.getColor(context, R.color.colorGray)
     private val red = ContextCompat.getColor(context, R.color.colorRed)
-    private val lightGreen = ContextCompat.getColor(context, R.color.colorLightGreen)
+    private val almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
+
+    private val toggleSwitch: ToggleSwitchCompat?
 
     constructor(context: Context) : super(context) {
         fieldData = null
+        toggleSwitch = null
     }
 
     private fun sp2Px(sp: Int): Float {
@@ -31,35 +35,40 @@ class ToggleField : ToggleSwitchCompat, BaseFieldWidget {
 
     internal constructor(data: FieldData) : super(data.context) {
         fieldData = data
-        checkedBackgroundColor = accent
-        uncheckedBackgroundColor = white
+        orientation = VERTICAL
 
-        textSize = sp2Px(18)
+        setBackgroundResource(R.drawable.layer_list_bg_group)
 
-        uncheckedTextColor = accent
-
-        elevation = 4f
-
-        var defaultIndex = 0
-        val options = mutableListOf<String>()
-
-        data.templateField.options?.forEachIndexed { i, v ->
-            if (v.startsWith("default:")) {
-                defaultIndex = i
-                options.add(v.substring(8))
-            } else {
-                options.add(v)
-            }
-        }
-
-        setEntries(options)
-        setCheckedPosition(defaultIndex)
-        layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
-
-
-        layoutParams = TableRow.LayoutParams().apply {
+        TextView(data.context).apply {
+            text = data.modifiedName
+            setTextColor(almostBlack)
+            textSize = 15f
             gravity = Gravity.CENTER
-        }
+            setPadding(0, 14, 0, 0)
+        }.also { addView(it) }
+
+        toggleSwitch = ToggleSwitchCompat(data.context).apply {
+            checkedBackgroundColor = accent
+            uncheckedBackgroundColor = almostWhite
+            textSize = sp2Px(18)
+            uncheckedTextColor = accent
+            elevation = 4f
+            var defaultIndex = 0
+            val options = mutableListOf<String>()
+            data.templateField.options?.forEachIndexed { i, v ->
+                if (v.startsWith("default:")) {
+                    defaultIndex = i
+                    options.add(v.substring(8))
+                } else options.add(v)
+            }
+            setEntries(options)
+            setCheckedPosition(defaultIndex)
+            layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
+            //layoutWidth = ViewGroup.LayoutParams.MATCH_PARENT
+            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+            setPadding(7, 7, 7, 7)
+
+        }.also { addView(it) }
 
         //layoutWidth = ViewGroup.LayoutParams.MATCH_PARENT
 
