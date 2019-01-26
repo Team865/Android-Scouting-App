@@ -118,7 +118,7 @@
 
     <Button
         android:id="@+id/v5_starter"
-        android:text="@string/start_match"
+        android:text="Start v5 test"
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -129,6 +129,6 @@
         android:ems="9"
         android:textSize="20sp"
         android:typeface="sans"
-        />
+        tools:ignore="HardcodedText"/>
 
 </LinearLayout>

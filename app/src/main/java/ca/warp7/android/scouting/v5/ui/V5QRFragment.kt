@@ -72,7 +72,7 @@ class V5QRFragment : Fragment(), V5Tab {
         val dim = qrImage.width
         try {
             val hints = EnumMap<EncodeHintType, Any>(EncodeHintType::class.java)
-            hints[EncodeHintType.MARGIN] = 1
+            hints[EncodeHintType.MARGIN] = 0
             qrImage.setImageBitmap(
                 createBitmap(
                     MultiFormatWriter()
@@ -106,7 +106,7 @@ class V5QRFragment : Fragment(), V5Tab {
         for (y in 0 until height) {
             val offset = y * width
             for (x in 0 until width) {
-                pixels[offset + x] = if (matrix.get(x, y)) -0x1000000 else -0x1a1a1b
+                pixels[offset + x] = if (matrix.get(x, y)) 0xFF000000.toInt() else 0xFFFFFFFF.toInt()
             }
         }
 

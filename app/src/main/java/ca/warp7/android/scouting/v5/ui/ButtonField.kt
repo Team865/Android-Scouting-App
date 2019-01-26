@@ -44,6 +44,7 @@ class ButtonField : FrameLayout, BaseFieldWidget {
             stateListAnimator = null
             text = data.modifiedName
             setLines(2)
+            setBackgroundColor(0)
             setOnClickListener {
                 data.scoutingActivity.apply {
                     if (timeEnabled && !isSecondLimit) {
@@ -79,7 +80,7 @@ class ButtonField : FrameLayout, BaseFieldWidget {
             if (!scoutingActivity.timeEnabled) {
                 button!!.isEnabled = false
                 button.setTextColor(ContextCompat.getColor(context, R.color.colorGray))
-                button.background.setColorFilter(almostWhite, PorterDuff.Mode.MULTIPLY)
+                background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
             } else {
                 button!!.isEnabled = true
                 scoutingActivity.entry?.apply {
@@ -87,11 +88,11 @@ class ButtonField : FrameLayout, BaseFieldWidget {
                     counter?.text = count.toString()
                     if (focused(typeIndex)){
                         button.setTextColor(white)
-                        button.background.setColorFilter(accent, PorterDuff.Mode.MULTIPLY)
+                        background.setColorFilter(accent, PorterDuff.Mode.SRC)
                         counter!!.setTextColor(white)
                     } else {
                         button.setTextColor(accent)
-                        button.background.setColorFilter(almostWhite, PorterDuff.Mode.MULTIPLY)
+                        background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
                         counter!!.setTextColor(almostBlack)
                     }
                 }

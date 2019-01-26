@@ -43,12 +43,12 @@ class SwitchField : FrameLayout, BaseFieldWidget {
             stateListAnimator = null
             text = data.modifiedName
             setLines(2)
+            setBackgroundColor(0)
             setOnClickListener {
                 data.scoutingActivity.apply {
-                    if (timeEnabled && !isSecondLimit) {
+                    if (timeEnabled) {
                         actionVibrator?.vibrateAction()
                         entry!!.add(DataPoint(data.typeIndex, if (isOn) 1 else 0, relativeTime))
-                        feedSecondLimit()
                         updateControlState()
                         handler.postDelayed({ updateControlState() }, 1000)
                     }
@@ -65,17 +65,17 @@ class SwitchField : FrameLayout, BaseFieldWidget {
             if (!scoutingActivity.timeEnabled) {
                 button.isEnabled = false
                 button.setTextColor(gray)
-                button.background.setColorFilter(almostWhite, PorterDuff.Mode.MULTIPLY)
+                background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
             } else {
                 button.isEnabled = true
                 scoutingActivity.entry?.apply {
                     isOn = count(typeIndex) % 2 != 0
                     if (isOn) {
                         button.setTextColor(white)
-                        button.background.setColorFilter(red, PorterDuff.Mode.MULTIPLY)
+                        background.setColorFilter(red, PorterDuff.Mode.SRC)
                     } else {
                         button.setTextColor(lightGreen)
-                        button.background.setColorFilter(almostWhite, PorterDuff.Mode.MULTIPLY)
+                        background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
                     }
                 }
             }
