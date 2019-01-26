@@ -7,13 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.TableLayout
 import android.widget.TableRow
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.v5.BaseScoutingActivity
 import ca.warp7.android.scouting.v5.boardfile.TemplateField
 import ca.warp7.android.scouting.v5.boardfile.TemplateScreen
-import ca.warp7.android.scouting.v5.boardfile.V5FieldType.Checkbox
+import ca.warp7.android.scouting.v5.boardfile.V5FieldType.*
 
 /**
  * The fragment that is shown in the biggest portion
@@ -87,11 +88,11 @@ class V5ScreenFragment : Fragment(), V5Tab {
                 scoutingActivity.template?.lookup(templateField) ?: 0 + 1
             )
             return when (templateField.type) {
-//                Button -> ButtonField(data)
+                Button -> ButtonField(data)
                 Checkbox -> CheckboxField(data)
-//                Switch -> SwitchField(data)
-//                Toggle -> ToggleField(data)
-//                Choice -> ChoicesField(data)
+                Switch -> SwitchField(data)
+                Toggle -> ToggleField(data)
+                Choice -> ChoicesField(data)
                 else -> UndefinedField(data)
             }
         }
@@ -149,8 +150,21 @@ class V5ScreenFragment : Fragment(), V5Tab {
     }
 
     private fun layoutRow0(row: List<TemplateField>) {
-        screenTable?.addView(EqualizedHLayout(context).apply {
-            row.forEach { addView(createControlFromTemplateField(it)) }
+//        screenTable?.addView(EqualizedHLayout(context).apply {
+//            row.forEach { addView(createControlFromTemplateField(it)) }
+//        })
+        screenTable?.addView(LinearLayout(context).apply {
+            //            layoutParams = ViewGroup.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.MATCH_PARENT)
+            row.forEach {
+                addView(createControlFromTemplateField(it).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT, 1.0f
+                    )
+                })
+            }
         })
 //        screenTable?.addView(createControlFromTemplateField(row[0]))
         //screenTable?.addView(TextView(context).apply { text = "Hi" })

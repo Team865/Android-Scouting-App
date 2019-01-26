@@ -54,7 +54,7 @@ class ToggleField : ToggleSwitchCompat, BaseFieldWidget {
 
         setEntries(options)
         setCheckedPosition(defaultIndex)
-        layoutHeight = ViewGroup.LayoutParams.WRAP_CONTENT
+        layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
 
 
         layoutParams = TableRow.LayoutParams().apply {
