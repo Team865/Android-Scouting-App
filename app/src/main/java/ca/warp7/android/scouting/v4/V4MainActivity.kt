@@ -16,17 +16,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import ca.warp7.android.scouting.AppResources
 import ca.warp7.android.scouting.R
-import ca.warp7.android.scouting.SettingsActivity
 import ca.warp7.android.scouting.v4.constants.ID
 import ca.warp7.android.scouting.v4.model.Specs
 import ca.warp7.android.scouting.v4.model.SpecsIndex
-import ca.warp7.android.scouting.v5.V5ScoutingActivity
 import java.io.File
 
 /**
@@ -52,10 +49,6 @@ class V4MainActivity : AppCompatActivity() {
         ensurePermissions()
         setupUI()
         setupListeners()
-
-        findViewById<Button>(R.id.v5_starter).setOnClickListener {
-            startActivity(Intent(this, V5ScoutingActivity::class.java))
-        }
     }
 
     override fun onStart() {
@@ -90,7 +83,7 @@ class V4MainActivity : AppCompatActivity() {
 
     @Suppress("UNUSED_PARAMETER")
     fun onLogoClicked(view: View) {
-        val intent = Intent(this, SettingsActivity::class.java)
+        val intent = Intent(this, V4ScheduleActivity::class.java)
         startActivity(intent)
     }
 

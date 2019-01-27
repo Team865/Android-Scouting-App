@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_app_name">Team 865 Android Scouting App</string>
-    <string name="pref_x_schedule_key">pref_x_schedule</string>
-    <string name="pref_x_schedule_title">Match/Scouting Schedule</string>
-    <string name="pref_x_schedule_summary">Displays the match schedule in a list</string>
+    <string name="pref_v4_key">pref_x_schedule</string>
+    <string name="pref_v4_title">V4 App</string>
+    <string name="pref_v4_summary">Opens the old v4 app</string>
     <string name="pref_use_vibration_key">pref_use_vibration</string>
     <string name="pref_use_vibration_title">Use Vibration</string>
     <string name="pref_show_pause_title">Pause, Resume, and SeekBar</string>
@@ -18,7 +18,7 @@
     <string name="pref_github_summary">Including source code and new releases</string>
     <string name="pref_licenses_key">pref_licenses</string>
     <string name="pref_licenses_title">Open Source Licenses</string>
-    <string name="pref_cat_exp">Experimental/Legacy Features</string>
+    <string name="pref_cat_exp">Legacy Features</string>
     <string name="pref_cat_opt">Scouting Options</string>
     <string name="pref_cat_actions">Actions</string>
     <string name="pref_cat_about">About</string>

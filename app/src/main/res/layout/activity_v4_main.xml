@@ -116,19 +116,4 @@
         android:typeface="sans"
         android:visibility="invisible"/>
 
-    <Button
-        android:id="@+id/v5_starter"
-        android:text="Start v5 test"
-        android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_accent_button"
-        android:textColor="@color/colorWhite"
-        android:textAllCaps="false"
-        android:elevation="0dp"
-        android:ems="9"
-        android:textSize="20sp"
-        android:typeface="sans"
-        tools:ignore="HardcodedText"/>
-
 </LinearLayout>

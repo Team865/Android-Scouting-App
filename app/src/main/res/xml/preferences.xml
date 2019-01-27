@@ -33,9 +33,9 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_cat_exp">
         <Preference
-            android:key="@string/pref_x_schedule_key"
-            android:summary="@string/pref_x_schedule_summary"
-            android:title="@string/pref_x_schedule_title"/>
+            android:key="@string/pref_v4_key"
+            android:summary="@string/pref_v4_summary"
+            android:title="@string/pref_v4_title"/>
         <Preference
             android:key="@string/pref_copy_assets_key"
             android:summary="@string/pref_copy_assets_summary"

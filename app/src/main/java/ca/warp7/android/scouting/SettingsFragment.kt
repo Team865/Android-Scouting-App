@@ -13,7 +13,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val listener = SettingsClickListener()
         addListener(R.string.pref_copy_assets_key, listener)
-        addListener(R.string.pref_x_schedule_key, listener)
+        addListener(R.string.pref_v4_key, listener)
         addListener(R.string.pref_licenses_key, listener)
 
         val aboutApp = findPreference(getString(R.string.pref_about_key))

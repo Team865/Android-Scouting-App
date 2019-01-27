@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.support.v7.preference.Preference
-import ca.warp7.android.scouting.v4.V4ScheduleActivity
+import ca.warp7.android.scouting.v4.V4MainActivity
 
 /**
  * @since v0.4.1
@@ -16,7 +16,7 @@ internal class SettingsClickListener : Preference.OnPreferenceClickListener {
         val key = preference.key
         when (key) {
             context.getString(R.string.pref_copy_assets_key) -> onCopyAssets(context)
-            context.getString(R.string.pref_x_schedule_key) -> onScheduleActivityIntent(context)
+            context.getString(R.string.pref_v4_key) -> onScheduleActivityIntent(context)
             context.getString(R.string.pref_licenses_key) -> onLicensesIntent(context)
             else -> return false
         }
@@ -24,7 +24,7 @@ internal class SettingsClickListener : Preference.OnPreferenceClickListener {
     }
 
     private fun onScheduleActivityIntent(context: Context) {
-        val intent = Intent(context, V4ScheduleActivity::class.java)
+        val intent = Intent(context, V4MainActivity::class.java)
         context.startActivity(intent)
     }
 
