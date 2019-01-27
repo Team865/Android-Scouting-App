@@ -243,6 +243,7 @@
                 android:padding="6dp"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
+                android:minWidth="128dp"
                 android:src="@drawable/ic_comment_ablack"/>
 
         </LinearLayout>

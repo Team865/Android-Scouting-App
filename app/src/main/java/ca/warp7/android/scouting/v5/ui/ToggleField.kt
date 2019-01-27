@@ -18,8 +18,6 @@ class ToggleField : LinearLayout, BaseFieldWidget {
     override val fieldData: FieldData?
 
     private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
-    private val gray = ContextCompat.getColor(context, R.color.colorGray)
-    private val red = ContextCompat.getColor(context, R.color.colorRed)
     private val almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
 
@@ -42,13 +40,17 @@ class ToggleField : LinearLayout, BaseFieldWidget {
 
         setBackgroundResource(R.drawable.layer_list_bg_group)
         background.mutate()
+        gravity = Gravity.CENTER
 
         TextView(data.context).apply {
             text = data.modifiedName
             setTextColor(almostBlack)
             textSize = 15f
-            gravity = Gravity.CENTER
             setPadding(0, 12, 0, 0)
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
         }.also { addView(it) }
 
         toggleSwitch = ToggleSwitchCompat(data.context).apply {
@@ -67,7 +69,6 @@ class ToggleField : LinearLayout, BaseFieldWidget {
             }
             setEntries(options)
             layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
-            //layoutWidth = ViewGroup.LayoutParams.MATCH_PARENT
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             setPadding(12, 8, 12, 12)
             setOnChangeListener {
