@@ -241,16 +241,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         startActivityState(WaitingToStart)
     }
 
-    override fun onBackPressed() {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.exit_confirmation)
-            .setMessage(R.string.exit_confirmation_body)
-            .setNegativeButton(android.R.string.no, null)
-            .setPositiveButton(android.R.string.yes) { _, _ -> super.onBackPressed() }
-            .create()
-            .show()
-    }
-
     private fun showCommentsDialog() {
         entry?.also {
             val input = EditText(this).apply {

@@ -13,6 +13,73 @@
         android:id="@+id/my_toolbar"
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_awhite_button"
+            tools:ignore="UseCompoundDrawables,UselessParent"
+            android:padding="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:contentDescription="@string/hint_team"
+                android:padding="2dp"
+                android:src="@drawable/ic_book_ablack_small"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="R1"
+                android:textColor="@color/colorRed"
+                tools:ignore="HardcodedText"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_awhite_button"
+            tools:ignore="UseCompoundDrawables,UselessParent"
+            android:padding="8dp"
+            android:layout_marginStart="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:contentDescription="@string/hint_team"
+                android:padding="2dp"
+                android:src="@drawable/ic_account_box_ablack_small"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Yu Liu"
+                android:textColor="@color/colorAlmostBlack"
+                tools:ignore="HardcodedText"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/v5_starter"
         android:text="Start v5 test"
