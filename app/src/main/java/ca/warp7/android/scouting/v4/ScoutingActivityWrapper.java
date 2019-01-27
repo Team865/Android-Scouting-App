@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import ca.warp7.android.scouting.AbstractActionVibrator;
-import ca.warp7.android.scouting.res.ManagedPreferences;
+import ca.warp7.android.scouting.ManagedPreferences;
 import ca.warp7.android.scouting.v4.abstraction.ScoutingActivityListener;
 
 abstract public class ScoutingActivityWrapper extends AppCompatActivity

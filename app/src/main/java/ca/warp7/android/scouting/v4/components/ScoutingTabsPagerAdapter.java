@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.components;
+package ca.warp7.android.scouting.v4.components;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

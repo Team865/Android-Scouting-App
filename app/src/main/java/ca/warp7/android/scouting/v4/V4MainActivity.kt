@@ -20,10 +20,10 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
+import ca.warp7.android.scouting.AppResources
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.SettingsActivity
-import ca.warp7.android.scouting.constants.ID
-import ca.warp7.android.scouting.res.AppResources
+import ca.warp7.android.scouting.v4.constants.ID
 import ca.warp7.android.scouting.v4.model.Specs
 import ca.warp7.android.scouting.v4.model.SpecsIndex
 import ca.warp7.android.scouting.v5.V5ScoutingActivity

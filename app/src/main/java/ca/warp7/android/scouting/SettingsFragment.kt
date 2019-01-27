@@ -1,9 +1,7 @@
-package ca.warp7.android.scouting.components
+package ca.warp7.android.scouting
 
 import android.os.Bundle
 import android.support.v7.preference.PreferenceFragmentCompat
-import ca.warp7.android.scouting.BuildConfig
-import ca.warp7.android.scouting.R
 
 /**
  * @since v0.4.1

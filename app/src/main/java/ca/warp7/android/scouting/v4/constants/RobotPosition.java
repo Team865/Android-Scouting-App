@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.constants;
+package ca.warp7.android.scouting.v4.constants;
 
 /**
  * @since v0.4.2

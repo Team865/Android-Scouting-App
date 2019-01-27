@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.res;
+package ca.warp7.android.scouting;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,9 +7,6 @@ import java.io.File;
 import java.io.IOException;
 
 public class EventInfo {
-
-    static class NotProperEventFormat extends Exception {
-    }
 
     private final File mEventRoot;
     private String mEventName;
@@ -32,5 +29,8 @@ public class EventInfo {
 
     public File getMatchTableRoot() {
         return new File(mEventRoot, "match-table.csv");
+    }
+
+    static class NotProperEventFormat extends Exception {
     }
 }

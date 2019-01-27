@@ -1,12 +1,9 @@
 package ca.warp7.android.scouting
 
 import android.os.Bundle
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.TextView
-
-import ca.warp7.android.scouting.res.AppResources
 
 class LicensesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

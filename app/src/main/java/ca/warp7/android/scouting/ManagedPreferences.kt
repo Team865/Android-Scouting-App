@@ -1,9 +1,7 @@
-package ca.warp7.android.scouting.res
+package ca.warp7.android.scouting
 
 import android.content.Context
 import android.preference.PreferenceManager
-import ca.warp7.android.scouting.AbstractActionVibrator
-import ca.warp7.android.scouting.R
 
 /**
  * @since v0.4.1

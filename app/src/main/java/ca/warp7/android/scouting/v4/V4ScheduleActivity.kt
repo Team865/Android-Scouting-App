@@ -14,12 +14,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Spinner
+import ca.warp7.android.scouting.AppResources
+import ca.warp7.android.scouting.EventInfo
 import ca.warp7.android.scouting.R
-import ca.warp7.android.scouting.components.ScoutingScheduleAdapter
-import ca.warp7.android.scouting.constants.ID
-import ca.warp7.android.scouting.constants.RobotPosition
-import ca.warp7.android.scouting.res.AppResources
-import ca.warp7.android.scouting.res.EventInfo
+import ca.warp7.android.scouting.v4.components.ScoutingScheduleAdapter
+import ca.warp7.android.scouting.v4.constants.ID
+import ca.warp7.android.scouting.v4.constants.RobotPosition
 import ca.warp7.android.scouting.v4.model.MatchWithAllianceItem
 import ca.warp7.android.scouting.v4.model.ScoutingSchedule
 import java.io.IOException
@@ -29,7 +29,7 @@ import java.util.*
  * @since v0.4.2
  */
 
-class ScheduleActivity : AppCompatActivity() {
+class V4ScheduleActivity : AppCompatActivity() {
 
     private var mScoutingSchedule: ScoutingSchedule? = null
     private var mScheduleAdapter: ScoutingScheduleAdapter? = null

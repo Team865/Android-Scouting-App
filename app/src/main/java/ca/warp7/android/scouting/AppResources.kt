@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.res
+package ca.warp7.android.scouting
 
 import android.content.Context
 import android.os.Environment
@@ -18,14 +18,20 @@ object AppResources {
 
     val specsRoot: File
         get() {
-            val root = File(Environment.getExternalStorageDirectory(), kSpecsRoot)
+            val root = File(
+                Environment.getExternalStorageDirectory(),
+                kSpecsRoot
+            )
             root.mkdirs()
             return root
         }
 
     val eventsRoot: File
         get() {
-            val root = File(Environment.getExternalStorageDirectory(), kEventsRoot)
+            val root = File(
+                Environment.getExternalStorageDirectory(),
+                kEventsRoot
+            )
             root.mkdirs()
             return root
         }

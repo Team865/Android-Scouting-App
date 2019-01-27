@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.components;
+package ca.warp7.android.scouting.v4.components;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import ca.warp7.android.scouting.R;
-import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.v4.abstraction.BaseInputControl;
 import ca.warp7.android.scouting.v4.abstraction.ScoutingActivityListener;
 import ca.warp7.android.scouting.v4.abstraction.ScoutingTab;
+import ca.warp7.android.scouting.v4.constants.ID;
 import ca.warp7.android.scouting.v4.model.DataConstant;
 import ca.warp7.android.scouting.v4.model.ScoutingLayout;
 import ca.warp7.android.scouting.v4.model.Specs;
@@ -44,6 +44,22 @@ public class ScoutingInputsFragment
     private Specs mSpecs;
     private ScoutingLayout mLayout;
 
+    /**
+     * Creates an fragment instance
+     *
+     * @param currentTab the tab to create the instance on
+     * @return the created instance
+     */
+
+    public static ScoutingInputsFragment createInstance(int currentTab) {
+        ScoutingInputsFragment f = new ScoutingInputsFragment();
+
+        Bundle args = new Bundle();
+        args.putInt("tab", currentTab);
+
+        f.setArguments(args);
+        return f;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -223,22 +239,5 @@ public class ScoutingInputsFragment
                 }
             }
         }
-    }
-
-    /**
-     * Creates an fragment instance
-     *
-     * @param currentTab the tab to create the instance on
-     * @return the created instance
-     */
-
-    public static ScoutingInputsFragment createInstance(int currentTab) {
-        ScoutingInputsFragment f = new ScoutingInputsFragment();
-
-        Bundle args = new Bundle();
-        args.putInt("tab", currentTab);
-
-        f.setArguments(args);
-        return f;
     }
 }

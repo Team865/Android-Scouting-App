@@ -1,13 +1,10 @@
-package ca.warp7.android.scouting.components
+package ca.warp7.android.scouting
 
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.support.v7.preference.Preference
-import ca.warp7.android.scouting.LicensesActivity
-import ca.warp7.android.scouting.R
-import ca.warp7.android.scouting.res.AppResources
-import ca.warp7.android.scouting.v4.ScheduleActivity
+import ca.warp7.android.scouting.v4.V4ScheduleActivity
 
 /**
  * @since v0.4.1
@@ -27,7 +24,7 @@ internal class SettingsClickListener : Preference.OnPreferenceClickListener {
     }
 
     private fun onScheduleActivityIntent(context: Context) {
-        val intent = Intent(context, ScheduleActivity::class.java)
+        val intent = Intent(context, V4ScheduleActivity::class.java)
         context.startActivity(intent)
     }
 

@@ -8,7 +8,7 @@ import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
 import ca.warp7.android.scouting.R
-import ca.warp7.android.scouting.constants.RobotPosition
+import ca.warp7.android.scouting.v4.constants.RobotPosition
 import ca.warp7.android.scouting.v4.model.MatchWithAllianceItem
 
 /**

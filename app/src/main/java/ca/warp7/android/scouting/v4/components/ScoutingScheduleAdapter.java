@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.components;
+package ca.warp7.android.scouting.v4.components;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
