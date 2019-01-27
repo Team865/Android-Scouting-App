@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical"
               android:gravity="center_horizontal"
-              tools:context=".ScheduleActivity">
+              tools:context=".v4.ScheduleActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"

@@ -9,7 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.constants.RobotPosition
-import ca.warp7.android.scouting.model.MatchWithAllianceItem
+import ca.warp7.android.scouting.v4.model.MatchWithAllianceItem
 
 /**
  * @since v0.4.2

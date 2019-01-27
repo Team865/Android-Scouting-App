@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="ca.warp7.android.scouting.V4ScoutingActivity">
+              tools:context="ca.warp7.android.scouting.v4.V4ScoutingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -6,8 +6,8 @@ import android.content.Intent
 import android.support.v7.preference.Preference
 import ca.warp7.android.scouting.LicensesActivity
 import ca.warp7.android.scouting.R
-import ca.warp7.android.scouting.ScheduleActivity
 import ca.warp7.android.scouting.res.AppResources
+import ca.warp7.android.scouting.v4.ScheduleActivity
 
 /**
  * @since v0.4.1

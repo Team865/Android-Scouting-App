@@ -2,9 +2,9 @@ package ca.warp7.android.scouting.v4.widgets;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatSeekBar;
-import ca.warp7.android.scouting.abstraction.BaseInputControl;
-import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.model.DataConstant;
+import ca.warp7.android.scouting.v4.abstraction.BaseInputControl;
+import ca.warp7.android.scouting.v4.abstraction.ScoutingActivityListener;
+import ca.warp7.android.scouting.v4.model.DataConstant;
 
 /**
  * Creates a ratings bar based on the maximum value specified

@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.constants;
+package ca.warp7.android.scouting;
 
 public class Constants {
     public static final int kTimerLimit = 150;

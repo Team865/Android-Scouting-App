@@ -10,9 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import ca.warp7.android.scouting.R;
-import ca.warp7.android.scouting.abstraction.ScoutingScheduleItem;
-import ca.warp7.android.scouting.model.ButtonItem;
-import ca.warp7.android.scouting.model.MatchWithAllianceItem;
+import ca.warp7.android.scouting.v4.abstraction.ScoutingScheduleItem;
+import ca.warp7.android.scouting.v4.model.ButtonItem;
+import ca.warp7.android.scouting.v4.model.MatchWithAllianceItem;
 import ca.warp7.android.scouting.v4.widgets.AllianceView;
 
 import java.util.List;

@@ -5,9 +5,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import ca.warp7.android.scouting.R;
-import ca.warp7.android.scouting.abstraction.BaseInputControl;
-import ca.warp7.android.scouting.abstraction.ScoutingActivityListener;
-import ca.warp7.android.scouting.model.DataConstant;
+import ca.warp7.android.scouting.v4.abstraction.BaseInputControl;
+import ca.warp7.android.scouting.v4.abstraction.ScoutingActivityListener;
+import ca.warp7.android.scouting.v4.model.DataConstant;
 
 /**
  * Creates a box container that centers the control inside it

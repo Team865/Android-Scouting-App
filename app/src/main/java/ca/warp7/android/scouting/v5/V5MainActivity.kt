@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting
+package ca.warp7.android.scouting.v5
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import ca.warp7.android.scouting.v5.V5ScoutingActivity
+import ca.warp7.android.scouting.R
+import ca.warp7.android.scouting.SettingsActivity
 
 class V5MainActivity : AppCompatActivity() {
 

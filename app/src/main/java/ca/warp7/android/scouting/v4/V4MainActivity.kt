@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting
+package ca.warp7.android.scouting.v4
 
 import android.Manifest
 import android.app.AlertDialog
@@ -20,10 +20,12 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
+import ca.warp7.android.scouting.R
+import ca.warp7.android.scouting.SettingsActivity
 import ca.warp7.android.scouting.constants.ID
-import ca.warp7.android.scouting.model.Specs
-import ca.warp7.android.scouting.model.SpecsIndex
 import ca.warp7.android.scouting.res.AppResources
+import ca.warp7.android.scouting.v4.model.Specs
+import ca.warp7.android.scouting.v4.model.SpecsIndex
 import ca.warp7.android.scouting.v5.V5ScoutingActivity
 import java.io.File
 
@@ -217,7 +219,12 @@ class V4MainActivity : AppCompatActivity() {
                 if (matchDoesExist(match, team)) {
                     mismatchWarning.visibility = View.INVISIBLE
                     verifier.setText(R.string.verify_match_info)
-                    verifier.setTextColor(ContextCompat.getColor(this, R.color.colorAlmostBlack))
+                    verifier.setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.colorAlmostBlack
+                        )
+                    )
                 } else {
                     mismatchWarning.setText(R.string.schedule_mismatch)
                     mismatchWarning.visibility = View.VISIBLE

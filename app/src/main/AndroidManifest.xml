@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".V5MainActivity"
+            android:name=".v5.V5MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -25,17 +25,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".V4MainActivity"
+            android:name=".v4.V4MainActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".V4ScoutingActivity"
+            android:name=".v4.V4ScoutingActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".v5.V5ScoutingActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".SettingsActivity"/>
-        <activity android:name=".ScheduleActivity"/>
+        <activity android:name=".v4.ScheduleActivity"/>
         <activity android:name=".LicensesActivity"/>
 
         <meta-data

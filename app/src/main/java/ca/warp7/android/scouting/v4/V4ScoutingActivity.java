@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting;
+package ca.warp7.android.scouting.v4;
 
 
 import android.app.AlertDialog;
@@ -14,15 +14,16 @@ import android.text.InputType;
 import android.view.*;
 import android.view.animation.Animation;
 import android.widget.*;
+import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.components.ScoutingTabsPagerAdapter;
 import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.constants.ScoutingState;
-import ca.warp7.android.scouting.model.*;
+import ca.warp7.android.scouting.v4.model.*;
 
 import java.io.File;
 import java.util.List;
 
-import static ca.warp7.android.scouting.constants.Constants.*;
+import static ca.warp7.android.scouting.Constants.*;
 
 
 /**

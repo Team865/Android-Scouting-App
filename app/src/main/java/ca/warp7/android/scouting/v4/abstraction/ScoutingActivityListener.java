@@ -1,8 +1,8 @@
-package ca.warp7.android.scouting.abstraction;
+package ca.warp7.android.scouting.v4.abstraction;
 
 import android.os.Handler;
 import ca.warp7.android.scouting.AbstractActionVibrator;
-import ca.warp7.android.scouting.model.Entry;
+import ca.warp7.android.scouting.v4.model.Entry;
 
 /**
  * This interface is to be implemented by the activity that contains

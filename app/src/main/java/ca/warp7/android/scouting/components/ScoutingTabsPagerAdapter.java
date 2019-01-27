@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import ca.warp7.android.scouting.abstraction.ScoutingTab;
+import ca.warp7.android.scouting.v4.abstraction.ScoutingTab;
 
 /**
  * Adapter that returns the proper fragment as pages are navigated
