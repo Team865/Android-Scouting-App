@@ -14,6 +14,6 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportFragmentManager.beginTransaction().replace(android.R.id.content, SettingsFragment()).commit()
         setTheme(R.style.SettingsTheme)
-        title = "Settings"
+        title = "Options"
     }
 }

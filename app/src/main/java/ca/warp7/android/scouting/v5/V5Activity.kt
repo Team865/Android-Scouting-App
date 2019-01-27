@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
 import android.view.Gravity
-import android.view.View
 import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
@@ -373,8 +372,6 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
                 } else {
                     undoAndNowImage.setImageResource(R.drawable.ic_skip_next_red)
                 }
-                findViewById<View>(android.R.id.content)
-                    .setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite))
                 actionVibrator.vibrateStart()
                 timedUpdater.run()
             }
@@ -386,13 +383,6 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
                 undoAndNowImage.setImageResource(R.drawable.ic_skip_next_red)
                 timeSeeker.show()
                 timeProgress.hide()
-                findViewById<View>(android.R.id.content)
-                    .setBackgroundColor(
-                        ContextCompat.getColor(
-                            this,
-                            R.color.colorAlmostYellow
-                        )
-                    )
             }
         }
     }

@@ -1,43 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_cat_opt">
+        <EditTextPreference
+            android:defaultValue="Unknown"
+            android:title="Scout Name"
+            android:summary="Unknown"
+            android:key="pref_name"/>
+        <Preference
+            android:title="Board"
+            android:summary="R1"/>
+        <Preference
+            android:title="Boardfile"
+            android:summary="2019.1.0-dev"/>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/pref_use_vibration_key"
+            android:summary="@string/pref_use_vibration_summary"
+            android:title="@string/pref_use_vibration_title"/>
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_cat_about">
         <Preference
-                android:key="@string/pref_about_key"
-                android:title="@string/pref_app_name" />
+            android:key="@string/pref_about_key"
+            android:title="@string/pref_app_name"/>
         <Preference
-                android:title="@string/pref_github_title"
-                android:summary="@string/pref_github_summary">
+            android:title="@string/pref_github_title"
+            android:summary="@string/pref_github_summary">
             <intent
-                    android:action="android.intent.action.VIEW"
-                    android:data="https://github.com/Team865/Android-Scouting-App" />
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/Team865/Android-Scouting-App"/>
         </Preference>
         <Preference
-                android:key="@string/pref_licenses_key"
-                android:title="@string/pref_licenses_title" />
+            android:key="@string/pref_licenses_key"
+            android:title="@string/pref_licenses_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_cat_exp">
         <Preference
             android:key="@string/pref_x_schedule_key"
             android:summary="@string/pref_x_schedule_summary"
-            android:title="@string/pref_x_schedule_title" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_cat_opt">
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="@string/pref_use_vibration_key"
-            android:summary="@string/pref_use_vibration_summary"
-            android:title="@string/pref_use_vibration_title" />
+            android:title="@string/pref_x_schedule_title"/>
+        <Preference
+            android:key="@string/pref_copy_assets_key"
+            android:summary="@string/pref_copy_assets_summary"
+            android:title="@string/pref_copy_assets_title"/>
         <SwitchPreference
             android:defaultValue="false"
             android:key="@string/pref_show_pause_key"
             android:summary="@string/pref_show_pause_summary"
-            android:title="@string/pref_show_pause_title" />
+            android:title="@string/pref_show_pause_title"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_cat_actions">
-        <Preference
-            android:key="@string/pref_copy_assets_key"
-            android:summary="@string/pref_copy_assets_summary"
-            android:title="@string/pref_copy_assets_title" />
-    </PreferenceCategory>
-
 </PreferenceScreen>
