@@ -68,8 +68,6 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
     private var currentTab = 0
     private var startingTimestamp = 0
 
-    private var usingPauseBetaFeature: Boolean = false
-
     /**
      * Calculates the relative time based on
      * the current time and the starting timestamp
@@ -92,7 +90,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
             if (relativeTime <= kTimerLimit) postTimerUpdate()
             else {
                 timerIsRunning = false
-                if (usingPauseBetaFeature) startActivityState(Pausing)
+                startActivityState(Pausing)
             }
         }
     }
@@ -270,19 +268,6 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
                 .setView(input)
                 .setPositiveButton("OK") { _, _ -> it.comments = input.text.toString() }
                 .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-                .apply {
-                    if (activityState != WaitingToStart && preferences.shouldShowPause()) {
-                        setNeutralButton(if (usingPauseBetaFeature) "Hide Pause" else "Show Pause") { _, _ ->
-                            usingPauseBetaFeature = !usingPauseBetaFeature
-                            actionVibrator.vibrateAction()
-                            if (usingPauseBetaFeature) {
-                                playAndPauseImage.show()
-                            } else {
-                                playAndPauseImage.hide()
-                            }
-                        }
-                    }
-                }
                 .create()
                 .apply {
                     window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
@@ -377,7 +362,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
                 timeProgress.show()
             }
             TimedScouting -> {
-                if (usingPauseBetaFeature) playAndPauseImage.show() else playAndPauseImage.hide()
+                playAndPauseImage.show()
                 undoAndNowImage.show()
                 startButton.hide()
                 timeSeeker.hide()
