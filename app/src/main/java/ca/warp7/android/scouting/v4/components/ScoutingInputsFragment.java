@@ -23,6 +23,7 @@ import ca.warp7.android.scouting.v4.widgets.*;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The fragment that is shown in the biggest portion
@@ -127,7 +128,7 @@ public class ScoutingInputsFragment
     private View createControlFromDataConstant(DataConstant dc, String idIfNull) {
 
         if (dc == null) {
-            return new UndefinedInputsIndicator(getContext(), idIfNull, mListener);
+            return new UndefinedInputsIndicator(Objects.requireNonNull(getContext()), idIfNull, mListener);
         }
 
         switch (dc.getType()) {
@@ -155,7 +156,7 @@ public class ScoutingInputsFragment
                         new ChoicesButton(getContext(), dc, mListener));
 
             default:
-                return new UndefinedInputsIndicator(getContext(), dc.getLabel(), mListener);
+                return new UndefinedInputsIndicator(Objects.requireNonNull(getContext()), dc.getLabel(), mListener);
         }
     }
 

@@ -113,42 +113,42 @@ class AllianceView : View {
         canvas.drawLine(w / 3f, 0f, w / 3f, h.toFloat(), mGrayTextPaint)
         canvas.drawLine(w / 3f * 2, 0f, w / 3f * 2, h.toFloat(), mGrayTextPaint)
         canvas.drawLine(0f, h / 2f, w.toFloat(), h / 2f, mGrayTextPaint)
-        val R1Paint = if (mShouldFocus)
+        val r1Paint = if (mShouldFocus)
             if (mFocusPosition == RobotPosition.RED1)
                 mRedBoldTextPaint
             else
                 mGrayTextPaint
         else
             mAlmostBlackTextPaint
-        val R2Paint = if (mShouldFocus)
+        val r2Paint = if (mShouldFocus)
             if (mFocusPosition == RobotPosition.RED2)
                 mRedBoldTextPaint
             else
                 mGrayTextPaint
         else
             mAlmostBlackTextPaint
-        val R3Paint = if (mShouldFocus)
+        val r3Paint = if (mShouldFocus)
             if (mFocusPosition == RobotPosition.RED3)
                 mRedBoldTextPaint
             else
                 mGrayTextPaint
         else
             mAlmostBlackTextPaint
-        val B1Paint = if (mShouldFocus)
+        val b1Paint = if (mShouldFocus)
             if (mFocusPosition == RobotPosition.BLUE1)
                 mBlueBoldTextPaint
             else
                 mGrayTextPaint
         else
             mAlmostBlackTextPaint
-        val B2Paint = if (mShouldFocus)
+        val b2Paint = if (mShouldFocus)
             if (mFocusPosition == RobotPosition.BLUE2)
                 mBlueBoldTextPaint
             else
                 mGrayTextPaint
         else
             mAlmostBlackTextPaint
-        val B3Paint = if (mShouldFocus)
+        val b3Paint = if (mShouldFocus)
             if (mFocusPosition == RobotPosition.BLUE3)
                 mBlueBoldTextPaint
             else
@@ -157,28 +157,28 @@ class AllianceView : View {
             mAlmostBlackTextPaint
         val fromBottom = 10
         canvas.drawText(
-            mR1, (w / 3f - R1Paint
-                .measureText(mR1)) / 2f, h / 2f - fromBottom, R1Paint
+            mR1, (w / 3f - r1Paint
+                .measureText(mR1)) / 2f, h / 2f - fromBottom, r1Paint
         )
         canvas.drawText(
-            mR2, w / 3f + (w / 3f - R2Paint
-                .measureText(mR2)) / 2f, h / 2f - fromBottom, R2Paint
+            mR2, w / 3f + (w / 3f - r2Paint
+                .measureText(mR2)) / 2f, h / 2f - fromBottom, r2Paint
         )
         canvas.drawText(
-            mR3, w / 3f * 2 + (w / 3f - R3Paint
-                .measureText(mR3)) / 2f, h / 2f - fromBottom, R3Paint
+            mR3, w / 3f * 2 + (w / 3f - r3Paint
+                .measureText(mR3)) / 2f, h / 2f - fromBottom, r3Paint
         )
         canvas.drawText(
-            mB1, (w / 3f - B1Paint
-                .measureText(mB1)) / 2f, (h - fromBottom).toFloat(), B1Paint
+            mB1, (w / 3f - b1Paint
+                .measureText(mB1)) / 2f, (h - fromBottom).toFloat(), b1Paint
         )
         canvas.drawText(
-            mB2, w / 3f + (w / 3f - B2Paint
-                .measureText(mB2)) / 2f, (h - fromBottom).toFloat(), B2Paint
+            mB2, w / 3f + (w / 3f - b2Paint
+                .measureText(mB2)) / 2f, (h - fromBottom).toFloat(), b2Paint
         )
         canvas.drawText(
-            mB3, w / 3f * 2 + (w / 3f - B3Paint
-                .measureText(mB3)) / 2f, (h - fromBottom).toFloat(), B3Paint
+            mB3, w / 3f * 2 + (w / 3f - b3Paint
+                .measureText(mB3)) / 2f, (h - fromBottom).toFloat(), b3Paint
         )
     }
 
@@ -190,7 +190,7 @@ class AllianceView : View {
 
     companion object {
 
-        private val kPad = 24f
-        private val kRadius = 16
+        private const val kPad = 24f
+        private const val kRadius = 16
     }
 }

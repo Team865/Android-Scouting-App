@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Scouting</string>
 
-    <string name="menu_copy_default_metrics">Copy Default Metrics</string>
     <string name="menu_select_specs">Change</string>
 
     <string name="hint_match">Match #</string>
@@ -29,7 +28,6 @@
         or if the robot behaved abnormally in the match.
     </string>
 
-    <string name="send_show_qr">Show QR Code</string>
     <string name="edit_comments">Edit Comments</string>
 
     <string name="layout_error">There was a problem with the layout</string>
