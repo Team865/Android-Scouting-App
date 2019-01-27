@@ -4,11 +4,9 @@
         <EditTextPreference
             android:defaultValue="Unknown"
             android:title="Scout Name"
-            android:summary="Unknown"
+            android:summary="in the form of First Last"
+            android:inputType="textPersonName|textNoSuggestions"
             android:key="pref_name"/>
-        <Preference
-            android:title="Board"
-            android:summary="R1"/>
         <Preference
             android:title="Boardfile"
             android:summary="2019.1.0-dev"/>

@@ -35,7 +35,7 @@ import static ca.warp7.android.scouting.constants.Constants.*;
  * @since v0.2
  */
 
-public class ScoutingActivity extends ScoutingActivityWrapper {
+public class V4ScoutingActivity extends ScoutingActivityWrapper {
 
     private boolean mTimerIsCountingUp;
     private boolean mTimerIsRunning;
@@ -128,7 +128,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
                 .setMessage(R.string.exit_confirmation_body)
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, (dialog, which)
-                        -> ScoutingActivity.super.onBackPressed())
+                        -> V4ScoutingActivity.super.onBackPressed())
                 .create()
                 .show();
     }
@@ -313,7 +313,7 @@ public class ScoutingActivity extends ScoutingActivityWrapper {
      */
     private void setupUI() {
         setTheme(R.style.AppTheme);
-        setContentView(R.layout.activity_scouting);
+        setContentView(R.layout.activity_v4_scouting);
         Toolbar mToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mToolbar);
 

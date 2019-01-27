@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="ca.warp7.android.scouting.MainActivity"
+    tools:context="ca.warp7.android.scouting.V4MainActivity"
     tools:ignore="Autofill">
 
     <ImageView

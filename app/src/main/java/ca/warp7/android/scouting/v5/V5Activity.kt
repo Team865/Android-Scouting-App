@@ -102,7 +102,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
         super.onCreate(savedInstanceState)
         handler = Handler()
         setTheme(R.style.AppTheme)
-        setContentView(R.layout.activity_v5)
+        setContentView(R.layout.activity_v5_scouting)
 
         timerStatus = findViewById(R.id.timer_status)
         startButton = findViewById(R.id.start_timer)

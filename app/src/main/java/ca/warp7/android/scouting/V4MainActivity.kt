@@ -31,7 +31,7 @@ import java.io.File
  * @since v0.1.0
  */
 
-class MainActivity : AppCompatActivity() {
+class V4MainActivity : AppCompatActivity() {
 
     private lateinit var scoutNameField: EditText
     private lateinit var matchNumberField: EditText
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         editor.putString(ID.SAVE_SCOUT_NAME, name)
         editor.apply()
         if (!Specs.hasInstance()) return
-        Intent(this, ScoutingActivity::class.java).apply {
+        Intent(this, V4ScoutingActivity::class.java).apply {
             putExtra(ID.MSG_MATCH_NUMBER, matchNumberField.text.toString().toInt())
             putExtra(ID.MSG_TEAM_NUMBER, teamNumberField.text.toString().toInt())
             putExtra(ID.MSG_SCOUT_NAME, name)
@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_v4_main)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         scoutNameField = findViewById(R.id.name_and_initial)
         matchNumberField = findViewById(R.id.match_number)

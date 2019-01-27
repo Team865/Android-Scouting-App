@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="ca.warp7.android.scouting.ScoutingActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="ca.warp7.android.scouting.V4ScoutingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:layout_marginTop="1dp"
                 android:contentDescription="@string/hint_match"
                 android:padding="4dp"
-                android:src="@drawable/ic_layers_ablack_small" />
+                android:src="@drawable/ic_layers_ablack_small"/>
 
             <TextView
                 android:id="@+id/toolbar_match"
@@ -44,12 +44,12 @@
                 android:paddingTop="4dp"
                 android:textColor="@color/colorAlmostBlack"
                 android:textSize="18sp"
-                android:typeface="sans" />
+                android:typeface="sans"/>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/colorGray" />
+                android:background="@color/colorGray"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                 android:layout_marginTop="1dp"
                 android:contentDescription="@string/hint_team"
                 android:padding="4dp"
-                android:src="@drawable/ic_people_ablack_small" />
+                android:src="@drawable/ic_people_ablack_small"/>
 
             <TextView
                 android:id="@+id/toolbar_team"
@@ -71,12 +71,12 @@
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/colorGray" />
+                android:background="@color/colorGray"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
                 android:layout_marginTop="1dp"
                 android:contentDescription="@string/start_timer"
                 android:padding="4dp"
-                android:src="@drawable/ic_timer_ablack_small" />
+                android:src="@drawable/ic_timer_ablack_small"/>
 
             <TextView
                 android:id="@+id/timer_status"
@@ -101,7 +101,7 @@
                 android:singleLine="true"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:typeface="sans" />
+                android:typeface="sans"/>
 
         </LinearLayout>
 
@@ -109,7 +109,7 @@
             android:id="@+id/my_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?android:attr/actionBarSize" />
+            android:minHeight="?android:attr/actionBarSize"/>
 
     </LinearLayout>
 
@@ -129,7 +129,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
             android:paddingBottom="8dp"
-            android:paddingTop="8dp" />
+            android:paddingTop="8dp"/>
 
         <SeekBar
             android:id="@+id/time_seeker"
@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
     </LinearLayout>
 
@@ -159,7 +159,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:typeface="sans"
-            tools:text="Tab Title" />
+            tools:text="Tab Title"/>
 
 
         <LinearLayout
@@ -190,7 +190,7 @@
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/btn_pause"
                     android:padding="6dp"
-                    android:src="@drawable/ic_pause_ablack" />
+                    android:src="@drawable/ic_pause_ablack"/>
 
                 <TextView
                     android:id="@+id/play_pause_text"
@@ -198,13 +198,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/btn_pause"
                     android:textColor="@color/colorAlmostBlack"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
             </LinearLayout>
 
             <View
                 android:layout_width="12dp"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"/>
 
             <LinearLayout
                 android:id="@+id/undo_now_container"
@@ -229,7 +229,7 @@
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/btn_undo"
                     android:padding="6dp"
-                    android:src="@drawable/ic_undo_ablack" />
+                    android:src="@drawable/ic_undo_ablack"/>
 
                 <TextView
                     android:id="@+id/undo_now_text"
@@ -237,7 +237,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/btn_undo"
                     android:textColor="@color/colorAlmostBlack"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
             </LinearLayout>
 
             <TextView
@@ -253,7 +253,7 @@
                 android:text="@string/start_timer"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
         </LinearLayout>
 
@@ -265,7 +265,7 @@
         android:layout_height="match_parent"
         android:layout_margin="0dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp" />
+        android:layout_marginStart="4dp"/>
 
 
 </LinearLayout>

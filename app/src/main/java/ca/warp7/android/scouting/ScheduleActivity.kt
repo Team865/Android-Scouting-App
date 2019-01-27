@@ -35,7 +35,7 @@ class ScheduleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_schedule)
+        setContentView(R.layout.activity_v4_schedule)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         title = "Match Schedule"
 
@@ -98,7 +98,7 @@ class ScheduleActivity : AppCompatActivity() {
                 if (item.shouldFocus()) {
                     val team = item.getTeamAtPosition(item.focusPosition)
                     val match = item.matchNumber
-                    val intent = Intent(this, ScoutingActivity::class.java)
+                    val intent = Intent(this, V4ScoutingActivity::class.java)
 
                     intent.putExtra(ID.MSG_MATCH_NUMBER, match)
                     intent.putExtra(ID.MSG_TEAM_NUMBER, team)
