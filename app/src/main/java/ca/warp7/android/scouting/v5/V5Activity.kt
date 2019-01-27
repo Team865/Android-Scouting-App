@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
@@ -51,10 +50,6 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
     private lateinit var startButton: TextView
     private lateinit var playAndPauseImage: ImageButton
     private lateinit var undoAndNowImage: ImageButton
-    private lateinit var playAndPauseView: ViewGroup
-    private lateinit var undoAndNowView: ViewGroup
-    private lateinit var playAndPauseText: TextView
-    private lateinit var undoAndNowText: TextView
     private lateinit var pager: ViewPager
     private lateinit var pagerAdapter: V5TabsPagerAdapter
 
@@ -116,10 +111,6 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
         startButton = findViewById(R.id.start_timer)
         playAndPauseImage = findViewById(R.id.play_pause_image)
         undoAndNowImage = findViewById(R.id.undo_now_image)
-        playAndPauseView = findViewById(R.id.play_pause_container)
-        undoAndNowView = findViewById(R.id.undo_now_container)
-        playAndPauseText = findViewById(R.id.play_pause_text)
-        undoAndNowText = findViewById(R.id.undo_now_text)
         timeProgress = findViewById(R.id.time_progress)
         timeSeeker = findViewById(R.id.time_seeker)
         pager = findViewById(R.id.pager)
@@ -131,7 +122,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
             updateTabStates()
         }
 
-        playAndPauseView.setOnClickListener {
+        playAndPauseImage.setOnClickListener {
             when (activityState) {
                 TimedScouting -> startActivityState(Pausing)
                 Pausing -> startActivityState(TimedScouting)
@@ -139,7 +130,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
             }
         }
 
-        undoAndNowView.setOnClickListener {
+        undoAndNowImage.setOnClickListener {
             when (activityState) {
                 TimedScouting -> if (relativeTimeMatchesCurrentTime) {
                     entry?.apply {
@@ -153,7 +144,6 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
                     relativeTime = calculateRelativeTime
                     actionVibrator.vibrateStart()
                     undoAndNowImage.setImageResource(R.drawable.ic_undo_ablack)
-                    undoAndNowText.setText(R.string.btn_undo)
                 }
                 Pausing -> {
                     relativeTime = calculateRelativeTime
@@ -264,7 +254,7 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
             .show()
     }
 
-    private fun showCommentsDialog(){
+    private fun showCommentsDialog() {
         entry?.also {
             val input = EditText(this).apply {
                 inputType = InputType.TYPE_CLASS_TEXT or
@@ -286,9 +276,9 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
                             usingPauseBetaFeature = !usingPauseBetaFeature
                             actionVibrator.vibrateAction()
                             if (usingPauseBetaFeature) {
-                                playAndPauseView.show()
+                                playAndPauseImage.show()
                             } else {
-                                playAndPauseView.hide()
+                                playAndPauseImage.hide()
                             }
                         }
                     }
@@ -381,25 +371,22 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
         activityState = state
         when (activityState) {
             WaitingToStart -> {
-                playAndPauseView.hide()
-                undoAndNowView.hide()
+                playAndPauseImage.hide()
+                undoAndNowImage.hide()
                 timeSeeker.hide()
                 timeProgress.show()
             }
             TimedScouting -> {
-                if (usingPauseBetaFeature) playAndPauseView.show() else playAndPauseView.hide()
-                undoAndNowView.show()
+                if (usingPauseBetaFeature) playAndPauseImage.show() else playAndPauseImage.hide()
+                undoAndNowImage.show()
                 startButton.hide()
                 timeSeeker.hide()
                 timeProgress.show()
                 playAndPauseImage.setImageResource(R.drawable.ic_pause_ablack)
-                playAndPauseText.setText(R.string.btn_pause)
                 if (relativeTimeMatchesCurrentTime) {
                     undoAndNowImage.setImageResource(R.drawable.ic_undo_ablack)
-                    undoAndNowText.setText(R.string.btn_undo)
                 } else {
                     undoAndNowImage.setImageResource(R.drawable.ic_skip_next_red)
-                    undoAndNowText.setText(R.string.btn_now)
                 }
                 findViewById<View>(android.R.id.content)
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite))
@@ -407,19 +394,20 @@ class V5Activity : AppCompatActivity(), BaseScoutingActivity {
                 timedUpdater.run()
             }
             Pausing -> {
-                playAndPauseView.show()
-                undoAndNowView.show()
+                playAndPauseImage.show()
+                undoAndNowImage.show()
                 startButton.hide()
                 playAndPauseImage.setImageResource(R.drawable.ic_play_arrow_ablack)
-                playAndPauseText.setText(R.string.btn_resume)
                 undoAndNowImage.setImageResource(R.drawable.ic_skip_next_red)
-                undoAndNowText.setText(R.string.btn_now)
                 timeSeeker.show()
                 timeProgress.hide()
                 findViewById<View>(android.R.id.content)
-                    .setBackgroundColor(ContextCompat.getColor(this,
-                        R.color.colorAlmostYellow
-                    ))
+                    .setBackgroundColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.colorAlmostYellow
+                        )
+                    )
             }
         }
     }

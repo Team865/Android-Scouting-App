@@ -126,8 +126,8 @@
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:paddingTop="4dp">
 
         <TextView
@@ -147,72 +147,31 @@
             android:layout_height="wrap_content"
             android:gravity="end|center_vertical">
 
-            <LinearLayout
-                android:id="@+id/play_pause_container"
+            <ImageButton
+                android:id="@+id/play_pause_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_awhite_button"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingEnd="9dp"
-                android:paddingStart="3dp"
-                android:visibility="gone">
-
-                <ImageButton
-                    android:id="@+id/play_pause_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/btn_pause"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_pause_ablack"/>
-
-                <TextView
-                    android:id="@+id/play_pause_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/btn_pause"
-                    android:textColor="@color/colorAlmostBlack"
-                    android:textSize="14sp"/>
-            </LinearLayout>
+                android:contentDescription="@string/btn_pause"
+                android:padding="6dp"
+                android:minWidth="72dp"
+                android:visibility="gone"
+                android:src="@drawable/ic_pause_ablack"/>
 
             <View
                 android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"/>
 
-            <LinearLayout
-                android:id="@+id/undo_now_container"
+            <ImageButton
+                android:id="@+id/undo_now_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_awhite_button"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingEnd="9dp"
-                android:paddingStart="3dp"
-                android:visibility="gone">
-
-                <ImageButton
-                    android:id="@+id/undo_now_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/btn_undo"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_undo_ablack"/>
-
-                <TextView
-                    android:id="@+id/undo_now_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/btn_undo"
-                    android:textColor="@color/colorAlmostBlack"
-                    android:textSize="14sp"/>
-            </LinearLayout>
+                android:contentDescription="@string/btn_undo"
+                android:padding="6dp"
+                android:minWidth="72dp"
+                android:src="@drawable/ic_undo_ablack"/>
 
             <TextView
                 android:id="@+id/start_timer"
@@ -241,9 +200,7 @@
                 android:background="@drawable/selector_awhite_button"
                 android:contentDescription="@string/btn_pause"
                 android:padding="6dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:minWidth="128dp"
+                android:minWidth="72dp"
                 android:src="@drawable/ic_comment_ablack"/>
 
         </LinearLayout>

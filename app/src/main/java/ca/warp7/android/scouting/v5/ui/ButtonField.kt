@@ -39,7 +39,7 @@ class ButtonField : FrameLayout, BaseFieldWidget {
         button = Button(data.context).apply {
             isAllCaps = false
             textSize = 18f
-            typeface = Typeface.SANS_SERIF
+            typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
             stateListAnimator = null
             text = data.modifiedName
             setLines(2)
