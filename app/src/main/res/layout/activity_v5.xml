@@ -13,10 +13,8 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:orientation="horizontal"
-        android:paddingTop="12dp"
-        android:paddingBottom="4dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp">
+        android:paddingTop="10dp"
+        android:paddingBottom="2dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -128,7 +126,8 @@
         android:orientation="horizontal"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:paddingTop="4dp">
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp">
 
         <TextView
             android:id="@+id/title_banner"
@@ -153,8 +152,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_awhite_button"
                 android:contentDescription="@string/btn_pause"
-                android:padding="6dp"
-                android:minWidth="72dp"
+                android:padding="8dp"
+                android:minWidth="64dp"
                 android:visibility="gone"
                 android:src="@drawable/ic_pause_ablack"/>
 
@@ -169,8 +168,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_awhite_button"
                 android:contentDescription="@string/btn_undo"
-                android:padding="6dp"
-                android:minWidth="72dp"
+                android:padding="8dp"
+                android:minWidth="64dp"
                 android:src="@drawable/ic_undo_ablack"/>
 
             <TextView
@@ -178,20 +177,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_accent_button"
-                android:paddingLeft="9dp"
+                android:paddingLeft="24dp"
                 android:paddingTop="7dp"
-                android:paddingRight="9dp"
+                android:paddingRight="24dp"
                 android:paddingBottom="8dp"
                 android:text="@string/start_timer"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
-                android:textSize="14sp"/>
+                android:textSize="18sp"/>
 
             <View
                 android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"/>
-
 
             <ImageButton
                 android:id="@+id/v5_comment_button"
@@ -199,21 +197,14 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_awhite_button"
                 android:contentDescription="@string/btn_pause"
-                android:padding="6dp"
-                android:minWidth="72dp"
+                android:padding="8dp"
+                android:minWidth="64dp"
                 android:src="@drawable/ic_comment_ablack"/>
-
         </LinearLayout>
-
     </LinearLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="0dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"/>
-
-
+        android:layout_height="match_parent"/>
 </LinearLayout>
