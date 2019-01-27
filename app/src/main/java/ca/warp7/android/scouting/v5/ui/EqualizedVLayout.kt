@@ -43,7 +43,7 @@ class EqualizedVLayout : ViewGroup {
         for (i in 0 until childCount) {
             getChildAt(i).apply {
                 if (visibility != View.GONE) {
-                    layout(l, (i * rowHeight + t).toInt(), r, ((i + 1) * rowHeight + t).toInt())
+                    layout(0, (i * rowHeight).toInt(), r - l, ((i + 1) * rowHeight).toInt())
                 }
             }
         }

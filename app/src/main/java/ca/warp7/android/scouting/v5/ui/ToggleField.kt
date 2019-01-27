@@ -41,13 +41,14 @@ class ToggleField : LinearLayout, BaseFieldWidget {
         orientation = VERTICAL
 
         setBackgroundResource(R.drawable.layer_list_bg_group)
+        background.mutate()
 
         TextView(data.context).apply {
             text = data.modifiedName
             setTextColor(almostBlack)
             textSize = 15f
             gravity = Gravity.CENTER
-            setPadding(0, 14, 0, 0)
+            setPadding(0, 12, 0, 0)
         }.also { addView(it) }
 
         toggleSwitch = ToggleSwitchCompat(data.context).apply {
@@ -68,7 +69,7 @@ class ToggleField : LinearLayout, BaseFieldWidget {
             layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
             //layoutWidth = ViewGroup.LayoutParams.MATCH_PARENT
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-            setPadding(7, 7, 7, 7)
+            setPadding(12, 8, 12, 12)
             setOnChangeListener {
                 if (it != checkedPosition) {
                     checkedPosition = it

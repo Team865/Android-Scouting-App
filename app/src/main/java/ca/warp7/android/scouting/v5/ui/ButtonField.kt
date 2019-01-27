@@ -34,9 +34,8 @@ class ButtonField : FrameLayout, BaseFieldWidget {
 
     internal constructor(data: FieldData) : super(data.context) {
         fieldData = data
-
         setBackgroundResource(R.drawable.layer_list_bg_group)
-
+        background.mutate()
         button = Button(data.context).apply {
             isAllCaps = false
             textSize = 18f
@@ -56,7 +55,6 @@ class ButtonField : FrameLayout, BaseFieldWidget {
                 }
             }
         }.also { addView(it) }
-
         counter = TextView(data.context).apply {
             text = "0"
             textSize = 15f
@@ -65,12 +63,9 @@ class ButtonField : FrameLayout, BaseFieldWidget {
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                leftMargin = 18
-                topMargin = 12
-            }
+            )
+            setPadding(18, 10, 18, 10)
         }.also { addView(it) }
-
         updateControlState()
     }
 

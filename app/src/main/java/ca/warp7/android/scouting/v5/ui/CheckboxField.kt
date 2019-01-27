@@ -32,6 +32,7 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
         fieldData = data
 
         setBackgroundResource(R.drawable.layer_list_bg_group)
+        background.mutate()
         gravity = Gravity.CENTER
 
         checkBox = CheckBox(data.context).apply {

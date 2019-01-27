@@ -35,6 +35,7 @@ class SwitchField : FrameLayout, BaseFieldWidget {
         fieldData = data
 
         setBackgroundResource(R.drawable.layer_list_bg_group)
+        background.mutate()
 
         button = Button(data.context).apply {
             isAllCaps = false
