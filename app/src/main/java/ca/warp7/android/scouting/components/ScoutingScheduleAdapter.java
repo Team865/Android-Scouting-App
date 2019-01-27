@@ -13,7 +13,7 @@ import ca.warp7.android.scouting.R;
 import ca.warp7.android.scouting.abstraction.ScoutingScheduleItem;
 import ca.warp7.android.scouting.model.ButtonItem;
 import ca.warp7.android.scouting.model.MatchWithAllianceItem;
-import ca.warp7.android.scouting.widgets.AllianceView;
+import ca.warp7.android.scouting.v4.widgets.AllianceView;
 
 import java.util.List;
 

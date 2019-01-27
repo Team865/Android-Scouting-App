@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.widgets
+package ca.warp7.android.scouting.v4.widgets
 
 import android.content.Context
 import android.graphics.PorterDuff
@@ -20,7 +20,7 @@ class UndefinedInputsIndicator : AppCompatButton {
     constructor(context: Context, text: String, listener: ScoutingActivityListener) : super(context) {
         textSize = 18f
         setText(text)
-        setOnClickListener{
+        setOnClickListener {
             setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
             background.setColorFilter(
                 ContextCompat.getColor(context, android.R.color.black), PorterDuff.Mode.MULTIPLY

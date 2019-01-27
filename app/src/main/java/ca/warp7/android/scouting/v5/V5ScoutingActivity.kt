@@ -28,7 +28,7 @@ import ca.warp7.android.scouting.v5.entry.V5TimedEntry
 import ca.warp7.android.scouting.v5.ui.V5TabsPagerAdapter
 import java.io.File
 
-class V5Activity : AppCompatActivity(), BaseScoutingActivity {
+class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
     override lateinit var handler: Handler
     override val actionVibrator get() = preferences.vibrator

@@ -23,7 +23,7 @@
 
     <view
         android:id="@+id/alliance_view"
-        class="ca.warp7.android.scouting.widgets.AllianceView"
+        class="ca.warp7.android.scouting.v4.widgets.AllianceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

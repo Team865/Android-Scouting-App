@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.widgets;
+package ca.warp7.android.scouting.v4.widgets;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -13,6 +13,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * A Base button for other buttons to extend onto
+ *
  * @since v0.2.0
  */
 
@@ -24,11 +25,9 @@ public abstract class BaseButton
 
     DataConstant dc;
     ScoutingActivityListener listener;
-
+    View parentSupportView;
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private ParentInputControlListener parentInputControlListener;
-
-    View parentSupportView;
 
     public BaseButton(Context context) {
         super(context);

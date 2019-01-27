@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.widgets;
+package ca.warp7.android.scouting.v4.widgets;
 
 import android.content.Context;
 import android.os.Build;
@@ -14,6 +14,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * A counter for the buttons
+ *
  * @since v0.3.0
  */
 

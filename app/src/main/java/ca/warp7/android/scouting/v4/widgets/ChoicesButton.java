@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.widgets;
+package ca.warp7.android.scouting.v4.widgets;
 
 import android.content.Context;
 import android.graphics.Typeface;

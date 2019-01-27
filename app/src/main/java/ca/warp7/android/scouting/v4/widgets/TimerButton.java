@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.widgets;
+package ca.warp7.android.scouting.v4.widgets;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -12,6 +12,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * A button that records time as it is pressed
+ *
  * @since v0.2.0
  */
 

@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import ca.warp7.android.scouting.v5.V5Activity
+import ca.warp7.android.scouting.v5.V5ScoutingActivity
 
 class V5MainActivity : AppCompatActivity() {
 
@@ -17,7 +17,7 @@ class V5MainActivity : AppCompatActivity() {
         supportActionBar?.title = "Humber College Event"
 
         findViewById<Button>(R.id.v5_starter).setOnClickListener {
-            startActivity(Intent(this, V5Activity::class.java))
+            startActivity(Intent(this, V5ScoutingActivity::class.java))
         }
     }
 

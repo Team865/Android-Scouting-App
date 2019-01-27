@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.widgets;
+package ca.warp7.android.scouting.v4.widgets;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +14,7 @@ import ca.warp7.android.scouting.model.DataConstant;
 
 /**
  * Creates a box container for a label and another control
+ *
  * @since v0.3.0
  */
 

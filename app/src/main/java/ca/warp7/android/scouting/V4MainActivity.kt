@@ -24,7 +24,7 @@ import ca.warp7.android.scouting.constants.ID
 import ca.warp7.android.scouting.model.Specs
 import ca.warp7.android.scouting.model.SpecsIndex
 import ca.warp7.android.scouting.res.AppResources
-import ca.warp7.android.scouting.v5.V5Activity
+import ca.warp7.android.scouting.v5.V5ScoutingActivity
 import java.io.File
 
 /**
@@ -52,7 +52,7 @@ class V4MainActivity : AppCompatActivity() {
         setupListeners()
 
         findViewById<Button>(R.id.v5_starter).setOnClickListener {
-            startActivity(Intent(this, V5Activity::class.java))
+            startActivity(Intent(this, V5ScoutingActivity::class.java))
         }
     }
 

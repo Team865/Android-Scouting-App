@@ -19,7 +19,7 @@ import ca.warp7.android.scouting.constants.ID;
 import ca.warp7.android.scouting.model.DataConstant;
 import ca.warp7.android.scouting.model.ScoutingLayout;
 import ca.warp7.android.scouting.model.Specs;
-import ca.warp7.android.scouting.widgets.*;
+import ca.warp7.android.scouting.v4.widgets.*;
 
 import java.io.File;
 import java.util.List;
@@ -131,7 +131,7 @@ public class ScoutingInputsFragment
             case DataConstant.RATING:
 
                 return new LabeledControlLayout(getContext(), dc, mListener,
-                        new ca.warp7.android.scouting.widgets.SeekBar(getContext(), dc, mListener));
+                        new ca.warp7.android.scouting.v4.widgets.SeekBar(getContext(), dc, mListener));
 
             case DataConstant.CHOICE:
 
