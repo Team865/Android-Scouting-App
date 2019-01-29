@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.Button
 import android.widget.ImageView
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.v5.BaseScoutingActivity
@@ -33,6 +34,8 @@ class V5QRFragment : Fragment(), V5Tab {
 
     private var message = " "
     private var scoutingActivity: BaseScoutingActivity? = null
+
+    private lateinit var sendButton: Button
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -57,14 +60,14 @@ class V5QRFragment : Fragment(), V5Tab {
             }
         })
 
-        view.findViewById<View>(R.id.send_with_another_method).setOnClickListener { onSendIntent() }
-    }
-
-    private fun onSendIntent() {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_TEXT, message)
-        intent.type = "text/plain"
-        startActivity(Intent.createChooser(intent, message))
+        sendButton = view.findViewById(R.id.send_with_another_method)
+        sendButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.putExtra(Intent.EXTRA_TEXT, message)
+            intent.type = "text/plain"
+            startActivity(Intent.createChooser(intent, message))
+        }
+        sendButton.text = ""
     }
 
     private fun setQRImage(view: View) {
@@ -117,6 +120,7 @@ class V5QRFragment : Fragment(), V5Tab {
 
     override fun updateTabState() {
         val newMessage = scoutingActivity?.entry?.encoded ?: " "
+        sendButton.text = newMessage
         if (newMessage != message) {
             message = newMessage
             view?.let { setQRImage(it) }

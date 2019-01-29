@@ -75,9 +75,7 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private val calculateRelativeTime get() = Math.min(currentTime - startingTimestamp, kTimerLimit)
     private val relativeTimeMatchesCurrentTime: Boolean get() = Math.abs(relativeTime - calculateRelativeTime) <= 1
     private val timedUpdater = Runnable {
-        if (activityState != TimedScouting) {
-            timerIsRunning = false
-        } else {
+        if (activityState != TimedScouting) timerIsRunning = false else {
             timerIsRunning = true
             updateActivityStatus()
             updateTabStates()
@@ -147,7 +145,27 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
 
         findViewById<ImageButton>(R.id.v5_comment_button).setOnClickListener {
-            showCommentsDialog()
+            entry?.also {
+                val input = EditText(this).apply {
+                    inputType = InputType.TYPE_CLASS_TEXT or
+                            InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                            InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+                    setText(it.comments)
+                    setSelection(it.comments.length)
+                    gravity = Gravity.CENTER
+                    setHint(R.string.comments_hint)
+                }
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.edit_comments)
+                    .setView(input)
+                    .setPositiveButton("OK") { _, _ -> it.comments = input.text.toString() }
+                    .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                    .create()
+                    .apply {
+                        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+                        show()
+                    }
+            }
         }
 
         timerStatus.setOnClickListener {
@@ -172,7 +190,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         })
 
         preferences = ManagedPreferences(this)
-
         @Suppress("ConstantConditionIf")
         if (false) {
             boardfile = intent.getStringExtra(ScoutingIntentKey.Boardfile).let { File(it).toBoardfile() }
@@ -183,15 +200,20 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
 
         boardfile = exampleBoardfile
-        match = "QM123"
+        match = "2018onto3_qm100"
         team = "865"
         scout = "Yu"
         board = R1
 
-        findViewById<TextView>(R.id.toolbar_match).text = match
+        findViewById<TextView>(R.id.toolbar_match).text = match.let {
+            val split = it.split("_")
+            if (split.size == 2) split[1] else it
+        }
+
         findViewById<TextView>(R.id.toolbar_team).also {
             it.text = team
         }
+
         findViewById<TextView>(R.id.toolbar_board).also {
             it.text = board.name
             it.setTextColor(
@@ -222,48 +244,10 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
         updateActivityStatus()
         updateCurrentTab()
-
-        entry = V5TimedEntry(
-            match = match,
-            team = team,
-            scout = scout,
-            board = board,
-            dataPoints = mutableListOf(),
-            timestamp = currentTime,
-            getTime = { relativeTime },
-            isTiming = true
-        )
-
+        entry = V5TimedEntry(match, team, scout, board, mutableListOf(), currentTime, { relativeTime }, isTiming = true)
         startActivityState(WaitingToStart)
     }
 
-    private fun showCommentsDialog() {
-        entry?.also {
-            val input = EditText(this).apply {
-                inputType = InputType.TYPE_CLASS_TEXT or
-                        InputType.TYPE_TEXT_FLAG_MULTI_LINE or
-                        InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-                setText(it.comments)
-                setSelection(it.comments.length)
-                gravity = Gravity.CENTER
-                setHint(R.string.comments_hint)
-            }
-            AlertDialog.Builder(this)
-                .setTitle(R.string.edit_comments)
-                .setView(input)
-                .setPositiveButton("OK") { _, _ -> it.comments = input.text.toString() }
-                .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-                .create()
-                .apply {
-                    window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-                    show()
-                }
-        }
-    }
-
-    /**
-     * Reflect the value of mTimer on the timer view and seek bars
-     */
     private fun updateActivityStatus() {
         val time = if (timerIsCountingUp) {
             timerStatus.setTypeface(null, Typeface.BOLD)
@@ -291,9 +275,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private val alphaAnimationIn: Animation = AlphaAnimation(0.0f, 1.0f).apply { duration = kFadeDuration.toLong() }
     private val alphaAnimationOut: Animation = AlphaAnimation(1.0f, 0.0f).apply { duration = kFadeDuration.toLong() }
 
-    /**
-     * Updates the current tab as well as the title banner
-     */
     private fun updateCurrentTab() {
         val title = if (currentTab >= 0 && currentTab < screens?.size ?: -1) {
             screens?.get(currentTab)?.title ?: "Unknown"
@@ -321,11 +302,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
     }
 
-    /**
-     * Sets the current activity state and update views and timer
-     *
-     * @param state the activity state to start
-     */
     private fun startActivityState(state: ScoutingActivityState) {
         if (state == TimedScouting && (timerIsRunning || relativeTime >= kTimerLimit)) return
         activityState = state
@@ -363,4 +339,3 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
     }
 }
-
