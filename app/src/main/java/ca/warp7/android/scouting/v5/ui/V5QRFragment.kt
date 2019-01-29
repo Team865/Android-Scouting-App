@@ -35,7 +35,7 @@ class V5QRFragment : Fragment(), V5Tab {
     private var message = " "
     private var scoutingActivity: BaseScoutingActivity? = null
 
-    private lateinit var sendButton: Button
+    private var sendButton: Button? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -61,13 +61,13 @@ class V5QRFragment : Fragment(), V5Tab {
         })
 
         sendButton = view.findViewById(R.id.send_with_another_method)
-        sendButton.setOnClickListener {
+        sendButton?.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.putExtra(Intent.EXTRA_TEXT, message)
             intent.type = "text/plain"
             startActivity(Intent.createChooser(intent, message))
         }
-        sendButton.text = ""
+        sendButton?.text = ""
     }
 
     private fun setQRImage(view: View) {
@@ -120,7 +120,7 @@ class V5QRFragment : Fragment(), V5Tab {
 
     override fun updateTabState() {
         val newMessage = scoutingActivity?.entry?.encoded ?: " "
-        sendButton.text = newMessage
+        sendButton?.text = newMessage
         if (newMessage != message) {
             message = newMessage
             view?.let { setQRImage(it) }
