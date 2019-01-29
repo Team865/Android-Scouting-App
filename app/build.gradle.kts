@@ -33,5 +33,7 @@ dependencies {
     implementation("com.android.support:appcompat-v7:28.0.0")
     implementation("com.android.support:preference-v7:28.0.0")
     implementation("com.google.zxing:core:3.3.3")
-    implementation("com.llollox:androidtoggleswitch:2.0.1")
+    implementation("com.llollox:androidtoggleswitch:2.0.1") {
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jre7")
+    }
 }

@@ -19,12 +19,15 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ListView
 import android.widget.TextView
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.SettingsActivity
 import ca.warp7.android.scouting.v5.entry.Alliance
 import ca.warp7.android.scouting.v5.entry.Board
+import ca.warp7.android.scouting.v5.entry.EntryItem
 import ca.warp7.android.scouting.v5.entry.toBoard
+import ca.warp7.android.scouting.v5.ui.EntriesListAdapter
 
 
 class V5MainActivity : AppCompatActivity() {
@@ -32,6 +35,7 @@ class V5MainActivity : AppCompatActivity() {
     private lateinit var boardTextView: TextView
     private lateinit var scoutTextView: TextView
     private lateinit var preferences: SharedPreferences
+    private lateinit var entriesList: ListView
 
     private var board = Board.R1
 
@@ -42,10 +46,9 @@ class V5MainActivity : AppCompatActivity() {
         supportActionBar?.title = "Humber College Event"
         boardTextView = findViewById(R.id.board)
         scoutTextView = findViewById(R.id.scout_name)
+        entriesList = findViewById(R.id.entries_list)
+        ensurePermissions()
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
-
-        val context = this
-
         boardTextView.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Select board")
@@ -84,7 +87,7 @@ class V5MainActivity : AppCompatActivity() {
             dialog.show()
             val ok = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
             ok.setOnClickListener {
-                val result = input.text.toString()
+                val result = input.text.toString().trim()
                 scoutTextView.text = result
                 preferences.edit().apply {
                     putString(MainSettingsKey.kScout, result)
@@ -101,8 +104,8 @@ class V5MainActivity : AppCompatActivity() {
                 }
             })
         }
+        entriesList.adapter = EntriesListAdapter(this, listOf(EntryItem("qm3", listOf(), Board.R1)))
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
-        ensurePermissions()
     }
 
     private fun updateBoardText() {

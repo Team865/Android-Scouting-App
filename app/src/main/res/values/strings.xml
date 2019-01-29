@@ -49,8 +49,8 @@
         <item>Blue 1</item>
         <item>Blue 2</item>
         <item>Blue 3</item>
-        <item>Red Super Scout</item>
-        <item>Blue Super Scout</item>
+        <!--<item>Red Super Scout</item>-->
+        <!--<item>Blue Super Scout</item>-->
     </string-array>
 
     <string name="send_with_another_method">Send with alternative method</string>
