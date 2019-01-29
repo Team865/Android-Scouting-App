@@ -1,8 +1,11 @@
 package ca.warp7.android.scouting.v5
 
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -95,6 +98,8 @@ class V5MainActivity : AppCompatActivity() {
                 }
             })
         }
+
+        ensurePermissions()
     }
 
     private fun validateName(str: String): Boolean {
@@ -102,6 +107,16 @@ class V5MainActivity : AppCompatActivity() {
         if (name.isEmpty()) return false
         val split = name.split(" ")
         return split.size == 2 && split[0][0].isUpperCase() && split[1].length == 1 && split[1][0].isUpperCase()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_FILES -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // TODO
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -123,5 +138,16 @@ class V5MainActivity : AppCompatActivity() {
                 else -> false
             }
         } ?: false
+    }
+
+    private fun ensurePermissions() {
+        val permission = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE), MY_PERMISSIONS_REQUEST_FILES)
+        }
+    }
+
+    companion object {
+        private const val MY_PERMISSIONS_REQUEST_FILES = 0
     }
 }

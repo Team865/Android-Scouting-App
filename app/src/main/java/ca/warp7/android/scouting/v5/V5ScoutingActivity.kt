@@ -31,10 +31,6 @@ import java.io.File
 
 class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
-    override fun feedSecondLimit() {
-        lastRecordedTime = relativeTime
-    }
-
     override fun updateTabStates() {
         if (currentTab != 0) pagerAdapter[currentTab - 1].updateTabState()
         pagerAdapter[currentTab].updateTabState()
@@ -43,7 +39,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
     override lateinit var handler: Handler
     override val actionVibrator get() = preferences.vibrator
-    override val isSecondLimit get() = relativeTime > kTimerLimit || relativeTime == lastRecordedTime
     override var entry: MutableEntry? = null
     override val timeEnabled get() = activityState != WaitingToStart
     override var boardfile: Boardfile? = null
@@ -65,7 +60,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private lateinit var board: Board
 
     private var activityState = WaitingToStart
-    private var lastRecordedTime = 0
     private var timerIsCountingUp = false
     private var timerIsRunning = false
     private var currentTab = 0
@@ -97,7 +91,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         handler = Handler()
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_v5_scouting)
-
         timerStatus = findViewById(R.id.timer_status)
         startButton = findViewById(R.id.start_timer)
         playAndPauseImage = findViewById(R.id.play_pause_image)
@@ -105,14 +98,12 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         timeProgress = findViewById(R.id.time_progress)
         timeSeeker = findViewById(R.id.time_seeker)
         pager = findViewById(R.id.pager)
-
         startButton.setOnClickListener {
             startingTimestamp = currentTime
             entry?.timestamp = startingTimestamp
             startActivityState(TimedScouting)
             updateTabStates()
         }
-
         playAndPauseImage.setOnClickListener {
             when (activityState) {
                 TimedScouting -> startActivityState(Pausing)
@@ -120,7 +111,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 else -> Unit
             }
         }
-
         undoAndNowImage.setOnClickListener {
             when (activityState) {
                 TimedScouting -> if (relativeTimeMatchesCurrentTime) {
@@ -143,7 +133,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 else -> Unit
             }
         }
-
         findViewById<ImageButton>(R.id.v5_comment_button).setOnClickListener {
             entry?.also {
                 val input = EditText(this).apply {
@@ -161,18 +150,13 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                     .setPositiveButton("OK") { _, _ -> it.comments = input.text.toString() }
                     .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
                     .create()
-                    .apply {
-                        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-                        show()
-                    }
+                    .apply { window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) }.show()
             }
         }
-
         timerStatus.setOnClickListener {
             timerIsCountingUp = !timerIsCountingUp
             updateActivityStatus()
         }
-
         timeProgress.max = kTimerLimit
         timeProgress.progress = 0
         timeSeeker.max = kTimerLimit
@@ -188,7 +172,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 }
             }
         })
-
         preferences = ManagedPreferences(this)
         @Suppress("ConstantConditionIf")
         if (false) {
@@ -198,39 +181,30 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             scout = intent.getStringExtra(ScoutingIntentKey.Scout)
             board = intent.getSerializableExtra(ScoutingIntentKey.Board) as Board
         }
-
         boardfile = exampleBoardfile
         match = "2018onto3_qm100"
         team = "865"
         scout = "Yu"
         board = R1
-
         findViewById<TextView>(R.id.toolbar_match).text = match.let {
             val split = it.split("_")
             if (split.size == 2) split[1] else it
         }
-
         findViewById<TextView>(R.id.toolbar_team).also {
             it.text = team
         }
-
         findViewById<TextView>(R.id.toolbar_board).also {
             it.text = board.name
-            it.setTextColor(
-                ContextCompat.getColor(
-                    this, when (board.alliance) {
-                        Alliance.Red -> R.color.colorRed
-                        Alliance.Blue -> R.color.colorBlue
-                    }
-                )
-            )
+            val color = when (board.alliance) {
+                Alliance.Red -> R.color.colorRed
+                Alliance.Blue -> R.color.colorBlue
+            }
+            it.setTextColor(ContextCompat.getColor(this, color))
         }
-
         template = when (board) {
             RX, BX -> boardfile?.superScoutTemplate
             else -> boardfile?.robotScoutTemplate
         }
-
         pagerAdapter = V5TabsPagerAdapter(supportFragmentManager, screens?.size ?: 0, pager)
         pager.adapter = pagerAdapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -241,7 +215,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 updateCurrentTab()
             }
         })
-
         updateActivityStatus()
         updateCurrentTab()
         entry = V5TimedEntry(match, team, scout, board, mutableListOf(), currentTime, { relativeTime }, isTiming = true)

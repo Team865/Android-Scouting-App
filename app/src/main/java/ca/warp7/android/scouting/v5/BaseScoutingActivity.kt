@@ -36,11 +36,6 @@ interface BaseScoutingActivity {
     val entry: MutableEntry?
 
     /**
-     * whether the current state of the activity can record time
-     */
-    val isSecondLimit: Boolean
-
-    /**
      * whether the activity is in a state not accepting timed data
      */
     val timeEnabled: Boolean
@@ -54,11 +49,6 @@ interface BaseScoutingActivity {
      * Scout template
      */
     val template: ScoutTemplate?
-
-    /**
-     * Feeds the second limit
-     */
-    fun feedSecondLimit()
 
     /**
      * Forces update on the screen
