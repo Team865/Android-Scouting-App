@@ -51,9 +51,8 @@
             android:textColor="@color/colorAlmostBlack"
             android:drawableStart="@drawable/ic_account_box_ablack_small"
             android:background="@drawable/selector_awhite_button"
-            android:focusable="true"
+            android:textIsSelectable="false"
             android:drawablePadding="4dp"
-            android:clickable="true"
             android:padding="8dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"/>
