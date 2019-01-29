@@ -1,6 +1,9 @@
 package ca.warp7.android.scouting
 
 import android.content.Context
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.VibrationEffect.DEFAULT_AMPLITUDE
 import android.os.Vibrator
 
 /**
@@ -16,18 +19,26 @@ class ActionVibrator(
 
     override fun vibrateStart() {
         if (mVibrationOn) {
-            actual.vibrate(kStartVibration, -1)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                actual.vibrate(VibrationEffect.createWaveform(kStartVibration, -1))
+            } else {
+                actual.vibrate(kStartVibration, -1)
+            }
         }
     }
 
     override fun vibrateAction() {
         if (mVibrationOn) {
-            actual.vibrate(kActionEffectVibration.toLong())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                actual.vibrate(VibrationEffect.createOneShot(kActionEffectVibration, DEFAULT_AMPLITUDE))
+            } else {
+                actual.vibrate(kActionEffectVibration)
+            }
         }
     }
 
     companion object {
         private val kStartVibration = longArrayOf(0, 20, 30, 20)
-        private const val kActionEffectVibration = 30
+        private const val kActionEffectVibration = 30L
     }
 }

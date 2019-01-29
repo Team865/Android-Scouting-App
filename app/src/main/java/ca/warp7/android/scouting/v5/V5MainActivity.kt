@@ -43,7 +43,6 @@ class V5MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_v5_main)
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.title = "Humber College Event"
         boardTextView = findViewById(R.id.board)
         scoutTextView = findViewById(R.id.scout_name)
         entriesList = findViewById(R.id.entries_list)
@@ -52,7 +51,7 @@ class V5MainActivity : AppCompatActivity() {
         boardTextView.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Select board")
-                .setItems(R.array.board_choices_v5) { _, which ->
+                .setSingleChoiceItems(R.array.board_choices_v5, Board.values().indexOf(board)) { dialog, which ->
                     Board.values()[which].also {
                         board = it
                         updateBoardText()
@@ -61,6 +60,7 @@ class V5MainActivity : AppCompatActivity() {
                             apply()
                         }
                     }
+                    dialog.dismiss()
                 }.create().show()
         }
         val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
@@ -104,7 +104,15 @@ class V5MainActivity : AppCompatActivity() {
                 }
             })
         }
-        entriesList.adapter = EntriesListAdapter(this, listOf(EntryItem("qm3", listOf(), Board.R1)))
+        entriesList.adapter = EntriesListAdapter(
+            this, listOf(
+                EntryItem("qm1", listOf(), Board.R1),
+                EntryItem("qm2", listOf(), Board.R1),
+                EntryItem("qm3", listOf(), Board.R1),
+                EntryItem("qm4", listOf(), Board.R1)
+
+            )
+        )
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
     }
 

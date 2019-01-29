@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/match_number"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:drawableTop="@drawable/ic_layers_ablack_small"
         android:gravity="center_vertical|center_horizontal"
         android:lineSpacingExtra="0dp"
