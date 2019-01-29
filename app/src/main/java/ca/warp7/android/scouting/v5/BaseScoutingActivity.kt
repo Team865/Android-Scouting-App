@@ -59,4 +59,10 @@ interface BaseScoutingActivity {
      * Feeds the second limit
      */
     fun feedSecondLimit()
+
+    /**
+     * Forces update on the screen
+     */
+
+    fun updateTabStates()
 }

@@ -31,6 +31,16 @@ import java.io.File
 
 class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
+    override fun feedSecondLimit() {
+        lastRecordedTime = relativeTime
+    }
+
+    override fun updateTabStates() {
+        if (currentTab != 0) pagerAdapter[currentTab - 1].updateTabState()
+        pagerAdapter[currentTab].updateTabState()
+        if (currentTab != pagerAdapter.count - 1) pagerAdapter[currentTab + 1].updateTabState()
+    }
+
     override lateinit var handler: Handler
     override val actionVibrator get() = preferences.vibrator
     override val isSecondLimit get() = relativeTime > kTimerLimit || relativeTime == lastRecordedTime
@@ -40,10 +50,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     override var template: ScoutTemplate? = null
     override var relativeTime = 0
 
-    override fun feedSecondLimit() {
-        lastRecordedTime = relativeTime
-    }
-
     private lateinit var timerStatus: TextView
     private lateinit var timeProgress: ProgressBar
     private lateinit var timeSeeker: SeekBar
@@ -52,10 +58,7 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private lateinit var undoAndNowImage: ImageButton
     private lateinit var pager: ViewPager
     private lateinit var pagerAdapter: V5TabsPagerAdapter
-
     private lateinit var preferences: ManagedPreferences
-    private val screens get() = template?.screens
-
     private lateinit var match: String
     private lateinit var team: String
     private lateinit var scout: String
@@ -68,17 +71,9 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private var currentTab = 0
     private var startingTimestamp = 0
 
-    /**
-     * Calculates the relative time based on
-     * the current time and the starting timestamp
-     */
+    private val screens get() = template?.screens
     private val calculateRelativeTime get() = Math.min(currentTime - startingTimestamp, kTimerLimit)
-
-    /**
-     * Calculates whether the counting timer is in approximation with the current time
-     */
     private val relativeTimeMatchesCurrentTime: Boolean get() = Math.abs(relativeTime - calculateRelativeTime) <= 1
-
     private val timedUpdater = Runnable {
         if (activityState != TimedScouting) {
             timerIsRunning = false
@@ -324,16 +319,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         if (pager.currentItem != currentTab) {
             pager.setCurrentItem(currentTab, true)
         }
-    }
-
-    /**
-     * Updates the state on the views on the page to match undo
-     * and navigation.
-     */
-    private fun updateTabStates() {
-        if (currentTab != 0) pagerAdapter[currentTab - 1].updateTabState()
-        pagerAdapter[currentTab].updateTabState()
-        if (currentTab != pagerAdapter.count - 1) pagerAdapter[currentTab + 1].updateTabState()
     }
 
     /**

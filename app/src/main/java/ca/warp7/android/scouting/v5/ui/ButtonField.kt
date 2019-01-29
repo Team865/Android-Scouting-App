@@ -52,12 +52,16 @@ class ButtonField : FrameLayout, BaseFieldWidget {
                 data.scoutingActivity.apply {
                     if (timeEnabled) {
                         actionVibrator?.vibrateAction()
-                        entry!!.add(DataPoint(data.typeIndex, 1, relativeTime))
+                        val entry = entry!!
+                        entry.add(DataPoint(data.typeIndex, 1, relativeTime))
                         if (hasReset) {
-                            entry!!.add(DataPoint(resetTypeIndex, resetValue, relativeTime))
+                            if (entry.lastValue(resetTypeIndex)?.value ?: resetValue != resetValue) {
+                                entry.add(DataPoint(resetTypeIndex, resetValue, relativeTime))
+                            }
+                            updateTabStates()
+                        } else {
+                            updateControlState()
                         }
-                        updateControlState()
-                        handler.postDelayed({ updateControlState() }, 1000)
                     }
                 }
             }
