@@ -3,8 +3,10 @@ package ca.warp7.android.scouting.v5
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -28,6 +30,7 @@ class V5MainActivity : AppCompatActivity() {
 
     private lateinit var boardTextView: TextView
     private lateinit var scoutTextView: TextView
+    private lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +39,12 @@ class V5MainActivity : AppCompatActivity() {
         supportActionBar?.title = "Humber College Event"
         boardTextView = findViewById(R.id.board)
         scoutTextView = findViewById(R.id.scout_name)
+        preferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         val context = this
 
         boardTextView.setOnClickListener {
-            android.app.AlertDialog.Builder(this)
+            AlertDialog.Builder(this)
                 .setTitle("Select board")
                 .setItems(R.array.board_choices_v5) { _, which ->
                     Board.values()[which].also {
@@ -53,11 +57,14 @@ class V5MainActivity : AppCompatActivity() {
                             )
                         )
                         boardTextView.text = it.name
+                        preferences.edit().apply {
+                            putString(MainSettingsKey.kBoard, it.name)
+                            apply()
+                        }
                     }
-                }
-                .show()
+                }.create().show()
         }
-        boardTextView.text = kotlin.run { "R1" }
+        boardTextView.text = preferences.getString(MainSettingsKey.kBoard, "R1")
         boardTextView.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
 
         scoutTextView.setOnClickListener {
@@ -67,11 +74,9 @@ class V5MainActivity : AppCompatActivity() {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-
             val layout = LinearLayout(this)
             layout.addView(input)
             layout.setPadding(10, 0, 10, 0)
-
             val dialog = AlertDialog.Builder(this)
                 .setTitle("Enter Name")
                 .setMessage("Format: First-Name Space Last-Initial")
@@ -79,17 +84,19 @@ class V5MainActivity : AppCompatActivity() {
                 .setPositiveButton("OK") { _, _ -> }
                 .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
                 .create()
-
             dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
             dialog.show()
-
             val ok = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
             ok.setOnClickListener {
-                scoutTextView.text = input.text.toString()
+                val result = input.text.toString()
+                scoutTextView.text = result
+                preferences.edit().apply {
+                    putString(MainSettingsKey.kScout, result)
+                    apply()
+                }
+                dialog.dismiss()
             }
-
             ok.isEnabled = validateName(input.text.toString())
-
             input.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) = Unit
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
@@ -98,7 +105,7 @@ class V5MainActivity : AppCompatActivity() {
                 }
             })
         }
-
+        scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
         ensurePermissions()
     }
 

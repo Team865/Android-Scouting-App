@@ -175,11 +175,11 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         preferences = ManagedPreferences(this)
         @Suppress("ConstantConditionIf")
         if (false) {
-            boardfile = intent.getStringExtra(ScoutingIntentKey.Boardfile).let { File(it).toBoardfile() }
-            match = intent.getStringExtra(ScoutingIntentKey.Match)
-            team = intent.getStringExtra(ScoutingIntentKey.Team)
-            scout = intent.getStringExtra(ScoutingIntentKey.Scout)
-            board = intent.getSerializableExtra(ScoutingIntentKey.Board) as Board
+            boardfile = intent.getStringExtra(ScoutingIntentKey.kBoardfile).let { File(it).toBoardfile() }
+            match = intent.getStringExtra(ScoutingIntentKey.kMatch)
+            team = intent.getStringExtra(ScoutingIntentKey.kTeam)
+            scout = intent.getStringExtra(ScoutingIntentKey.kScout)
+            board = intent.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
         }
         boardfile = exampleBoardfile
         match = "2018onto3_qm100"

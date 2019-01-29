@@ -4,9 +4,9 @@ object ScoutingIntentKey {
 
     private const val v5Root = "ca.warp7.android.scouting.v5.intent"
 
-    const val Boardfile = "$v5Root.boardfile"
-    const val Match = "$v5Root.match"
-    const val Team = "$v5Root.team"
-    const val Scout = "$v5Root.scout"
-    const val Board = "$v5Root.board"
+    const val kBoardfile = "$v5Root.boardfile"
+    const val kMatch = "$v5Root.match"
+    const val kTeam = "$v5Root.team"
+    const val kScout = "$v5Root.scout"
+    const val kBoard = "$v5Root.board"
 }
