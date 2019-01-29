@@ -2,12 +2,14 @@ package ca.warp7.android.scouting.v5
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.SettingsActivity
+import ca.warp7.android.scouting.v5.entry.Alliance
 import ca.warp7.android.scouting.v5.entry.Board
 
 class V5MainActivity : AppCompatActivity() {
@@ -23,10 +25,24 @@ class V5MainActivity : AppCompatActivity() {
         boardTextView = findViewById(R.id.board)
         scoutTextView = findViewById(R.id.scout_name)
 
+        val context = this
+
         boardTextView.setOnClickListener {
             android.app.AlertDialog.Builder(this)
                 .setTitle("Select board")
-                .setItems(R.array.board_choices_v5) { _, which -> boardTextView.text = Board.values()[which].name }
+                .setItems(R.array.board_choices_v5) { _, which ->
+                    Board.values()[which].also {
+                        boardTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context, when (it.alliance) {
+                                    Alliance.Red -> R.color.colorRed
+                                    Alliance.Blue -> R.color.colorBlue
+                                }
+                            )
+                        )
+                        boardTextView.text = it.name
+                    }
+                }
                 .show()
         }
     }

@@ -1,5 +1,15 @@
 package ca.warp7.android.scouting.v5.entry
 
-enum class Board {
-    R1, R2, R3, B1, B2, B3, RX, BX
+import ca.warp7.android.scouting.v5.entry.Alliance.Blue
+import ca.warp7.android.scouting.v5.entry.Alliance.Red
+
+enum class Board(val alliance: Alliance) {
+    R1(Red),
+    R2(Red),
+    R3(Red),
+    B1(Blue),
+    B2(Blue),
+    B3(Blue),
+    RX(Red),
+    BX(Blue)
 }

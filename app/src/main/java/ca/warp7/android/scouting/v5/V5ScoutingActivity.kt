@@ -21,6 +21,7 @@ import ca.warp7.android.scouting.v5.boardfile.Boardfile
 import ca.warp7.android.scouting.v5.boardfile.ScoutTemplate
 import ca.warp7.android.scouting.v5.boardfile.exampleBoardfile
 import ca.warp7.android.scouting.v5.boardfile.toBoardfile
+import ca.warp7.android.scouting.v5.entry.Alliance
 import ca.warp7.android.scouting.v5.entry.Board
 import ca.warp7.android.scouting.v5.entry.Board.*
 import ca.warp7.android.scouting.v5.entry.MutableEntry
@@ -200,9 +201,9 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             it.text = board.name
             it.setTextColor(
                 ContextCompat.getColor(
-                    this, when (board) {
-                        R1, R2, R3, RX -> R.color.colorRed
-                        B1, B2, B3, BX -> R.color.colorBlue
+                    this, when (board.alliance) {
+                        Alliance.Red -> R.color.colorRed
+                        Alliance.Blue -> R.color.colorBlue
                     }
                 )
             )
