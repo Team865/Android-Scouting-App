@@ -28,7 +28,7 @@
             android:id="@+id/toolbar_match"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="16dp"
+            android:paddingEnd="12dp"
             android:paddingStart="0dp"
             android:textColor="@color/colorAlmostBlack"
             android:textSize="18sp"
@@ -49,7 +49,7 @@
             android:gravity="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:paddingEnd="16dp"
+            android:paddingEnd="12dp"
             android:paddingStart="0dp"/>
 
         <ImageView
@@ -68,7 +68,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/colorAlmostBlack"
-            android:paddingEnd="16dp"
+            android:paddingEnd="12dp"
             android:paddingStart="0dp"/>
 
         <ImageView
@@ -88,7 +88,7 @@
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:typeface="sans"
-            android:paddingEnd="16dp"
+            android:paddingEnd="12dp"
             android:paddingStart="0dp"/>
 
     </LinearLayout>

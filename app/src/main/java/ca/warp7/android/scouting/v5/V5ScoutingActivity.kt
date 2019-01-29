@@ -179,11 +179,11 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
         @Suppress("ConstantConditionIf")
         if (false) {
-            boardfile = intent.getStringExtra(IntentKey.Boardfile).let { File(it).toBoardfile() }
-            match = intent.getStringExtra(IntentKey.Match)
-            team = intent.getStringExtra(IntentKey.Team)
-            scout = intent.getStringExtra(IntentKey.Scout)
-            board = intent.getSerializableExtra(IntentKey.Board) as Board
+            boardfile = intent.getStringExtra(ScoutingIntentKey.Boardfile).let { File(it).toBoardfile() }
+            match = intent.getStringExtra(ScoutingIntentKey.Match)
+            team = intent.getStringExtra(ScoutingIntentKey.Team)
+            scout = intent.getStringExtra(ScoutingIntentKey.Scout)
+            board = intent.getSerializableExtra(ScoutingIntentKey.Board) as Board
         }
 
         boardfile = exampleBoardfile

@@ -19,80 +19,49 @@
         android:gravity="center"
         android:layout_gravity="center">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/board"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorRed"
+            android:drawableStart="@drawable/ic_book_ablack_small"
             android:background="@drawable/selector_awhite_button"
-            tools:ignore="UseCompoundDrawables,UselessParent"
+            android:focusable="true"
+            android:drawablePadding="4dp"
+            android:clickable="true"
             android:padding="8dp"
             android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:paddingEnd="16dp"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:contentDescription="@string/hint_team"
-                android:padding="2dp"
-                android:src="@drawable/ic_book_ablack_small"/>
+        <View
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="R1"
-                android:textColor="@color/colorRed"
-                tools:ignore="HardcodedText"/>
-        </LinearLayout>
-
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/scout_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorAlmostBlack"
+            android:drawableStart="@drawable/ic_account_box_ablack_small"
             android:background="@drawable/selector_awhite_button"
-            tools:ignore="UseCompoundDrawables,UselessParent"
+            android:focusable="true"
+            android:drawablePadding="4dp"
+            android:clickable="true"
             android:padding="8dp"
-            android:layout_marginStart="16dp"
             android:paddingStart="16dp"
-            android:paddingEnd="16dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:contentDescription="@string/hint_team"
-                android:padding="2dp"
-                android:src="@drawable/ic_account_box_ablack_small"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="Yu Liu"
-                android:textColor="@color/colorAlmostBlack"
-                tools:ignore="HardcodedText"/>
-        </LinearLayout>
-
-
+            android:paddingEnd="16dp"/>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/v5_starter"
-        android:text="Start v5 test"
-        android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_accent_button"
-        android:textColor="@color/colorWhite"
-        android:textAllCaps="false"
-        android:elevation="0dp"
-        android:ems="9"
-        android:textSize="20sp"
-        android:typeface="sans"
-        tools:ignore="HardcodedText"/>
+    <ListView
+        android:id="@+id/entries_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

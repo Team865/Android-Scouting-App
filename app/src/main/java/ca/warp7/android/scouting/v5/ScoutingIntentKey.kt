@@ -1,6 +1,6 @@
 package ca.warp7.android.scouting.v5
 
-object IntentKey {
+object ScoutingIntentKey {
 
     private const val v5Root = "ca.warp7.android.scouting.v5.intent"
 
