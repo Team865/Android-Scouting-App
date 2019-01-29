@@ -24,6 +24,7 @@ import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.SettingsActivity
 import ca.warp7.android.scouting.v5.entry.Alliance
 import ca.warp7.android.scouting.v5.entry.Board
+import ca.warp7.android.scouting.v5.entry.toBoard
 
 
 class V5MainActivity : AppCompatActivity() {
@@ -31,6 +32,8 @@ class V5MainActivity : AppCompatActivity() {
     private lateinit var boardTextView: TextView
     private lateinit var scoutTextView: TextView
     private lateinit var preferences: SharedPreferences
+
+    private var board = Board.R1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,15 +51,8 @@ class V5MainActivity : AppCompatActivity() {
                 .setTitle("Select board")
                 .setItems(R.array.board_choices_v5) { _, which ->
                     Board.values()[which].also {
-                        boardTextView.setTextColor(
-                            ContextCompat.getColor(
-                                context, when (it.alliance) {
-                                    Alliance.Red -> R.color.colorRed
-                                    Alliance.Blue -> R.color.colorBlue
-                                }
-                            )
-                        )
-                        boardTextView.text = it.name
+                        board = it
+                        updateBoardText()
                         preferences.edit().apply {
                             putString(MainSettingsKey.kBoard, it.name)
                             apply()
@@ -64,9 +60,9 @@ class V5MainActivity : AppCompatActivity() {
                     }
                 }.create().show()
         }
-        boardTextView.text = preferences.getString(MainSettingsKey.kBoard, "R1")
-        boardTextView.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-
+        val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
+        board = boardString?.toBoard() ?: Board.R1
+        updateBoardText()
         scoutTextView.setOnClickListener {
             val input = EditText(this)
             input.inputType = InputType.TYPE_CLASS_TEXT
@@ -107,6 +103,18 @@ class V5MainActivity : AppCompatActivity() {
         }
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
         ensurePermissions()
+    }
+
+    private fun updateBoardText() {
+        boardTextView.text = board.name
+        boardTextView.setTextColor(
+            ContextCompat.getColor(
+                this, when (board.alliance) {
+                    Alliance.Red -> R.color.colorRed
+                    Alliance.Blue -> R.color.colorBlue
+                }
+            )
+        )
     }
 
     private fun validateName(str: String): Boolean {

@@ -11,5 +11,5 @@ enum class Board(val alliance: Alliance) {
     B2(Blue),
     B3(Blue),
     RX(Red),
-    BX(Blue)
+    BX(Blue);
 }
