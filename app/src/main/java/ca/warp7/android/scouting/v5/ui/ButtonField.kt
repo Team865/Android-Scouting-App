@@ -26,6 +26,10 @@ class ButtonField : FrameLayout, BaseFieldWidget {
     private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
 
+    private var hasReset: Boolean = false
+    private var resetTypeIndex: Int = 0
+    private var resetValue: Int = 0
+
     constructor(context: Context) : super(context) {
         fieldData = null
         counter = null
@@ -49,6 +53,9 @@ class ButtonField : FrameLayout, BaseFieldWidget {
                     if (timeEnabled) {
                         actionVibrator?.vibrateAction()
                         entry!!.add(DataPoint(data.typeIndex, 1, relativeTime))
+                        if (hasReset) {
+                            entry!!.add(DataPoint(resetTypeIndex, resetValue, relativeTime))
+                        }
                         updateControlState()
                         handler.postDelayed({ updateControlState() }, 1000)
                     }
@@ -66,6 +73,14 @@ class ButtonField : FrameLayout, BaseFieldWidget {
             )
             setPadding(18, 10, 18, 10)
         }.also { addView(it) }
+        data.templateField.options?.forEach {
+            if (it.startsWith("resets:")) {
+                hasReset = true
+                val split = it.substring(7).split("=")
+                resetTypeIndex = data.scoutingActivity.template?.lookup(split[0]) ?: 0
+                resetValue = split[1].toInt()
+            }
+        }
         updateControlState()
     }
 
