@@ -45,8 +45,8 @@ class ToggleField : LinearLayout, BaseFieldWidget {
         TextView(data.context).apply {
             text = data.modifiedName
             setTextColor(almostBlack)
-            textSize = 15f
-            setPadding(0, 12, 0, 0)
+            textSize = 14f
+            setPadding(0, 8, 0, 0)
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -70,7 +70,7 @@ class ToggleField : LinearLayout, BaseFieldWidget {
             setEntries(options)
             layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-            setPadding(12, 8, 12, 12)
+            setPadding(12, 4, 12, 12)
             setOnChangeListener {
                 if (it != checkedPosition) {
                     checkedPosition = it
