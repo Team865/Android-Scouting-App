@@ -36,32 +36,35 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
                 android:textColor="@color/colorRed"
                 android:textStyle="bold"
                 android:text="254"
+                android:gravity="center"
                 android:textSize="@dimen/alliance_view_text_size"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
                 android:textColor="@color/colorRed"
                 android:textStyle="bold"
                 android:textSize="@dimen/alliance_view_text_size"
+                android:gravity="center"
                 android:text="2056"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
                 android:textColor="@color/colorRed"
                 android:textStyle="bold"
                 android:textSize="@dimen/alliance_view_text_size"
+                android:gravity="center"
                 android:text="865"/>
         </LinearLayout>
 
@@ -74,34 +77,47 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
                 android:textColor="@color/colorBlue"
                 android:textStyle="bold"
                 android:text="1114"
+                android:gravity="center"
                 android:textSize="@dimen/alliance_view_text_size"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
                 android:textColor="@color/colorBlue"
                 android:textStyle="bold"
                 android:textSize="@dimen/alliance_view_text_size"
+                android:gravity="center"
                 android:text="1241"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
                 android:textColor="@color/colorBlue"
                 android:textStyle="bold"
                 android:textSize="@dimen/alliance_view_text_size"
+                android:gravity="center"
                 android:text="5406"/>
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|end"
+        android:text="12:41"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorAlmostBlack"
+        android:textSize="@dimen/alliance_view_text_size"
+        android:padding="6dp"/>
 </LinearLayout>

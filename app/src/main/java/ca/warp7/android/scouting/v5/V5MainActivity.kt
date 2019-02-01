@@ -110,7 +110,6 @@ class V5MainActivity : AppCompatActivity() {
                 EntryItem("qm2", listOf(), Board.R1),
                 EntryItem("qm3", listOf(), Board.R1),
                 EntryItem("qm123", listOf(), Board.R1)
-
             )
         )
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
