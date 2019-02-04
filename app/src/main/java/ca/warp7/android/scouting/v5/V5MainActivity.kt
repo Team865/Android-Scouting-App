@@ -78,7 +78,7 @@ class V5MainActivity : AppCompatActivity() {
             layout.setPadding(10, 0, 10, 0)
             val dialog = AlertDialog.Builder(this)
                 .setTitle("Enter Name")
-                .setMessage("Format: First-Name Space Last-Initial")
+                .setMessage("Format: First Name + Space + One Letter Last Initial, Both Capitalized")
                 .setView(layout)
                 .setPositiveButton("OK") { _, _ -> }
                 .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
@@ -106,12 +106,15 @@ class V5MainActivity : AppCompatActivity() {
         }
         entriesList.adapter = EntriesListAdapter(
             this, listOf(
-                EntryItem("qm1", listOf(), Board.R1),
+                EntryItem("qm1", listOf(1, 2, 3, 4, 5, 6), Board.B1),
                 EntryItem("qm2", listOf(), Board.R1),
                 EntryItem("qm3", listOf(), Board.R1),
-                EntryItem("qm123", listOf(), Board.R1)
+                EntryItem("qm123", listOf(), Board.BX)
             )
         )
+        entriesList.setOnItemClickListener { parent, view, position, id ->
+            startActivity(Intent(this, V5ScoutingActivity::class.java))
+        }
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
     }
 

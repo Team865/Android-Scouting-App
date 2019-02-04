@@ -24,8 +24,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="2.0"
-        tools:ignore="HardcodedText"
-        >
+        tools:ignore="HardcodedText">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -35,6 +34,7 @@
             android:gravity="center">
 
             <TextView
+                android:id="@+id/red_1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
@@ -46,6 +46,7 @@
                 android:textSize="@dimen/alliance_view_text_size"/>
 
             <TextView
+                android:id="@+id/red_2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
@@ -57,6 +58,7 @@
                 android:text="2056"/>
 
             <TextView
+                android:id="@+id/red_3"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
@@ -76,6 +78,7 @@
             android:gravity="center">
 
             <TextView
+                android:id="@+id/blue_1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
@@ -87,6 +90,7 @@
                 android:textSize="@dimen/alliance_view_text_size"/>
 
             <TextView
+                android:id="@+id/blue_2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
@@ -98,6 +102,7 @@
                 android:text="1241"/>
 
             <TextView
+                android:id="@+id/blue_3"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
@@ -112,6 +117,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/match_time"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center|end"
@@ -119,5 +125,6 @@
         android:textAlignment="textEnd"
         android:textColor="@color/colorAlmostBlack"
         android:textSize="@dimen/alliance_view_text_size"
-        android:padding="6dp"/>
+        android:padding="6dp"
+        tools:ignore="HardcodedText"/>
 </LinearLayout>
