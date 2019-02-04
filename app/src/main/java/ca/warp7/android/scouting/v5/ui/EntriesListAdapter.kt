@@ -11,6 +11,7 @@ import android.widget.TextView
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.v5.entry.Board.*
 import ca.warp7.android.scouting.v5.entry.EntryItem
+import ca.warp7.android.scouting.v5.entry.EntryItemState.*
 
 class EntriesListAdapter(
     context: Context,
@@ -21,11 +22,18 @@ class EntriesListAdapter(
     private val red = ContextCompat.getColor(context, R.color.colorRed)
     private val blue = ContextCompat.getColor(context, R.color.colorBlue)
     private val gray = ContextCompat.getColor(context, R.color.colorGray)
+    private val yellow = ContextCompat.getColor(context, R.color.colorAlmostYellow)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val itemView = if (convertView is LinearLayout)
             convertView else mInflater.inflate(R.layout.list_item_v5_match, parent, false)
         getItem(position)?.apply {
+            when (state) {
+                Waiting -> itemView.setBackgroundColor(0)
+                Completed -> itemView.setBackgroundColor(0x8080ff88.toInt())
+                Added -> itemView.setBackgroundColor(0x80ffe088.toInt())
+            }
+
             itemView.findViewById<TextView>(R.id.match_number).text = match
             val red1 = itemView.findViewById<TextView>(R.id.red_1)
             val red2 = itemView.findViewById<TextView>(R.id.red_2)

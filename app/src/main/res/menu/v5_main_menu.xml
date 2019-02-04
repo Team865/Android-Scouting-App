@@ -9,6 +9,12 @@
         app:showAsAction="ifRoom"/>
 
     <item
+        android:id="@+id/delete_entries"
+        android:icon="@drawable/ic_delete_sweep_ablack"
+        android:title="@string/menu_select_specs"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/menu_settings"
         android:title="@string/menu_select_specs"
         android:icon="@drawable/ic_settings_ablack"

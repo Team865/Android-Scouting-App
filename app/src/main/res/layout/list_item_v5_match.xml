@@ -115,16 +115,4 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/match_time"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|end"
-        android:text="12:41"
-        android:textAlignment="textEnd"
-        android:textColor="@color/colorAlmostBlack"
-        android:textSize="@dimen/alliance_view_text_size"
-        android:padding="6dp"
-        tools:ignore="HardcodedText"/>
 </LinearLayout>

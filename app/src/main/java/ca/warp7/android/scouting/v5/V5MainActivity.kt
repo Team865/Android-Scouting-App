@@ -23,10 +23,7 @@ import android.widget.ListView
 import android.widget.TextView
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.SettingsActivity
-import ca.warp7.android.scouting.v5.entry.Alliance
-import ca.warp7.android.scouting.v5.entry.Board
-import ca.warp7.android.scouting.v5.entry.EntryItem
-import ca.warp7.android.scouting.v5.entry.toBoard
+import ca.warp7.android.scouting.v5.entry.*
 import ca.warp7.android.scouting.v5.ui.EntriesListAdapter
 
 
@@ -43,6 +40,7 @@ class V5MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_v5_main)
         setSupportActionBar(findViewById(R.id.my_toolbar))
+        supportActionBar?.title = "Humber College"
         boardTextView = findViewById(R.id.board)
         scoutTextView = findViewById(R.id.scout_name)
         entriesList = findViewById(R.id.entries_list)
@@ -107,8 +105,8 @@ class V5MainActivity : AppCompatActivity() {
         entriesList.adapter = EntriesListAdapter(
             this, listOf(
                 EntryItem("qm1", listOf(1, 2, 3, 4, 5, 6), Board.B1),
-                EntryItem("qm2", listOf(), Board.R1),
-                EntryItem("qm3", listOf(), Board.R1),
+                EntryItem("qm2", listOf(), Board.R1, state = EntryItemState.Completed),
+                EntryItem("qm3", listOf(), Board.R1, state = EntryItemState.Added),
                 EntryItem("qm123", listOf(), Board.BX)
             )
         )
