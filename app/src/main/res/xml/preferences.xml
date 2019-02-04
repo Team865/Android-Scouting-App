@@ -7,8 +7,7 @@
             android:summary="@string/pref_use_vibration_summary"
             android:title="@string/pref_use_vibration_title"/>
         <Preference
-            android:title="Boardfile Version"
-            android:summary="2019.1.0-dev"/>
+            android:title="Boardfile Version"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_cat_about">
         <Preference

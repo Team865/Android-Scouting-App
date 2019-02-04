@@ -34,7 +34,11 @@ class EntriesListAdapter(
                 Added -> itemView.setBackgroundColor(0x80ffe088.toInt())
             }
 
-            itemView.findViewById<TextView>(R.id.match_number).text = match
+            itemView.findViewById<TextView>(R.id.match_number).text = match.let {
+                val split = it.split("_")
+                if (split.size == 2) split[1] else it
+            }
+            
             val red1 = itemView.findViewById<TextView>(R.id.red_1)
             val red2 = itemView.findViewById<TextView>(R.id.red_2)
             val red3 = itemView.findViewById<TextView>(R.id.red_3)

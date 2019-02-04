@@ -20,14 +20,13 @@ import ca.warp7.android.scouting.v5.ScoutingActivityState.*
 import ca.warp7.android.scouting.v5.boardfile.Boardfile
 import ca.warp7.android.scouting.v5.boardfile.ScoutTemplate
 import ca.warp7.android.scouting.v5.boardfile.exampleBoardfile
-import ca.warp7.android.scouting.v5.boardfile.toBoardfile
 import ca.warp7.android.scouting.v5.entry.Alliance
 import ca.warp7.android.scouting.v5.entry.Board
-import ca.warp7.android.scouting.v5.entry.Board.*
+import ca.warp7.android.scouting.v5.entry.Board.BX
+import ca.warp7.android.scouting.v5.entry.Board.RX
 import ca.warp7.android.scouting.v5.entry.MutableEntry
 import ca.warp7.android.scouting.v5.entry.V5TimedEntry
 import ca.warp7.android.scouting.v5.ui.V5TabsPagerAdapter
-import java.io.File
 
 class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
@@ -173,19 +172,11 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             }
         })
         preferences = ManagedPreferences(this)
-        @Suppress("ConstantConditionIf")
-        if (false) {
-            boardfile = intent.getStringExtra(ScoutingIntentKey.kBoardfile).let { File(it).toBoardfile() }
-            match = intent.getStringExtra(ScoutingIntentKey.kMatch)
-            team = intent.getStringExtra(ScoutingIntentKey.kTeam)
-            scout = intent.getStringExtra(ScoutingIntentKey.kScout)
-            board = intent.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
-        }
         boardfile = exampleBoardfile
-        match = "2018onto3_qm100"
-        team = "865"
-        scout = "Yu"
-        board = R1
+        match = intent.getStringExtra(ScoutingIntentKey.kMatch)
+        team = intent.getStringExtra(ScoutingIntentKey.kTeam)
+        scout = intent.getStringExtra(ScoutingIntentKey.kScout)
+        board = intent.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
         findViewById<TextView>(R.id.toolbar_match).text = match.let {
             val split = it.split("_")
             if (split.size == 2) split[1] else it

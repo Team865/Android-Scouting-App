@@ -24,6 +24,7 @@ import android.widget.TextView
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.SettingsActivity
 import ca.warp7.android.scouting.v5.entry.*
+import ca.warp7.android.scouting.v5.entry.Board.*
 import ca.warp7.android.scouting.v5.ui.EntriesListAdapter
 
 
@@ -34,7 +35,7 @@ class V5MainActivity : AppCompatActivity() {
     private lateinit var preferences: SharedPreferences
     private lateinit var entriesList: ListView
 
-    private var board = Board.R1
+    private var board = R1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +50,8 @@ class V5MainActivity : AppCompatActivity() {
         boardTextView.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Select board")
-                .setSingleChoiceItems(R.array.board_choices_v5, Board.values().indexOf(board)) { dialog, which ->
-                    Board.values()[which].also {
+                .setSingleChoiceItems(R.array.board_choices_v5, values().indexOf(board)) { dialog, which ->
+                    values()[which].also {
                         board = it
                         updateBoardText()
                         preferences.edit().apply {
@@ -62,7 +63,7 @@ class V5MainActivity : AppCompatActivity() {
                 }.create().show()
         }
         val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
-        board = boardString?.toBoard() ?: Board.R1
+        board = boardString?.toBoard() ?: R1
         updateBoardText()
         scoutTextView.setOnClickListener {
             val input = EditText(this)
@@ -102,16 +103,31 @@ class V5MainActivity : AppCompatActivity() {
                 }
             })
         }
-        entriesList.adapter = EntriesListAdapter(
+        val adapter = EntriesListAdapter(
             this, listOf(
-                EntryItem("qm1", listOf(1, 2, 3, 4, 5, 6), Board.B1),
-                EntryItem("qm2", listOf(), Board.R1, state = EntryItemState.Completed),
-                EntryItem("qm3", listOf(), Board.R1, state = EntryItemState.Added),
-                EntryItem("qm123", listOf(), Board.BX)
+                EntryItem("2019onto3_qm1", listOf(1, 2, 3, 4, 5, 6), B1),
+                EntryItem("2019onto3_qm2", listOf(), R1, state = EntryItemState.Completed),
+                EntryItem("2019onto3_qm3", listOf(), R1, state = EntryItemState.Added),
+                EntryItem("2019onto3_qm123", listOf(), BX)
             )
         )
-        entriesList.setOnItemClickListener { parent, view, position, id ->
-            startActivity(Intent(this, V5ScoutingActivity::class.java))
+        entriesList.adapter = adapter
+        entriesList.setOnItemClickListener { _, _, position, _ ->
+            adapter.getItem(position)?.apply {
+                if (teams.size > 5) {
+                    startScouting(
+                        match, when (board) {
+                            R1 -> teams[0].toString()
+                            R2 -> teams[1].toString()
+                            R3 -> teams[2].toString()
+                            B1 -> teams[3].toString()
+                            B2 -> teams[4].toString()
+                            B3 -> teams[5].toString()
+                            RX, BX -> "ALL"
+                        }, scoutTextView.text.toString(), board
+                    )
+                }
+            }
         }
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
     }
@@ -158,7 +174,6 @@ class V5MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_new_entry -> {
-                    startActivity(Intent(this, V5ScoutingActivity::class.java))
                     true
                 }
                 else -> false
@@ -171,6 +186,15 @@ class V5MainActivity : AppCompatActivity() {
         if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE), MY_PERMISSIONS_REQUEST_FILES)
         }
+    }
+
+    fun startScouting(match: String, team: String, scout: String, board: Board) {
+        startActivity(Intent(this, V5ScoutingActivity::class.java).apply {
+            putExtra(ScoutingIntentKey.kMatch, match)
+            putExtra(ScoutingIntentKey.kBoard, board)
+            putExtra(ScoutingIntentKey.kTeam, team)
+            putExtra(ScoutingIntentKey.kScout, scout)
+        })
     }
 
     companion object {

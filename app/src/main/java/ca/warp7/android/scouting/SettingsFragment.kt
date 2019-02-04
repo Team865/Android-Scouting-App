@@ -17,7 +17,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         addListener(R.string.pref_licenses_key, listener)
 
         val aboutApp = findPreference(getString(R.string.pref_about_key))
-        aboutApp.summary = "Version: " + BuildConfig.VERSION_NAME
+        aboutApp.summary = "Version: " + BuildConfig.VERSION_NAME + "-" + BuildConfig.BUILD_TYPE
     }
 
     private fun addListener(id: Int, listener: SettingsClickListener) {
