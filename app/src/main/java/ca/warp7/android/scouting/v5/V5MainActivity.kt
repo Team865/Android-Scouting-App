@@ -37,6 +37,43 @@ class V5MainActivity : AppCompatActivity() {
 
     private var board = R1
 
+    private val teams = mutableListOf(
+        746,
+        771,
+        854,
+        865,
+        907,
+        1114,
+        1310,
+        1374,
+        2198,
+        2405,
+        2935,
+        3683,
+        4039,
+        4308,
+        4343,
+        4939,
+        5031,
+        5834,
+        5870,
+        6009,
+        6141,
+        6513,
+        6977,
+        6978,
+        7013,
+        7480,
+        7509,
+        7558,
+        7603,
+        7623,
+        7723,
+        7902
+    )
+
+    private val randTeams: List<Int> get() = teams.shuffled().subList(0, 6)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_v5_main)
@@ -103,14 +140,16 @@ class V5MainActivity : AppCompatActivity() {
                 }
             })
         }
-        val adapter = EntriesListAdapter(
-            this, listOf(
-                EntryItem("2019onto3_qm1", listOf(1, 2, 3, 4, 5, 6), B1),
-                EntryItem("2019onto3_qm2", listOf(), R1, state = EntryItemState.Completed),
-                EntryItem("2019onto3_qm3", listOf(), R1, state = EntryItemState.Added),
-                EntryItem("2019onto3_qm123", listOf(), BX)
+        val entryItems = mutableListOf<EntryItem>()
+        for (i in 1..100) {
+            entryItems.add(
+                EntryItem(
+                    "2019onto3_qm$i", randTeams,
+                    Board.values().random(), EntryItemState.values().random()
+                )
             )
-        )
+        }
+        val adapter = EntriesListAdapter(this, entryItems)
         entriesList.adapter = adapter
         entriesList.setOnItemClickListener { _, _, position, _ ->
             adapter.getItem(position)?.apply {

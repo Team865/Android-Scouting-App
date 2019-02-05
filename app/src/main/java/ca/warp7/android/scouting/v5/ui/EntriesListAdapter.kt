@@ -30,15 +30,15 @@ class EntriesListAdapter(
         getItem(position)?.apply {
             when (state) {
                 Waiting -> itemView.setBackgroundColor(0)
-                Completed -> itemView.setBackgroundColor(0x8080ff88.toInt())
-                Added -> itemView.setBackgroundColor(0x80ffe088.toInt())
+                Completed -> itemView.setBackgroundColor(0x6080ff88)
+                Added -> itemView.setBackgroundColor(0x60ffe088)
             }
 
             itemView.findViewById<TextView>(R.id.match_number).text = match.let {
                 val split = it.split("_")
                 if (split.size == 2) split[1] else it
             }
-            
+
             val red1 = itemView.findViewById<TextView>(R.id.red_1)
             val red2 = itemView.findViewById<TextView>(R.id.red_2)
             val red3 = itemView.findViewById<TextView>(R.id.red_3)
