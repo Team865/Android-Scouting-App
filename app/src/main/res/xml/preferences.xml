@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/pref_cat_opt">
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="@string/pref_use_vibration_key"
-            android:summary="@string/pref_use_vibration_summary"
-            android:title="@string/pref_use_vibration_title"/>
-        <Preference
-            android:title="Boardfile Version"/>
-    </PreferenceCategory>
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="@string/pref_use_vibration_key"
+        android:summary="@string/pref_use_vibration_summary"
+        android:title="@string/pref_use_vibration_title"/>
     <PreferenceCategory android:title="@string/pref_cat_about">
         <Preference
             android:key="@string/pref_about_key"
-            android:title="@string/pref_app_name"/>
+            android:title="@string/pref_app_name"
+            android:icon="@mipmap/ic_launcher"/>
         <Preference
             android:title="@string/pref_github_title"
             android:summary="@string/pref_github_summary">

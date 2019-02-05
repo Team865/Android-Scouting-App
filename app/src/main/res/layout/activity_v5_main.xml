@@ -15,13 +15,16 @@
         app:titleTextColor="@color/colorAccent"
         />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDarkAlmostWhite"/>
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center"
         android:background="@drawable/cornered_bg_awhite"
-        android:layout_marginBottom="8dp">
+        android:layout_margin="4dp">
 
         <TextView
             android:id="@+id/board"
@@ -30,14 +33,13 @@
             android:gravity="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/colorRed"
             android:drawableStart="@drawable/ic_book_ablack_small"
             android:background="@drawable/selector_awhite_button"
             android:focusable="true"
             android:drawablePadding="4dp"
             android:clickable="true"
             android:paddingStart="12dp"
-            android:paddingEnd="8dp"
+            android:paddingEnd="12dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"/>
 
@@ -52,8 +54,8 @@
             android:drawableStart="@drawable/ic_account_box_ablack_small"
             android:background="@drawable/selector_awhite_button"
             android:drawablePadding="4dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"/>
 
@@ -64,7 +66,7 @@
             android:text="@string/show_entries_scouted"
             android:background="@drawable/selector_awhite_button"
             android:paddingStart="0dp"
-            android:paddingEnd="16dp"
+            android:paddingEnd="12dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             />
