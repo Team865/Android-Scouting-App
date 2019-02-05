@@ -16,16 +16,8 @@
         android:layout_height="1dp"
         android:background="@color/colorDarkAlmostWhite"/>
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/settings_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:textColor="@color/colorAlmostBlack"/>
-    </ScrollView>
+        android:layout_height="match_parent"/>
 </LinearLayout>

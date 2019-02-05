@@ -12,14 +12,6 @@
 
     </style>
 
-    <style name="SettingsTheme" parent="Theme.AppCompat.Light">
-
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
-    </style>
-
     <!-- Styles -->
     <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:src">@drawable/ic_menu_ablack</item>
