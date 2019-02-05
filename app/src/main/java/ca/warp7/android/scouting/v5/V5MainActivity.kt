@@ -129,6 +129,18 @@ class V5MainActivity : AppCompatActivity() {
                 }
             }
         }
+        entriesList.setOnItemLongClickListener { _, _, position, _ ->
+            val match = adapter.getItem(position)?.match ?: ""
+            AlertDialog.Builder(this)
+                .setTitle("Delete Entry $match?")
+                .setMessage("Deleted entry cannot be recovered")
+                .setPositiveButton("Delete") { dialog, which -> }
+                .setNegativeButton("Keep") { dialog, which -> }
+                .create()
+                .show()
+            true
+        }
+
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
     }
 
