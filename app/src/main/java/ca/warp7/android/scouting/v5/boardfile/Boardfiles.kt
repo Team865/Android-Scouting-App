@@ -11,7 +11,7 @@ fun File.toBoardfile(): Boardfile {
 val exampleBoardfile = Boardfile(
     eventName = "Humber College",
     eventKey = "2019onto3",
-    matchSchedule = MatchSchedule(listOf()),
+    matchSchedule = MatchSchedule(exampleMatchSchedule),
     robotScoutTemplate = ScoutTemplate(
         listOf(
             TemplateScreen(
