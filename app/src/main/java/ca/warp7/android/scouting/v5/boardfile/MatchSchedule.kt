@@ -8,6 +8,6 @@ data class MatchSchedule(
     operator fun get(match: Int) = if (match < 0 || match > size) null else
         matches.subList(match * 6, (match + 1) * 6)
 
-    fun forEach(block: (i: Int, teams: List<Int>) -> Unit) =
+    fun forEach(block: (matchNumber: Int, teams: List<Int>) -> Unit) =
         (0 until size).forEach { this[it]?.apply { block(it, this) } }
 }

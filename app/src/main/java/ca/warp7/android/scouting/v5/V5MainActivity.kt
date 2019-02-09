@@ -155,8 +155,8 @@ class V5MainActivity : AppCompatActivity() {
             )
         )
         entryItems.clear()
-        boardfile.matchSchedule.forEach { i, teams ->
-            val item = EntryItem("${boardfile.eventKey}_qm$i", teams, board, EntryItemState.Waiting)
+        boardfile.matchSchedule.forEach { matchNumber, teams ->
+            val item = EntryItem("${boardfile.eventKey}_qm$matchNumber", teams, board, EntryItemState.Waiting)
             entryItems.add(item)
         }
         entryListAdapter.notifyDataSetChanged()
@@ -207,16 +207,13 @@ class V5MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == MY_INTENT_REQUEST_SCOUTING) {
-            val message = when (resultCode) {
-                Activity.RESULT_OK -> data?.getStringExtra(ScoutingIntentKey.kResult) ?: "No valid data found"
-                Activity.RESULT_CANCELED -> "Entry was cancelled"
-                else -> "Error: Wrong result code"
+            if (resultCode == Activity.RESULT_OK) {
+                AlertDialog.Builder(this)
+                    .setTitle("Result")
+                    .setMessage(data?.getStringExtra(ScoutingIntentKey.kResult) ?: "No valid data found")
+                    .create()
+                    .show()
             }
-            AlertDialog.Builder(this)
-                .setTitle("Result")
-                .setMessage(message)
-                .create()
-                .show()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
