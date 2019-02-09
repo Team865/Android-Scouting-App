@@ -175,7 +175,7 @@ class V5MainActivity : AppCompatActivity() {
 
     private fun updateDisplayedItems() {
         displayedItems.clear()
-        displayedItems.addAll(scoutedItems)
+        if (showScoutedEntries) displayedItems.addAll(scoutedItems)
         displayedItems.addAll(expectedItems)
         entryListAdapter.notifyDataSetChanged()
     }
@@ -212,6 +212,7 @@ class V5MainActivity : AppCompatActivity() {
                     showScoutedEntries = !showScoutedEntries
                     if (showScoutedEntries) item.setIcon(R.drawable.ic_visibility_off_ablack)
                     else item.setIcon(R.drawable.ic_visibility_ablack)
+                    if (scoutedItems.isNotEmpty()) updateDisplayedItems()
                     true
                 }
                 R.id.menu_settings -> {
@@ -229,7 +230,7 @@ class V5MainActivity : AppCompatActivity() {
                 data?.also {
                     val result = it.getStringExtra(ScoutingIntentKey.kResult)
                     val team = it.getStringExtra(ScoutingIntentKey.kTeam).toIntOrNull() ?: 0
-                    val match = it.getStringExtra(ScoutingIntentKey.kMatch) ?: 0
+                    val match = it.getStringExtra(ScoutingIntentKey.kMatch) ?: "---"
                     val board = it.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
                     AlertDialog.Builder(this)
                         .setTitle("Result")
@@ -237,6 +238,17 @@ class V5MainActivity : AppCompatActivity() {
                             "\nTeam:$team\nMatch:$match\nBoard:$board\nData:"
                                     + (result ?: "No valid data found")
                         )
+                        .setOnDismissListener {
+                            scoutedItems.add(
+                                EntryItem(
+                                    match,
+                                    listOf(1, 2, 3, 4, 5, 6),
+                                    board,
+                                    EntryItemState.Completed
+                                )
+                            )
+                            updateDisplayedItems()
+                        }
                         .create()
                         .show()
                 }
