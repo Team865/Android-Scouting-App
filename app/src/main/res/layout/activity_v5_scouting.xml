@@ -149,26 +149,21 @@
                 android:id="@+id/play_pause_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selector_awhite_button"
+                android:background="@drawable/ripple_transparent"
                 android:contentDescription="@string/btn_pause"
                 android:padding="8dp"
-                android:minWidth="64dp"
+                android:minWidth="56dp"
                 android:visibility="gone"
                 android:src="@drawable/ic_pause_ablack"/>
-
-            <View
-                android:layout_width="8dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"/>
 
             <ImageButton
                 android:id="@+id/undo_now_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selector_awhite_button"
+                android:background="@drawable/ripple_transparent"
                 android:contentDescription="@string/btn_undo"
                 android:padding="8dp"
-                android:minWidth="64dp"
+                android:minWidth="56dp"
                 android:src="@drawable/ic_undo_ablack"/>
 
             <TextView
@@ -185,19 +180,14 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp"/>
 
-            <View
-                android:layout_width="8dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"/>
-
             <ImageButton
                 android:id="@+id/v5_comment_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selector_awhite_button"
+                android:background="@drawable/ripple_transparent"
                 android:contentDescription="@string/btn_pause"
                 android:padding="8dp"
-                android:minWidth="64dp"
+                android:minWidth="56dp"
                 android:src="@drawable/ic_comment_ablack"/>
         </LinearLayout>
     </LinearLayout>
