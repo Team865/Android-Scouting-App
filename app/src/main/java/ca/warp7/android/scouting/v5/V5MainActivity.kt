@@ -156,7 +156,10 @@ class V5MainActivity : AppCompatActivity() {
         )
         entryItems.clear()
         boardfile.matchSchedule.forEach { matchNumber, teams ->
-            val item = EntryItem("${boardfile.eventKey}_qm$matchNumber", teams, board, EntryItemState.Waiting)
+            val item = EntryItem(
+                "${boardfile.eventKey}_qm$matchNumber",
+                teams, board, EntryItemState.Waiting
+            )
             entryItems.add(item)
         }
         entryListAdapter.notifyDataSetChanged()
@@ -208,9 +211,10 @@ class V5MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == MY_INTENT_REQUEST_SCOUTING) {
             if (resultCode == Activity.RESULT_OK) {
+                val result = data?.getStringExtra(ScoutingIntentKey.kResult)
                 AlertDialog.Builder(this)
                     .setTitle("Result")
-                    .setMessage(data?.getStringExtra(ScoutingIntentKey.kResult) ?: "No valid data found")
+                    .setMessage(result ?: "No valid data found")
                     .create()
                     .show()
             }

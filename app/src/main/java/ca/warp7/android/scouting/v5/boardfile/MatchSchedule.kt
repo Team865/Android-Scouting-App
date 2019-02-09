@@ -9,5 +9,5 @@ data class MatchSchedule(
         matches.subList(match * 6, (match + 1) * 6)
 
     fun forEach(block: (matchNumber: Int, teams: List<Int>) -> Unit) =
-        (0 until size).forEach { this[it]?.apply { block(it, this) } }
+        (0 until size).forEach { this[it]?.apply { block(it + 1, this) } }
 }

@@ -23,7 +23,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
+        android:padding="2dp"
         android:gravity="center">
 
         <TextView
@@ -40,8 +40,8 @@
             android:clickable="true"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"/>
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"/>
 
         <TextView
             android:id="@+id/scout_name"
@@ -56,9 +56,9 @@
             android:drawablePadding="4dp"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
-            android:paddingTop="12dp"
+            android:paddingTop="8dp"
             android:clickable="true"
-            android:paddingBottom="12dp"
+            android:paddingBottom="8dp"
             android:focusable="true"/>
 
     </LinearLayout>
