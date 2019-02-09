@@ -91,3 +91,38 @@ val exampleBoardfile = Boardfile(
     ),
     superScoutTemplate = ScoutTemplate(listOf(), listOf())
 )
+
+val exampleTeams = mutableListOf(
+    746,
+    771,
+    854,
+    865,
+    907,
+    1114,
+    1310,
+    1374,
+    2198,
+    2405,
+    2935,
+    3683,
+    4039,
+    4308,
+    4343,
+    4939,
+    5031,
+    5834,
+    5870,
+    6009,
+    6141,
+    6513,
+    6977,
+    6978,
+    7013,
+    7480,
+    7509,
+    7558,
+    7603,
+    7623,
+    7723,
+    7902
+)

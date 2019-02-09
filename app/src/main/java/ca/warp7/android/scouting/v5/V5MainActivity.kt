@@ -24,6 +24,7 @@ import android.widget.ListView
 import android.widget.TextView
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.SettingsActivity
+import ca.warp7.android.scouting.v5.boardfile.exampleTeams
 import ca.warp7.android.scouting.v5.entry.*
 import ca.warp7.android.scouting.v5.entry.Board.*
 import ca.warp7.android.scouting.v5.ui.EntriesListAdapter
@@ -37,46 +38,12 @@ class V5MainActivity : AppCompatActivity() {
     private lateinit var entriesList: ListView
 
     private var board = R1
-
-    private val teams = mutableListOf(
-        746,
-        771,
-        854,
-        865,
-        907,
-        1114,
-        1310,
-        1374,
-        2198,
-        2405,
-        2935,
-        3683,
-        4039,
-        4308,
-        4343,
-        4939,
-        5031,
-        5834,
-        5870,
-        6009,
-        6141,
-        6513,
-        6977,
-        6978,
-        7013,
-        7480,
-        7509,
-        7558,
-        7603,
-        7623,
-        7723,
-        7902
-    )
-
-    private val randTeams: List<Int> get() = teams.shuffled().subList(0, 6)
+    private val randTeams: List<Int> get() = exampleTeams.shuffled().subList(0, 6)
 
     private val entryItems = mutableListOf<EntryItem>()
     private lateinit var entriesListAdapter: EntriesListAdapter
+
+    private var showScoutedEntries = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +53,6 @@ class V5MainActivity : AppCompatActivity() {
         boardTextView = findViewById(R.id.board)
         scoutTextView = findViewById(R.id.scout_name)
         entriesList = findViewById(R.id.entries_list)
-        for (i in 1..100) entryItems.add(EntryItem("2019onto3_qm$i", randTeams, board, EntryItemState.Waiting))
         entriesListAdapter = EntriesListAdapter(this, entryItems)
         entriesList.adapter = entriesListAdapter
         ensurePermissions()
@@ -224,7 +190,9 @@ class V5MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_toggle_scouted -> {
-                    item.setIcon(R.drawable.ic_visibility_off_ablack)
+                    showScoutedEntries = !showScoutedEntries
+                    if (showScoutedEntries) item.setIcon(R.drawable.ic_visibility_off_ablack)
+                    else item.setIcon(R.drawable.ic_visibility_ablack)
                     true
                 }
                 R.id.menu_settings -> {
