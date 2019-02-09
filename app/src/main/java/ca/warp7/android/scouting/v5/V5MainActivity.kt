@@ -24,7 +24,7 @@ import android.widget.ListView
 import android.widget.TextView
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.SettingsActivity
-import ca.warp7.android.scouting.v5.boardfile.exampleTeams
+import ca.warp7.android.scouting.v5.boardfile.exampleBoardfile
 import ca.warp7.android.scouting.v5.entry.*
 import ca.warp7.android.scouting.v5.entry.Board.*
 import ca.warp7.android.scouting.v5.ui.EntriesListAdapter
@@ -38,10 +38,10 @@ class V5MainActivity : AppCompatActivity() {
     private lateinit var entriesList: ListView
 
     private var board = R1
-    private val randTeams: List<Int> get() = exampleTeams.shuffled().subList(0, 6)
+    private val boardfile = exampleBoardfile
 
     private val entryItems = mutableListOf<EntryItem>()
-    private lateinit var entriesListAdapter: EntriesListAdapter
+    private lateinit var entryListAdapter: EntriesListAdapter
 
     private var showScoutedEntries = true
 
@@ -49,12 +49,12 @@ class V5MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_v5_main)
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.title = "Humber College"
+        supportActionBar?.title = boardfile.eventName
         boardTextView = findViewById(R.id.board)
         scoutTextView = findViewById(R.id.scout_name)
         entriesList = findViewById(R.id.entries_list)
-        entriesListAdapter = EntriesListAdapter(this, entryItems)
-        entriesList.adapter = entriesListAdapter
+        entryListAdapter = EntriesListAdapter(this, entryItems)
+        entriesList.adapter = entryListAdapter
         ensurePermissions()
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
         boardTextView.setOnClickListener {
@@ -114,7 +114,7 @@ class V5MainActivity : AppCompatActivity() {
             })
         }
         entriesList.setOnItemClickListener { _, _, position, _ ->
-            entriesListAdapter.getItem(position)?.apply {
+            entryListAdapter.getItem(position)?.apply {
                 if (teams.size > 5) {
                     startScouting(
                         match, when (board) {
@@ -131,7 +131,7 @@ class V5MainActivity : AppCompatActivity() {
             }
         }
         entriesList.setOnItemLongClickListener { _, _, position, _ ->
-            val match = entriesListAdapter.getItem(position)?.match ?: ""
+            val match = entryListAdapter.getItem(position)?.match ?: ""
             AlertDialog.Builder(this)
                 .setTitle("Delete Entry $match?")
                 .setMessage("Deleted entry cannot be recovered")
@@ -155,10 +155,11 @@ class V5MainActivity : AppCompatActivity() {
             )
         )
         entryItems.clear()
-        for (i in 1..100) {
-            entryItems.add(EntryItem("2019onto3_qm$i", randTeams, board, EntryItemState.Waiting))
+        boardfile.matchSchedule.forEach { i, teams ->
+            val item = EntryItem("${boardfile.eventKey}_qm$i", teams, board, EntryItemState.Waiting)
+            entryItems.add(item)
         }
-        entriesListAdapter.notifyDataSetChanged()
+        entryListAdapter.notifyDataSetChanged()
     }
 
     private fun validateName(str: String): Boolean {
