@@ -1,6 +1,8 @@
 package ca.warp7.android.scouting.v5
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
@@ -210,6 +212,16 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         updateCurrentTab()
         entry = V5TimedEntry(match, team, scout, board, mutableListOf(), currentTime, { relativeTime }, isTiming = true)
         startActivityState(WaitingToStart)
+    }
+
+    override fun onBackPressed() {
+        when (activityState) {
+            WaitingToStart -> setResult(Activity.RESULT_CANCELED, null)
+            else -> setResult(Activity.RESULT_OK, Intent().apply {
+                putExtra(ScoutingIntentKey.kResult, entry?.encoded)
+            })
+        }
+        super.onBackPressed()
     }
 
     private fun updateActivityStatus() {

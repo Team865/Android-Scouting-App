@@ -1,6 +1,7 @@
 package ca.warp7.android.scouting.v5
 
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
@@ -173,8 +174,8 @@ class V5MainActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setTitle("Delete Entry $match?")
                 .setMessage("Deleted entry cannot be recovered")
-                .setPositiveButton("Delete") { dialog, which -> }
-                .setNegativeButton("Keep") { dialog, which -> }
+                .setPositiveButton("Delete") { _, _ -> }
+                .setNegativeButton("Keep") { _, _ -> }
                 .create()
                 .show()
             true
@@ -232,6 +233,22 @@ class V5MainActivity : AppCompatActivity() {
         } ?: false
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == MY_INTENT_REQUEST_SCOUTING) {
+            val message = when (resultCode) {
+                Activity.RESULT_OK -> data?.getStringExtra(ScoutingIntentKey.kResult) ?: "No valid data found"
+                Activity.RESULT_CANCELED -> "Entry was cancelled"
+                else -> "Error: Wrong result code"
+            }
+            AlertDialog.Builder(this)
+                .setTitle("Result")
+                .setMessage(message)
+                .create()
+                .show()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     private fun ensurePermissions() {
         val permission = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
         if (permission != PackageManager.PERMISSION_GRANTED) {
@@ -239,16 +256,17 @@ class V5MainActivity : AppCompatActivity() {
         }
     }
 
-    fun startScouting(match: String, team: String, scout: String, board: Board) {
-        startActivity(Intent(this, V5ScoutingActivity::class.java).apply {
+    private fun startScouting(match: String, team: String, scout: String, board: Board) {
+        startActivityForResult(Intent(this, V5ScoutingActivity::class.java).apply {
             putExtra(ScoutingIntentKey.kMatch, match)
             putExtra(ScoutingIntentKey.kBoard, board)
             putExtra(ScoutingIntentKey.kTeam, team)
             putExtra(ScoutingIntentKey.kScout, scout)
-        })
+        }, MY_INTENT_REQUEST_SCOUTING)
     }
 
     companion object {
         private const val MY_PERMISSIONS_REQUEST_FILES = 0
+        private const val MY_INTENT_REQUEST_SCOUTING = 1
     }
 }
