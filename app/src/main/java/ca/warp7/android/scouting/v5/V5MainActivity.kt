@@ -211,12 +211,20 @@ class V5MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == MY_INTENT_REQUEST_SCOUTING) {
             if (resultCode == Activity.RESULT_OK) {
-                val result = data?.getStringExtra(ScoutingIntentKey.kResult)
-                AlertDialog.Builder(this)
-                    .setTitle("Result")
-                    .setMessage(result ?: "No valid data found")
-                    .create()
-                    .show()
+                data?.also {
+                    val result = it.getStringExtra(ScoutingIntentKey.kResult)
+                    val team = it.getStringExtra(ScoutingIntentKey.kTeam).toIntOrNull() ?: 0
+                    val match = it.getStringExtra(ScoutingIntentKey.kMatch) ?: 0
+                    val board = it.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
+                    AlertDialog.Builder(this)
+                        .setTitle("Result")
+                        .setMessage(
+                            "\nTeam:$team\nMatch:$match\nBoard:$board\nData:"
+                                    + (result ?: "No valid data found")
+                        )
+                        .create()
+                        .show()
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data)

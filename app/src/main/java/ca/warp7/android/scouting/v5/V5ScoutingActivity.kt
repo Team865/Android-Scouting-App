@@ -219,6 +219,9 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             WaitingToStart -> setResult(Activity.RESULT_CANCELED, null)
             else -> setResult(Activity.RESULT_OK, Intent().apply {
                 putExtra(ScoutingIntentKey.kResult, entry?.encoded)
+                putExtra(ScoutingIntentKey.kTeam, team)
+                putExtra(ScoutingIntentKey.kMatch, match)
+                putExtra(ScoutingIntentKey.kBoard, board)
             })
         }
         super.onBackPressed()
