@@ -220,11 +220,15 @@ class V5MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return item?.itemId?.let {
             when (it) {
-                R.id.menu_settings -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
+                R.id.menu_new_entry -> {
                     true
                 }
-                R.id.menu_new_entry -> {
+                R.id.menu_toggle_scouted -> {
+                    item.setIcon(R.drawable.ic_visibility_off_ablack)
+                    true
+                }
+                R.id.menu_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
                     true
                 }
                 else -> false
