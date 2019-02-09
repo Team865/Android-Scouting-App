@@ -40,7 +40,9 @@ class V5MainActivity : AppCompatActivity() {
     private var board = R1
     private val boardfile = exampleBoardfile
 
-    private val entryItems = mutableListOf<EntryItem>()
+    private val displayedItems = mutableListOf<EntryItem>()
+    private val scoutedItems = mutableListOf<EntryItem>()
+    private val expectedItems = mutableListOf<EntryItem>()
     private lateinit var entryListAdapter: EntriesListAdapter
 
     private var showScoutedEntries = true
@@ -53,7 +55,7 @@ class V5MainActivity : AppCompatActivity() {
         boardTextView = findViewById(R.id.board)
         scoutTextView = findViewById(R.id.scout_name)
         entriesList = findViewById(R.id.entries_list)
-        entryListAdapter = EntriesListAdapter(this, entryItems)
+        entryListAdapter = EntriesListAdapter(this, displayedItems)
         entriesList.adapter = entryListAdapter
         ensurePermissions()
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -63,7 +65,9 @@ class V5MainActivity : AppCompatActivity() {
                 .setSingleChoiceItems(R.array.board_choices_v5, values().indexOf(board)) { dialog, which ->
                     values()[which].also {
                         board = it
-                        updateBoardData()
+                        updateBoard()
+                        updateExpectedItems()
+                        updateDisplayedItems()
                         preferences.edit().apply {
                             putString(MainSettingsKey.kBoard, it.name)
                             apply()
@@ -74,7 +78,9 @@ class V5MainActivity : AppCompatActivity() {
         }
         val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
         board = boardString?.toBoard() ?: R1
-        updateBoardData()
+        updateBoard()
+        updateExpectedItems()
+        updateDisplayedItems()
         scoutTextView.setOnClickListener {
             val input = EditText(this)
             input.inputType = InputType.TYPE_CLASS_TEXT
@@ -144,7 +150,7 @@ class V5MainActivity : AppCompatActivity() {
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
     }
 
-    private fun updateBoardData() {
+    private fun updateBoard() {
         boardTextView.text = board.name
         boardTextView.setTextColor(
             ContextCompat.getColor(
@@ -154,14 +160,23 @@ class V5MainActivity : AppCompatActivity() {
                 }
             )
         )
-        entryItems.clear()
+    }
+
+    private fun updateExpectedItems() {
+        expectedItems.clear()
         boardfile.matchSchedule.forEach { matchNumber, teams ->
             val item = EntryItem(
                 "${boardfile.eventKey}_qm$matchNumber",
                 teams, board, EntryItemState.Waiting
             )
-            entryItems.add(item)
+            expectedItems.add(item)
         }
+    }
+
+    private fun updateDisplayedItems() {
+        displayedItems.clear()
+        displayedItems.addAll(scoutedItems)
+        displayedItems.addAll(expectedItems)
         entryListAdapter.notifyDataSetChanged()
     }
 
