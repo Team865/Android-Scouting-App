@@ -75,6 +75,9 @@ class V5MainActivity : AppCompatActivity() {
 
     private val randTeams: List<Int> get() = teams.shuffled().subList(0, 6)
 
+    private val entryItems = mutableListOf<EntryItem>()
+    private lateinit var entriesListAdapter: EntriesListAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_v5_main)
@@ -83,6 +86,9 @@ class V5MainActivity : AppCompatActivity() {
         boardTextView = findViewById(R.id.board)
         scoutTextView = findViewById(R.id.scout_name)
         entriesList = findViewById(R.id.entries_list)
+        for (i in 1..100) entryItems.add(EntryItem("2019onto3_qm$i", randTeams, board, EntryItemState.Waiting))
+        entriesListAdapter = EntriesListAdapter(this, entryItems)
+        entriesList.adapter = entriesListAdapter
         ensurePermissions()
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
         boardTextView.setOnClickListener {
@@ -91,7 +97,7 @@ class V5MainActivity : AppCompatActivity() {
                 .setSingleChoiceItems(R.array.board_choices_v5, values().indexOf(board)) { dialog, which ->
                     values()[which].also {
                         board = it
-                        updateBoardText()
+                        updateBoardData()
                         preferences.edit().apply {
                             putString(MainSettingsKey.kBoard, it.name)
                             apply()
@@ -102,7 +108,7 @@ class V5MainActivity : AppCompatActivity() {
         }
         val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
         board = boardString?.toBoard() ?: R1
-        updateBoardText()
+        updateBoardData()
         scoutTextView.setOnClickListener {
             val input = EditText(this)
             input.inputType = InputType.TYPE_CLASS_TEXT
@@ -141,19 +147,8 @@ class V5MainActivity : AppCompatActivity() {
                 }
             })
         }
-        val entryItems = mutableListOf<EntryItem>()
-        for (i in 1..100) {
-            entryItems.add(
-                EntryItem(
-                    "2019onto3_qm$i", randTeams,
-                    Board.values().random(), EntryItemState.values().random()
-                )
-            )
-        }
-        val adapter = EntriesListAdapter(this, entryItems)
-        entriesList.adapter = adapter
         entriesList.setOnItemClickListener { _, _, position, _ ->
-            adapter.getItem(position)?.apply {
+            entriesListAdapter.getItem(position)?.apply {
                 if (teams.size > 5) {
                     startScouting(
                         match, when (board) {
@@ -170,7 +165,7 @@ class V5MainActivity : AppCompatActivity() {
             }
         }
         entriesList.setOnItemLongClickListener { _, _, position, _ ->
-            val match = adapter.getItem(position)?.match ?: ""
+            val match = entriesListAdapter.getItem(position)?.match ?: ""
             AlertDialog.Builder(this)
                 .setTitle("Delete Entry $match?")
                 .setMessage("Deleted entry cannot be recovered")
@@ -180,11 +175,10 @@ class V5MainActivity : AppCompatActivity() {
                 .show()
             true
         }
-
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
     }
 
-    private fun updateBoardText() {
+    private fun updateBoardData() {
         boardTextView.text = board.name
         boardTextView.setTextColor(
             ContextCompat.getColor(
@@ -194,6 +188,11 @@ class V5MainActivity : AppCompatActivity() {
                 }
             )
         )
+        entryItems.clear()
+        for (i in 1..100) {
+            entryItems.add(EntryItem("2019onto3_qm$i", randTeams, board, EntryItemState.Waiting))
+        }
+        entriesListAdapter.notifyDataSetChanged()
     }
 
     private fun validateName(str: String): Boolean {
