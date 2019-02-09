@@ -23,7 +23,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="2dp"
         android:gravity="center">
 
         <TextView
@@ -34,18 +34,14 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:drawableStart="@drawable/ic_book_ablack_small"
-            android:background="@drawable/selector_awhite_button"
+            android:background="@drawable/ripple_transparent"
             android:focusable="true"
             android:drawablePadding="4dp"
             android:clickable="true"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"/>
-
-        <View
-            android:layout_width="12dp"
-            android:layout_height="match_parent"/>
 
         <TextView
             android:id="@+id/scout_name"
@@ -56,10 +52,10 @@
             android:textStyle="bold"
             android:textColor="@color/colorAlmostBlack"
             android:drawableStart="@drawable/ic_account_box_ablack_small"
-            android:background="@drawable/selector_awhite_button"
+            android:background="@drawable/ripple_transparent"
             android:drawablePadding="4dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
             android:paddingTop="12dp"
             android:clickable="true"
             android:paddingBottom="12dp"
