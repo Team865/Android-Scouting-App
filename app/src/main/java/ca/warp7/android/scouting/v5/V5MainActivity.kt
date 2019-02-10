@@ -128,6 +128,13 @@ class V5MainActivity : AppCompatActivity() {
                     val dialog = AlertDialog.Builder(this)
                         .setTitle(it.match)
                         .setView(qrImage)
+                        .setNeutralButton("Send With...") { _, _ ->
+                            val intent = Intent(Intent.ACTION_SEND)
+                            intent.putExtra(Intent.EXTRA_TEXT, it.data)
+                            intent.type = "text/plain"
+                            startActivity(Intent.createChooser(intent, it.data))
+                        }
+                        .setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
                         .create()
                     dialog.setOnShowListener { _ ->
                         val dim = dialog.window?.decorView?.width ?: 0
