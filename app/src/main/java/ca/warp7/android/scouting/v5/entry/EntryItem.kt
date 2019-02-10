@@ -5,5 +5,5 @@ data class EntryItem(
     val teams: List<Int>,
     val board: Board,
     val state: EntryItemState = EntryItemState.Waiting,
-    val data: Entry? = null
+    val data: String = ""
 )

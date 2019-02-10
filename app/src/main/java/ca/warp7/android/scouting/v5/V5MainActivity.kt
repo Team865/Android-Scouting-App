@@ -18,16 +18,15 @@ import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.SettingsActivity
 import ca.warp7.android.scouting.v5.boardfile.exampleBoardfile
 import ca.warp7.android.scouting.v5.entry.*
 import ca.warp7.android.scouting.v5.entry.Board.*
 import ca.warp7.android.scouting.v5.ui.EntriesListAdapter
+import ca.warp7.android.scouting.v5.ui.createQRBitmap
+import com.google.zxing.WriterException
 
 
 class V5MainActivity : AppCompatActivity() {
@@ -41,7 +40,9 @@ class V5MainActivity : AppCompatActivity() {
     private val boardfile = exampleBoardfile
 
     private val displayedItems = mutableListOf<EntryItem>()
-    private val scoutedItems = mutableListOf<EntryItem>()
+    private val scoutedItems = mutableListOf<EntryItem>(
+        EntryItem("2019onto3_qm999", listOf(1, 2, 3, 4, 5, 6), R1, EntryItemState.Completed, "Hello World")
+    )
     private val expectedItems = mutableListOf<EntryItem>()
     private lateinit var entryListAdapter: EntriesListAdapter
 
@@ -120,16 +121,33 @@ class V5MainActivity : AppCompatActivity() {
             })
         }
         entriesList.setOnItemClickListener { _, _, position, _ ->
-            entryListAdapter.getItem(position)?.apply {
-                if (teams.size > 5) {
+            entryListAdapter.getItem(position)?.also {
+                if (it.state != EntryItemState.Waiting) {
+                    val qrImage = ImageView(this)
+                    qrImage.setPadding(16, 0, 16, 0)
+                    val dialog = AlertDialog.Builder(this)
+                        .setTitle(it.match)
+                        .setView(qrImage)
+                        .create()
+                    dialog.setOnShowListener { _ ->
+                        val dim = dialog.window?.decorView?.width ?: 0
+                        try {
+                            qrImage.setImageBitmap(createQRBitmap(it.data, dim))
+                        } catch (e: WriterException) {
+                            qrImage.setImageDrawable(getDrawable(R.drawable.ic_launcher_background))
+                            e.printStackTrace()
+                        }
+                    }
+                    dialog.show()
+                } else if (it.teams.size > 5) {
                     startScouting(
-                        match, when (board) {
-                            R1 -> teams[0].toString()
-                            R2 -> teams[1].toString()
-                            R3 -> teams[2].toString()
-                            B1 -> teams[3].toString()
-                            B2 -> teams[4].toString()
-                            B3 -> teams[5].toString()
+                        it.match, when (board) {
+                            R1 -> it.teams[0].toString()
+                            R2 -> it.teams[1].toString()
+                            R3 -> it.teams[2].toString()
+                            B1 -> it.teams[3].toString()
+                            B2 -> it.teams[4].toString()
+                            B3 -> it.teams[5].toString()
                             RX, BX -> "ALL"
                         }, scoutTextView.text.toString(), board
                     )
@@ -137,14 +155,15 @@ class V5MainActivity : AppCompatActivity() {
             }
         }
         entriesList.setOnItemLongClickListener { _, _, position, _ ->
-            val match = entryListAdapter.getItem(position)?.match ?: ""
-            AlertDialog.Builder(this)
-                .setTitle("Delete Entry $match?")
-                .setMessage("Deleted entry cannot be recovered")
-                .setPositiveButton("Delete") { _, _ -> }
-                .setNegativeButton("Keep") { _, _ -> }
-                .create()
-                .show()
+            entryListAdapter.getItem(position)?.also {
+                if (it.state != EntryItemState.Waiting) AlertDialog.Builder(this)
+                    .setTitle("Delete Entry ${it.match}?")
+                    .setMessage("Deleted entry cannot be recovered")
+                    .setPositiveButton("Delete") { _, _ -> }
+                    .setNegativeButton("Keep") { _, _ -> }
+                    .create()
+                    .show()
+            }
             true
         }
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
