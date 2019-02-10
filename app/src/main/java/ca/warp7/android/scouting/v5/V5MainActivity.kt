@@ -24,7 +24,7 @@ import ca.warp7.android.scouting.SettingsActivity
 import ca.warp7.android.scouting.v5.boardfile.exampleBoardfile
 import ca.warp7.android.scouting.v5.entry.*
 import ca.warp7.android.scouting.v5.entry.Board.*
-import ca.warp7.android.scouting.v5.ui.EntriesListAdapter
+import ca.warp7.android.scouting.v5.ui.EntryListAdapter
 import ca.warp7.android.scouting.v5.ui.createQRBitmap
 import com.google.zxing.WriterException
 
@@ -41,10 +41,10 @@ class V5MainActivity : AppCompatActivity() {
 
     private val displayedItems = mutableListOf<EntryItem>()
     private val scoutedItems = mutableListOf<EntryItem>(
-        EntryItem("2019onto3_qm999", listOf(1, 2, 3, 4, 5, 6), R1, EntryItemState.Completed, "Hello World")
+        EntryItem("2019onto3_qm999", listOf(1, 2, 3, 4, 5, 6), R1, EntryItemState.Added, "Hello World")
     )
     private val expectedItems = mutableListOf<EntryItem>()
-    private lateinit var entryListAdapter: EntriesListAdapter
+    private lateinit var entryListAdapter: EntryListAdapter
 
     private var showScoutedEntries = true
 
@@ -56,7 +56,7 @@ class V5MainActivity : AppCompatActivity() {
         boardTextView = findViewById(R.id.board)
         scoutTextView = findViewById(R.id.scout_name)
         entriesList = findViewById(R.id.entries_list)
-        entryListAdapter = EntriesListAdapter(this, displayedItems)
+        entryListAdapter = EntryListAdapter(this, displayedItems)
         entriesList.adapter = entryListAdapter
         ensurePermissions()
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -121,40 +121,40 @@ class V5MainActivity : AppCompatActivity() {
             })
         }
         entriesList.setOnItemClickListener { _, _, position, _ ->
-            entryListAdapter.getItem(position)?.also {
-                if (it.state != EntryItemState.Waiting) {
+            entryListAdapter.getItem(position)?.also { item ->
+                if (item.state != EntryItemState.Waiting && item.data.isNotEmpty()) {
                     val qrImage = ImageView(this)
                     qrImage.setPadding(16, 0, 16, 0)
                     val dialog = AlertDialog.Builder(this)
-                        .setTitle(it.match)
+                        .setTitle(item.match)
                         .setView(qrImage)
                         .setNeutralButton("Send With...") { _, _ ->
                             val intent = Intent(Intent.ACTION_SEND)
-                            intent.putExtra(Intent.EXTRA_TEXT, it.data)
+                            intent.putExtra(Intent.EXTRA_TEXT, item.data)
                             intent.type = "text/plain"
-                            startActivity(Intent.createChooser(intent, it.data))
+                            startActivity(Intent.createChooser(intent, item.data))
                         }
                         .setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
                         .create()
-                    dialog.setOnShowListener { _ ->
+                    dialog.setOnShowListener {
                         val dim = dialog.window?.decorView?.width ?: 0
                         try {
-                            qrImage.setImageBitmap(createQRBitmap(it.data, dim))
+                            qrImage.setImageBitmap(createQRBitmap(item.data, dim))
                         } catch (e: WriterException) {
                             qrImage.setImageDrawable(getDrawable(R.drawable.ic_launcher_background))
                             e.printStackTrace()
                         }
                     }
                     dialog.show()
-                } else if (it.teams.size > 5) {
+                } else if (item.teams.size > 5) {
                     startScouting(
-                        it.match, when (board) {
-                            R1 -> it.teams[0].toString()
-                            R2 -> it.teams[1].toString()
-                            R3 -> it.teams[2].toString()
-                            B1 -> it.teams[3].toString()
-                            B2 -> it.teams[4].toString()
-                            B3 -> it.teams[5].toString()
+                        item.match, when (board) {
+                            R1 -> item.teams[0].toString()
+                            R2 -> item.teams[1].toString()
+                            R3 -> item.teams[2].toString()
+                            B1 -> item.teams[3].toString()
+                            B2 -> item.teams[4].toString()
+                            B3 -> item.teams[5].toString()
                             RX, BX -> "ALL"
                         }, scoutTextView.text.toString(), board
                     )
@@ -255,28 +255,18 @@ class V5MainActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 data?.also {
                     val result = it.getStringExtra(ScoutingIntentKey.kResult)
-                    val team = it.getStringExtra(ScoutingIntentKey.kTeam).toIntOrNull() ?: 0
-                    val match = it.getStringExtra(ScoutingIntentKey.kMatch) ?: "---"
+                    val match = it.getStringExtra(ScoutingIntentKey.kMatch) ?: "- - -"
                     val board = it.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
-                    AlertDialog.Builder(this)
-                        .setTitle("Result")
-                        .setMessage(
-                            "\nTeam:$team\nMatch:$match\nBoard:$board\nData:"
-                                    + (result ?: "No valid data found")
+                    scoutedItems.add(
+                        EntryItem(
+                            match,
+                            listOf(),
+                            board,
+                            EntryItemState.Completed,
+                            result
                         )
-                        .setOnDismissListener {
-                            scoutedItems.add(
-                                EntryItem(
-                                    match,
-                                    listOf(1, 2, 3, 4, 5, 6),
-                                    board,
-                                    EntryItemState.Completed
-                                )
-                            )
-                            updateDisplayedItems()
-                        }
-                        .create()
-                        .show()
+                    )
+                    updateDisplayedItems()
                 }
             }
         }

@@ -13,7 +13,7 @@ import ca.warp7.android.scouting.v5.entry.Board.*
 import ca.warp7.android.scouting.v5.entry.EntryItem
 import ca.warp7.android.scouting.v5.entry.EntryItemState.*
 
-class EntriesListAdapter(
+class EntryListAdapter(
     context: Context,
     scheduleItems: List<EntryItem>
 ) : ArrayAdapter<EntryItem>(context, 0, scheduleItems) {
@@ -22,7 +22,6 @@ class EntriesListAdapter(
     private val red = ContextCompat.getColor(context, R.color.colorRed)
     private val blue = ContextCompat.getColor(context, R.color.colorBlue)
     private val gray = ContextCompat.getColor(context, R.color.colorGray)
-    private val yellow = ContextCompat.getColor(context, R.color.colorAlmostYellow)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val itemView = if (convertView is LinearLayout)
@@ -60,8 +59,10 @@ class EntriesListAdapter(
             if (teams.size > 5) {
                 for (i in 0 until 6) {
                     val number = teams[i]
-                    teamsArray[i].text = if (number > 0) number.toString() else "----"
+                    teamsArray[i].text = if (number > 0) number.toString() else "- - -"
                 }
+            } else {
+                for (i in 0 until 6) teamsArray[i].text = "- - - "
             }
         }
         return itemView
