@@ -40,9 +40,7 @@ class V5MainActivity : AppCompatActivity() {
     private val boardfile = exampleBoardfile
 
     private val displayedItems = mutableListOf<EntryItem>()
-    private val scoutedItems = mutableListOf<EntryItem>(
-        EntryItem("2019onto3_qm999", listOf(1, 2, 3, 4, 5, 6), R1, EntryItemState.Added, "Hello World")
-    )
+    private val scoutedItems = mutableListOf<EntryItem>()
     private val expectedItems = mutableListOf<EntryItem>()
     private lateinit var entryListAdapter: EntryListAdapter
 
