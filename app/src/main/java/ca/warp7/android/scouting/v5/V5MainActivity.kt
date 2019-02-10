@@ -199,8 +199,12 @@ class V5MainActivity : AppCompatActivity() {
 
     private fun updateDisplayedItems() {
         displayedItems.clear()
-        if (showScoutedEntries) displayedItems.addAll(scoutedItems)
         displayedItems.addAll(expectedItems)
+        if (showScoutedEntries && scoutedItems.isNotEmpty()) {
+            displayedItems.addAll(scoutedItems)
+            val p = "${boardfile.eventKey}_qm"
+            displayedItems.sortBy { it.match.run { if (startsWith(p)) substring(p.length).toIntOrNull() ?: 0 else 0 } }
+        }
         entryListAdapter.notifyDataSetChanged()
     }
 
