@@ -164,7 +164,7 @@ class V5MainActivity : AppCompatActivity() {
                 if (it.state != EntryItemState.Waiting) AlertDialog.Builder(this)
                     .setTitle("Delete Entry ${it.match}?")
                     .setMessage("Deleted entry cannot be recovered")
-                    .setPositiveButton("Delete") { _, _ -> }
+                    .setPositiveButton("Don't Delete") { _, _ -> }
                     .setNegativeButton("Keep") { _, _ -> }
                     .create()
                     .show()

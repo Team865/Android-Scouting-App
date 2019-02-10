@@ -27,15 +27,22 @@ class EntryListAdapter(
         val itemView = if (convertView is LinearLayout)
             convertView else mInflater.inflate(R.layout.list_item_v5_match, parent, false)
         getItem(position)?.apply {
+            val matchNumber = itemView.findViewById<TextView>(R.id.match_number)
+            matchNumber.text = match.let {
+                val split = it.split("_")
+                if (split.size == 2) split[1] else it
+            }
+
+            matchNumber.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                if (state == Waiting) R.drawable.ic_layers_ablack_small
+                else R.drawable.ic_done_ablack_small, 0, 0
+            )
+
             when (state) {
                 Waiting -> itemView.setBackgroundColor(0)
                 Completed -> itemView.setBackgroundColor(0x6080ff88)
                 Added -> itemView.setBackgroundColor(0x60ffe088)
-            }
-
-            itemView.findViewById<TextView>(R.id.match_number).text = match.let {
-                val split = it.split("_")
-                if (split.size == 2) split[1] else it
             }
 
             val red1 = itemView.findViewById<TextView>(R.id.red_1)
