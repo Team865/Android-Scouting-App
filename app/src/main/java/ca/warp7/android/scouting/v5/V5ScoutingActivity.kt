@@ -221,6 +221,7 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 putExtra(ScoutingIntentKey.kResult, entry?.encoded)
                 putExtra(ScoutingIntentKey.kMatch, match)
                 putExtra(ScoutingIntentKey.kBoard, board)
+                putExtra(ScoutingIntentKey.kTeam, team)
             })
         }
         super.onBackPressed()

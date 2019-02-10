@@ -256,11 +256,26 @@ class V5MainActivity : AppCompatActivity() {
                 data?.also {
                     val result = it.getStringExtra(ScoutingIntentKey.kResult)
                     val match = it.getStringExtra(ScoutingIntentKey.kMatch) ?: "- - -"
+                    val team = it.getStringExtra(ScoutingIntentKey.kTeam).toIntOrNull() ?: 0
                     val board = it.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
+                    var teams: List<Int> = listOf()
+                    var foundData = false
+                    for (item in expectedItems) {
+                        if (item.match == match && item.board == board) {
+                            teams = item.teams
+                            foundData = true
+                            break
+                        }
+                    }
+                    if (!foundData) {
+                        val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
+                        mutableTeams[Board.values().indexOf(board)] = team
+                        teams = mutableTeams
+                    }
                     scoutedItems.add(
                         EntryItem(
                             match,
-                            listOf(),
+                            teams,
                             board,
                             EntryItemState.Completed,
                             result
