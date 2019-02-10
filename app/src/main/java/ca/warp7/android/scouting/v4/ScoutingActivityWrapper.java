@@ -16,8 +16,8 @@ abstract public class ScoutingActivityWrapper extends AppCompatActivity
 
     // System Services
 
-    protected final Animation mAlphaAnimationIn = new AlphaAnimation(0.0f, 1.0f);
-    protected final Animation mAlphaAnimationOut = new AlphaAnimation(1.0f, 0.0f);
+    final Animation mAlphaAnimationIn = new AlphaAnimation(0.0f, 1.0f);
+    final Animation mAlphaAnimationOut = new AlphaAnimation(1.0f, 0.0f);
 
     // Animation Objects
     private Handler mTimeHandler;
@@ -26,15 +26,15 @@ abstract public class ScoutingActivityWrapper extends AppCompatActivity
     /**
      * @return The current time in seconds
      */
-    protected static int getCurrentTime() {
+    static int getCurrentTime() {
         return (int) (System.currentTimeMillis() / 1000);
     }
 
-    protected static void show(View view) {
+    static void show(View view) {
         view.setVisibility(View.VISIBLE);
     }
 
-    protected static void hide(View view) {
+    static void hide(View view) {
         view.setVisibility(View.GONE);
     }
 
@@ -55,7 +55,7 @@ abstract public class ScoutingActivityWrapper extends AppCompatActivity
         return mPreferences.getVibrator();
     }
 
-    protected ManagedPreferences getManagedPreferences() {
+    ManagedPreferences getManagedPreferences() {
         return mPreferences;
     }
 }
