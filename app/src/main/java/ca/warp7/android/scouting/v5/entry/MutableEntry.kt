@@ -1,6 +1,6 @@
 package ca.warp7.android.scouting.v5.entry
 
-interface MutableEntry: Entry {
+interface MutableEntry : V5Entry {
     /**
      * Adds a data point to the entry
      */
@@ -14,9 +14,7 @@ interface MutableEntry: Entry {
      */
     fun undo(): DataPoint?
 
-    var undone: Int
-
+    override var undone: Int
     override var comments: String
-
     override var timestamp: Int
 }
