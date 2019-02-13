@@ -55,5 +55,5 @@ interface V5Entry {
     /**
      * Check if a type should focus according to the current time
      */
-    fun focused(type: Int): Boolean
+    fun focused(type: Int, time: Int): Boolean
 }

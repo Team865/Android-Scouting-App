@@ -17,4 +17,6 @@ interface MutableEntry : V5Entry {
     override var undone: Int
     override var comments: String
     override var timestamp: Int
+
+    fun focused(type: Int): Boolean
 }

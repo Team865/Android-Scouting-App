@@ -39,7 +39,9 @@ data class V5TimedEntry(
 
     override fun lastValue(type: Int) = dataPoints.subList(0, nextIndex).lastOrNull { it.type == type }
 
-    override fun focused(type: Int) = getTime().let { t -> dataPoints.any { it.type == type && it.time == t } }
+    override fun focused(type: Int, time: Int) = dataPoints.any { it.type == type && it.time == time }
+
+    override fun focused(type: Int) = focused(type, getTime())
 
     private val hexTimestamp get() = Integer.toHexString(timestamp)
 
