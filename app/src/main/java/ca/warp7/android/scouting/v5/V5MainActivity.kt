@@ -1,6 +1,7 @@
 package ca.warp7.android.scouting.v5
 
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
@@ -61,6 +63,7 @@ class V5MainActivity : AppCompatActivity() {
         boardTextView.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Select board")
+                .setIcon(R.drawable.ic_book_ablack_small)
                 .setSingleChoiceItems(R.array.board_choices_v5, values().indexOf(board)) { dialog, which ->
                     values()[which].also {
                         board = it
@@ -81,18 +84,22 @@ class V5MainActivity : AppCompatActivity() {
         updateExpectedItems()
         updateDisplayedItems()
         scoutTextView.setOnClickListener {
-            val input = EditText(this)
-            input.inputType = InputType.TYPE_CLASS_TEXT
-            input.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
+            val input = EditText(this).apply {
+                inputType = InputType.TYPE_CLASS_TEXT
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                hint = "First L"
+                setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_account_box_ablack_small, 0, 0, 0)
+                compoundDrawablePadding = 16
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+            }
             val layout = LinearLayout(this)
             layout.addView(input)
-            layout.setPadding(10, 0, 10, 0)
+            layout.setPadding(16, 8, 16, 0)
             val dialog = AlertDialog.Builder(this)
                 .setTitle("Enter Name")
-                .setMessage("Format: First Name + Space + One Letter Last Initial, Both Capitalized")
                 .setView(layout)
                 .setPositiveButton("OK") { _, _ -> }
                 .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
@@ -230,27 +237,51 @@ class V5MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return item?.itemId?.let {
-            when (it) {
-                R.id.menu_new_entry -> {
-                    true
-                }
-                R.id.menu_toggle_scouted -> {
-                    showScoutedEntries = !showScoutedEntries
-                    if (showScoutedEntries) item.setIcon(R.drawable.ic_visibility_off_ablack)
-                    else item.setIcon(R.drawable.ic_visibility_ablack)
-                    if (scoutedItems.isNotEmpty()) updateDisplayedItems()
-                    true
-                }
-                R.id.menu_settings -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
-                    true
-                }
-                else -> false
+    @SuppressLint("SetTextI18n")
+    override fun onOptionsItemSelected(item: MenuItem?) = item?.itemId?.let {
+        when (it) {
+            R.id.menu_new_entry -> {
+                if (board == RX || board == BX) return@let true
+                val layout = LinearLayout(this)
+                layout.orientation = LinearLayout.VERTICAL
+                layout.setPadding(16, 8, 16, 0)
+                layout.addView(EditText(this).apply {
+                    hint = "Match"
+                    inputType = InputType.TYPE_CLASS_NUMBER
+                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_layers_ablack_small, 0, 0, 0)
+                    compoundDrawablePadding = 16
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+                })
+                layout.addView(EditText(this).apply {
+                    hint = "Team"
+                    inputType = InputType.TYPE_CLASS_NUMBER
+                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people_ablack_small, 0, 0, 0)
+                    compoundDrawablePadding = 16
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+                })
+                AlertDialog.Builder(this)
+                    .setTitle("Add New Entry")
+                    .setView(layout)
+                    .setPositiveButton("Ok") { _, _ -> }
+                    .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+                    .create()
+                    .show()
+                true
             }
-        } ?: false
-    }
+            R.id.menu_toggle_scouted -> {
+                showScoutedEntries = !showScoutedEntries
+                if (showScoutedEntries) item.setIcon(R.drawable.ic_visibility_off_ablack)
+                else item.setIcon(R.drawable.ic_visibility_ablack)
+                if (scoutedItems.isNotEmpty()) updateDisplayedItems()
+                true
+            }
+            R.id.menu_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+                true
+            }
+            else -> false
+        }
+    } ?: false
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == MY_INTENT_REQUEST_SCOUTING) {
@@ -261,6 +292,7 @@ class V5MainActivity : AppCompatActivity() {
                     val team = it.getStringExtra(ScoutingIntentKey.kTeam).toIntOrNull() ?: 0
                     val board = it.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
                     var teams: List<Int> = listOf()
+                    var state = EntryItemState.Completed
                     var foundData = false
                     for (item in expectedItems) {
                         if (item.match == match && item.board == board) {
@@ -273,13 +305,14 @@ class V5MainActivity : AppCompatActivity() {
                         val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
                         mutableTeams[Board.values().indexOf(board)] = team
                         teams = mutableTeams
+                        state = EntryItemState.Added
                     }
                     scoutedItems.add(
                         EntryItem(
                             match,
                             teams,
                             board,
-                            EntryItemState.Completed,
+                            state,
                             result
                         )
                     )
