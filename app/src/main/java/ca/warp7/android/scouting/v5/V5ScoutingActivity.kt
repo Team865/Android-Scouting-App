@@ -51,7 +51,7 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private lateinit var timeSeeker: SeekBar
     private lateinit var startButton: TextView
     private lateinit var playAndPauseImage: ImageButton
-    private lateinit var undoAndNowImage: ImageButton
+    private lateinit var undoButton: ImageButton
     private lateinit var pager: ViewPager
     private lateinit var pagerAdapter: V5TabsPagerAdapter
     private lateinit var preferences: ManagedPreferences
@@ -67,8 +67,6 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private var startingTimestamp = 0
 
     private val screens get() = template?.screens
-    private val calculateRelativeTime get() = Math.min(currentTime - startingTimestamp, kTimerLimit)
-    private val relativeTimeMatchesCurrentTime: Boolean get() = Math.abs(relativeTime - calculateRelativeTime) <= 1
     private val timedUpdater = Runnable {
         if (activityState != TimedScouting) timerIsRunning = false else {
             timerIsRunning = true
@@ -95,7 +93,7 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         timerStatus = findViewById(R.id.timer_status)
         startButton = findViewById(R.id.start_timer)
         playAndPauseImage = findViewById(R.id.play_pause_image)
-        undoAndNowImage = findViewById(R.id.undo_now_image)
+        undoButton = findViewById(R.id.undo_now_image)
         timeProgress = findViewById(R.id.time_progress)
         timeSeeker = findViewById(R.id.time_seeker)
         pager = findViewById(R.id.pager)
@@ -112,26 +110,13 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 else -> Unit
             }
         }
-        undoAndNowImage.setOnClickListener {
-            when (activityState) {
-                TimedScouting -> if (relativeTimeMatchesCurrentTime) {
-                    entry?.apply {
-                        val dataPoint = undo()
-                        dataPoint?.also {
-                            actionVibrator.vibrateAction()
-                            updateTabStates()
-                        }
-                    }
-                } else {
-                    relativeTime = calculateRelativeTime
-                    actionVibrator.vibrateStart()
-                    undoAndNowImage.setImageResource(R.drawable.ic_undo_ablack)
+        undoButton.setOnClickListener {
+            entry?.apply {
+                val dataPoint = undo()
+                dataPoint?.also {
+                    actionVibrator.vibrateAction()
+                    updateTabStates()
                 }
-                Pausing -> {
-                    relativeTime = calculateRelativeTime
-                    startActivityState(TimedScouting)
-                }
-                else -> Unit
             }
         }
         findViewById<ImageButton>(R.id.v5_comment_button).setOnClickListener {
@@ -239,14 +224,11 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         val placeholder = CharArray(kTotalTimerDigits - status.length)
         val filledStatus = String(placeholder).replace("\u0000", "0") + status
         timerStatus.text = filledStatus
-        timerStatus.setTextColor(
-            ContextCompat.getColor(
-                this, when {
-                    relativeTime <= kAutonomousTime -> R.color.colorAutoYellow
-                    else -> R.color.colorTeleOpGreen
-                }
-            )
-        )
+        val statusColor = when {
+            relativeTime <= kAutonomousTime -> R.color.colorAutoYellow
+            else -> R.color.colorTeleOpGreen
+        }
+        timerStatus.setTextColor(ContextCompat.getColor(this, statusColor))
         timeProgress.progress = relativeTime
         timeSeeker.progress = relativeTime
     }
@@ -287,31 +269,25 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         when (activityState) {
             WaitingToStart -> {
                 playAndPauseImage.hide()
-                undoAndNowImage.hide()
+                undoButton.hide()
                 timeSeeker.hide()
                 timeProgress.show()
             }
             TimedScouting -> {
                 playAndPauseImage.show()
-                undoAndNowImage.show()
+                undoButton.show()
                 startButton.hide()
                 timeSeeker.hide()
                 timeProgress.show()
                 playAndPauseImage.setImageResource(R.drawable.ic_pause_ablack)
-                if (relativeTimeMatchesCurrentTime) {
-                    undoAndNowImage.setImageResource(R.drawable.ic_undo_ablack)
-                } else {
-                    undoAndNowImage.setImageResource(R.drawable.ic_skip_next_red)
-                }
                 actionVibrator.vibrateStart()
                 timedUpdater.run()
             }
             Pausing -> {
                 playAndPauseImage.show()
-                undoAndNowImage.show()
+                undoButton.show()
                 startButton.hide()
                 playAndPauseImage.setImageResource(R.drawable.ic_play_arrow_ablack)
-                undoAndNowImage.setImageResource(R.drawable.ic_skip_next_red)
                 timeSeeker.show()
                 timeProgress.hide()
             }
