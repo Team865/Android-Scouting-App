@@ -6,8 +6,7 @@
         android:id="@+id/menu_new_entry"
         android:title="@string/menu_new_entry"
         android:icon="@drawable/ic_add_ablack"
-        app:showAsAction="ifRoom"
-        android:visible="false"/>
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/menu_toggle_scouted"
         android:title="@string/menu_toggle_scouted"

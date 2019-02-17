@@ -159,18 +159,18 @@ class V5MainActivity : AppCompatActivity() {
                 }
             }
         }
-        entriesList.setOnItemLongClickListener { _, _, position, _ ->
-            entryListAdapter.getItem(position)?.also {
-                if (it.state != EntryItemState.Waiting) AlertDialog.Builder(this)
-                    .setTitle("Delete Entry ${it.match}?")
-                    .setMessage("Deleted entry cannot be recovered")
-                    .setPositiveButton("Don't Delete") { _, _ -> }
-                    .setNegativeButton("Keep") { _, _ -> }
-                    .create()
-                    .show()
-            }
-            true
-        }
+//        entriesList.setOnItemLongClickListener { _, _, position, _ ->
+//            entryListAdapter.getItem(position)?.also {
+//                if (it.state != EntryItemState.Waiting) AlertDialog.Builder(this)
+//                    .setTitle("Delete Entry ${it.match}?")
+//                    .setMessage("Deleted entry cannot be recovered")
+//                    .setPositiveButton("Don't Delete") { _, _ -> }
+//                    .setNegativeButton("Keep") { _, _ -> }
+//                    .create()
+//                    .show()
+//            }
+//            true
+//        }
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
     }
 
