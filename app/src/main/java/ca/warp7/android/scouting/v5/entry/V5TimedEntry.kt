@@ -35,7 +35,7 @@ data class V5TimedEntry(
 
     override fun undo() = nextIndex.let { if (it == 0) null else dataPoints.removeAt(it - 1).also { undone++ } }
 
-    override fun count(type: Int) = dataPoints.subList(0, nextIndex).filter { it.type == type }.size
+    override fun count(type: Int) = dataPoints.subList(0, nextIndex).count { it.type == type }
 
     override fun lastValue(type: Int) = dataPoints.subList(0, nextIndex).lastOrNull { it.type == type }
 

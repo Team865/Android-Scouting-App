@@ -70,7 +70,7 @@ class ToggleField : LinearLayout, BaseFieldWidget {
             setEntries(options)
             layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-            setPadding(12, 4, 12, 12)
+            setPadding(8, 4, 8, 8)
             setOnChangeListener {
                 if (it != checkedPosition) {
                     checkedPosition = it
