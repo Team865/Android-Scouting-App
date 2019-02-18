@@ -1,7 +1,6 @@
 package ca.warp7.android.scouting.v5
 
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
@@ -237,7 +236,7 @@ class V5MainActivity : AppCompatActivity() {
         return true
     }
 
-    @SuppressLint("SetTextI18n")
+    //@SuppressLint("SetTextI18n")
     override fun onOptionsItemSelected(item: MenuItem?) = item?.itemId?.let {
         when (it) {
             R.id.menu_new_entry -> {
@@ -245,27 +244,33 @@ class V5MainActivity : AppCompatActivity() {
                 val layout = LinearLayout(this)
                 layout.orientation = LinearLayout.VERTICAL
                 layout.setPadding(16, 8, 16, 0)
-                layout.addView(EditText(this).apply {
-                    hint = "Match"
+                val matchEdit = EditText(this).apply {
+                    hint = getString(R.string.hint_match)
                     inputType = InputType.TYPE_CLASS_NUMBER
                     setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_layers_ablack_small, 0, 0, 0)
                     compoundDrawablePadding = 16
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-                })
-                layout.addView(EditText(this).apply {
-                    hint = "Team"
+                }
+                val teamEdit = EditText(this).apply {
+                    hint = getString(R.string.hint_team)
                     inputType = InputType.TYPE_CLASS_NUMBER
                     setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people_ablack_small, 0, 0, 0)
                     compoundDrawablePadding = 16
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-                })
-                AlertDialog.Builder(this)
+                }
+                layout.addView(matchEdit)
+                layout.addView(teamEdit)
+                val dialog = AlertDialog.Builder(this)
                     .setTitle("Add New Entry")
                     .setView(layout)
-                    .setPositiveButton("Ok") { _, _ -> }
+                    .setPositiveButton("Ok") { _, _ ->
+                        val matchKey = "${boardfile.eventKey}_qm${matchEdit.text}"
+                        startScouting(matchKey, teamEdit.text.toString(), scoutTextView.text.toString(), board)
+                    }
                     .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
                     .create()
-                    .show()
+                dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+                dialog.show()
                 true
             }
             R.id.menu_toggle_scouted -> {
@@ -301,6 +306,20 @@ class V5MainActivity : AppCompatActivity() {
                             break
                         }
                     }
+                    if (teams.size > 5) {
+                        val expectedTeam = when (board) {
+                            R1 -> teams[0]
+                            R2 -> teams[1]
+                            R3 -> teams[2]
+                            B1 -> teams[3]
+                            B2 -> teams[4]
+                            B3 -> teams[5]
+                            RX, BX -> 0
+                        }
+                        if (team != expectedTeam) {
+                            foundData = false
+                        }
+                    } else foundData = false
                     if (!foundData) {
                         val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
                         mutableTeams[Board.values().indexOf(board)] = team

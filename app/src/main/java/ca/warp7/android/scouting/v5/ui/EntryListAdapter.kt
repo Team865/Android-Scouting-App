@@ -35,8 +35,11 @@ class EntryListAdapter(
 
             matchNumber.setCompoundDrawablesWithIntrinsicBounds(
                 0,
-                if (state == Waiting) R.drawable.ic_layers_ablack_small
-                else R.drawable.ic_done_ablack_small, 0, 0
+                when (state) {
+                    Waiting -> R.drawable.ic_layers_ablack_small
+                    Added -> R.drawable.ic_add_ablack
+                    Completed -> R.drawable.ic_done_ablack_small
+                }, 0, 0
             )
 
             when (state) {

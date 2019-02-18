@@ -6,8 +6,8 @@
     <string name="menu_settings">Scouting Options</string>
     <string name="menu_new_entry">New Entry</string>
 
-    <string name="hint_match">Match #</string>
-    <string name="hint_team">Team #</string>
+    <string name="hint_match">Match</string>
+    <string name="hint_team">Team</string>
     <string name="hint_name">Name</string>
 
     <string name="schedule_mismatch">This match is not found  on the schedule</string>
