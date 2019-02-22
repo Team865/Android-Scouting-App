@@ -16,15 +16,9 @@
         android:paddingTop="8dp"
         android:paddingBottom="0dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:contentDescription="@string/hint_match"
-            android:padding="2dp"
-            android:src="@drawable/ic_layers_ablack_small"/>
-
         <TextView
+            android:drawableStart="@drawable/ic_layers_ablack_small"
+            android:drawablePadding="4dp"
             android:id="@+id/toolbar_match"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,15 +28,9 @@
             android:textSize="18sp"
             android:typeface="sans"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:contentDescription="@string/hint_team"
-            android:padding="2dp"
-            android:src="@drawable/ic_book_ablack_small"/>
-
         <TextView
+            android:drawableStart="@drawable/ic_book_ablack_small"
+            android:drawablePadding="4dp"
             android:id="@+id/toolbar_board"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,15 +40,9 @@
             android:paddingEnd="12dp"
             android:paddingStart="0dp"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:contentDescription="@string/hint_team"
-            android:padding="2dp"
-            android:src="@drawable/ic_people_ablack_small"/>
-
         <TextView
+            android:drawableStart="@drawable/ic_people_ablack_small"
+            android:drawablePadding="4dp"
             android:id="@+id/toolbar_team"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,15 +53,9 @@
             android:paddingEnd="12dp"
             android:paddingStart="0dp"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:contentDescription="@string/start_timer"
-            android:padding="2dp"
-            android:src="@drawable/ic_timer_ablack_small"/>
-
         <TextView
+            android:drawableStart="@drawable/ic_timer_ablack_small"
+            android:drawablePadding="4dp"
             android:id="@+id/timer_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

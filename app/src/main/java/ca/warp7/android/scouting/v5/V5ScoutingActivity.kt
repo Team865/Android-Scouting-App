@@ -139,7 +139,7 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                     .apply { window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) }.show()
             }
         }
-        timerStatus.setOnClickListener {
+        findViewById<TextView>(R.id.title_banner).setOnClickListener {
             timerIsCountingUp = !timerIsCountingUp
             updateActivityStatus()
         }
