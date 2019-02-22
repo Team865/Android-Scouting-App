@@ -10,7 +10,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
-import android.view.Gravity
+import android.util.TypedValue
 import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
@@ -127,12 +127,21 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                             InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
                     setText(it.comments)
                     setSelection(it.comments.length)
-                    gravity = Gravity.CENTER
+                    compoundDrawablePadding = 16
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
                     setHint(R.string.comments_hint)
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_comment_ablack_small, 0, 0, 0)
                 }
+                val layout = LinearLayout(this)
+                layout.addView(input)
+                layout.setPadding(16, 8, 16, 0)
                 AlertDialog.Builder(this)
                     .setTitle(R.string.edit_comments)
-                    .setView(input)
+                    .setView(layout)
                     .setPositiveButton("OK") { _, _ -> it.comments = input.text.toString() }
                     .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
                     .create()

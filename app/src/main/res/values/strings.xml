@@ -26,9 +26,7 @@
     </string>
 
     <string name="comments_hint">
-        Comment here if there is an error with this entry
-        (started late, missed click, needs re-scout, etc.)
-        or if the robot behaved abnormally in the match.
+        No Comments
     </string>
 
     <string name="edit_comments">Edit Comments</string>
