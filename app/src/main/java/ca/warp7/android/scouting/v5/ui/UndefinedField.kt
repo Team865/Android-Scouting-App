@@ -21,7 +21,7 @@ class UndefinedField : AppCompatButton {
         setOnClickListener {
             setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
             background.setColorFilter(
-                ContextCompat.getColor(context, android.R.color.black), PorterDuff.Mode.MULTIPLY
+                ContextCompat.getColor(context, android.R.color.black), PorterDuff.Mode.SRC
             )
             data.scoutingActivity.apply {
                 actionVibrator?.vibrateAction()

@@ -35,7 +35,6 @@
             android:name=".v5.V5ScoutingActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".SettingsActivity"/>
-        <activity android:name=".v4.V4ScheduleActivity"/>
         <activity android:name=".LicensesActivity"/>
 
         <meta-data

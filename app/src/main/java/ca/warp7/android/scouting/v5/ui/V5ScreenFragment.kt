@@ -106,8 +106,6 @@ class V5ScreenFragment : Fragment(), V5Tab {
                 })
             }
         })
-//        screenTable?.addView(createControlFromTemplateField(row[0]))
-        //screenTable?.addView(TextView(context).apply { text = "Hi" })
     }
 
     /**

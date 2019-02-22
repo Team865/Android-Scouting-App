@@ -81,12 +81,6 @@ class V4MainActivity : AppCompatActivity() {
         }
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    fun onLogoClicked(view: View) {
-        val intent = Intent(this, V4ScheduleActivity::class.java)
-        startActivity(intent)
-    }
-
     private fun checkChanged(b: Boolean) {
         matchStartButton.visibility = if (b) View.VISIBLE else View.INVISIBLE
         val view = this.currentFocus
@@ -149,15 +143,10 @@ class V4MainActivity : AppCompatActivity() {
         teamNumberField.addTextChangedListener(watcher)
         verifier.setOnCheckedChangeListener { _, b -> checkChanged(b) }
         matchStartButton.setOnClickListener { startScouting() }
-
-        findViewById<View>(R.id.team_logo).setOnLongClickListener {
-            onLogoClicked(it)
-            true
-        }
     }
 
     private fun setupSpecs() {
-        val root = AppResources.specsRoot
+        val root = AppResources.v4SpecsRoot
         val indexFile = File(root, "index.json")
         if (!indexFile.exists()) {
             AppResources.copySpecsAssets(this)
@@ -189,7 +178,7 @@ class V4MainActivity : AppCompatActivity() {
 
     private fun loadSpecsFromName(name: String?) {
         if (specsIndex.names.contains(name)) {
-            passedSpecsFile = File(AppResources.specsRoot, specsIndex.getFileByName(name))
+            passedSpecsFile = File(AppResources.v4SpecsRoot, specsIndex.getFileByName(name))
             val specs = Specs.setInstance(passedSpecsFile)
             val ab = supportActionBar
             if (ab != null) {

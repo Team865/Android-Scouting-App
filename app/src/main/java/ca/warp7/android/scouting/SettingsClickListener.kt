@@ -38,15 +38,12 @@ internal class SettingsClickListener : Preference.OnPreferenceClickListener {
             .setTitle("Are you sure?")
             .setMessage(
                 "Any files stored at \""
-                        + AppResources.specsRoot.absolutePath
-                        + "\" and \""
-                        + AppResources.eventsRoot.absolutePath
+                        + AppResources.v4SpecsRoot.absolutePath
                         + "\" will be overwritten."
             )
             .setNegativeButton("No", null)
             .setPositiveButton("Yes") { _, _ ->
                 AppResources.copySpecsAssets(context)
-                AppResources.copyEventAssets(context)
             }
             .create().show()
     }

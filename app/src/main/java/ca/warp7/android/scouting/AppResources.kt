@@ -5,7 +5,6 @@ import android.os.Environment
 import android.text.Html
 import android.text.Spanned
 import java.io.*
-import java.util.*
 
 /**
  * @since v0.4.2
@@ -14,9 +13,8 @@ import java.util.*
 object AppResources {
 
     private const val kSpecsRoot = "Warp7/specs/"
-    private const val kEventsRoot = "Warp7/events/"
 
-    val specsRoot: File
+    val v4SpecsRoot: File
         get() {
             val root = File(
                 Environment.getExternalStorageDirectory(),
@@ -26,38 +24,9 @@ object AppResources {
             return root
         }
 
-    val eventsRoot: File
-        get() {
-            val root = File(
-                Environment.getExternalStorageDirectory(),
-                kEventsRoot
-            )
-            root.mkdirs()
-            return root
-        }
-
-    val events: List<EventInfo>
-        get() {
-            val root = eventsRoot
-            val eventRoots = root.listFiles()
-            val eventsList = ArrayList<EventInfo>()
-            for (eventRoot in eventRoots) {
-                if (eventRoot.isDirectory) {
-                    try {
-                        val eventInfo = EventInfo(eventRoot)
-                        eventsList.add(eventInfo)
-                    } catch (e: EventInfo.NotProperEventFormat) {
-                        e.printStackTrace()
-                    }
-
-                }
-            }
-            return eventsList
-        }
-
     fun copySpecsAssets(context: Context) {
         try {
-            val root = specsRoot
+            val root = v4SpecsRoot
 
             val assetManager = context.assets
             for (fileName in assetManager.list("specs")!!) {
@@ -105,45 +74,6 @@ object AppResources {
 
     fun getHTML(context: Context, id: Int): Spanned {
         return Html.fromHtml(getRaw(context, id))
-    }
-
-    private fun recursiveDelete(f: File): Boolean {
-        var deleted = true
-        if (f.isDirectory)
-            for (ff in f.listFiles())
-                deleted = deleted && recursiveDelete(ff)
-        return deleted && f.delete()
-    }
-
-    fun copyEventAssets(context: Context) {
-        try {
-            val assetManager = context.assets
-            val root = eventsRoot
-            val rootDirs = root.listFiles()
-            for (assetEvent in assetManager.list("events")!!) {
-                for (rootEventName in rootDirs) {
-                    if (rootEventName.isDirectory && assetEvent == rootEventName.name) {
-                        recursiveDelete(rootEventName)
-                    }
-                }
-                val eventPath = "events/$assetEvent"
-                val eventDirectory = File(root, assetEvent)
-                eventDirectory.mkdir()
-                for (assetEventFile in assetManager.list(eventPath)!!) {
-                    val inputStream = assetManager.open("$eventPath/$assetEventFile")
-                    val buffer = ByteArray(inputStream.available())
-                    inputStream.read(buffer)
-                    inputStream.close()
-                    val outFile = File(eventDirectory, assetEventFile)
-                    val outputStream = FileOutputStream(outFile)
-                    outputStream.write(buffer)
-                    outputStream.close()
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
     }
 
     @Throws(IOException::class)

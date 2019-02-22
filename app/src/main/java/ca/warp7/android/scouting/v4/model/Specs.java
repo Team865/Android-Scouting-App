@@ -75,7 +75,7 @@ public class Specs {
     public static Specs setInstance(File file) {
         try {
 
-            //activeSpecs = new Specs(readFile(new File(AppResources.getSpecsRoot(), filename)));
+            //activeSpecs = new Specs(readFile(new File(AppResources.getV4SpecsRoot(), filename)));
             activeSpecs = new Specs(AppResources.INSTANCE.readFile(file));
 
         } catch (IOException | JSONException e) {
