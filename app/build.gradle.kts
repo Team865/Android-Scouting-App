@@ -11,7 +11,7 @@ android {
         minSdkVersion(21)
         targetSdkVersion(28)
         versionCode = 1
-        versionName = "v2019.1.0-alpha"
+        versionName = "v2019.1.0-rc"
         resConfigs("en", "hdpi")
     }
     buildTypes {
