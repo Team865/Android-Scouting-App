@@ -45,7 +45,7 @@ data class V5TimedEntry(
 
     private val hexTimestamp get() = Integer.toHexString(timestamp)
 
-    private val encodedData get() = Base64.encodeToString(dataPoints.flatten().toByteArray(), Base64.DEFAULT)
+    private val encodedData get() = Base64.encodeToString(dataPoints.flatten().toByteArray(), Base64.NO_WRAP)
 
     private val comments1 get() = comments.replace("[^A-Za-z0-9 ]".toRegex(), "_")
 
