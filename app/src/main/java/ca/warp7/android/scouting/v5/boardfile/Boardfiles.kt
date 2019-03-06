@@ -57,11 +57,11 @@ val exampleBoardfile = Boardfile(
                 "Teleop", listOf(
                     listOf(
                         TemplateField("rocket_3", V5FieldType.Button, listOf("resets:game_piece=1")),
-                        TemplateField("defending", V5FieldType.Switch, listOf("resets:game_piece=1"))
+                        TemplateField("opponent_field", V5FieldType.Switch)
                     ),
                     listOf(
                         TemplateField("rocket_2", V5FieldType.Button, listOf("resets:game_piece=1")),
-                        TemplateField("defended", V5FieldType.Switch, listOf("resets:game_piece=1"))
+                        TemplateField("defended", V5FieldType.Switch)
                     ),
                     listOf(
                         TemplateField("rocket_1", V5FieldType.Button, listOf("resets:game_piece=1")),
