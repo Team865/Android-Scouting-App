@@ -72,6 +72,7 @@ object AppResources {
 
     }
 
+    @Suppress("DEPRECATION")
     fun getHTML(context: Context, id: Int): Spanned {
         return Html.fromHtml(getRaw(context, id))
     }

@@ -17,6 +17,7 @@ class ActionVibrator(
 
     private val actual = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
+    @Suppress("DEPRECATION")
     override fun vibrateStart() {
         if (mVibrationOn) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -27,6 +28,7 @@ class ActionVibrator(
         }
     }
 
+    @Suppress("DEPRECATION")
     override fun vibrateAction() {
         if (mVibrationOn) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -40,7 +40,7 @@ public class QRFragment extends Fragment implements ScoutingTab {
     private String mMessage = " ";
     private ScoutingActivityListener mListener;
 
-    public static QRFragment createInstance() {
+    static QRFragment createInstance() {
         return new QRFragment();
     }
 
@@ -94,7 +94,7 @@ public class QRFragment extends Fragment implements ScoutingTab {
         ImageView qrImage = view.findViewById(R.id.qr_image);
         int dim = qrImage.getWidth();
 
-        qrImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher_background));
+        qrImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher_background, null));
         try {
             Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
             hints.put(EncodeHintType.MARGIN, 1);

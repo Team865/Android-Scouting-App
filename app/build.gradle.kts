@@ -4,6 +4,10 @@ plugins {
     kotlin("android.extensions")
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
 android {
     compileSdkVersion(28)
     defaultConfig {
@@ -11,7 +15,7 @@ android {
         minSdkVersion(21)
         targetSdkVersion(28)
         versionCode = 1
-        versionName = "v2019.1.0-oncmp1"
+        versionName = "v2019.1.1"
         resConfigs("en", "hdpi")
     }
     buildTypes {
