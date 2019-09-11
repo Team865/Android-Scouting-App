@@ -29,10 +29,9 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(kotlin("stdlib-jdk8", "1.3.21"))
     implementation("com.android.support:appcompat-v7:28.0.0")
     implementation("com.android.support:preference-v7:28.0.0")
-    implementation("com.google.zxing:core:3.3.3")
+    implementation("com.google.zxing:core:3.4.0")
     implementation("com.llollox:androidtoggleswitch:2.0.1") {
         exclude("org.jetbrains.kotlin", "kotlin-stdlib-jre7")
     }
