@@ -1,5 +1,6 @@
 package ca.warp7.android.scouting.v5.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -34,7 +35,7 @@ class V5ScreenFragment : Fragment(), V5Tab {
     private var screenFrameLayout: FrameLayout? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.screen_v5, container, false)
+        return inflater.inflate(R.layout.fragment_screen_v5, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,6 +92,7 @@ class V5ScreenFragment : Fragment(), V5Tab {
         return View(context)
     }
 
+    @SuppressLint("DefaultLocale")
     private fun modifyName(name: String): String {
         return name.split("_".toRegex()).joinToString(" ") { it.toLowerCase().capitalize() }
     }
