@@ -13,8 +13,7 @@ import ca.warp7.android.scouting.v4.V4MainActivity
 internal class SettingsClickListener : Preference.OnPreferenceClickListener {
     override fun onPreferenceClick(preference: Preference): Boolean {
         val context = preference.context
-        val key = preference.key
-        when (key) {
+        when (preference.key) {
             context.getString(R.string.pref_copy_assets_key) -> onCopyAssets(context)
             context.getString(R.string.pref_v4_key) -> onScheduleActivityIntent(context)
             context.getString(R.string.pref_licenses_key) -> onLicensesIntent(context)

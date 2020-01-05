@@ -15,7 +15,7 @@ android {
         minSdkVersion(21)
         targetSdkVersion(28)
         versionCode = 1
-        versionName = "v2019.1.1"
+        versionName = "2020.1.0"
         resConfigs("en", "hdpi")
     }
     buildTypes {
@@ -36,7 +36,4 @@ dependencies {
     implementation("com.android.support:appcompat-v7:28.0.0")
     implementation("com.android.support:preference-v7:28.0.0")
     implementation("com.google.zxing:core:3.4.0")
-    implementation("com.llollox:androidtoggleswitch:2.0.1") {
-        exclude("org.jetbrains.kotlin", "kotlin-stdlib-jre7")
-    }
 }
