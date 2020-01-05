@@ -15,7 +15,7 @@ class ManagedPreferences(private val context: Context) {
         context, sharedPreferences.getBoolean(getString(R.string.pref_use_vibration_key), true)
     )
 
-    fun shouldShowPause() = sharedPreferences.getBoolean(getString(R.string.pref_show_pause_key), false)
+    fun shouldShowPause() = true
 
     private fun getString(id: Int) = context.getString(id)
 }

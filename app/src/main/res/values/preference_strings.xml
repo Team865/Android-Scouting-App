@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_app_name">Team 865 Android Scouting App</string>
-    <string name="pref_v4_key">pref_x_schedule</string>
-    <string name="pref_v4_title">V4 App</string>
-    <string name="pref_v4_summary">Opens the old v4 app</string>
+
     <string name="pref_use_vibration_key">pref_use_vibration</string>
     <string name="pref_use_vibration_title">Use Vibration</string>
-    <string name="pref_show_pause_title">Pause, Resume, and SeekBar</string>
     <string name="pref_use_vibration_summary">Vibrate when the app successfully complete an action you requested (such as clicking a button or undo)</string>
-    <string name="pref_show_pause_key">pref_show_pause</string>
-    <string name="pref_show_pause_summary">These features allows you to go back to edit data in an entry</string>
-    <string name="pref_copy_assets_key">pref_copy_assets</string>
-    <string name="pref_copy_assets_title">Copy Asset Files</string>
-    <string name="pref_copy_assets_summary">Copies any files (board/template/schedule) bundled with this app on installation into the usage folder</string>
+
+    <string name="pref_cat_about">About</string>
+
     <string name="pref_about_key">pref_about</string>
     <string name="pref_github_title">Repository on GitHub</string>
     <string name="pref_github_summary">Including source code and new releases</string>
+
     <string name="pref_licenses_key">pref_licenses</string>
     <string name="pref_licenses_title">Open Source Licenses</string>
-    <string name="pref_cat_exp">Legacy Features</string>
-    <string name="pref_cat_about">About</string>
+
 </resources>
