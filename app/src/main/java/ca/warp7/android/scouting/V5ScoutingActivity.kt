@@ -15,9 +15,6 @@ import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.*
-import ca.warp7.android.scouting.Constants.*
-import ca.warp7.android.scouting.ManagedPreferences
-import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.ScoutingActivityState.*
 import ca.warp7.android.scouting.boardfile.Boardfile
 import ca.warp7.android.scouting.boardfile.ScoutTemplate

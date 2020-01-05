@@ -1,8 +1,6 @@
-package ca.warp7.android.scouting;
+package ca.warp7.android.scouting
 
-public class Constants {
-    public static final int kTimerLimit = 150;
-    public static final int kAutonomousTime = 15;
-    public static final int kFadeDuration = 100;
-    public static final int kTotalTimerDigits = 3;
-}
+const val kTimerLimit = 150
+const val kAutonomousTime = 15
+const val kFadeDuration = 100
+const val kTotalTimerDigits = 3

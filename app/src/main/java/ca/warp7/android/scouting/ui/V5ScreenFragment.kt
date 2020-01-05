@@ -86,7 +86,7 @@ class V5ScreenFragment : Fragment(), V5Tab {
                 Checkbox -> CheckboxField(data)
                 Switch -> SwitchField(data)
                 Toggle -> ToggleField(data)
-                else -> UndefinedField(data)
+                Unknown -> UndefinedField(data)
             }
         }
         return View(context)

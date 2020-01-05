@@ -2,8 +2,8 @@ package ca.warp7.android.scouting.ui
 
 import android.content.Context
 import android.util.AttributeSet
-import ca.warp7.android.scouting.v6.toggle.BaseToggleSwitch
-import ca.warp7.android.scouting.v6.toggle.ToggleSwitchButton
+import ca.warp7.android.scouting.ui.toggle.BaseToggleSwitch
+import ca.warp7.android.scouting.ui.toggle.ToggleSwitchButton
 
 @Suppress("unused")
 open class ToggleSwitchCompat : BaseToggleSwitch {

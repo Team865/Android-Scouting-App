@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.v6.toggle
+package ca.warp7.android.scouting.ui.toggle
 
 import android.content.Context
 

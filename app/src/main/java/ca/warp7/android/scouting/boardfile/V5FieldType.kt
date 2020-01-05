@@ -4,5 +4,6 @@ enum class V5FieldType{
     Checkbox,
     Button,
     Toggle,
-    Switch
+    Switch,
+    Unknown
 }
