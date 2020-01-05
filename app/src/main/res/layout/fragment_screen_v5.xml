@@ -8,5 +8,5 @@
     android:paddingStart="4dp"
     android:paddingEnd="4dp"
     android:id="@+id/screen_frame"
-    tools:context="ca.warp7.android.scouting.v5.ui.V5ScreenFragment">
+    tools:context="ca.warp7.android.scouting.ui.V5ScreenFragment">
 </FrameLayout>

@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="ca.warp7.android.scouting.v5.V5ScoutingActivity">
+              tools:context="ca.warp7.android.scouting.V5ScoutingActivity">
 
     <LinearLayout
         android:id="@+id/highlight_bar"
