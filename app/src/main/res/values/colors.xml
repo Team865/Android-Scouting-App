@@ -7,13 +7,11 @@
     <color name="colorGray">#808080</color>
     <color name="colorBlue">#0000ff</color>
     <color name="colorRed">#ff0000</color>
-    <color name="colorPurple">#ff00ff</color>
     <color name="colorLightGreen">#009933</color>
     <color name="colorTeleOpGreen">#006633</color>
     <color name="colorAutoYellow">#cc9900</color>
     <color name="colorDarkAlmostWhite">#d4d4d4</color>
     <color name="colorAlmostWhite">#e0e0e0</color>
-    <color name="colorAlmostYellow">#ffe088</color>
     <color name="colorPrimary">#ffffff</color>
     <color name="colorWhite">#ffffff</color>
 </resources>

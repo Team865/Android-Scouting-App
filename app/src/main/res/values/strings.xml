@@ -8,22 +8,8 @@
 
     <string name="hint_match">Match</string>
     <string name="hint_team">Team</string>
-    <string name="hint_name">Name</string>
 
-    <string name="schedule_mismatch">This match is not found  on the schedule</string>
-    <string name="schedule_does_not_exist">A match schedule has not been provided</string>
-
-    <string name="verify_match_info">Verify Match and Team</string>
-    <string name="verify_match_proceed">Proceed Anyways</string>
-
-    <string name="start_match">Start Scouting</string>
     <string name="start_timer">Start Timer</string>
-
-
-    <string name="exit_confirmation">Exit Scouting?</string>
-    <string name="exit_confirmation_body">
-        All data entered will be lost. Scan the QR code to save it to a computer.
-    </string>
 
     <string name="comments_hint">
         No Comments
@@ -45,11 +31,8 @@
     </string-array>
 
     <string name="send_with_another_method">Send with alternative method</string>
-    <string name="entry_info">Entry Info</string>
     <string name="btn_pause">Pause</string>
     <string name="btn_undo">Undo</string>
-    <string name="btn_now">Now</string>
-    <string name="btn_resume">Resume</string>
     <string name="open_source_licenses">Open Source Licenses</string>
 
 </resources>
