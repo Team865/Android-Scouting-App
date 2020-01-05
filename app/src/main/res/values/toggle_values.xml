@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="is_right_to_left">false</bool>
+    <color name="blue">#42A5F5</color>
+    <color name="gray">#444444</color>
+    <color name="gray_border">#999999</color>
+    <color name="gray_light">#BBBBBB</color>
+    <color name="gray_very_light">#DDDDDD</color>
+    <declare-styleable name="BaseToggleSwitch">
+        <attr name="android:enabled"/>
+        <attr name="android:entries"/>
+        <attr name="android:textSize"/>
+        <attr name="android:layout_height"/>
+        <attr name="android:layout_width"/>
+        <attr format="color" name="checkedBackgroundColor"/>
+        <attr format="color" name="checkedBorderColor"/>
+        <attr format="color" name="checkedTextColor"/>
+        <attr format="dimension" name="borderWidth"/>
+        <attr format="dimension" name="borderRadius"/>
+        <attr format="dimension" name="elevation"/>
+        <attr format="color" name="uncheckedBackgroundColor"/>
+        <attr format="color" name="uncheckedBorderColor"/>
+        <attr format="color" name="uncheckedTextColor"/>
+        <attr format="color" name="separatorColor"/>
+        <attr format="boolean" name="separatorVisible"/>
+        <attr format="string" localization="suggested" name="textToggleCenter"/>
+        <attr format="string" localization="suggested" name="textToggleLeft"/>
+        <attr format="string" localization="suggested" name="textToggleRight"/>
+        <attr format="dimension" name="toggleMargin"/>
+        <attr format="dimension" name="toggleHeight"/>
+        <attr format="dimension" name="toggleWidth"/>
+    </declare-styleable>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="space_medium">16dp</dimen>
+    <dimen name="space_small">8dp</dimen>
+    <dimen name="space_very_small">4dp</dimen>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+</resources>
