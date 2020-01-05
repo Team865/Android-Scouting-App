@@ -30,6 +30,14 @@ import ca.warp7.android.scouting.v5.entry.MutableEntry
 import ca.warp7.android.scouting.v5.entry.V5TimedEntry
 import ca.warp7.android.scouting.v5.ui.V5TabsPagerAdapter
 
+/**
+ * <p>The Scouting Activity -- A generic activity to collect data for an Entry based on a set Specs.
+ * It is responsible for setting up components in the interface, receive events from action buttons
+ * for navigation and commands, and keeps track of an Entry object which stores the data </p>
+ *
+ * @author Team 865
+ * @since v0.2
+ */
 class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
     override fun updateTabStates() {

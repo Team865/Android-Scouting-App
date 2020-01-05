@@ -25,13 +25,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".v4.V4MainActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".v4.V4ScoutingActivity"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".v5.V5ScoutingActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".SettingsActivity"/>
