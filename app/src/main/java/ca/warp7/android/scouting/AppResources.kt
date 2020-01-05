@@ -13,27 +13,12 @@ object AppResources {
 
     private fun getRaw(context: Context, id: Int): String {
         val resources = context.resources
-        try {
-            val br = BufferedReader(
-                InputStreamReader(
-                    resources.openRawResource(id)
-                )
-            )
-
-            val sb = StringBuilder()
-            var line: String? = br.readLine()
-
-            while (line != null) {
-                sb.append(line)
-                sb.append("\n")
-                line = br.readLine()
-            }
-            return sb.toString()
+        return try {
+            resources.openRawResource(id).bufferedReader().readText()
         } catch (e: Exception) {
             e.printStackTrace()
-            return ""
+            ""
         }
-
     }
 
     @Suppress("DEPRECATION")
