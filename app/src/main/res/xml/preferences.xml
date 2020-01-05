@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <SwitchPreference
         android:defaultValue="true"
         android:key="@string/pref_use_vibration_key"
@@ -21,19 +21,4 @@
             android:key="@string/pref_licenses_key"
             android:title="@string/pref_licenses_title"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_cat_exp">
-        <Preference
-            android:key="@string/pref_v4_key"
-            android:summary="@string/pref_v4_summary"
-            android:title="@string/pref_v4_title"/>
-        <Preference
-            android:key="@string/pref_copy_assets_key"
-            android:summary="@string/pref_copy_assets_summary"
-            android:title="@string/pref_copy_assets_title"/>
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="@string/pref_show_pause_key"
-            android:summary="@string/pref_show_pause_summary"
-            android:title="@string/pref_show_pause_title"/>
-    </PreferenceCategory>
-</PreferenceScreen>
+</android.support.v7.preference.PreferenceScreen>
