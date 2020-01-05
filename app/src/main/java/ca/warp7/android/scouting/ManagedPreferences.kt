@@ -12,10 +12,6 @@ class ManagedPreferences(private val context: Context) {
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     val vibrator: AbstractActionVibrator = ActionVibrator(
-        context, sharedPreferences.getBoolean(getString(R.string.pref_use_vibration_key), true)
+        context, sharedPreferences.getBoolean(context.getString(R.string.pref_use_vibration_key), true)
     )
-
-    fun shouldShowPause() = true
-
-    private fun getString(id: Int) = context.getString(id)
 }

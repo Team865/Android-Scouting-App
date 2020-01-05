@@ -261,7 +261,7 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             "QR Code"
         } else "Unknown"
         val titleBanner = findViewById<TextView>(R.id.title_banner)
-        if (!titleBanner.text.toString().isEmpty()) {
+        if (titleBanner.text.toString().isNotEmpty()) {
             alphaAnimationOut.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation) = Unit
                 override fun onAnimationRepeat(animation: Animation) = Unit
