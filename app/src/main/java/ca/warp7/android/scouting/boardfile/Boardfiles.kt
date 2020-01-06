@@ -76,6 +76,30 @@ val exampleBoardfile = Boardfile(
                 )
             ),
             TemplateScreen(
+                "Evan", listOf(
+                    listOf(
+                        TemplateField("wheel", V5FieldType.Switch),
+                        TemplateField("defending", V5FieldType.Switch),
+                        TemplateField("resisting", V5FieldType.Switch)
+                    ),
+                    listOf(
+                        TemplateField("low", V5FieldType.Button),
+                        TemplateField("inner", V5FieldType.Button),
+                        TemplateField("outer", V5FieldType.Button)
+                    ),
+                    listOf(
+                        TemplateField("low_miss", V5FieldType.Button),
+                        TemplateField("high_miss", V5FieldType.Button)
+                    ),
+                    listOf(
+                        TemplateField(
+                            "filed_area", V5FieldType.Toggle,
+                            listOf("Cross", "Far", "Init", "Target")
+                        )
+                    )
+                )
+            ),
+            TemplateScreen(
                 "Endgame", listOf(
                     listOf(
                         TemplateField("climb_level", V5FieldType.Toggle, listOf("default:None", "1", "2", "3"))
