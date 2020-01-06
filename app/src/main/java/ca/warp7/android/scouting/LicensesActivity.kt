@@ -16,7 +16,7 @@ class LicensesActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.open_source_licenses)
         }
-        text.text = AppResources.getHTML(this, R.raw.licenses)
+        text.text = getHTMLFromContext(this, R.raw.licenses)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

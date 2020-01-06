@@ -15,7 +15,7 @@ import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.*
-import ca.warp7.android.scouting.ScoutingActivityState.*
+import ca.warp7.android.scouting.ScoutingActivity.State.*
 import ca.warp7.android.scouting.boardfile.Boardfile
 import ca.warp7.android.scouting.boardfile.ScoutTemplate
 import ca.warp7.android.scouting.boardfile.exampleBoardfile
@@ -35,7 +35,11 @@ import ca.warp7.android.scouting.ui.V5TabsPagerAdapter
  * @author Team 865
  * @since v0.2
  */
-class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
+class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
+
+    enum class State {
+        WaitingToStart, TimedScouting, Pausing
+    }
 
     override fun updateTabStates() {
         if (currentTab != 0) pagerAdapter[currentTab - 1].updateTabState()
@@ -277,7 +281,7 @@ class V5ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
     }
 
-    private fun startActivityState(state: ScoutingActivityState) {
+    private fun startActivityState(state: State) {
         if (state == TimedScouting && (timerIsRunning || relativeTime >= kTimerLimit)) return
         activityState = state
         when (activityState) {

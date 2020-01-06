@@ -20,8 +20,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.*
-import ca.warp7.android.scouting.R
-import ca.warp7.android.scouting.SettingsActivity
 import ca.warp7.android.scouting.boardfile.exampleBoardfile
 import ca.warp7.android.scouting.entry.*
 import ca.warp7.android.scouting.entry.Board.*
@@ -30,7 +28,7 @@ import ca.warp7.android.scouting.ui.createQRBitmap
 import com.google.zxing.WriterException
 
 
-class V5MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var boardTextView: TextView
     private lateinit var scoutTextView: TextView
@@ -350,7 +348,7 @@ class V5MainActivity : AppCompatActivity() {
     }
 
     private fun startScouting(match: String, team: String, scout: String, board: Board) {
-        startActivityForResult(Intent(this, V5ScoutingActivity::class.java).apply {
+        startActivityForResult(Intent(this, ScoutingActivity::class.java).apply {
             putExtra(ScoutingIntentKey.kMatch, match)
             putExtra(ScoutingIntentKey.kBoard, board)
             putExtra(ScoutingIntentKey.kTeam, team)
