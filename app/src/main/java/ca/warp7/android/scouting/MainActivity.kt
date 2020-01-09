@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }.create().show()
         }
+
         val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
         board = boardString?.toBoard() ?: R1
         updateBoard()

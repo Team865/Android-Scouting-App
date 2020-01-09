@@ -1,6 +1,7 @@
 package ca.warp7.android.scouting
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.preference.PreferenceFragmentCompat
 
@@ -20,5 +21,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val aboutApp = findPreference(getString(R.string.pref_about_key))
         aboutApp.summary = "Version: " + BuildConfig.VERSION_NAME + "-" + BuildConfig.BUILD_TYPE
+    }
+
+    fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+        var number = sharedPreferences.getString(key, "")
+        println(number)
     }
 }
