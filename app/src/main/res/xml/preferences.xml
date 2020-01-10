@@ -8,11 +8,11 @@
     <PreferenceCategory android:title = "TBA">
         <EditTextPreference
             android:key = "teamNumber"
-            android:title = "Get Team number"
+            android:title = "Get team number"
             />
         <EditTextPreference
             android:key = "teamEvents"
-            android:title = "Get Team events"/>
+            android:title = "Get team events"/>
     </PreferenceCategory>
 
 

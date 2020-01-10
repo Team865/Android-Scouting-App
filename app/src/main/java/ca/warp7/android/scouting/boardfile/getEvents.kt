@@ -1,24 +1,41 @@
 package ca.warp7.android.scouting.boardfile
 
 import android.os.AsyncTask
-import java.io.BufferedReader
-import java.io.IOException
 import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
+import java.lang.Exception
 import java.net.URL
 
-class getEvent() : AsyncTask<Void,Void, String>(){
+class getEvents : AsyncTask<Void, Void, String?>() {
+    private var data: String? = null
+
 
     override fun onPreExecute() {
         super.onPreExecute()
     }
 
-    override fun doInBackground(vararg p0: Void?): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun doInBackground(vararg p0: Void?): String? {
+        try {
+            val url = URL("https://www.thebluealliance.com/api/v3/team/frc865/events/2019/simple")
+            val connection = url.openConnection()
+            connection.addRequestProperty("User-Agent", "User-agent")
+            connection.setRequestProperty(
+                "X-TBA-Auth-Key",
+                "NTFtIarABYtYkZ4u3VmlDsWUtv39Sp5kiowxP1CArw3fiHi3IQ0XcenrH5ONqGOx"
+            )
+
+            data = InputStreamReader(connection.getInputStream()).readText()
+            println(data)
+        } catch (e : Exception){
+            e.printStackTrace()
+            data = "f"
+        }
+            return data
     }
 
     override fun onPostExecute(result: String?) {
-        super.onPostExecute(result)
     }
+
+
+
+
 }

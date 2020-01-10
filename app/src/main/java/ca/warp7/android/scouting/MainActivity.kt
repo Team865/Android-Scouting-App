@@ -2,6 +2,7 @@ package ca.warp7.android.scouting
 
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
@@ -21,6 +22,7 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.*
 import ca.warp7.android.scouting.boardfile.exampleBoardfile
+import ca.warp7.android.scouting.boardfile.getEvents
 import ca.warp7.android.scouting.entry.*
 import ca.warp7.android.scouting.entry.Board.*
 import ca.warp7.android.scouting.ui.EntryListAdapter
@@ -29,7 +31,6 @@ import com.google.zxing.WriterException
 
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var boardTextView: TextView
     private lateinit var scoutTextView: TextView
     private lateinit var preferences: SharedPreferences
@@ -56,6 +57,9 @@ class MainActivity : AppCompatActivity() {
         entryListAdapter = EntryListAdapter(this, displayedItems)
         entriesList.adapter = entryListAdapter
         ensurePermissions()
+
+        println(getEvents().execute().get())
+
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
         boardTextView.setOnClickListener {
             AlertDialog.Builder(this)
@@ -75,6 +79,8 @@ class MainActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }.create().show()
         }
+
+
 
         val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
         board = boardString?.toBoard() ?: R1
@@ -361,4 +367,6 @@ class MainActivity : AppCompatActivity() {
         private const val MY_PERMISSIONS_REQUEST_FILES = 0
         private const val MY_INTENT_REQUEST_SCOUTING = 1
     }
+
+
 }
