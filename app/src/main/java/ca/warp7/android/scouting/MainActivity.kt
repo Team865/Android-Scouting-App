@@ -2,7 +2,6 @@ package ca.warp7.android.scouting
 
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
@@ -22,15 +21,20 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.*
 import ca.warp7.android.scouting.boardfile.exampleBoardfile
-import ca.warp7.android.scouting.boardfile.getEvents
 import ca.warp7.android.scouting.entry.*
 import ca.warp7.android.scouting.entry.Board.*
 import ca.warp7.android.scouting.ui.EntryListAdapter
 import ca.warp7.android.scouting.ui.createQRBitmap
 import com.google.zxing.WriterException
+import org.json.JSONArray
+import java.io.InputStreamReader
+import java.lang.Exception
+import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
+
+
     private lateinit var boardTextView: TextView
     private lateinit var scoutTextView: TextView
     private lateinit var preferences: SharedPreferences
@@ -46,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     private var showScoutedEntries = true
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_v5_main)
@@ -57,8 +62,6 @@ class MainActivity : AppCompatActivity() {
         entryListAdapter = EntryListAdapter(this, displayedItems)
         entriesList.adapter = entryListAdapter
         ensurePermissions()
-
-        println(getEvents().execute().get())
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
         boardTextView.setOnClickListener {
@@ -79,6 +82,7 @@ class MainActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }.create().show()
         }
+
 
 
 
