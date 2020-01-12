@@ -60,8 +60,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     val url = URL("https://www.thebluealliance.com/api/v3/team/frc$teamNumber/events/2019/simple")
                     val connection = url.openConnection()
                     connection.addRequestProperty("User-Agent", "User-agent")
-                    connection.setRequestProperty("X-TBA-Auth-Key", "NTFtIarABYtYkZ4u3VmlDsWUtv39Sp5kiowxP1CArw3fiHi3IQ0XcenrH5ONqGOx"
-                    )
+                    connection.setRequestProperty("X-TBA-Auth-Key", "key")
 
                     events = InputStreamReader(connection.getInputStream()).readText()
 
