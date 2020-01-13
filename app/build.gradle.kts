@@ -36,4 +36,8 @@ dependencies {
     implementation("com.android.support:appcompat-v7:28.0.0")
     implementation("com.android.support:preference-v7:28.0.0")
     implementation("com.google.zxing:core:3.4.0")
+
+    testImplementation ("junit:junit:4.12")
+    androidTestImplementation ("androidx.test:runner:1.2.0")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.2.0")
 }
