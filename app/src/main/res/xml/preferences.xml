@@ -11,9 +11,9 @@
             android:title = "Set team number" />
 
         <Preference
-            android:key = "@string/event_name"
-            android:title = "Set team events"
-            android:summary = "@string/Events"/>
+            android:key = "@string/event_list"
+            android:title = "Set team events" />
+
     </PreferenceCategory>
 
 

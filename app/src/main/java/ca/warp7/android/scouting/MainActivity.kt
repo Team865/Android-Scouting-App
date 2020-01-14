@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                 .setSingleChoiceItems(R.array.board_choices_v5, values().indexOf(board)) { dialog, which ->
                     values()[which].also {
                         board = it
+                        println(board)
                         updateBoard()
                         updateExpectedItems()
                         updateDisplayedItems()
