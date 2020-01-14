@@ -5,14 +5,14 @@
         android:key="@string/pref_use_vibration_key"
         android:summary="@string/pref_use_vibration_summary"
         android:title="@string/pref_use_vibration_title"/>
-    <PreferenceCategory android:title = "TBA">
+    <PreferenceCategory android:title = "@string/pref_tba_title">
         <EditTextPreference
             android:key = "@string/team_number"
-            android:title = "Set team number" />
+            android:title = "@string/pref_set_team" />
 
         <Preference
             android:key = "@string/event_list"
-            android:title = "Set team events" />
+            android:title = "@string/pref_set_event" />
 
     </PreferenceCategory>
 

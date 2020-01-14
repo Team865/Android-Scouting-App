@@ -31,15 +31,6 @@ class SettingsActivity : AppCompatActivity() {
             SettingsFragment()
         ).commit()
         setTheme(R.style.AppTheme)
-
-        //var eventPref : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-
-        //fragment.onSharedPreferenceChanged(eventPref, "teamEvents")
-
-
-
-
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
