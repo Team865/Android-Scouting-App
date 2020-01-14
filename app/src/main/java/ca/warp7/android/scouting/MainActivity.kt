@@ -26,9 +26,14 @@ import ca.warp7.android.scouting.entry.Board.*
 import ca.warp7.android.scouting.ui.EntryListAdapter
 import ca.warp7.android.scouting.ui.createQRBitmap
 import com.google.zxing.WriterException
+import org.json.JSONArray
+import java.io.InputStreamReader
+import java.lang.Exception
+import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
+
 
     private lateinit var boardTextView: TextView
     private lateinit var scoutTextView: TextView
@@ -45,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     private var showScoutedEntries = true
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_v5_main)
@@ -56,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         entryListAdapter = EntryListAdapter(this, displayedItems)
         entriesList.adapter = entryListAdapter
         ensurePermissions()
+
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
         boardTextView.setOnClickListener {
             AlertDialog.Builder(this)
@@ -64,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                 .setSingleChoiceItems(R.array.board_choices_v5, values().indexOf(board)) { dialog, which ->
                     values()[which].also {
                         board = it
+                        println(board)
                         updateBoard()
                         updateExpectedItems()
                         updateDisplayedItems()
@@ -75,6 +83,10 @@ class MainActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }.create().show()
         }
+
+
+
+
         val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
         board = boardString?.toBoard() ?: R1
         updateBoard()
@@ -360,4 +372,6 @@ class MainActivity : AppCompatActivity() {
         private const val MY_PERMISSIONS_REQUEST_FILES = 0
         private const val MY_INTENT_REQUEST_SCOUTING = 1
     }
+
+
 }

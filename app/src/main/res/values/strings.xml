@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Scouting</string>
 
+    <string name="event_list">Events</string>
+    <string name="app_name">Scouting</string>
     <string name="menu_select_specs">Change</string>
     <string name="menu_toggle_scouted">Toggle Scouted</string>
     <string name="menu_settings">Scouting Options</string>

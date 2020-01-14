@@ -5,6 +5,17 @@
         android:key="@string/pref_use_vibration_key"
         android:summary="@string/pref_use_vibration_summary"
         android:title="@string/pref_use_vibration_title"/>
+    <PreferenceCategory android:title = "@string/pref_tba_title">
+        <EditTextPreference
+            android:key = "@string/pref_team_number"
+            android:title = "@string/pref_set_team" />
+
+        <Preference
+            android:key = "@string/pref_event_key"
+            android:title = "@string/pref_set_event" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/pref_cat_about">
         <Preference
             android:key="@string/pref_about_key"
@@ -21,4 +32,6 @@
             android:key="@string/pref_licenses_key"
             android:title="@string/pref_licenses_title"/>
     </PreferenceCategory>
+
+
 </android.support.v7.preference.PreferenceScreen>
