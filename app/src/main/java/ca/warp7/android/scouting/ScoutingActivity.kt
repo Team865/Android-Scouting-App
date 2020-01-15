@@ -25,7 +25,7 @@ import ca.warp7.android.scouting.entry.Board.BX
 import ca.warp7.android.scouting.entry.Board.RX
 import ca.warp7.android.scouting.entry.MutableEntry
 import ca.warp7.android.scouting.entry.V5TimedEntry
-import ca.warp7.android.scouting.ui.V5TabsPagerAdapter
+import ca.warp7.android.scouting.ui.TabPagerAdapter
 
 /**
  * <p>The Scouting Activity -- A generic activity to collect data for an Entry based on a set Specs.
@@ -62,7 +62,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private lateinit var playAndPauseImage: ImageButton
     private lateinit var undoButton: ImageButton
     private lateinit var pager: ViewPager
-    private lateinit var pagerAdapter: V5TabsPagerAdapter
+    private lateinit var pagerAdapter: TabPagerAdapter
     private lateinit var preferences: ManagedPreferences
     private lateinit var match: String
     private lateinit var team: String
@@ -201,7 +201,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             RX, BX -> boardfile?.superScoutTemplate
             else -> boardfile?.robotScoutTemplate
         }
-        pagerAdapter = V5TabsPagerAdapter(supportFragmentManager, screens?.size ?: 0, pager)
+        pagerAdapter = TabPagerAdapter(supportFragmentManager, screens?.size ?: 0, pager)
         pager.adapter = pagerAdapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit

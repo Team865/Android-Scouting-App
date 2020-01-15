@@ -24,7 +24,7 @@ import com.google.zxing.WriterException
  * @since v0.4.2
  */
 
-class V5QRFragment : Fragment(), V5Tab {
+class QRCodeFragment : Fragment(), ScoutingEntryTab {
 
     private var message = " "
     private var scoutingActivity: BaseScoutingActivity? = null

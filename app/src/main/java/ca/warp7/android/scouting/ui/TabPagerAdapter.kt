@@ -11,7 +11,7 @@ import android.support.v4.view.ViewPager
  * includes an extra page for the qr code
  */
 
-class V5TabsPagerAdapter(
+class TabPagerAdapter(
     fragmentManager: FragmentManager,
     private val layoutsSize: Int,
     private val pager: ViewPager
@@ -20,9 +20,9 @@ class V5TabsPagerAdapter(
 
     override fun getItem(position: Int): Fragment {
         return if (position < layoutsSize) {
-            V5ScreenFragment.createInstance(position)
+            EntryScreenFragment.createInstance(position)
         } else {
-            V5QRFragment()
+            QRCodeFragment()
         }
     }
 
@@ -30,7 +30,7 @@ class V5TabsPagerAdapter(
         return layoutsSize + 1
     }
 
-    operator fun get(index: Int): V5Tab {
-        return instantiateItem(pager, index) as V5Tab
+    operator fun get(index: Int): ScoutingEntryTab {
+        return instantiateItem(pager, index) as ScoutingEntryTab
     }
 }
