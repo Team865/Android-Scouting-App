@@ -13,15 +13,15 @@ data class TimedEntry(
 
     override val board: Board,
 
-    override val dataPoints: MutableList<DataPoint> = mutableListOf(),
-
     override var timestamp: Int,
 
-    val getTime: () -> Double,
-
-    override var comments: String = ""
+    val getTime: () -> Double
 
 ) : MutableEntry {
+
+    override val dataPoints: MutableList<DataPoint> = mutableListOf()
+
+    override var comments: String = ""
 
     override fun getEncoded(): String {
         return "$match:$team:${getStrippedScout()}:${board.name}:" +
@@ -35,18 +35,30 @@ data class TimedEntry(
     override fun undo(): DataPoint? {
         val nextIndex = getNextIndex()
         return if (nextIndex == 0) {
-            null // nothing to undo
+            null
         } else {
-            dataPoints.removeAt(nextIndex - 1) // undo one step
+            dataPoints.removeAt(nextIndex - 1)
         }
     }
 
     override fun count(type: Int): Int {
-        return dataPoints.subList(0, getNextIndex()).count { it.type == type }
+        val nextIndex = getNextIndex()
+        var count = 0
+        for (i in 0 until nextIndex) {
+            if (dataPoints[i].type == type) count++
+        }
+        return count
     }
 
     override fun lastValue(type: Int): DataPoint? {
-        return dataPoints.subList(0, getNextIndex()).lastOrNull { it.type == type }
+        val nextIndex = getNextIndex()
+        for (i in nextIndex downTo 0) {
+            val dp = dataPoints[i]
+            if (dp.type == type) {
+                return dp
+            }
+        }
+        return null
     }
 
     override fun focused(type: Int, time: Double): Boolean {
@@ -70,13 +82,19 @@ data class TimedEntry(
 
     private fun getEncodedData(): String {
         val builder = StringBuilder()
-        dataPoints.forEach { builder.appendDataPoint(it) }
+        for (dataPoint in dataPoints) {
+            builder.appendDataPoint(dataPoint)
+        }
         return builder.toString()
     }
 
-    private fun getStrippedComments() = comments.replace("[^A-Za-z0-9 ]".toRegex(), "_")
+    private fun getStrippedComments(): String {
+        return comments.replace("[^A-Za-z0-9 ]".toRegex(), "_")
+    }
 
-    private fun getStrippedScout() = scout.replace("[^A-Za-z0-9]".toRegex(), "_")
+    private fun getStrippedScout(): String {
+        return scout.replace("[^A-Za-z0-9]".toRegex(), "_")
+    }
 
     private fun getNextIndex(): Int {
         val relativeTime = getTime.invoke()

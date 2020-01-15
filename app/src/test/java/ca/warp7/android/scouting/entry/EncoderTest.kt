@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class V6EncoderTest {
+class EncoderTest {
     @Test
     fun toBase64Test() {
         assertEquals('A', toBase64(0))
