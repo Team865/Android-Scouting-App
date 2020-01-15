@@ -17,14 +17,14 @@ data class TimedEntry(
 
     override var timestamp: Int,
 
-    val getTime: () -> Int,
+    val getTime: () -> Double,
 
     override var comments: String = ""
 
 ) : MutableEntry {
 
     override fun getEncoded() = "$match:$team:${getStrippedScout()}:${board.name}:" +
-            "${getHexTimestamp()}:${getEncodedData()}:${getStrippedComments()}"
+            "${Integer.toHexString(timestamp)}:${getEncodedData()}:${getStrippedComments()}"
 
     override fun add(dataPoint: DataPoint) = this.dataPoints.add(index = getNextIndex(), element = dataPoint)
 
@@ -45,13 +45,24 @@ data class TimedEntry(
         return dataPoints.subList(0, getNextIndex()).lastOrNull { it.type == type }
     }
 
-    override fun focused(type: Int, time: Int): Boolean {
-        return dataPoints.any { it.type == type && it.time == time }
+    override fun focused(type: Int, time: Double): Boolean {
+        val relativeTime = getTime.invoke()
+        var low = 0
+        var high = dataPoints.size - 1
+
+        while (low <= high) {
+            val mid = (high + low) / 2
+            val midTime = dataPoints[mid].time
+            when {
+                midTime < relativeTime -> low = mid
+                midTime > relativeTime -> high = mid
+                else -> return true
+            }
+        }
+        return false
     }
 
     override fun focused(type: Int) = focused(type, getTime.invoke())
-
-    private fun getHexTimestamp() = Integer.toHexString(timestamp)
 
     private fun getEncodedData(): String {
         val builder = StringBuilder()
@@ -70,10 +81,10 @@ data class TimedEntry(
 
         while (low <= high) {
             val mid = (high + low) / 2
-            val time = dataPoints[mid].time
+            val midTime = dataPoints[mid].time
             when {
-                time < relativeTime -> low = mid
-                time > relativeTime -> high = mid
+                midTime < relativeTime -> low = mid
+                midTime > relativeTime -> high = mid
                 else -> return mid
             }
         }

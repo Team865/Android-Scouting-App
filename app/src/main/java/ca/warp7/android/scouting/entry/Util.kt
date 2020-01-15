@@ -4,6 +4,10 @@ package ca.warp7.android.scouting.entry
 
 fun String.toBoard() = Board.values().firstOrNull { it.name == this }
 
+fun DataPoint.intTime() : Int{
+    return (time * 100).toInt()
+}
+
 /**
  * 24-bit data point encoder, into 4 base64 chars
  * 000000 000000 000000 000000
@@ -12,10 +16,11 @@ fun String.toBoard() = Board.values().firstOrNull { it.name == this }
  * bit 11-24: time
  */
 fun StringBuilder.appendDataPoint(dp: DataPoint) {
+    val intTime = dp.intTime()
     append(toBase64(dp.type))
-    append(toBase64((dp.value shl 2) or (dp.time and 0b11 shl 12) shr 12))
-    append(toBase64((dp.time and 0b111111 shl 6) shr 6))
-    append(toBase64(dp.time and 0b111111))
+    append(toBase64((dp.value shl 2) or (intTime and 0b11 shl 12) shr 12))
+    append(toBase64((intTime and 0b111111 shl 6) shr 6))
+    append(toBase64(intTime and 0b111111))
 }
 
 fun encodeDataPoint(dp: DataPoint): String {
@@ -40,10 +45,11 @@ fun decodeDataPoint(s: String, i: Int): DataPoint {
     val b = fromBase64(s[i + 1].toInt())
     val c = fromBase64(s[i + 2].toInt())
     val d = fromBase64(s[i + 3].toInt())
+    val intTime = ((b and 0b11) shl 12) or (c shl 6) or d
     return DataPoint(
         type = a,
         value = (b and 0b111100) shr 2,
-        time = ((b and 0b11) shl 12) or (c shl 6) or d
+        time = intTime / 100.0
     )
 }
 

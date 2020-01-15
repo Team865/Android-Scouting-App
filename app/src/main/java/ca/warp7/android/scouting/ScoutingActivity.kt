@@ -213,7 +213,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         })
         updateActivityStatus()
         updateCurrentTab()
-        entry = TimedEntry(match, team, scout, board, mutableListOf(), currentTime, { relativeTime })
+        entry = TimedEntry(match, team, scout, board, mutableListOf(), currentTime, { relativeTime.toDouble() })
         startActivityState(WaitingToStart)
     }
 

@@ -30,13 +30,13 @@ class V6EncoderTest {
     @Suppress("SpellCheckingInspection")
     @Test
     fun encoderTest() {
-        val dp1 = DataPoint(0, 0, 0)
+        val dp1 = DataPoint(0, 0, 0.0)
         assertEquals("AAAA", encodeDataPoint(dp1))
-        val dp2 = DataPoint(27, 0, 0)
+        val dp2 = DataPoint(27, 0, 0.0)
         assertEquals("bAAA", encodeDataPoint(dp2))
-        val dp3 = DataPoint(0, 4, 0)
+        val dp3 = DataPoint(0, 4, 0.0)
         assertEquals("AQAA", encodeDataPoint(dp3))
-        val dp4 = DataPoint(0, 4, 2)
+        val dp4 = DataPoint(0, 4, 2.0)
         assertEquals("AQAC", encodeDataPoint(dp4))
     }
 }
