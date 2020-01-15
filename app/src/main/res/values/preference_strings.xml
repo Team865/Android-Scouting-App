@@ -4,7 +4,7 @@
 
     <string name="pref_use_vibration_key">pref_use_vibration</string>
     <string name="pref_use_vibration_title">Use Vibration</string>
-    <string name="pref_use_vibration_summary">Vibrate when the app successfully complete an action you requested (such as clicking a button or undo)</string>
+    <string name="pref_use_vibration_summary">Vibrate when the app successfully complete an action</string>
 
     <string name="pref_cat_about">About</string>
 
@@ -15,9 +15,7 @@
     <string name="pref_licenses_key">pref_licenses</string>
     <string name="pref_licenses_title">Open Source Licenses</string>
 
-
-
-    <string name="pref_team_number">teamNumber</string>
+    <string name="pref_team_key">pref_team</string>
     <string name="pref_event_key">eventKey</string>
 
     <string name="pref_tba_title">TBA</string>
