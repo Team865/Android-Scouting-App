@@ -64,7 +64,10 @@ class MainActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setTitle("Select board")
                 .setIcon(R.drawable.ic_book_ablack_small)
-                .setSingleChoiceItems(R.array.board_choices, values().indexOf(board)) { dialog, which ->
+                .setSingleChoiceItems(
+                    values().map { it.displayName }.toTypedArray(),
+                    values().indexOf(board)
+                ) { dialog, which ->
                     values()[which].also {
                         board = it
                         updateBoard()
