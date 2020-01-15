@@ -1,11 +1,12 @@
 package ca.warp7.android.scouting
 
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+
 
 class ExampleTest {
     @Test
     fun testTrue() {
-        Assert.assertTrue(true)
+        assertTrue(true)
     }
 }
