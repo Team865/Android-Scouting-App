@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.ui
+package ca.warp7.android.scouting.ui.field
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.entry.DataPoint
+import ca.warp7.android.scouting.ui.toggle.ToggleSwitchCompat
 
 /*
 https://github.com/llollox/Android-Toggle-Switch

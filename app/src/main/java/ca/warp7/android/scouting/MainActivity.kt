@@ -26,10 +26,6 @@ import ca.warp7.android.scouting.entry.Board.*
 import ca.warp7.android.scouting.ui.EntryListAdapter
 import ca.warp7.android.scouting.ui.createQRBitmap
 import com.google.zxing.WriterException
-import org.json.JSONArray
-import java.io.InputStreamReader
-import java.lang.Exception
-import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
@@ -53,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_v5_main)
+        setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.title = boardfile.eventName
         boardTextView = findViewById(R.id.board)
@@ -68,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setTitle("Select board")
                 .setIcon(R.drawable.ic_book_ablack_small)
-                .setSingleChoiceItems(R.array.board_choices_v5, values().indexOf(board)) { dialog, which ->
+                .setSingleChoiceItems(R.array.board_choices, values().indexOf(board)) { dialog, which ->
                     values()[which].also {
                         board = it
                         updateBoard()
@@ -238,7 +234,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.v5_main_menu, menu)
+        menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 

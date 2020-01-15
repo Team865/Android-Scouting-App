@@ -19,7 +19,7 @@
 
     <string name="layout_error">There was a problem with the layout</string>
 
-    <string-array name="board_choices_v5">
+    <string-array name="board_choices">
         <item>Red 1</item>
         <item>Red 2</item>
         <item>Red 3</item>

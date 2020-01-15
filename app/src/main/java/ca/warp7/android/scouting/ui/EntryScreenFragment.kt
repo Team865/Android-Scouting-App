@@ -13,7 +13,8 @@ import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.BaseScoutingActivity
 import ca.warp7.android.scouting.boardfile.TemplateField
 import ca.warp7.android.scouting.boardfile.TemplateScreen
-import ca.warp7.android.scouting.boardfile.V5FieldType.*
+import ca.warp7.android.scouting.boardfile.FieldType.*
+import ca.warp7.android.scouting.ui.field.*
 
 /**
  * The fragment that is shown in the biggest portion
@@ -24,7 +25,7 @@ import ca.warp7.android.scouting.boardfile.V5FieldType.*
  * @since v0.2.0
  */
 
-class V5ScreenFragment : Fragment(), V5Tab {
+class EntryScreenFragment : Fragment(), ScoutingEntryTab {
 
 
     private var scoutingActivity: BaseScoutingActivity? = null
@@ -35,7 +36,7 @@ class V5ScreenFragment : Fragment(), V5Tab {
     private var screenFrameLayout: FrameLayout? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_screen_v5, container, false)
+        return inflater.inflate(R.layout.fragment_screen, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -143,8 +144,8 @@ class V5ScreenFragment : Fragment(), V5Tab {
          * @return the created instance
          */
 
-        fun createInstance(currentTab: Int): V5ScreenFragment {
-            return V5ScreenFragment().also {
+        fun createInstance(currentTab: Int): EntryScreenFragment {
+            return EntryScreenFragment().also {
                 it.arguments = Bundle().apply { putInt("tab", currentTab) }
             }
         }
