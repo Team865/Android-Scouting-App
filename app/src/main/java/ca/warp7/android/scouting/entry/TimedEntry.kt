@@ -23,7 +23,7 @@ data class TimedEntry(
 
     override var comments: String = "",
 
-    override var undone: Int = 0,
+    var undone: Int = 0,
 
     val isTiming: Boolean = false
 
