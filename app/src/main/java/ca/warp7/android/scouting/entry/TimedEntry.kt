@@ -23,10 +23,14 @@ data class TimedEntry(
 
 ) : MutableEntry {
 
-    override fun getEncoded() = "$match:$team:${getStrippedScout()}:${board.name}:" +
-            "${Integer.toHexString(timestamp)}:${getEncodedData()}:${getStrippedComments()}"
+    override fun getEncoded(): String {
+        return "$match:$team:${getStrippedScout()}:${board.name}:" +
+                "${Integer.toHexString(timestamp)}:${getEncodedData()}:${getStrippedComments()}"
+    }
 
-    override fun add(dataPoint: DataPoint) = this.dataPoints.add(index = getNextIndex(), element = dataPoint)
+    override fun add(dataPoint: DataPoint) {
+        dataPoints.add(getNextIndex(), dataPoint)
+    }
 
     override fun undo(): DataPoint? {
         val nextIndex = getNextIndex()
@@ -52,11 +56,11 @@ data class TimedEntry(
 
         while (low <= high) {
             val mid = (high + low) / 2
-            val midTime = dataPoints[mid].time
+            val midPoint = dataPoints[mid]
             when {
-                midTime < relativeTime -> low = mid
-                midTime > relativeTime -> high = mid
-                else -> return true
+                (relativeTime - midPoint.time) > 0.5 -> low = mid
+                (midPoint.time - relativeTime) > 0.5 -> high = mid
+                midPoint.type == type -> return true
             }
         }
         return false

@@ -27,7 +27,9 @@ package ca.warp7.android.scouting.entry
  * 1/100th of a second. Match does not include the full
  * key anymore, it now excludes year and match type.
  * Scout now has an underscore in it. Undo count is
- * removed
+ * removed. Due to the new binary search algorithms in the
+ * implementation, a new invariant requires that the
+ * data point list must be sorted by time
  */
 
 interface Entry {
