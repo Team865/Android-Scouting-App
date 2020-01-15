@@ -28,15 +28,28 @@ data class TimedEntry(
 
     override fun add(dataPoint: DataPoint) = this.dataPoints.add(index = getNextIndex(), element = dataPoint)
 
-    override fun undo() = getNextIndex().let { if (it == 0) null else dataPoints.removeAt(it - 1) }
+    override fun undo(): DataPoint? {
+        val nextIndex = getNextIndex()
+        return if (nextIndex == 0) {
+            null // nothing to undo
+        } else {
+            dataPoints.removeAt(nextIndex - 1) // undo one step
+        }
+    }
 
-    override fun count(type: Int) = dataPoints.subList(0, getNextIndex()).count { it.type == type }
+    override fun count(type: Int): Int {
+        return dataPoints.subList(0, getNextIndex()).count { it.type == type }
+    }
 
-    override fun lastValue(type: Int) = dataPoints.subList(0, getNextIndex()).lastOrNull { it.type == type }
+    override fun lastValue(type: Int): DataPoint? {
+        return dataPoints.subList(0, getNextIndex()).lastOrNull { it.type == type }
+    }
 
-    override fun focused(type: Int, time: Int) = dataPoints.any { it.type == type && it.time == time }
+    override fun focused(type: Int, time: Int): Boolean {
+        return dataPoints.any { it.type == type && it.time == time }
+    }
 
-    override fun focused(type: Int) = focused(type, getTime())
+    override fun focused(type: Int) = focused(type, getTime.invoke())
 
     private fun getHexTimestamp() = Integer.toHexString(timestamp)
 
@@ -51,9 +64,19 @@ data class TimedEntry(
     private fun getStrippedScout() = scout.replace("[^A-Za-z0-9]".toRegex(), "_")
 
     private fun getNextIndex(): Int {
-        val relTime = getTime()
-        var index = 0
-        while (index < dataPoints.size && dataPoints[index].time <= relTime) index++
-        return index
+        val relativeTime = getTime.invoke()
+        var low = 0
+        var high = dataPoints.size - 1
+
+        while (low <= high) {
+            val mid = (high + low) / 2
+            val time = dataPoints[mid].time
+            when {
+                time < relativeTime -> low = mid
+                time > relativeTime -> high = mid
+                else -> return mid
+            }
+        }
+        return 0
     }
 }
