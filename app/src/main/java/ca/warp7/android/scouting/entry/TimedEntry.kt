@@ -99,8 +99,11 @@ data class TimedEntry(
         return scout.replace("[^A-Za-z0-9]".toRegex(), "_")
     }
 
-    internal fun getNextIndex(): Int {
-        val currentTime = getTime.invoke()
+    private fun getNextIndex(): Int {
+        return getNextIndex(getTime.invoke())
+    }
+
+    internal fun getNextIndex(currentTime: Double): Int {
 
         if (currentTime <= dataPoints.first().time) {
             return 0
@@ -118,7 +121,7 @@ data class TimedEntry(
         // whereas searching using a loop is O(n).
 
         while (low != high) {
-            val mid = (high + low) / 2
+            val mid = (low + high) / 2
             if (dataPoints[mid].time <= currentTime) {
                 low = mid + 1
             } else {
