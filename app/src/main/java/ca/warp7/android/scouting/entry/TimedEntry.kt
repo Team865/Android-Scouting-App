@@ -66,9 +66,10 @@ data class TimedEntry(
         var low = 0
         var high = dataPoints.size - 1
 
-        while (low <= high) {
+        while (low != high) {
             val mid = (high + low) / 2
             val midPoint = dataPoints[mid]
+
             when {
                 (relativeTime - midPoint.time) > 0.5 -> low = mid
                 (midPoint.time - relativeTime) > 0.5 -> high = mid
@@ -78,7 +79,9 @@ data class TimedEntry(
         return false
     }
 
-    override fun focused(type: Int) = focused(type, getTime.invoke())
+    override fun focused(type: Int): Boolean {
+        return focused(type, getTime.invoke())
+    }
 
     private fun getEncodedData(): String {
         val builder = StringBuilder()
@@ -96,20 +99,33 @@ data class TimedEntry(
         return scout.replace("[^A-Za-z0-9]".toRegex(), "_")
     }
 
-    private fun getNextIndex(): Int {
-        val relativeTime = getTime.invoke()
+    internal fun getNextIndex(): Int {
+        val currentTime = getTime.invoke()
+
+        if (currentTime <= dataPoints.first().time) {
+            return 0
+        }
+
+        if (currentTime >= dataPoints.last().time) {
+            return dataPoints.size - 1
+        }
+
         var low = 0
         var high = dataPoints.size - 1
 
-        while (low <= high) {
+        // To get the element that we want, use a binary search algorithm
+        // instead of iterating over a for-loop. A binary search is O(log(n))
+        // whereas searching using a loop is O(n).
+
+        while (low != high) {
             val mid = (high + low) / 2
-            val midTime = dataPoints[mid].time
-            when {
-                midTime < relativeTime -> low = mid
-                midTime > relativeTime -> high = mid
-                else -> return mid
+            if (dataPoints[mid].time <= currentTime) {
+                low = mid + 1
+            } else {
+                high = mid
             }
         }
-        return 0
+
+        return low - 1
     }
 }
