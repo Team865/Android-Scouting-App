@@ -51,7 +51,7 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
             data.scoutingActivity.apply {
                 if (timeEnabled) {
                     actionVibrator?.vibrateAction()
-                    entry!!.add(DataPoint(data.typeIndex, if (checkBox.isChecked) 1 else 0, relativeTime.toDouble()))
+                    entry!!.add(DataPoint(data.typeIndex, if (checkBox.isChecked) 1 else 0, relativeTime))
                     updateControlState()
                 }
             }

@@ -18,7 +18,7 @@ interface BaseScoutingActivity {
     /**
      * Relative time
      */
-    val relativeTime: Int
+    val relativeTime: Double
 
     /**
      * The time Handler of the activity

@@ -53,7 +53,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     override val timeEnabled get() = activityState != WaitingToStart
     override var boardfile: Boardfile? = null
     override var template: ScoutTemplate? = null
-    override var relativeTime = 0
+    override var relativeTime = 0.0
 
     private lateinit var timerStatus: TextView
     private lateinit var timeProgress: ProgressBar
@@ -170,7 +170,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser && activityState == Pausing) {
-                    relativeTime = progress
+                    relativeTime = progress.toDouble()
                     updateActivityStatus()
                     updateTabStates()
                 }
@@ -213,7 +213,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         })
         updateActivityStatus()
         updateCurrentTab()
-        entry = TimedEntry(match, team, scout, board, currentTime) { relativeTime.toDouble() }
+        entry = TimedEntry(match, team, scout, board, currentTime) { relativeTime }
         startActivityState(WaitingToStart)
     }
 
@@ -247,8 +247,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             else -> R.color.colorTeleOpGreen
         }
         timerStatus.setTextColor(ContextCompat.getColor(this, statusColor))
-        timeProgress.progress = relativeTime
-        timeSeeker.progress = relativeTime
+        timeProgress.progress = relativeTime.toInt()
+        timeSeeker.progress = relativeTime.toInt()
     }
 
     private val alphaAnimationIn: Animation = AlphaAnimation(0.0f, 1.0f).apply { duration = kFadeDuration.toLong() }
