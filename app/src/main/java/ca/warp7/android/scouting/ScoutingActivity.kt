@@ -24,7 +24,7 @@ import ca.warp7.android.scouting.entry.Board
 import ca.warp7.android.scouting.entry.Board.BX
 import ca.warp7.android.scouting.entry.Board.RX
 import ca.warp7.android.scouting.entry.MutableEntry
-import ca.warp7.android.scouting.entry.V5TimedEntry
+import ca.warp7.android.scouting.entry.TimedEntry
 import ca.warp7.android.scouting.ui.TabPagerAdapter
 
 /**
@@ -213,7 +213,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         })
         updateActivityStatus()
         updateCurrentTab()
-        entry = V5TimedEntry(match, team, scout, board, mutableListOf(), currentTime, { relativeTime }, isTiming = true)
+        entry = TimedEntry(match, team, scout, board, mutableListOf(), currentTime, { relativeTime }, isTiming = true)
         startActivityState(WaitingToStart)
     }
 

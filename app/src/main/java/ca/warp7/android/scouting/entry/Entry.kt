@@ -28,7 +28,7 @@ package ca.warp7.android.scouting.entry
  * @since v0.1.0 (revised 0.5.0)
  */
 
-interface V5Entry {
+interface Entry {
     val match: String
     val team: String
     val scout: String
