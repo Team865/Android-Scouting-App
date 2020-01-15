@@ -128,7 +128,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 }
             }
         }
-        findViewById<ImageButton>(R.id.v5_comment_button).setOnClickListener {
+        findViewById<ImageButton>(R.id.comment_button).setOnClickListener {
             entry?.also {
                 val input = EditText(this).apply {
                     inputType = InputType.TYPE_CLASS_TEXT or
