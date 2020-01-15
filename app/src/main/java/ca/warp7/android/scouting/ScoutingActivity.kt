@@ -213,7 +213,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         })
         updateActivityStatus()
         updateCurrentTab()
-        entry = TimedEntry(match, team, scout, board, mutableListOf(), currentTime, { relativeTime }, isTiming = true)
+        entry = TimedEntry(match, team, scout, board, mutableListOf(), currentTime, { relativeTime })
         startActivityState(WaitingToStart)
     }
 
@@ -221,7 +221,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         when (activityState) {
             WaitingToStart -> setResult(Activity.RESULT_CANCELED, null)
             else -> setResult(Activity.RESULT_OK, Intent().apply {
-                putExtra(ScoutingIntentKey.kResult, entry?.encoded)
+                putExtra(ScoutingIntentKey.kResult, entry?.getEncoded())
                 putExtra(ScoutingIntentKey.kMatch, match)
                 putExtra(ScoutingIntentKey.kBoard, board)
                 putExtra(ScoutingIntentKey.kTeam, team)

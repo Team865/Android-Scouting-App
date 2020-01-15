@@ -77,7 +77,7 @@ class QRCodeFragment : Fragment(), ScoutingEntryTab {
     }
 
     override fun updateTabState() {
-        val newMessage = scoutingActivity?.entry?.encoded ?: " "
+        val newMessage = scoutingActivity?.entry?.getEncoded() ?: " "
         sendButton?.text = newMessage
         if (newMessage != message) {
             message = newMessage

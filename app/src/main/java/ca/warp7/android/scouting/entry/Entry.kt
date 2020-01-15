@@ -47,7 +47,7 @@ interface Entry {
     val timestamp: Int
 
     // The encoded data
-    val encoded: String
+    fun getEncoded(): String
 
     // The list of data points
     val dataPoints: List<DataPoint>
