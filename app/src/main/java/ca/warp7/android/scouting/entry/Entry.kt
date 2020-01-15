@@ -70,5 +70,5 @@ interface Entry {
     /**
      * Check if a type should focus according to the current time
      */
-    fun focused(type: Int, time: Double): Boolean
+    fun isFocused(type: Int, time: Double): Boolean
 }

@@ -17,5 +17,5 @@ interface MutableEntry : Entry {
     override var comments: String
     override var timestamp: Int
 
-    fun focused(type: Int): Boolean
+    fun isFocused(type: Int): Boolean
 }

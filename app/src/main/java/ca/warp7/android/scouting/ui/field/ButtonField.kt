@@ -99,7 +99,7 @@ class ButtonField : FrameLayout, BaseFieldWidget {
                 scoutingActivity.entry?.apply {
                     val count = count(typeIndex)
                     counter?.text = count.toString()
-                    if (focused(typeIndex)){
+                    if (isFocused(typeIndex)){
                         button.setTextColor(white)
                         background.setColorFilter(accent, PorterDuff.Mode.SRC)
                         counter!!.setTextColor(white)

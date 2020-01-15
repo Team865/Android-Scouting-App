@@ -61,8 +61,8 @@ data class TimedEntry(
         return null
     }
 
-    override fun focused(type: Int, time: Double): Boolean {
-        val relativeTime = getTime.invoke()
+    override fun isFocused(type: Int, time: Double): Boolean {
+
         var low = 0
         var high = dataPoints.size - 1
 
@@ -71,16 +71,16 @@ data class TimedEntry(
             val midPoint = dataPoints[mid]
 
             when {
-                (relativeTime - midPoint.time) > 0.5 -> low = mid
-                (midPoint.time - relativeTime) > 0.5 -> high = mid
+                (time - midPoint.time) > 0.5 -> low = mid
+                (midPoint.time - time) > 0.5 -> high = mid
                 midPoint.type == type -> return true
             }
         }
         return false
     }
 
-    override fun focused(type: Int): Boolean {
-        return focused(type, getTime.invoke())
+    override fun isFocused(type: Int): Boolean {
+        return isFocused(type, getTime.invoke())
     }
 
     private fun getEncodedData(): String {
@@ -106,11 +106,11 @@ data class TimedEntry(
     internal fun getNextIndex(currentTime: Double): Int {
 
         if (currentTime <= dataPoints.first().time) {
-            return 0
+            return 1
         }
 
         if (currentTime >= dataPoints.last().time) {
-            return dataPoints.size - 1
+            return dataPoints.size
         }
 
         var low = 0
@@ -129,6 +129,6 @@ data class TimedEntry(
             }
         }
 
-        return low - 1
+        return low
     }
 }
