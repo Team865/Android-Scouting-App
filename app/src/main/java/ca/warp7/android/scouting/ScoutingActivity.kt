@@ -98,7 +98,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         super.onCreate(savedInstanceState)
         handler = Handler()
         setTheme(R.style.AppTheme)
-        setContentView(R.layout.activity_v5_scouting)
+        setContentView(R.layout.activity_scouting)
         timerStatus = findViewById(R.id.timer_status)
         startButton = findViewById(R.id.start_timer)
         playAndPauseImage = findViewById(R.id.play_pause_image)

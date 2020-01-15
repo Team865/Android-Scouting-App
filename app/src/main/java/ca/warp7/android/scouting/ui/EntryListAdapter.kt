@@ -25,7 +25,7 @@ class EntryListAdapter(
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val itemView = if (convertView is LinearLayout)
-            convertView else mInflater.inflate(R.layout.list_item_v5_match, parent, false)
+            convertView else mInflater.inflate(R.layout.list_item_match_info, parent, false)
         getItem(position)?.apply {
             val matchNumber = itemView.findViewById<TextView>(R.id.match_number)
             matchNumber.text = match.let {
