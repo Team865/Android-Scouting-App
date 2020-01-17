@@ -6,7 +6,7 @@
         android:summary="@string/pref_use_vibration_summary"
         android:title="@string/pref_use_vibration_title"/>
     <PreferenceCategory android:title = "@string/pref_tba_title">
-        <EditTextPreference
+        <Preference
             android:key = "@string/pref_team_number"
             android:title = "@string/pref_set_team" />
 

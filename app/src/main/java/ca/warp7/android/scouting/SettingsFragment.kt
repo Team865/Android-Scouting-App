@@ -1,12 +1,17 @@
 package ca.warp7.android.scouting
 
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.preference.PreferenceManager
 import android.support.v7.preference.PreferenceFragmentCompat
+import android.view.Gravity
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.Toast
 import org.json.JSONArray
 import java.io.InputStreamReader
 import java.lang.Exception
@@ -63,10 +68,51 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         }
 
-        findPreference(getString(R.string.event_list)).setOnPreferenceClickListener {
+        findPreference(getString(R.string.pref_team_number)).setOnPreferenceClickListener {
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+            val input = EditText(context)
+            val lp = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            input.layoutParams = lp
+            val handler = Handler(Looper.getMainLooper())
+            handler.post {
+                val builder = AlertDialog.Builder(context)
+                builder.setTitle("Enter team number")
+                    .setView(input)
+                    .setPositiveButton("OK", null)
+                    .setNegativeButton("CANCEL", null)
+                val dialog = builder.create()
+                input.setText(sharedPreferences.getString("teamNumber", ""))
+                dialog.setOnShowListener {
+                    val button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    button.setOnClickListener {
+                        if (input.text.toString().replace("\\D+", "").length > 4) {
+                            val toast = Toast.makeText(
+                                context,
+                                "Team number must not contain letters",
+                                Toast.LENGTH_SHORT
+                            )
+                            toast.setGravity(Gravity.CENTER, 0, 0)
+                            toast.show()
+                            input.setText("")
+                        } else {
+                            sharedPreferences.edit().putString("teamNumber", input.text.toString())
+                                .apply()
+                            dialog.dismiss()
+                        }
+                    }
+
+                }
+                dialog.show()
+            }
+            true
+        }
+        findPreference(getString(R.string.pref_event_key)).setOnPreferenceClickListener {
 
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            val teamNumber = sharedPreferences.getString(getString(R.string.pref_team_number), "").toString()
+            val teamNumber = sharedPreferences.getString("teamNumber", "").toString()
 
             val thread = Thread {
                 val events: String
@@ -99,6 +145,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val aboutApp = findPreference(getString(R.string.pref_about_key))
         aboutApp.summary = "Version: " + BuildConfig.VERSION_NAME + "-" + BuildConfig.BUILD_TYPE
-
     }
 }
+
