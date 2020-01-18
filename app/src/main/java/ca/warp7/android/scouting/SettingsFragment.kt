@@ -116,7 +116,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             val thread = Thread {
                 val events: String
-//                println("In thread")
                 try {
                     val url =
                         URL("https://www.thebluealliance.com/api/v3/team/frc$teamNumber/events/2019/simple")
