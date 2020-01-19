@@ -52,7 +52,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private fun handleData(eventData: String) {
 
         val listEvents = mutableListOf<String>()
-        println("In handling data")
         val events = JSONArray(eventData)
         for (i in 0 until events.length()) {
             val event = events.getJSONObject(i)
@@ -131,15 +130,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         "NTFtIarABYtYkZ4u3VmlDsWUtv39Sp5kiowxP1CArw3fiHi3IQ0XcenrH5ONqGOx"
                     )
 
-                    println("I'm trying")
-
                     events = InputStreamReader(connection.getInputStream()).readText()
 
-                    println("Tried, getting data")
                     handleData(events)
 
                 } catch (e: Exception) {
-                    println("Failed")
                     e.printStackTrace()
                 }
             }
