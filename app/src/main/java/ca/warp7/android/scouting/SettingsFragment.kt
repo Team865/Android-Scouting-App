@@ -8,11 +8,15 @@ import android.os.Handler
 import android.os.Looper
 import android.preference.PreferenceManager
 import android.support.v7.preference.PreferenceFragmentCompat
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.Gravity
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import org.json.JSONArray
+import org.w3c.dom.Text
 import java.io.InputStreamReader
 import java.lang.Exception
 import java.net.URL
@@ -76,37 +80,46 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             input.layoutParams = lp
-            val handler = Handler(Looper.getMainLooper())
-            handler.post {
-                val builder = AlertDialog.Builder(context)
-                builder.setTitle("Enter team number")
-                    .setView(input)
-                    .setPositiveButton("OK", null)
-                    .setNegativeButton("CANCEL", null)
-                val dialog = builder.create()
-                input.setText(sharedPreferences.getString("teamNumber", ""))
-                dialog.setOnShowListener {
-                    val button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                    button.setOnClickListener {
-                        if (input.text.toString().replace("\\D+", "").length > 4) {
-                            val toast = Toast.makeText(
-                                context,
-                                "Team number must not contain letters",
-                                Toast.LENGTH_SHORT
-                            )
-                            toast.setGravity(Gravity.CENTER, 0, 0)
-                            toast.show()
-                            input.setText("")
-                        } else {
-                            sharedPreferences.edit().putString("teamNumber", input.text.toString())
-                                .apply()
-                            dialog.dismiss()
-                        }
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Enter team number")
+                .setView(input)
+                .setPositiveButton("OK") { _, _ -> }
+                .setNegativeButton("CANCEL") { _, _ -> }
+            val dialog = builder.create()
+            input.setText(sharedPreferences.getString("teamNumber", ""))
+            input.addTextChangedListener(object : TextWatcher {
+                override fun onTextChanged(
+                    s: CharSequence, start: Int, before: Int,
+                    count: Int
+                ) {
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence, start: Int, count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun afterTextChanged(s: Editable) {
+                    if (input.text.isNotEmpty() && input.text.toString().replace("\\D+", "").length <= 4) {
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+                        sharedPreferences.edit().putString("teamNumber", input.text.toString()).apply()
+                    } else {
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     }
 
                 }
-                dialog.show()
-            }
+            })
+            dialog.show()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+
+
+            /*if(input.text.isNotEmpty() && input.text.toString().replace("\\D+", "").length <= 4){
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+                sharedPreferences.edit().putString("teamNumber", input.text.toString()).apply()
+            }*/
+
+
             true
         }
         findPreference(getString(R.string.pref_event_key)).setOnPreferenceClickListener {
