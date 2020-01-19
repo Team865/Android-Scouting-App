@@ -58,7 +58,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val event = events.getJSONObject(i)
             listEvents.add(event.getString("name"))
         }
-//        println(listEvents)
         updateEntries(listEvents)
     }
 
@@ -112,13 +111,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             })
             dialog.show()
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-
-
-            /*if(input.text.isNotEmpty() && input.text.toString().replace("\\D+", "").length <= 4){
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
-                sharedPreferences.edit().putString("teamNumber", input.text.toString()).apply()
-            }*/
-
 
             true
         }
