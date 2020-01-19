@@ -96,14 +96,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 override fun afterTextChanged(s: Editable) {
                     if (input.text.isNotEmpty() && input.text.toString().matches("-?\\d+(\\.\\d+)?".toRegex()) && input.text.toString().length <= 4) {
                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
-                        sharedPreferences.edit().putString("teamNumber", input.text.toString()).apply()
+                        sharedPreferences.edit().putString("teamNumber", input.text.toString())
+                            .apply()
                     } else {
                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     }
                 }
             })
             dialog.show()
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
 
             true
         }
