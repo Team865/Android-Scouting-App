@@ -1,7 +1,6 @@
 package ca.warp7.android.scouting
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -9,14 +8,10 @@ import android.os.Looper
 import android.preference.PreferenceManager
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
-import android.view.Gravity
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.Toast
 import org.json.JSONArray
-import org.w3c.dom.Text
 import java.io.InputStreamReader
 import java.lang.Exception
 import java.net.URL
@@ -99,13 +94,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
 
                 override fun afterTextChanged(s: Editable) {
-                    if (input.text.isNotEmpty() && input.text.toString().replace("\\D+", "").length <= 4) {
+                    if (input.text.isNotEmpty() && input.text.toString().matches("-?\\d+(\\.\\d+)?".toRegex()) && input.text.toString().length <= 4) {
                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
                         sharedPreferences.edit().putString("teamNumber", input.text.toString()).apply()
                     } else {
                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     }
-
                 }
             })
             dialog.show()
