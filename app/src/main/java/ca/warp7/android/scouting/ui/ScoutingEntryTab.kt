@@ -1,5 +1,5 @@
 package ca.warp7.android.scouting.ui
 
-interface V5Tab{
+interface ScoutingEntryTab{
     fun updateTabState()
 }

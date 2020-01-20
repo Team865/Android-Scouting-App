@@ -5,7 +5,7 @@ package ca.warp7.android.scouting.entry
 import android.util.Base64
 
 
-data class V5TimedEntry(
+data class TimedEntry(
 
     override val match: String,
 

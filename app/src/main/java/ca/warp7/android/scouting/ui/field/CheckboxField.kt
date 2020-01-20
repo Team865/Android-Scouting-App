@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.ui
+package ca.warp7.android.scouting.ui.field
 
 import android.content.Context
 import android.graphics.Typeface

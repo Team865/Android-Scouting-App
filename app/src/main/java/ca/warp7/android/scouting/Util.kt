@@ -38,14 +38,14 @@ const val kTotalTimerDigits = 3
 
 object ScoutingIntentKey {
 
-    private const val v5Root = "ca.warp7.android.scouting.intent"
+    private const val root = "ca.warp7.android.scouting.intent"
 
-    const val kMatch = "$v5Root.match"
-    const val kTeam = "$v5Root.team"
-    const val kScout = "$v5Root.scout"
-    const val kBoard = "$v5Root.board"
+    const val kMatch = "$root.match"
+    const val kTeam = "$root.team"
+    const val kScout = "$root.scout"
+    const val kBoard = "$root.board"
 
-    const val kResult = "$v5Root.result"
+    const val kResult = "$root.result"
 }
 
 object MainSettingsKey {
