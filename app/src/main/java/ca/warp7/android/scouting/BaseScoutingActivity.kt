@@ -16,11 +16,6 @@ interface BaseScoutingActivity {
     val relativeTime: Double
 
     /**
-     * The time Handler of the activity
-     */
-    val handler: Handler
-
-    /**
      * Vibrate to indicate an action
      */
     fun vibrateAction()

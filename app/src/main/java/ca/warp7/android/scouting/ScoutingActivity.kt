@@ -51,7 +51,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         )
     }
 
-    override lateinit var handler: Handler
+    private lateinit var handler: Handler
+
     override fun vibrateAction() {
         vibrator.vibrateAction()
     }
