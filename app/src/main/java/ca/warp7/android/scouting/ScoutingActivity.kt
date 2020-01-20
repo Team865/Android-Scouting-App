@@ -47,6 +47,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         if (currentTab != pagerAdapter.count - 1) pagerAdapter[currentTab + 1].updateTabState()
     }
 
+    private val currentTime get() = (System.currentTimeMillis() / 1000).toInt()
+
     override lateinit var handler: Handler
     override val actionVibrator get() = preferences.vibrator
     override var entry: MutableEntry? = null

@@ -11,11 +11,6 @@ import ca.warp7.android.scouting.entry.MutableEntry
 interface BaseScoutingActivity {
 
     /**
-     * Current time
-     */
-    val currentTime get() = (System.currentTimeMillis() / 1000).toInt()
-
-    /**
      * Relative time
      */
     val relativeTime: Double
