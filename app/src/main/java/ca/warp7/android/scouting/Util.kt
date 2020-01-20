@@ -56,11 +56,3 @@ object MainSettingsKey {
     const val kScout = "$kMainSettingsRoot.scout"
 }
 
-class ManagedPreferences(context: Context) {
-
-    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
-    val vibrator: AbstractActionVibrator = ActionVibrator(
-        context, sharedPreferences.getBoolean(context.getString(R.string.pref_use_vibration_key), true)
-    )
-}

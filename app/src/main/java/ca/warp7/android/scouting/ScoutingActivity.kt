@@ -28,14 +28,6 @@ import ca.warp7.android.scouting.entry.MutableEntry
 import ca.warp7.android.scouting.entry.TimedEntry
 import ca.warp7.android.scouting.ui.TabPagerAdapter
 
-/**
- * <p>The Scouting Activity -- A generic activity to collect data for an Entry based on a set Specs.
- * It is responsible for setting up components in the interface, receive events from action buttons
- * for navigation and commands, and keeps track of an Entry object which stores the data </p>
- *
- * @author Team 865
- * @since v0.2
- */
 class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
     enum class State {
@@ -52,10 +44,12 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         return (System.currentTimeMillis() / 1000).toInt()
     }
 
-    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-    private val vibrator: AbstractActionVibrator = ActionVibrator(
-        this, sharedPreferences.getBoolean(this.getString(R.string.pref_use_vibration_key), true)
-    )
+    private val vibrator by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        ActionVibrator(
+            this, sharedPreferences.getBoolean(this.getString(R.string.pref_use_vibration_key), true)
+        )
+    }
 
     override lateinit var handler: Handler
     override fun vibrateAction() {
