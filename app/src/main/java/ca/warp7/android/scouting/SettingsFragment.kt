@@ -57,7 +57,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        findPreference(getString(R.string.pref_team_number)).setOnPreferenceClickListener {
+        findPreference(getString(R.string.pref_team_key)).setOnPreferenceClickListener {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             val input = EditText(context)
             val lp = LinearLayout.LayoutParams(
