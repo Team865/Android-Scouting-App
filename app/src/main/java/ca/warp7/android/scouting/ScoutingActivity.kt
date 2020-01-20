@@ -238,7 +238,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             timerStatus.setTypeface(null, Typeface.NORMAL)
             if (relativeTime <= kAutonomousTime) kAutonomousTime - relativeTime else kTimerLimit - relativeTime
         }
-        val status = time.toString()
+        val status = time.toInt().toString()
         val placeholder = CharArray(kTotalTimerDigits - status.length)
         val filledStatus = String(placeholder).replace("\u0000", "0") + status
         timerStatus.text = filledStatus

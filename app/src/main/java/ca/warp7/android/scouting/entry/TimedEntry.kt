@@ -2,6 +2,8 @@
 
 package ca.warp7.android.scouting.entry
 
+import kotlin.math.abs
+
 
 data class TimedEntry(
 
@@ -52,7 +54,7 @@ data class TimedEntry(
 
     override fun lastValue(type: Int): DataPoint? {
         val nextIndex = getNextIndex()
-        for (i in nextIndex downTo 0) {
+        for (i in nextIndex - 1 downTo 0) {
             val dp = dataPoints[i]
             if (dp.type == type) {
                 return dp
@@ -62,6 +64,12 @@ data class TimedEntry(
     }
 
     override fun isFocused(type: Int, time: Double): Boolean {
+
+        return dataPoints.any { it.type == type && abs(time - it.time) < 0.5 }
+
+        /*if (dataPoints.isEmpty()) {
+            return false
+        }
 
         var low = 0
         var high = dataPoints.size - 1
@@ -76,7 +84,7 @@ data class TimedEntry(
                 midPoint.type == type -> return true
             }
         }
-        return false
+        return false*/
     }
 
     override fun isFocused(type: Int): Boolean {
@@ -105,6 +113,14 @@ data class TimedEntry(
 
     internal fun getNextIndex(currentTime: Double): Int {
 
+        var index = 0
+        while (index < dataPoints.size && dataPoints[index].time <= currentTime) index++
+        return index
+
+        /*if (dataPoints.isEmpty()) {
+            return 0;
+        }
+
         if (currentTime <= dataPoints.first().time) {
             return 1
         }
@@ -129,6 +145,6 @@ data class TimedEntry(
             }
         }
 
-        return low
+        return low*/
     }
 }

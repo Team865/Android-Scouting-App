@@ -54,4 +54,10 @@ class TimedEntryTest {
 
         assertTrue(entry.isFocused(0, 6.5))
     }
+
+    @Test
+    fun testEmptyNextIndex() {
+        val entry = TimedEntry("M", "T", "S", Board.R1, 0) { 0.0 }
+        assertEquals(0, entry.getNextIndex(0.0))
+    }
 }
