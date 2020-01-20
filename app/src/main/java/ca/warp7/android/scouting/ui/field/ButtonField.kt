@@ -51,7 +51,7 @@ class ButtonField : FrameLayout, BaseFieldWidget {
             setOnClickListener {
                 data.scoutingActivity.apply {
                     if (timeEnabled) {
-                        actionVibrator?.vibrateAction()
+                        vibrateAction()
                         val entry = entry!!
                         entry.add(DataPoint(data.typeIndex, 1, relativeTime))
                         if (hasReset) {

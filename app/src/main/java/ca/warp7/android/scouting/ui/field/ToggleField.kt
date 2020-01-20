@@ -76,7 +76,7 @@ class ToggleField : LinearLayout, BaseFieldWidget {
                 if (it != checkedPosition) {
                     checkedPosition = it
                     data.scoutingActivity.apply {
-                        actionVibrator?.vibrateAction()
+                        vibrateAction()
                         entry!!.add(DataPoint(data.typeIndex, checkedPosition, relativeTime))
                         updateControlState()
                     }

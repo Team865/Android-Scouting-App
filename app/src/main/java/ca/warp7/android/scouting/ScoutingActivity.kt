@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
+import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
@@ -47,10 +48,20 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         if (currentTab != pagerAdapter.count - 1) pagerAdapter[currentTab + 1].updateTabState()
     }
 
-    private val currentTime get() = (System.currentTimeMillis() / 1000).toInt()
+    private fun getCurrentTime(): Int {
+        return (System.currentTimeMillis() / 1000).toInt()
+    }
+
+    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+    private val vibrator: AbstractActionVibrator = ActionVibrator(
+        this, sharedPreferences.getBoolean(this.getString(R.string.pref_use_vibration_key), true)
+    )
 
     override lateinit var handler: Handler
-    override val actionVibrator get() = preferences.vibrator
+    override fun vibrateAction() {
+        vibrator.vibrateAction()
+    }
+
     override var entry: MutableEntry? = null
     override val timeEnabled get() = activityState != WaitingToStart
     override var boardfile: Boardfile? = null
@@ -65,7 +76,6 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private lateinit var undoButton: ImageButton
     private lateinit var pager: ViewPager
     private lateinit var pagerAdapter: TabPagerAdapter
-    private lateinit var preferences: ManagedPreferences
     private lateinit var match: String
     private lateinit var team: String
     private lateinit var scout: String
@@ -109,7 +119,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         timeSeeker = findViewById(R.id.time_seeker)
         pager = findViewById(R.id.pager)
         startButton.setOnClickListener {
-            startingTimestamp = currentTime
+            startingTimestamp = getCurrentTime()
             entry?.timestamp = startingTimestamp
             startActivityState(TimedScouting)
             updateTabStates()
@@ -125,7 +135,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             entry?.apply {
                 val dataPoint = undo()
                 dataPoint?.also {
-                    actionVibrator.vibrateAction()
+                    vibrateAction()
                     updateTabStates()
                 }
             }
@@ -178,7 +188,6 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 }
             }
         })
-        preferences = ManagedPreferences(this)
         boardfile = exampleBoardfile
         match = intent.getStringExtra(ScoutingIntentKey.kMatch)
         team = intent.getStringExtra(ScoutingIntentKey.kTeam)
@@ -215,7 +224,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         })
         updateActivityStatus()
         updateCurrentTab()
-        entry = TimedEntry(match, team, scout, board, currentTime) { relativeTime }
+        entry = TimedEntry(match, team, scout, board, getCurrentTime()) { relativeTime }
         startActivityState(WaitingToStart)
     }
 
@@ -300,7 +309,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 timeSeeker.hide()
                 timeProgress.show()
                 playAndPauseImage.setImageResource(R.drawable.ic_pause_ablack)
-                actionVibrator.vibrateStart()
+                vibrator.vibrateStart()
                 timedUpdater.run()
             }
             Pausing -> {

@@ -21,9 +21,9 @@ interface BaseScoutingActivity {
     val handler: Handler
 
     /**
-     * The managed Vibrator service of the activity
+     * Vibrate to indicate an action
      */
-    val actionVibrator: AbstractActionVibrator?
+    fun vibrateAction()
 
     /**
      * The entry model object tracking data history

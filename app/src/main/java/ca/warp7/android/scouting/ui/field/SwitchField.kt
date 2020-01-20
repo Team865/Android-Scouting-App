@@ -48,7 +48,7 @@ class SwitchField : FrameLayout, BaseFieldWidget {
             setOnClickListener {
                 data.scoutingActivity.apply {
                     if (timeEnabled) {
-                        actionVibrator?.vibrateAction()
+                        vibrateAction()
                         entry!!.add(DataPoint(data.typeIndex, if (isOn) 1 else 0, relativeTime))
                         updateControlState()
                         handler.postDelayed({ updateControlState() }, 1000)
