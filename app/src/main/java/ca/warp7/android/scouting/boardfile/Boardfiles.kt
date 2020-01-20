@@ -15,70 +15,9 @@ val exampleBoardfile = Boardfile(
     robotScoutTemplate = ScoutTemplate(
         listOf(
             TemplateScreen(
-                "Sandstorm", listOf(
-                    listOf(
-                        TemplateField(
-                            "start_position", FieldType.Toggle,
-                            listOf("default:None", "L2", "L1", "C1", "R1", "R2")
-                        )
-                    ),
-                    listOf(
-                        TemplateField("hab_line", FieldType.Checkbox),
-                        TemplateField("camera_control", FieldType.Checkbox)
-                    ),
-                    listOf(
-                        TemplateField(
-                            "sandstorm_field_area", FieldType.Toggle, listOf("default:Left", "Right")
-                        ),
-                        TemplateField(
-                            "rocket", FieldType.Button,
-                            listOf("resets:sandstorm_game_piece=1")
-                        )
-                    ),
-                    listOf(
-                        TemplateField(
-                            "front_cargo_ship", FieldType.Button,
-                            listOf("resets:sandstorm_game_piece=1")
-                        ),
-                        TemplateField(
-                            "side_cargo_ship", FieldType.Button,
-                            listOf("resets:sandstorm_game_piece=1")
-                        )
-                    ),
-                    listOf(
-                        TemplateField(
-                            "sandstorm_game_piece", FieldType.Toggle,
-                            listOf("Cargo", "default:None", "Hatch")
-                        )
-                    )
-                )
-            ),
-            TemplateScreen(
                 "Teleop", listOf(
                     listOf(
-                        TemplateField("rocket_3", FieldType.Button, listOf("resets:game_piece=1")),
-                        TemplateField("opponent_field", FieldType.Switch)
-                    ),
-                    listOf(
-                        TemplateField("rocket_2", FieldType.Button, listOf("resets:game_piece=1")),
-                        TemplateField("defended", FieldType.Switch)
-                    ),
-                    listOf(
-                        TemplateField("rocket_1", FieldType.Button, listOf("resets:game_piece=1")),
-                        TemplateField("cargo_ship", FieldType.Button, listOf("resets:game_piece=1"))
-                    ),
-                    listOf(
-                        TemplateField(
-                            "game_piece", FieldType.Toggle,
-                            listOf("Cargo", "default:None", "Hatch")
-                        )
-                    )
-                )
-            ),
-            TemplateScreen(
-                "Evan", listOf(
-                    listOf(
-                        TemplateField("wheel", FieldType.Switch),
+                        TemplateField("control_panel", FieldType.Switch),
                         TemplateField("defending", FieldType.Switch),
                         TemplateField("resisting", FieldType.Switch)
                     ),
@@ -93,8 +32,8 @@ val exampleBoardfile = Boardfile(
                     ),
                     listOf(
                         TemplateField(
-                            "filed_area", FieldType.Toggle,
-                            listOf("Cross", "Far", "Init", "Target")
+                            "field_area", FieldType.Toggle,
+                            listOf("Cross", "Mid", "Init", "Target")
                         )
                     )
                 )
@@ -102,13 +41,18 @@ val exampleBoardfile = Boardfile(
             TemplateScreen(
                 "Endgame", listOf(
                     listOf(
-                        TemplateField("climb_level", FieldType.Toggle, listOf("default:None", "1", "2", "3"))
+                        TemplateField("parked_in_rendezvous_zone", FieldType.Checkbox)
                     ),
                     listOf(
-                        TemplateField("assisted_climb", FieldType.Checkbox)
+                        TemplateField("side_hang", FieldType.Checkbox),
+                        TemplateField("middle_hang", FieldType.Checkbox)
                     ),
-                    listOf(TemplateField("lifting_robot_1", FieldType.Toggle, listOf("default:None", "2", "3"))),
-                    listOf(TemplateField("lifting_robot_2", FieldType.Toggle, listOf("default:None", "2", "3")))
+                    listOf(
+                        TemplateField("balanced", FieldType.Checkbox)
+                    ),
+                    listOf(
+                        TemplateField("lifting_another_robot", FieldType.Checkbox)
+                    )
                 )
             )
         ), listOf()
