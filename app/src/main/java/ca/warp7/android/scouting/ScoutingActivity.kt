@@ -63,30 +63,25 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     override var template: ScoutTemplate? = null
 
     override fun getRelativeTime(): Double {
-        println(matchTime)
         return matchTime
     }
-    
-    var matchTime = 0.0
 
-    private lateinit var timerStatus: TextView
-    private lateinit var timeProgress: ProgressBar
-    private lateinit var timeSeeker: SeekBar
-    private lateinit var startButton: TextView
-    private lateinit var playAndPauseImage: ImageButton
-    private lateinit var undoButton: ImageButton
-    private lateinit var pager: ViewPager
+    private val timerStatus: TextView get() = findViewById(R.id.timer_status)
+    private val timeProgress: ProgressBar get() = findViewById(R.id.time_progress)
+    private val timeSeeker: SeekBar get() = findViewById(R.id.time_seeker)
+    private val startButton: TextView get() = findViewById(R.id.start_timer)
+    private val playAndPauseImage: ImageButton get() = findViewById(R.id.play_pause_image)
+    private val undoButton: ImageButton get() = findViewById(R.id.undo_now_image)
+    private val pager: ViewPager get() = findViewById(R.id.pager)
+
     private lateinit var pagerAdapter: TabPagerAdapter
-    private lateinit var match: String
-    private lateinit var team: String
-    private lateinit var scout: String
-    private lateinit var board: Board
 
     private var activityState = WaitingToStart
     private var timerIsCountingUp = false
     private var timerIsRunning = false
     private var currentTab = 0
 
+    var matchTime = 0.0
     // keep track for dt calculations
     private var lastTime = 0.0
 
@@ -121,18 +116,43 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         handler.postDelayed(timedUpdater, 1000)
     }
 
+    private fun showCommentBox(entry: MutableEntry) {
+        // Create the comments EditText
+        val input = EditText(this).apply {
+            inputType = InputType.TYPE_CLASS_TEXT or
+                    InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                    InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+            setText(entry.comments)
+            setSelection(entry.comments.length)
+            compoundDrawablePadding = 16
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            setHint(R.string.comments_hint)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_comment_ablack_small, 0, 0, 0)
+        }
+
+        val layout = LinearLayout(this)
+        layout.addView(input)
+        layout.setPadding(16, 8, 16, 0)
+
+        // Create the alert
+        AlertDialog.Builder(this)
+            .setTitle(R.string.edit_comments)
+            .setView(layout)
+            .setPositiveButton("OK") { _, _ -> entry.comments = input.text.toString() }
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+            .create()
+            .apply { window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) }.show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         handler = Handler()
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_scouting)
-        timerStatus = findViewById(R.id.timer_status)
-        startButton = findViewById(R.id.start_timer)
-        playAndPauseImage = findViewById(R.id.play_pause_image)
-        undoButton = findViewById(R.id.undo_now_image)
-        timeProgress = findViewById(R.id.time_progress)
-        timeSeeker = findViewById(R.id.time_seeker)
-        pager = findViewById(R.id.pager)
 
         startButton.setOnClickListener {
             entry?.timestamp = getCurrentTime().toInt()
@@ -158,58 +178,41 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
 
         findViewById<ImageButton>(R.id.comment_button).setOnClickListener {
-            entry?.also {
-                val input = EditText(this).apply {
-                    inputType = InputType.TYPE_CLASS_TEXT or
-                            InputType.TYPE_TEXT_FLAG_MULTI_LINE or
-                            InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-                    setText(it.comments)
-                    setSelection(it.comments.length)
-                    compoundDrawablePadding = 16
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    )
-                    setHint(R.string.comments_hint)
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_comment_ablack_small, 0, 0, 0)
-                }
-                val layout = LinearLayout(this)
-                layout.addView(input)
-                layout.setPadding(16, 8, 16, 0)
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.edit_comments)
-                    .setView(layout)
-                    .setPositiveButton("OK") { _, _ -> it.comments = input.text.toString() }
-                    .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-                    .create()
-                    .apply { window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) }.show()
-            }
+            entry?.also { showCommentBox(it) }
         }
         findViewById<TextView>(R.id.title_banner).setOnClickListener {
             timerIsCountingUp = !timerIsCountingUp
             updateActivityStatus()
         }
-        timeProgress.max = kTimerLimit
-        timeProgress.progress = 0
-        timeSeeker.max = kTimerLimit
-        timeSeeker.progress = 0
-        timeSeeker.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
-            override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                if (fromUser && activityState == Pausing) {
-                    matchTime = progress.toDouble()
-                    updateActivityStatus()
-                    updateTabStates()
+
+        timeProgress.apply {
+            max = kTimerLimit
+            progress = 0
+        }
+        timeSeeker.apply {
+            max = kTimerLimit
+            progress = 0
+            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+                override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    if (fromUser && activityState == Pausing) {
+                        matchTime = progress.toDouble()
+                        updateActivityStatus()
+                        updateTabStates()
+                    }
                 }
-            }
-        })
+            })
+        }
+
         boardfile = exampleBoardfile
-        match = intent.getStringExtra(ScoutingIntentKey.kMatch)
-        team = intent.getStringExtra(ScoutingIntentKey.kTeam)
-        scout = intent.getStringExtra(ScoutingIntentKey.kScout)
-        board = intent.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
+        val match = intent.getStringExtra(ScoutingIntentKey.kMatch)
+        val team = intent.getStringExtra(ScoutingIntentKey.kTeam)
+        val scout = intent.getStringExtra(ScoutingIntentKey.kScout)
+        val board = intent.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
+
+        entry = TimedEntry(match, team, scout, board, getCurrentTime().toInt()) { matchTime }
+
         findViewById<TextView>(R.id.toolbar_match).text = match.let {
             val split = it.split("_")
             if (split.size == 2) split[1] else it
@@ -229,6 +232,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             RX, BX -> boardfile?.superScoutTemplate
             else -> boardfile?.robotScoutTemplate
         }
+
+        val pager = pager
         pagerAdapter = TabPagerAdapter(supportFragmentManager, screens?.size ?: 0, pager)
         pager.adapter = pagerAdapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -239,20 +244,26 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 updateCurrentTab()
             }
         })
+
         updateActivityStatus()
         updateCurrentTab()
-        entry = TimedEntry(match, team, scout, board, getCurrentTime().toInt()) { matchTime }
         startActivityState(WaitingToStart)
     }
 
     override fun onBackPressed() {
-        when (activityState) {
-            WaitingToStart -> setResult(Activity.RESULT_CANCELED, null)
-            else -> setResult(Activity.RESULT_OK, Intent().apply {
-                putExtra(ScoutingIntentKey.kResult, entry?.getEncoded())
-                putExtra(ScoutingIntentKey.kMatch, match)
-                putExtra(ScoutingIntentKey.kBoard, board)
-                putExtra(ScoutingIntentKey.kTeam, team)
+        if (activityState == WaitingToStart) {
+            setResult(Activity.RESULT_CANCELED, null)
+        } else {
+            val entry = entry
+            if (entry == null) {
+                setResult(Activity.RESULT_CANCELED, null)
+                return
+            }
+            setResult(Activity.RESULT_OK, Intent().apply {
+                putExtra(ScoutingIntentKey.kResult, entry.getEncoded())
+                putExtra(ScoutingIntentKey.kMatch, entry.match)
+                putExtra(ScoutingIntentKey.kBoard, entry.board)
+                putExtra(ScoutingIntentKey.kTeam, entry.team)
             })
         }
         super.onBackPressed()
