@@ -40,8 +40,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         if (currentTab != pagerAdapter.count - 1) pagerAdapter[currentTab + 1].updateTabState()
     }
 
-    private fun getCurrentTime(): Int {
-        return (System.currentTimeMillis() / 1000).toInt()
+    private fun getCurrentTime(): Double {
+        return System.currentTimeMillis() / 1000.0
     }
 
     private val vibrator by lazy {
@@ -80,17 +80,31 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private var timerIsCountingUp = false
     private var timerIsRunning = false
     private var currentTab = 0
-    private var startingTimestamp = 0
+
+    // keep track for dt calculations
+    private var lastTime = 0.0
 
     private val screens get() = template?.screens
+
     private val timedUpdater = Runnable {
-        if (activityState != TimedScouting) timerIsRunning = false else {
+        if (activityState != TimedScouting) {
+            timerIsRunning = false
+        } else {
             timerIsRunning = true
             updateActivityStatus()
             updateTabStates()
-            relativeTime++
-            if (relativeTime <= kTimerLimit) postTimerUpdate()
-            else {
+
+            // Calculate the time relative to the start of the match, and
+            // determine if the timer should stop
+
+            val time = getCurrentTime()
+            val dt = time - lastTime
+            lastTime = time
+
+            relativeTime += dt
+            if (relativeTime <= kTimerLimit) {
+                postTimerUpdate()
+            } else {
                 timerIsRunning = false
                 startActivityState(Pausing)
             }
@@ -113,12 +127,13 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         timeProgress = findViewById(R.id.time_progress)
         timeSeeker = findViewById(R.id.time_seeker)
         pager = findViewById(R.id.pager)
+
         startButton.setOnClickListener {
-            startingTimestamp = getCurrentTime()
-            entry?.timestamp = startingTimestamp
+            entry?.timestamp = getCurrentTime().toInt()
             startActivityState(TimedScouting)
             updateTabStates()
         }
+
         playAndPauseImage.setOnClickListener {
             when (activityState) {
                 TimedScouting -> startActivityState(Pausing)
@@ -135,6 +150,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 }
             }
         }
+
         findViewById<ImageButton>(R.id.comment_button).setOnClickListener {
             entry?.also {
                 val input = EditText(this).apply {
@@ -219,7 +235,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         })
         updateActivityStatus()
         updateCurrentTab()
-        entry = TimedEntry(match, team, scout, board, getCurrentTime()) { relativeTime }
+        entry = TimedEntry(match, team, scout, board, getCurrentTime().toInt()) { relativeTime }
         startActivityState(WaitingToStart)
     }
 
@@ -287,9 +303,11 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
     }
 
-    private fun startActivityState(state: State) {
-        if (state == TimedScouting && (timerIsRunning || relativeTime >= kTimerLimit)) return
-        activityState = state
+    private fun startActivityState(wantedState: State) {
+        if (wantedState == TimedScouting && (timerIsRunning || relativeTime >= kTimerLimit)) {
+            return
+        }
+        activityState = wantedState
         when (activityState) {
             WaitingToStart -> {
                 playAndPauseImage.hide()
@@ -305,6 +323,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 timeProgress.show()
                 playAndPauseImage.setImageResource(R.drawable.ic_pause_ablack)
                 vibrator.vibrateStart()
+                lastTime = getCurrentTime()
                 timedUpdater.run()
             }
             Pausing -> {
