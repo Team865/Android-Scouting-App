@@ -16,8 +16,8 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.ImageView
-import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.BaseScoutingActivity
+import ca.warp7.android.scouting.R
 import com.google.zxing.WriterException
 
 /**
@@ -26,7 +26,7 @@ import com.google.zxing.WriterException
 
 class QRCodeFragment : Fragment(), ScoutingEntryTab {
 
-    private var message = " "
+
     private var scoutingActivity: BaseScoutingActivity? = null
 
     private var sendButton: Button? = null
@@ -73,14 +73,19 @@ class QRCodeFragment : Fragment(), ScoutingEntryTab {
             qrImage.setImageDrawable(context?.getDrawable(R.drawable.ic_launcher_background))
             e.printStackTrace()
         }
-
     }
 
+    private var prevSize = 0
+    private var prevComment = ""
+    private var message = " "
+
     override fun updateTabState() {
-        val newMessage = scoutingActivity?.entry?.getEncoded() ?: " "
-        sendButton?.text = newMessage
-        if (newMessage != message) {
-            message = newMessage
+        val entry = scoutingActivity?.entry ?: return
+        val newSize = entry.dataPoints.size
+        val comment = entry.comments
+        if (newSize != prevSize || prevComment != comment) {
+            message = entry.getEncoded()
+            sendButton?.text = message
             view?.let { setQRImage(it) }
         }
     }
