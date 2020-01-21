@@ -113,11 +113,7 @@ data class TimedEntry(
 
     internal fun getNextIndex(currentTime: Double): Int {
 
-        var index = 0
-        while (index < dataPoints.size && dataPoints[index].time <= currentTime) index++
-        return index
-
-        /*if (dataPoints.isEmpty()) {
+        if (dataPoints.isEmpty()) {
             return 0;
         }
 
@@ -145,6 +141,6 @@ data class TimedEntry(
             }
         }
 
-        return low*/
+        return low
     }
 }
