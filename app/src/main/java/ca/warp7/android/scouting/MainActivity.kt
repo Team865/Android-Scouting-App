@@ -201,7 +201,7 @@ class MainActivity : AppCompatActivity() {
         expectedItems.clear()
         boardfile.matchSchedule.forEach { matchNumber, teams ->
             val item = EntryItem(
-                "${boardfile.eventKey}_qm$matchNumber",
+                "${boardfile.eventKey}_$matchNumber",
                 teams, board, EntryItemState.Waiting
             )
             expectedItems.add(item)
@@ -213,8 +213,14 @@ class MainActivity : AppCompatActivity() {
         displayedItems.addAll(expectedItems)
         if (showScoutedEntries && scoutedItems.isNotEmpty()) {
             displayedItems.addAll(scoutedItems)
-            val p = "${boardfile.eventKey}_qm"
-            displayedItems.sortBy { it.match.run { if (startsWith(p)) substring(p.length).toIntOrNull() ?: 0 else 0 } }
+            val p = boardfile.eventKey
+
+            // sort matches in the correct order
+            displayedItems.sortBy {
+                it.match.run {
+                    if (startsWith(p)) substring(p.length).toIntOrNull() ?: 0 else 0
+                }
+            }
         }
         entryListAdapter.notifyDataSetChanged()
     }
@@ -269,7 +275,7 @@ class MainActivity : AppCompatActivity() {
                     .setTitle("Add New Entry")
                     .setView(layout)
                     .setPositiveButton("Ok") { _, _ ->
-                        val matchKey = "${boardfile.eventKey}_qm${matchEdit.text}"
+                        val matchKey = "${boardfile.eventKey}_${matchEdit.text}"
                         startScouting(matchKey, teamEdit.text.toString(), scoutTextView.text.toString(), board)
                     }
                     .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
@@ -327,7 +333,7 @@ class MainActivity : AppCompatActivity() {
                     } else foundData = false
                     if (!foundData) {
                         val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
-                        mutableTeams[Board.values().indexOf(board)] = team
+                        mutableTeams[values().indexOf(board)] = team
                         teams = mutableTeams
                         state = EntryItemState.Added
                     }

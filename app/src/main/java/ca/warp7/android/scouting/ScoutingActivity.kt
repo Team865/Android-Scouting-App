@@ -215,7 +215,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
         findViewById<TextView>(R.id.toolbar_match).text = match.let {
             val split = it.split("_")
-            if (split.size == 2) split[1] else it
+            if (split.size == 2) "M" + split[1] else it
         }
         findViewById<TextView>(R.id.toolbar_team).also {
             it.text = team

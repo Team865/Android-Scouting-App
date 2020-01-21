@@ -10,7 +10,7 @@ fun File.toBoardfile(): Boardfile {
 
 val exampleBoardfile = Boardfile(
     eventName = "ONT Science Division",
-    eventKey = "2019oncmp1",
+    eventKey = "oncmp1",
     matchSchedule = MatchSchedule(exampleMatchSchedule),
     robotScoutTemplate = ScoutTemplate(
         listOf(
