@@ -13,12 +13,12 @@ import android.os.Vibrator
 class ActionVibrator(
     context: Context,
     private val mVibrationOn: Boolean
-) : AbstractActionVibrator {
+)  {
 
     private val actual = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     @Suppress("DEPRECATION")
-    override fun vibrateStart() {
+    fun vibrateStart() {
         if (mVibrationOn) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 actual.vibrate(VibrationEffect.createWaveform(kStartVibration, -1))
@@ -29,7 +29,7 @@ class ActionVibrator(
     }
 
     @Suppress("DEPRECATION")
-    override fun vibrateAction() {
+    fun vibrateAction() {
         if (mVibrationOn) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 actual.vibrate(VibrationEffect.createOneShot(kActionEffectVibration, DEFAULT_AMPLITUDE))
