@@ -53,10 +53,10 @@ class ButtonField : FrameLayout, BaseFieldWidget {
                     if (timeEnabled) {
                         vibrateAction()
                         val entry = entry!!
-                        entry.add(DataPoint(data.typeIndex, 1, relativeTime))
+                        entry.add(DataPoint(data.typeIndex, 1, getRelativeTime()))
                         if (hasReset) {
                             if (entry.lastValue(resetTypeIndex)?.value ?: resetValue != resetValue) {
-                                entry.add(DataPoint(resetTypeIndex, resetValue, relativeTime))
+                                entry.add(DataPoint(resetTypeIndex, resetValue, getRelativeTime()))
                             }
                             updateTabStates()
                         } else {

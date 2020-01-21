@@ -20,10 +20,6 @@ import ca.warp7.android.scouting.BaseScoutingActivity
 import ca.warp7.android.scouting.R
 import com.google.zxing.WriterException
 
-/**
- * @since v0.4.2
- */
-
 class QRCodeFragment : Fragment(), ScoutingEntryTab {
 
 

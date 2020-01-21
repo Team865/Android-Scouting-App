@@ -13,7 +13,7 @@ interface BaseScoutingActivity {
     /**
      * Relative time
      */
-    val relativeTime: Double
+    fun getRelativeTime(): Double
 
     /**
      * Vibrate to indicate an action
