@@ -2,7 +2,7 @@
 
 package ca.warp7.android.scouting.entry
 
-import android.util.Base64
+import kotlin.math.abs
 
 
 data class TimedEntry(
@@ -15,48 +15,132 @@ data class TimedEntry(
 
     override val board: Board,
 
-    override val dataPoints: MutableList<DataPoint> = mutableListOf(),
-
     override var timestamp: Int,
 
-    val getTime: () -> Int,
-
-    override var comments: String = "",
-
-    override var undone: Int = 0,
-
-    val isTiming: Boolean = false
+    val getTime: () -> Double
 
 ) : MutableEntry {
 
-    override val encoded get() = "$match:$team:$scout1:${board.name}:$hexTimestamp:$undone:$encodedData:$comments1"
+    override val dataPoints: MutableList<DataPoint> = mutableListOf()
 
-    override fun add(dataPoint: DataPoint) = this.dataPoints.add(index = nextIndex, element = dataPoint)
+    override var comments: String = ""
 
-    override fun undo() = nextIndex.let { if (it == 0) null else dataPoints.removeAt(it - 1).also { undone++ } }
+    override fun getEncoded(): String {
+        return "$match:$team:${getStrippedScout()}:${board.name}:" +
+                "${Integer.toHexString(timestamp)}:${getEncodedData()}:${getStrippedComments()}"
+    }
 
-    override fun count(type: Int) = dataPoints.subList(0, nextIndex).count { it.type == type }
+    override fun add(dataPoint: DataPoint) {
+        dataPoints.add(getNextIndex(), dataPoint)
+    }
 
-    override fun lastValue(type: Int) = dataPoints.subList(0, nextIndex).lastOrNull { it.type == type }
-
-    override fun focused(type: Int, time: Int) = dataPoints.any { it.type == type && it.time == time }
-
-    override fun focused(type: Int) = focused(type, getTime())
-
-    private val hexTimestamp get() = Integer.toHexString(timestamp)
-
-    private val encodedData get() = Base64.encodeToString(dataPoints.flatten().toByteArray(), Base64.NO_WRAP)
-
-    private val comments1 get() = comments.replace("[^A-Za-z0-9 ]".toRegex(), "_")
-
-    private val scout1 get() = scout.replace("[^A-Za-z0-9 ]".toRegex(), "_")
-
-    private val nextIndex: Int
-        get() {
-            if (!isTiming) return dataPoints.size
-            val relTime = getTime()
-            var index = 0
-            while (index < dataPoints.size && dataPoints[index].time <= relTime) index++
-            return index
+    override fun undo(): DataPoint? {
+        val nextIndex = getNextIndex()
+        return if (nextIndex == 0) {
+            null
+        } else {
+            dataPoints.removeAt(nextIndex - 1)
         }
+    }
+
+    override fun count(type: Int): Int {
+        val nextIndex = getNextIndex()
+        var count = 0
+        for (i in 0 until nextIndex) {
+            if (dataPoints[i].type == type) count++
+        }
+        return count
+    }
+
+    override fun lastValue(type: Int): DataPoint? {
+        val nextIndex = getNextIndex()
+        for (i in nextIndex - 1 downTo 0) {
+            val dp = dataPoints[i]
+            if (dp.type == type) {
+                return dp
+            }
+        }
+        return null
+    }
+
+    override fun isFocused(type: Int, time: Double): Boolean {
+
+        return dataPoints.any { it.type == type && abs(time - it.time) < 0.5 }
+
+        /*if (dataPoints.isEmpty()) {
+            return false
+        }
+
+        var low = 0
+        var high = dataPoints.size - 1
+
+        while (low != high) {
+            val mid = (high + low) / 2
+            val midPoint = dataPoints[mid]
+
+            when {
+                (time - midPoint.time) > 0.5 -> low = mid
+                (midPoint.time - time) > 0.5 -> high = mid
+                midPoint.type == type -> return true
+            }
+        }
+        return false*/
+    }
+
+    override fun isFocused(type: Int): Boolean {
+        return isFocused(type, getTime.invoke())
+    }
+
+    private fun getEncodedData(): String {
+        val builder = StringBuilder()
+        for (dataPoint in dataPoints) {
+            builder.appendDataPoint(dataPoint)
+        }
+        return builder.toString()
+    }
+
+    private fun getStrippedComments(): String {
+        return comments.replace("[^A-Za-z0-9 ]".toRegex(), "_")
+    }
+
+    private fun getStrippedScout(): String {
+        return scout.replace("[^A-Za-z0-9]".toRegex(), "_")
+    }
+
+    private fun getNextIndex(): Int {
+        return getNextIndex(getTime.invoke())
+    }
+
+    internal fun getNextIndex(currentTime: Double): Int {
+
+        if (dataPoints.isEmpty()) {
+            return 0;
+        }
+
+        if (currentTime <= dataPoints.first().time) {
+            return 1
+        }
+
+        if (currentTime >= dataPoints.last().time) {
+            return dataPoints.size
+        }
+
+        var low = 0
+        var high = dataPoints.size - 1
+
+        // To get the element that we want, use a binary search algorithm
+        // instead of iterating over a for-loop. A binary search is O(log(n))
+        // whereas searching using a loop is O(n).
+
+        while (low != high) {
+            val mid = (low + high) / 2
+            if (dataPoints[mid].time <= currentTime) {
+                low = mid + 1
+            } else {
+                high = mid
+            }
+        }
+
+        return low
+    }
 }

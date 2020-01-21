@@ -51,12 +51,12 @@ class ButtonField : FrameLayout, BaseFieldWidget {
             setOnClickListener {
                 data.scoutingActivity.apply {
                     if (timeEnabled) {
-                        actionVibrator?.vibrateAction()
+                        vibrateAction()
                         val entry = entry!!
-                        entry.add(DataPoint(data.typeIndex, 1, relativeTime))
+                        entry.add(DataPoint(data.typeIndex, 1, getRelativeTime()))
                         if (hasReset) {
                             if (entry.lastValue(resetTypeIndex)?.value ?: resetValue != resetValue) {
-                                entry.add(DataPoint(resetTypeIndex, resetValue, relativeTime))
+                                entry.add(DataPoint(resetTypeIndex, resetValue, getRelativeTime()))
                             }
                             updateTabStates()
                         } else {
@@ -99,7 +99,7 @@ class ButtonField : FrameLayout, BaseFieldWidget {
                 scoutingActivity.entry?.apply {
                     val count = count(typeIndex)
                     counter?.text = count.toString()
-                    if (focused(typeIndex)){
+                    if (isFocused(typeIndex)){
                         button.setTextColor(white)
                         background.setColorFilter(accent, PorterDuff.Mode.SRC)
                         counter!!.setTextColor(white)

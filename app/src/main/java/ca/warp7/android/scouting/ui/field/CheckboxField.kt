@@ -50,8 +50,8 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
         val clickListener = View.OnClickListener {
             data.scoutingActivity.apply {
                 if (timeEnabled) {
-                    actionVibrator?.vibrateAction()
-                    entry!!.add(DataPoint(data.typeIndex, if (checkBox.isChecked) 1 else 0, relativeTime))
+                    vibrateAction()
+                    entry!!.add(DataPoint(data.typeIndex, if (checkBox.isChecked) 1 else 0, getRelativeTime()))
                     updateControlState()
                 }
             }

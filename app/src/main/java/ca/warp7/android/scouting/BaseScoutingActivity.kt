@@ -2,8 +2,6 @@
 
 package ca.warp7.android.scouting
 
-import android.os.Handler
-import ca.warp7.android.scouting.AbstractActionVibrator
 import ca.warp7.android.scouting.boardfile.Boardfile
 import ca.warp7.android.scouting.boardfile.ScoutTemplate
 import ca.warp7.android.scouting.entry.MutableEntry
@@ -11,24 +9,14 @@ import ca.warp7.android.scouting.entry.MutableEntry
 interface BaseScoutingActivity {
 
     /**
-     * Current time
-     */
-    val currentTime get() = (System.currentTimeMillis() / 1000).toInt()
-
-    /**
      * Relative time
      */
-    val relativeTime: Int
+    fun getRelativeTime(): Double
 
     /**
-     * The time Handler of the activity
+     * Vibrate to indicate an action
      */
-    val handler: Handler
-
-    /**
-     * The managed Vibrator service of the activity
-     */
-    val actionVibrator: AbstractActionVibrator?
+    fun vibrateAction()
 
     /**
      * The entry model object tracking data history

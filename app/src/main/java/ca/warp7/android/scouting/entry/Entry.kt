@@ -21,26 +21,41 @@ package ca.warp7.android.scouting.entry
  * are recorded according to their time of input as referenced
  * by the time tracked by the scouting interface; this means
  * that even if a data point does not track time, the stack
- * should preserve the order of input nonetheless. For the
- * purpose of usage and analysis, the implementation using
- * this class should limit one data point per second.
+ * should preserve the order of input nonetheless.
  *
- * @since v0.1.0 (revised 0.5.0)
+ * Changed in V6: the tracked time is now precise to the
+ * 1/100th of a second. Match does not include the full
+ * key anymore, it now excludes year and match type.
+ * Scout now has an underscore in it. Undo count is
+ * removed. Due to the new binary search algorithms in the
+ * implementation, a new invariant requires that the
+ * data point list must be sorted by time
  */
 
 interface Entry {
+    // Match key. eg.dar_1
     val match: String
+
+    // Team number. eg. 865
     val team: String
+
+    // Scout name. eg. First_L
     val scout: String
+
+    // The board
     val board: Board
+
+    // The UNIX timestamp of the start of the match
     val timestamp: Int
-    /**
-     * Get the data in an encoded string
-     */
-    val encoded: String
+
+    // The encoded data
+    fun getEncoded(): String
+
+    // The list of data points
     val dataPoints: List<DataPoint>
+
+    // The comments
     val comments: String
-    val undone: Int
 
     /**
      * Gets the count of a specific data type, excluding undo
@@ -55,5 +70,5 @@ interface Entry {
     /**
      * Check if a type should focus according to the current time
      */
-    fun focused(type: Int, time: Int): Boolean
+    fun isFocused(type: Int, time: Double): Boolean
 }

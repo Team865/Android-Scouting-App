@@ -30,7 +30,7 @@ class EntryListAdapter(
             val matchNumber = itemView.findViewById<TextView>(R.id.match_number)
             matchNumber.text = match.let {
                 val split = it.split("_")
-                if (split.size == 2) split[1] else it
+                if (split.size == 2) "M" + split[1] else it
             }
 
             matchNumber.setCompoundDrawablesWithIntrinsicBounds(

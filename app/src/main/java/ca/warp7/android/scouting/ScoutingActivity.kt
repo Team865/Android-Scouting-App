@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
+import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
@@ -27,14 +28,6 @@ import ca.warp7.android.scouting.entry.MutableEntry
 import ca.warp7.android.scouting.entry.TimedEntry
 import ca.warp7.android.scouting.ui.TabPagerAdapter
 
-/**
- * <p>The Scouting Activity -- A generic activity to collect data for an Entry based on a set Specs.
- * It is responsible for setting up components in the interface, receive events from action buttons
- * for navigation and commands, and keeps track of an Entry object which stores the data </p>
- *
- * @author Team 865
- * @since v0.2
- */
 class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
     enum class State {
@@ -47,43 +40,72 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         if (currentTab != pagerAdapter.count - 1) pagerAdapter[currentTab + 1].updateTabState()
     }
 
-    override lateinit var handler: Handler
-    override val actionVibrator get() = preferences.vibrator
+    private fun getCurrentTime(): Double {
+        return System.currentTimeMillis() / 1000.0
+    }
+
+    private val vibrator by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        ActionVibrator(
+            this, sharedPreferences.getBoolean(this.getString(R.string.pref_use_vibration_key), true)
+        )
+    }
+
+    private lateinit var handler: Handler
+
+    override fun vibrateAction() {
+        vibrator.vibrateAction()
+    }
+
     override var entry: MutableEntry? = null
     override val timeEnabled get() = activityState != WaitingToStart
     override var boardfile: Boardfile? = null
     override var template: ScoutTemplate? = null
-    override var relativeTime = 0
 
-    private lateinit var timerStatus: TextView
-    private lateinit var timeProgress: ProgressBar
-    private lateinit var timeSeeker: SeekBar
-    private lateinit var startButton: TextView
-    private lateinit var playAndPauseImage: ImageButton
-    private lateinit var undoButton: ImageButton
-    private lateinit var pager: ViewPager
+    override fun getRelativeTime(): Double {
+        return matchTime
+    }
+
+    private val timerStatus: TextView get() = findViewById(R.id.timer_status)
+    private val timeProgress: ProgressBar get() = findViewById(R.id.time_progress)
+    private val timeSeeker: SeekBar get() = findViewById(R.id.time_seeker)
+    private val startButton: TextView get() = findViewById(R.id.start_timer)
+    private val playAndPauseImage: ImageButton get() = findViewById(R.id.play_pause_image)
+    private val undoButton: ImageButton get() = findViewById(R.id.undo_now_image)
+    private val pager: ViewPager get() = findViewById(R.id.pager)
+
     private lateinit var pagerAdapter: TabPagerAdapter
-    private lateinit var preferences: ManagedPreferences
-    private lateinit var match: String
-    private lateinit var team: String
-    private lateinit var scout: String
-    private lateinit var board: Board
 
     private var activityState = WaitingToStart
     private var timerIsCountingUp = false
     private var timerIsRunning = false
     private var currentTab = 0
-    private var startingTimestamp = 0
+
+    var matchTime = 0.0
+    // keep track for dt calculations
+    private var lastTime = 0.0
 
     private val screens get() = template?.screens
+
     private val timedUpdater = Runnable {
-        if (activityState != TimedScouting) timerIsRunning = false else {
+        if (activityState != TimedScouting) {
+            timerIsRunning = false
+        } else {
             timerIsRunning = true
             updateActivityStatus()
             updateTabStates()
-            relativeTime++
-            if (relativeTime <= kTimerLimit) postTimerUpdate()
-            else {
+
+            // Calculate the time relative to the start of the match, and
+            // determine if the timer should stop
+
+            val time = getCurrentTime()
+            val dt = time - lastTime
+            lastTime = time
+
+            matchTime += dt
+            if (matchTime <= kTimerLimit) {
+                postTimerUpdate()
+            } else {
                 timerIsRunning = false
                 startActivityState(Pausing)
             }
@@ -94,24 +116,50 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         handler.postDelayed(timedUpdater, 1000)
     }
 
+    private fun showCommentBox(entry: MutableEntry) {
+        // Create the comments EditText
+        val input = EditText(this).apply {
+            inputType = InputType.TYPE_CLASS_TEXT or
+                    InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                    InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+            setText(entry.comments)
+            setSelection(entry.comments.length)
+            compoundDrawablePadding = 16
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            setHint(R.string.comments_hint)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_comment_ablack_small, 0, 0, 0)
+        }
+
+        val layout = LinearLayout(this)
+        layout.addView(input)
+        layout.setPadding(16, 8, 16, 0)
+
+        // Create the alert
+        AlertDialog.Builder(this)
+            .setTitle(R.string.edit_comments)
+            .setView(layout)
+            .setPositiveButton("OK") { _, _ -> entry.comments = input.text.toString() }
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+            .create()
+            .apply { window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) }.show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         handler = Handler()
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_scouting)
-        timerStatus = findViewById(R.id.timer_status)
-        startButton = findViewById(R.id.start_timer)
-        playAndPauseImage = findViewById(R.id.play_pause_image)
-        undoButton = findViewById(R.id.undo_now_image)
-        timeProgress = findViewById(R.id.time_progress)
-        timeSeeker = findViewById(R.id.time_seeker)
-        pager = findViewById(R.id.pager)
+
         startButton.setOnClickListener {
-            startingTimestamp = currentTime
-            entry?.timestamp = startingTimestamp
+            entry?.timestamp = getCurrentTime().toInt()
             startActivityState(TimedScouting)
             updateTabStates()
         }
+
         playAndPauseImage.setOnClickListener {
             when (activityState) {
                 TimedScouting -> startActivityState(Pausing)
@@ -123,68 +171,51 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             entry?.apply {
                 val dataPoint = undo()
                 dataPoint?.also {
-                    actionVibrator.vibrateAction()
+                    vibrateAction()
                     updateTabStates()
                 }
             }
         }
+
         findViewById<ImageButton>(R.id.comment_button).setOnClickListener {
-            entry?.also {
-                val input = EditText(this).apply {
-                    inputType = InputType.TYPE_CLASS_TEXT or
-                            InputType.TYPE_TEXT_FLAG_MULTI_LINE or
-                            InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-                    setText(it.comments)
-                    setSelection(it.comments.length)
-                    compoundDrawablePadding = 16
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    )
-                    setHint(R.string.comments_hint)
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_comment_ablack_small, 0, 0, 0)
-                }
-                val layout = LinearLayout(this)
-                layout.addView(input)
-                layout.setPadding(16, 8, 16, 0)
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.edit_comments)
-                    .setView(layout)
-                    .setPositiveButton("OK") { _, _ -> it.comments = input.text.toString() }
-                    .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-                    .create()
-                    .apply { window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) }.show()
-            }
+            entry?.also { showCommentBox(it) }
         }
         findViewById<TextView>(R.id.title_banner).setOnClickListener {
             timerIsCountingUp = !timerIsCountingUp
             updateActivityStatus()
         }
-        timeProgress.max = kTimerLimit
-        timeProgress.progress = 0
-        timeSeeker.max = kTimerLimit
-        timeSeeker.progress = 0
-        timeSeeker.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
-            override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                if (fromUser && activityState == Pausing) {
-                    relativeTime = progress
-                    updateActivityStatus()
-                    updateTabStates()
+
+        timeProgress.apply {
+            max = kTimerLimit
+            progress = 0
+        }
+        timeSeeker.apply {
+            max = kTimerLimit
+            progress = 0
+            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+                override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    if (fromUser && activityState == Pausing) {
+                        matchTime = progress.toDouble()
+                        updateActivityStatus()
+                        updateTabStates()
+                    }
                 }
-            }
-        })
-        preferences = ManagedPreferences(this)
+            })
+        }
+
         boardfile = exampleBoardfile
-        match = intent.getStringExtra(ScoutingIntentKey.kMatch)
-        team = intent.getStringExtra(ScoutingIntentKey.kTeam)
-        scout = intent.getStringExtra(ScoutingIntentKey.kScout)
-        board = intent.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
+        val match = intent.getStringExtra(ScoutingIntentKey.kMatch)
+        val team = intent.getStringExtra(ScoutingIntentKey.kTeam)
+        val scout = intent.getStringExtra(ScoutingIntentKey.kScout)
+        val board = intent.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
+
+        entry = TimedEntry(match, team, scout, board, getCurrentTime().toInt()) { matchTime }
+
         findViewById<TextView>(R.id.toolbar_match).text = match.let {
             val split = it.split("_")
-            if (split.size == 2) split[1] else it
+            if (split.size == 2) "M" + split[1] else it
         }
         findViewById<TextView>(R.id.toolbar_team).also {
             it.text = team
@@ -201,6 +232,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             RX, BX -> boardfile?.superScoutTemplate
             else -> boardfile?.robotScoutTemplate
         }
+
+        val pager = pager
         pagerAdapter = TabPagerAdapter(supportFragmentManager, screens?.size ?: 0, pager)
         pager.adapter = pagerAdapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -211,20 +244,26 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 updateCurrentTab()
             }
         })
+
         updateActivityStatus()
         updateCurrentTab()
-        entry = TimedEntry(match, team, scout, board, mutableListOf(), currentTime, { relativeTime }, isTiming = true)
         startActivityState(WaitingToStart)
     }
 
     override fun onBackPressed() {
-        when (activityState) {
-            WaitingToStart -> setResult(Activity.RESULT_CANCELED, null)
-            else -> setResult(Activity.RESULT_OK, Intent().apply {
-                putExtra(ScoutingIntentKey.kResult, entry?.encoded)
-                putExtra(ScoutingIntentKey.kMatch, match)
-                putExtra(ScoutingIntentKey.kBoard, board)
-                putExtra(ScoutingIntentKey.kTeam, team)
+        if (activityState == WaitingToStart) {
+            setResult(Activity.RESULT_CANCELED, null)
+        } else {
+            val entry = entry
+            if (entry == null) {
+                setResult(Activity.RESULT_CANCELED, null)
+                return
+            }
+            setResult(Activity.RESULT_OK, Intent().apply {
+                putExtra(ScoutingIntentKey.kResult, entry.getEncoded())
+                putExtra(ScoutingIntentKey.kMatch, entry.match)
+                putExtra(ScoutingIntentKey.kBoard, entry.board)
+                putExtra(ScoutingIntentKey.kTeam, entry.team)
             })
         }
         super.onBackPressed()
@@ -233,22 +272,22 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private fun updateActivityStatus() {
         val time = if (timerIsCountingUp) {
             timerStatus.setTypeface(null, Typeface.BOLD)
-            relativeTime
+            matchTime
         } else {
             timerStatus.setTypeface(null, Typeface.NORMAL)
-            if (relativeTime <= kAutonomousTime) kAutonomousTime - relativeTime else kTimerLimit - relativeTime
+            if (matchTime <= kAutonomousTime) kAutonomousTime - matchTime else kTimerLimit - matchTime
         }
-        val status = time.toString()
+        val status = time.toInt().toString()
         val placeholder = CharArray(kTotalTimerDigits - status.length)
         val filledStatus = String(placeholder).replace("\u0000", "0") + status
         timerStatus.text = filledStatus
         val statusColor = when {
-            relativeTime <= kAutonomousTime -> R.color.colorAutoYellow
+            matchTime <= kAutonomousTime -> R.color.colorAutoYellow
             else -> R.color.colorTeleOpGreen
         }
         timerStatus.setTextColor(ContextCompat.getColor(this, statusColor))
-        timeProgress.progress = relativeTime
-        timeSeeker.progress = relativeTime
+        timeProgress.progress = matchTime.toInt()
+        timeSeeker.progress = matchTime.toInt()
     }
 
     private val alphaAnimationIn: Animation = AlphaAnimation(0.0f, 1.0f).apply { duration = kFadeDuration.toLong() }
@@ -281,9 +320,11 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
     }
 
-    private fun startActivityState(state: State) {
-        if (state == TimedScouting && (timerIsRunning || relativeTime >= kTimerLimit)) return
-        activityState = state
+    private fun startActivityState(wantedState: State) {
+        if (wantedState == TimedScouting && (timerIsRunning || matchTime >= kTimerLimit)) {
+            return
+        }
+        activityState = wantedState
         when (activityState) {
             WaitingToStart -> {
                 playAndPauseImage.hide()
@@ -298,7 +339,9 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 timeSeeker.hide()
                 timeProgress.show()
                 playAndPauseImage.setImageResource(R.drawable.ic_pause_ablack)
-                actionVibrator.vibrateStart()
+                vibrator.vibrateStart()
+                // need to reset the time so that dt doesn't get messed up
+                lastTime = getCurrentTime()
                 timedUpdater.run()
             }
             Pausing -> {
