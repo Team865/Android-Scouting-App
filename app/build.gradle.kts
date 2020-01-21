@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.konan.properties.hasProperty
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -17,6 +20,13 @@ android {
         versionCode = 1
         versionName = "2020.1.0"
         resConfigs("en", "hdpi")
+
+        // Read the blue alliance key from the properties
+        val props = Properties()
+        props.load(rootProject.file("local.properties").inputStream())
+        if (props.hasProperty("tba.key")) {
+            buildConfigField("String", "TBA_KEY", "\"${props["tba.key"]}\"")
+        }
     }
     buildTypes {
         getByName("release") {
