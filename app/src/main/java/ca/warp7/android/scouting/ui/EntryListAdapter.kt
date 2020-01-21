@@ -18,14 +18,16 @@ class EntryListAdapter(
     scheduleItems: List<EntryItem>
 ) : ArrayAdapter<EntryItem>(context, 0, scheduleItems) {
 
-    private val mInflater = LayoutInflater.from(context)
+    private val layoutInflater = LayoutInflater.from(context)
     private val red = ContextCompat.getColor(context, R.color.colorRed)
     private val blue = ContextCompat.getColor(context, R.color.colorBlue)
     private val gray = ContextCompat.getColor(context, R.color.colorGray)
+    private val completeColor = ContextCompat.getColor(context, R.color.colorEntryCompleted)
+    private val addedColor = ContextCompat.getColor(context, R.color.colorEntryAdded)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val itemView = if (convertView is LinearLayout)
-            convertView else mInflater.inflate(R.layout.list_item_match_info, parent, false)
+            convertView else layoutInflater.inflate(R.layout.list_item_match_info, parent, false)
         getItem(position)?.apply {
             val matchNumber = itemView.findViewById<TextView>(R.id.match_number)
             matchNumber.text = match.let {
@@ -44,8 +46,8 @@ class EntryListAdapter(
 
             when (state) {
                 Waiting -> itemView.setBackgroundColor(0)
-                Completed -> itemView.setBackgroundColor(0x6080ff88)
-                Added -> itemView.setBackgroundColor(0x60ffe088)
+                Completed -> itemView.setBackgroundColor(completeColor)
+                Added -> itemView.setBackgroundColor(addedColor)
             }
 
             val red1 = itemView.findViewById<TextView>(R.id.red_1)

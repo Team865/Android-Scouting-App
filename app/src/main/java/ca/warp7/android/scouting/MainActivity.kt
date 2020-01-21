@@ -213,7 +213,7 @@ class MainActivity : AppCompatActivity() {
         displayedItems.addAll(expectedItems)
         if (showScoutedEntries && scoutedItems.isNotEmpty()) {
             displayedItems.addAll(scoutedItems)
-            val p = boardfile.eventKey
+            val p = boardfile.eventKey + "_"
 
             // sort matches in the correct order
             displayedItems.sortBy {
