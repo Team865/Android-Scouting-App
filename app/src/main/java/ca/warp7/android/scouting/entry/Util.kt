@@ -4,9 +4,6 @@ package ca.warp7.android.scouting.entry
 
 fun String.toBoard() = Board.values().firstOrNull { it.name == this }
 
-fun DataPoint.intTime() : Int{
-    return (time * 100).toInt()
-}
 
 /**
  * 24-bit data point encoder, into 4 base64 chars
@@ -16,11 +13,17 @@ fun DataPoint.intTime() : Int{
  * bit 11-24: time
  */
 fun StringBuilder.appendDataPoint(dp: DataPoint) {
-    val intTime = dp.intTime()
-    append(toBase64(dp.type))
-    append(toBase64((dp.value shl 2) or (intTime and 0b11 shl 12) shr 12))
-    append(toBase64((intTime and 0b111111 shl 6) shr 6))
-    append(toBase64(intTime and 0b111111))
+    val intTime = (dp.time * 100).toInt()
+
+    val a = dp.type
+    val b = (dp.value shl 2) or ((intTime and (0b11 shl 12)) shr 12)
+    val c = (intTime and (0b111111 shl 6)) shr 6
+    val d = intTime and 0b111111
+
+    append(toBase64(a))
+    append(toBase64(b))
+    append(toBase64(c))
+    append(toBase64(d))
 }
 
 fun encodeDataPoint(dp: DataPoint): String {

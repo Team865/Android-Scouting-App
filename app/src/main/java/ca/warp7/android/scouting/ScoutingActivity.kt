@@ -340,6 +340,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 timeProgress.show()
                 playAndPauseImage.setImageResource(R.drawable.ic_pause_ablack)
                 vibrator.vibrateStart()
+                // need to reset the time so that dt doesn't get messed up
                 lastTime = getCurrentTime()
                 timedUpdater.run()
             }
