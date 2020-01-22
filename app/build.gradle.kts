@@ -1,3 +1,5 @@
+import java.util.*
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -17,6 +19,15 @@ android {
         versionCode = 1
         versionName = "2020.1.0"
         resConfigs("en", "hdpi")
+
+        // Read the TBA key from local properties
+        val propsFile = rootProject.file("local.properties")
+        val key = if (propsFile.isFile) {
+            val props = Properties()
+            props.load(propsFile.inputStream())
+            props.getProperty("tba.key", "")
+        } else ""
+        buildConfigField("String", "TBA_KEY", "\"$key\"")
     }
     buildTypes {
         getByName("release") {
@@ -40,6 +51,6 @@ dependencies {
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "5.5.1")
     testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "5.5.1")
     testRuntimeOnly(group = "org.junit.platform", name = "junit-platform-launcher", version = "1.5.1")
-    androidTestImplementation ("androidx.test:runner:1.2.0")
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.2.0")
+    androidTestImplementation("androidx.test:runner:1.2.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
 }

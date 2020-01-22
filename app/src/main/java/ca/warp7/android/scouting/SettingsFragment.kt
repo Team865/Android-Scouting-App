@@ -2,6 +2,7 @@ package ca.warp7.android.scouting
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -73,20 +74,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val dialog = builder.create()
             input.setText(sharedPreferences.getString("teamNumber", ""))
             input.addTextChangedListener(object : TextWatcher {
-                override fun onTextChanged(
-                    s: CharSequence, start: Int, before: Int,
-                    count: Int
-                ) {
-                }
-
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int, count: Int,
-                    after: Int
-                ) {
-                }
-
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
                 override fun afterTextChanged(s: Editable) {
-                    if (input.text.isNotEmpty() && input.text.toString().matches("-?\\d+(\\.\\d+)?".toRegex()) && input.text.toString().length <= 4) {
+                    if (input.text.isNotEmpty() &&
+                        input.text.toString().matches("-?\\d+(\\.\\d+)?".toRegex()) &&
+                        input.text.toString().length <= 4) {
                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
                         sharedPreferences.edit().putString("teamNumber", input.text.toString())
                             .apply()
@@ -99,7 +92,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             true
         }
-      
+
         findPreference(getString(R.string.pref_event_key)).setOnPreferenceClickListener {
 
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -112,10 +105,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         URL("https://www.thebluealliance.com/api/v3/team/frc$teamNumber/events/2019/simple")
                     val connection = url.openConnection()
                     connection.addRequestProperty("User-Agent", "User-agent")
-                    connection.setRequestProperty(
-                        "X-TBA-Auth-Key",
-                        "NTFtIarABYtYkZ4u3VmlDsWUtv39Sp5kiowxP1CArw3fiHi3IQ0XcenrH5ONqGOx"
-                    )
+                    connection.setRequestProperty("X-TBA-Auth-Key", BuildConfig.TBA_KEY)
 
                     events = InputStreamReader(connection.getInputStream()).readText()
 
