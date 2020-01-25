@@ -15,6 +15,30 @@ val exampleBoardfile = Boardfile(
     robotScoutTemplate = ScoutTemplate(
         listOf(
             TemplateScreen(
+                "Auto", listOf(
+                    listOf(
+                        TemplateField("trench_intake", FieldType.Button),
+                        TemplateField("fed", FieldType.Button),
+                        TemplateField("other_intake", FieldType.Button)
+                    ),
+                    listOf(
+                        TemplateField("low", FieldType.Button),
+                        TemplateField("inner", FieldType.Button),
+                        TemplateField("outer", FieldType.Button)
+                    ),
+                    listOf(
+                        TemplateField("low_miss", FieldType.Button),
+                        TemplateField("high_miss", FieldType.Button)
+                    ),
+                    listOf(
+                        TemplateField(
+                            "field_area", FieldType.Toggle,
+                            listOf("Cross", "Mid", "Init", "Target")
+                        )
+                    )
+                )
+            ),
+            TemplateScreen(
                 "Teleop", listOf(
                     listOf(
                         TemplateField("control_panel", FieldType.Switch),
@@ -41,17 +65,20 @@ val exampleBoardfile = Boardfile(
             TemplateScreen(
                 "Endgame", listOf(
                     listOf(
-                        TemplateField("parked_in_rendezvous_zone", FieldType.Checkbox)
+                        TemplateField("climb", FieldType.Toggle,
+                            listOf("N/A", "Attempt", "Success"))
                     ),
                     listOf(
-                        TemplateField("side_hang", FieldType.Checkbox),
-                        TemplateField("middle_hang", FieldType.Checkbox)
+                        TemplateField(
+                            "climb_location", FieldType.Toggle,
+                            listOf("Middle", "Up", "Down", "Balanced")
+                        )
                     ),
                     listOf(
-                        TemplateField("balanced", FieldType.Checkbox)
+                        TemplateField("balanced_after_climb", FieldType.Checkbox)
                     ),
                     listOf(
-                        TemplateField("lifting_another_robot", FieldType.Checkbox)
+                        TemplateField("active_movement", FieldType.Checkbox)
                     )
                 )
             )
