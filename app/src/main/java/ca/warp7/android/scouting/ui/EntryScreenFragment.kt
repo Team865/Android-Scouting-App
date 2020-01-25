@@ -117,7 +117,7 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
 
     private fun layoutTable() {
         screen?.apply {
-            fields.forEach { layoutRow(it) }
+            layout.forEach { layoutRow(it) }
         }
         screenTable?.requestLayout()
     }

@@ -2,13 +2,8 @@
 
 package ca.warp7.android.scouting.boardfile
 
-import java.io.File
-
-fun File.toBoardfile(): Boardfile {
-    TODO()
-}
-
 val exampleBoardfile = Boardfile(
+    version = "2020v1",
     eventName = "ONT Science Division",
     eventKey = "oncmp1",
     matchSchedule = MatchSchedule(exampleMatchSchedule),
@@ -66,7 +61,7 @@ val exampleBoardfile = Boardfile(
                 "Endgame", listOf(
                     listOf(
                         TemplateField("climb", FieldType.Toggle,
-                            listOf("N/A", "Attempt", "Success"))
+                            listOf("None", "Attempt", "Success"))
                     ),
                     listOf(
                         TemplateField(
