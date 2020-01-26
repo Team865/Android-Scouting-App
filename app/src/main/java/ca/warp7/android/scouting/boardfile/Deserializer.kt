@@ -8,9 +8,6 @@ fun deserializeBoardfile(json: String): Boardfile {
     val o = JSONObject(json)
     return Boardfile(
         version = o.getString("version"),
-        eventName = "",
-        eventKey = "",
-        matchSchedule = MatchSchedule(listOf()),
         robotScoutTemplate = o.getJSONObject("robot_scout").toTemplate(),
         superScoutTemplate = o.getJSONObject("super_scout").toTemplate()
     )

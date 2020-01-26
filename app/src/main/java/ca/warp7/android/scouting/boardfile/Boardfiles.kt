@@ -4,9 +4,6 @@ package ca.warp7.android.scouting.boardfile
 
 val exampleBoardfile = Boardfile(
     version = "2020v1",
-    eventName = "ONT Science Division",
-    eventKey = "oncmp1",
-    matchSchedule = MatchSchedule(exampleMatchSchedule),
     robotScoutTemplate = ScoutTemplate(
         listOf(
             TemplateScreen(
