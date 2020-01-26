@@ -48,11 +48,12 @@ class MainActivity : AppCompatActivity() {
     private var board = R1
     private val eventInfo = exampleEventInfo
 
-    private val displayedItems = mutableListOf<EntryItem>()
-    private val scoutedItems = mutableListOf<EntryItem>()
-    private val expectedItems = mutableListOf<EntryItem>()
+    // the list of items that are actually displayed on screen
+    private val displayedItems = ArrayList<EntryItem>()
 
-    private var showScoutedEntries = true
+    // the entries that have been scouted
+    private val scoutedItems = ArrayList<EntryItem>()
+    private val expectedItems = ArrayList<EntryItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +66,8 @@ class MainActivity : AppCompatActivity() {
         val permission = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
         if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                arrayOf(WRITE_EXTERNAL_STORAGE), MY_PERMISSIONS_REQUEST_FILES)
+                arrayOf(WRITE_EXTERNAL_STORAGE), MY_PERMISSIONS_REQUEST_FILES
+            )
         } else {
             initActivity()
         }
@@ -75,6 +77,7 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             MY_PERMISSIONS_REQUEST_FILES -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission granted - continue to setup
                     initActivity()
                 }
             }
@@ -86,26 +89,21 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?) = item?.itemId?.let {
-        when (it) {
-            R.id.menu_new_entry -> {
-                onNewEntry()
-                true
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return item?.itemId?.let {
+            when (it) {
+                R.id.menu_new_entry -> {
+                    onNewEntry()
+                    true
+                }
+                R.id.menu_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+                else -> false
             }
-            R.id.menu_toggle_scouted -> {
-                showScoutedEntries = !showScoutedEntries
-                if (showScoutedEntries) item.setIcon(R.drawable.ic_visibility_off_ablack)
-                else item.setIcon(R.drawable.ic_visibility_ablack)
-                if (scoutedItems.isNotEmpty()) updateDisplayedItems()
-                true
-            }
-            R.id.menu_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
-                true
-            }
-            else -> false
-        }
-    } ?: false
+        } ?: false
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == MY_INTENT_REQUEST_SCOUTING) {
@@ -156,6 +154,7 @@ class MainActivity : AppCompatActivity() {
                 .setTitle(item.match)
                 .setView(qrImage)
                 .setNeutralButton("Send With...") { _, _ ->
+
                     // Send with an intent
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.putExtra(Intent.EXTRA_TEXT, item.data)
@@ -299,14 +298,16 @@ class MainActivity : AppCompatActivity() {
     private fun updateDisplayedItems() {
         displayedItems.clear()
         displayedItems.addAll(expectedItems)
-        if (showScoutedEntries && scoutedItems.isNotEmpty()) {
+        if (scoutedItems.isNotEmpty()) {
             displayedItems.addAll(scoutedItems)
             val p = eventInfo.eventKey + "_"
 
             // sort matches in the correct order
             displayedItems.sortBy {
                 it.match.run {
-                    if (startsWith(p)) substring(p.length).toIntOrNull() ?: 0 else 0
+                    if (startsWith(p)) {
+                        substring(p.length).toIntOrNull() ?: 0
+                    } else 0
                 }
             }
         }

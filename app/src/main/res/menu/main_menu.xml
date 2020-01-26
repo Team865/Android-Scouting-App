@@ -8,11 +8,6 @@
         android:icon="@drawable/ic_add_ablack"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/menu_toggle_scouted"
-        android:title="@string/menu_toggle_scouted"
-        android:icon="@drawable/ic_visibility_off_ablack"
-        app:showAsAction="ifRoom"/>
-    <item
         android:id="@+id/menu_settings"
         android:title="@string/menu_settings"
         android:icon="@drawable/ic_settings_ablack"
