@@ -30,12 +30,21 @@ import com.google.zxing.WriterException
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        // the id to use when requesting permissions
+        private const val MY_PERMISSIONS_REQUEST_FILES = 0
+        // the id to use when getting data back from ScoutingActivity
+        private const val MY_INTENT_REQUEST_SCOUTING = 1
+    }
 
+    // the board and the scout
     private val boardTextView: TextView get() = findViewById(R.id.board)
     private val scoutTextView: TextView get() = findViewById(R.id.scout_name)
-    private val entriesList: ListView get() = findViewById(R.id.entries_list)
-    private lateinit var entryListAdapter: EntryListAdapter
 
+    // the list of matches
+    private val entriesList: ListView get() = findViewById(R.id.entries_list)
+
+    // the current board
     private var board = R1
     private val eventInfo = exampleEventInfo
 
@@ -50,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.title = eventInfo.eventName
-        entryListAdapter = EntryListAdapter(this, displayedItems)
+        val entryListAdapter = EntryListAdapter(this, displayedItems)
         entriesList.adapter = entryListAdapter
         ensurePermissions()
 
@@ -63,12 +72,14 @@ class MainActivity : AppCompatActivity() {
         updateExpectedItems()
         updateDisplayedItems()
         scoutTextView.setOnClickListener { onEnterScout(preferences) }
-        entriesList.setOnItemClickListener { _, _, position, _ -> onEntryClicked(position) }
+        entriesList.setOnItemClickListener { _, _, position, _ ->
+            onEntryClicked(entryListAdapter, position)
+        }
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
     }
 
-    private fun onEntryClicked(position: Int) {
-        val item = entryListAdapter.getItem(position) ?: return
+    private fun onEntryClicked(adapter: EntryListAdapter, position: Int) {
+        val item = adapter.getItem(position) ?: return
         if (item.state != EntryItemState.Waiting && item.data.isNotEmpty()) {
             val qrImage = ImageView(this)
             qrImage.setPadding(16, 0, 16, 0)
@@ -224,7 +235,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        entryListAdapter.notifyDataSetChanged()
+        (entriesList.adapter as EntryListAdapter).notifyDataSetChanged()
     }
 
     private fun validateName(str: String): Boolean {
@@ -370,11 +381,5 @@ class MainActivity : AppCompatActivity() {
             putExtra(ScoutingIntentKey.kScout, scout)
         }, MY_INTENT_REQUEST_SCOUTING)
     }
-
-    companion object {
-        private const val MY_PERMISSIONS_REQUEST_FILES = 0
-        private const val MY_INTENT_REQUEST_SCOUTING = 1
-    }
-
 
 }
