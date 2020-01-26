@@ -3,12 +3,12 @@ package ca.warp7.android.scouting.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.fragment.app.Fragment
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.BaseScoutingActivity
 import ca.warp7.android.scouting.boardfile.TemplateField
@@ -57,7 +57,7 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is BaseScoutingActivity) scoutingActivity = context
         screen = scoutingActivity?.template?.screens?.get(arguments?.getInt("tab") ?: 0)

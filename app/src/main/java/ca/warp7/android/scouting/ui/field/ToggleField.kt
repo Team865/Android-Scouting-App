@@ -1,12 +1,12 @@
 package ca.warp7.android.scouting.ui.field
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.entry.DataPoint
 import ca.warp7.android.scouting.ui.toggle.ToggleSwitchCompat

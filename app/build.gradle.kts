@@ -44,13 +44,13 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("com.android.support:appcompat-v7:28.0.0")
-    implementation("com.android.support:preference-v7:28.0.0")
+    implementation("androidx.appcompat:appcompat:1.1.0")
+    implementation("androidx.preference:preference:1.1.0")
     implementation("com.google.zxing:core:3.4.0")
 
-    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "5.5.1")
-    testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "5.5.1")
-    testRuntimeOnly(group = "org.junit.platform", name = "junit-platform-launcher", version = "1.5.1")
+    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "5.6.0")
+    testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "5.6.0")
+    testRuntimeOnly(group = "org.junit.platform", name = "junit-platform-launcher", version = "1.6.0")
     androidTestImplementation("androidx.test:runner:1.2.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
 }

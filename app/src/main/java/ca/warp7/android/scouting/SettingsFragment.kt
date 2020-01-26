@@ -2,16 +2,16 @@ package ca.warp7.android.scouting
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.preference.PreferenceManager
-import android.support.v7.preference.PreferenceFragmentCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import org.json.JSONArray
 import java.io.InputStreamReader
 import java.net.URL
@@ -52,13 +52,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
-        findPreference(getString(R.string.pref_licenses_key)).setOnPreferenceClickListener {
+        findPreference<Preference>(getString(R.string.pref_licenses_key))?.setOnPreferenceClickListener {
             val intent = Intent(context, LicensesActivity::class.java)
             it.context.startActivity(intent)
             true
         }
 
-        findPreference(getString(R.string.pref_team_key)).setOnPreferenceClickListener {
+        findPreference<Preference>(getString(R.string.pref_team_key))?.setOnPreferenceClickListener {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             val input = EditText(context)
             val lp = LinearLayout.LayoutParams(
@@ -93,7 +93,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        findPreference(getString(R.string.pref_event_key)).setOnPreferenceClickListener {
+        findPreference<Preference>(getString(R.string.pref_event_key))?.setOnPreferenceClickListener {
 
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             val teamNumber = sharedPreferences.getString(getString(R.string.pref_team_key), "") ?: ""
@@ -119,8 +119,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        val aboutApp = findPreference(getString(R.string.pref_about_key))
-        aboutApp.summary = "Version: " + BuildConfig.VERSION_NAME + "-" + BuildConfig.BUILD_TYPE
+        val aboutApp = findPreference<Preference>(getString(R.string.pref_about_key))
+        if (aboutApp != null) {
+            aboutApp.summary = "Version: " + BuildConfig.VERSION_NAME + "-" + BuildConfig.BUILD_TYPE
+        }
     }
 }
 

@@ -9,13 +9,13 @@ which is licensed under the Apache License, Version 2.0
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import ca.warp7.android.scouting.BaseScoutingActivity
 import ca.warp7.android.scouting.R
 import com.google.zxing.WriterException
@@ -27,7 +27,7 @@ class QRCodeFragment : Fragment(), ScoutingEntryTab {
 
     private var sendButton: Button? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is BaseScoutingActivity) scoutingActivity = context
     }

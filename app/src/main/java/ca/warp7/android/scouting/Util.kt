@@ -1,7 +1,6 @@
 package ca.warp7.android.scouting
 
 import android.content.Context
-import android.preference.PreferenceManager
 import android.text.Html
 import android.text.Spanned
 import android.view.View
