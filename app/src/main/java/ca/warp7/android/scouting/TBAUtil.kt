@@ -8,6 +8,6 @@ import java.io.File
  * Create an instance of the blue alliance
  */
 fun createCachedTBAInstance(context: Context): TBA {
-    val cacheFile = File(context.cacheDir, "tba-cache.zip")
+    val cacheFile = File(context.cacheDir, "tba-cache")
     return TBA(BuildConfig.TBA_KEY, cacheFile)
 }

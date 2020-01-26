@@ -34,6 +34,8 @@ class TBA(
                 return String(cacheFile.inputStream().use { stream -> stream.readBytes() })
             }
             val result = getTBAStringNoCache(requestURL)
+            // make sure we have the parent directories made
+            cacheFile.parentFile?.mkdirs()
             cacheFile.outputStream().use { stream -> stream.write(result.toByteArray()) }
             return result
         } catch (e: Throwable) {
