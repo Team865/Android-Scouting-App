@@ -11,7 +11,9 @@ import android.widget.LinearLayout
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import ca.warp7.android.scouting.tba.EventSimple
+import ca.warp7.android.scouting.tba.getEventMatchesSimple
 import ca.warp7.android.scouting.tba.getTeamEventsByYearSimple
+import kotlin.concurrent.thread
 
 /**
  * @since v0.4.1
@@ -27,13 +29,24 @@ class SettingsFragment : PreferenceFragmentCompat() {
         if (i == -1) {
             i = 0
         }
+
+        // need to make sure we call the dialog on the UI thread
         activity?.runOnUiThread {
             AlertDialog.Builder(context).setTitle("Select events")
                 .setSingleChoiceItems(listEvents.map { it.name }.toTypedArray(), i) { dialog, which ->
-                    listEvents[which].also {
-                        sharedPreferences.edit().putString("eventName", it.key).apply()
-                    }
+                    val eventKey = listEvents[which]
+                    sharedPreferences
+                        .edit()
+                        .putString(getString(R.string.pref_event_key), eventKey.key!!)
+                        .putString(getString(R.string.pref_event_name), eventKey.name!!)
+                        .apply()
                     dialog.dismiss()
+                    val tba = createCachedTBAInstance(context!!)
+                    thread {
+                        // pre-fetch the event matches so it's cached
+                        // we don't process anything here
+                        tba.getEventMatchesSimple(eventKey.key)
+                    }
                 }.create().show()
         }
     }
@@ -43,7 +56,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val teamNumber = sharedPreferences.getString(getString(R.string.pref_team_key), "") ?: ""
         val tba = createCachedTBAInstance(context!!)
 
-        val thread = Thread {
+        thread {
             try {
                 val events = tba.getTeamEventsByYearSimple("frc$teamNumber", 2019)
                 updateEntries(events)
@@ -56,7 +69,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
             }
         }
-        thread.start()
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
