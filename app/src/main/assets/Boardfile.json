@@ -1,121 +1,173 @@
 {
-  "event_name": "Humber College 2019",
-  "event_key": "2018iri",
+  "version": "2020v1",
   "robot_scout": {
     "screens": [
       {
-        "screen_name": "Sandstorm",
+        "title": "Auto",
         "layout": [
           [
             {
-              "name": "start_position",
-              "type": "choice",
-              "options": [
-                "None",
-                "Level 2 Left",
-                "Level 2 Right",
-                "Level 1 Left",
-                "Level 1 Center",
-                "Level 1 Right"
-              ]
+              "name": "trench_intake",
+              "type": "Button",
+              "options": []
             },
             {
-              "name": "hab_line",
-              "type": "checkbox"
-            }
-          ],
-          [
-            {
-              "name": "auto_field_area",
-              "type": "toggle",
-              "options": [
-                "Left Field",
-                "Right Field"
-              ]
+              "name": "fed",
+              "type": "Button",
+              "options": []
             },
             {
-              "name": "camera_control",
-              "type": "switch"
+              "name": "other_intake",
+              "type": "Button",
+              "options": []
             }
           ],
           [
             {
-              "name": "rocket",
-              "type": "button"
-            }
-          ],
-          [
-            {
-              "name": "front_cargo_ship",
-              "type": "button"
+              "name": "low",
+              "type": "Button",
+              "options": []
             },
             {
-              "name": "side_cargo_ship",
-              "type": "button"
+              "name": "inner",
+              "type": "Button",
+              "options": []
+            },
+            {
+              "name": "outer",
+              "type": "Button",
+              "options": []
             }
           ],
           [
             {
-              "name": "auto_game_piece",
-              "type": "toggle",
+              "name": "low_miss",
+              "type": "Button",
+              "options": []
+            },
+            {
+              "name": "high_miss",
+              "type": "Button",
+              "options": []
+            }
+          ],
+          [
+            {
+              "name": "field_area",
+              "type": "MultiToggle",
               "options": [
-                "Cargo",
-                "None",
-                "Hatch Panel"
+                "Cross",
+                "Mid",
+                "Init",
+                "Target"
               ]
             }
           ]
         ]
       },
       {
-        "screen_name": "Teleop",
+        "title": "Teleop",
         "layout": [
           [
             {
-              "name": "rocket_3",
-              "type": "button"
+              "name": "control_panel",
+              "type": "Switch",
+              "options": []
             },
             {
               "name": "defending",
-              "type": "switch"
-            }
-          ],
-          [
-            {
-              "name": "rocket_2",
-              "type": "button"
+              "type": "Switch",
+              "options": []
             },
             {
-              "name": "defended",
-              "type": "switch"
+              "name": "resisting",
+              "type": "Switch",
+              "options": []
             }
           ],
           [
             {
-              "name": "rocket_1",
-              "type": "button"
+              "name": "low",
+              "type": "Button",
+              "options": []
             },
             {
-              "name": "cargo_ship",
-              "type": "button"
+              "name": "inner",
+              "type": "Button",
+              "options": []
+            },
+            {
+              "name": "outer",
+              "type": "Button",
+              "options": []
             }
           ],
           [
             {
-              "name": "game_piece",
-              "type": "toggle",
+              "name": "low_miss",
+              "type": "Button",
+              "options": []
+            },
+            {
+              "name": "high_miss",
+              "type": "Button",
+              "options": []
+            }
+          ],
+          [
+            {
+              "name": "field_area",
+              "type": "MultiToggle",
               "options": [
-                "Cargo",
-                "None",
-                "Hatch Panel"
+                "Cross",
+                "Mid",
+                "Init",
+                "Target"
               ]
             }
           ]
         ]
       },
       {
-        "screen_name": "Endgame",
+        "title": "Endgame",
         "layout": [
+          [
+            {
+              "name": "climb",
+              "type": "MultiToggle",
+              "options": [
+                "None",
+                "Attempt",
+                "Success"
+              ]
+            }
+          ],
+          [
+            {
+              "name": "climb_location",
+              "type": "MultiToggle",
+              "options": [
+                "Middle",
+                "Up",
+                "Down",
+                "Balanced"
+              ]
+            }
+          ],
+          [
+            {
+              "name": "balanced_after_climb",
+              "type": "Checkbox",
+              "options": []
+            }
+          ],
+          [
+            {
+              "name": "active_movement",
+              "type": "Checkbox",
+              "options": []
+            }
+          ]
         ]
       }
     ],
@@ -124,6 +176,5 @@
   "super_scout": {
     "screens": [],
     "tags": []
-  },
-  "match_schedule": []
+  }
 }

@@ -19,7 +19,7 @@ import android.widget.*
 import ca.warp7.android.scouting.ScoutingActivity.State.*
 import ca.warp7.android.scouting.boardfile.Boardfile
 import ca.warp7.android.scouting.boardfile.ScoutTemplate
-import ca.warp7.android.scouting.boardfile.exampleBoardfile
+import ca.warp7.android.scouting.boardfile.createBoardfileFromAssets
 import ca.warp7.android.scouting.entry.Alliance
 import ca.warp7.android.scouting.entry.Board
 import ca.warp7.android.scouting.entry.Board.BX
@@ -205,7 +205,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             })
         }
 
-        boardfile = exampleBoardfile
+        boardfile = createBoardfileFromAssets(this)
         val match = intent.getStringExtra(ScoutingIntentKey.kMatch)
         val team = intent.getStringExtra(ScoutingIntentKey.kTeam)
         val scout = intent.getStringExtra(ScoutingIntentKey.kScout)

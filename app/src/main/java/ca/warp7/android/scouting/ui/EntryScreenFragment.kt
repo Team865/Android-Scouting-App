@@ -86,7 +86,7 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
                 Button -> ButtonField(data)
                 Checkbox -> CheckboxField(data)
                 Switch -> SwitchField(data)
-                Toggle -> ToggleField(data)
+                MultiToggle -> ToggleField(data)
                 Unknown -> UndefinedField(data)
             }
         }
@@ -117,7 +117,7 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
 
     private fun layoutTable() {
         screen?.apply {
-            fields.forEach { layoutRow(it) }
+            layout.forEach { layoutRow(it) }
         }
         screenTable?.requestLayout()
     }

@@ -20,7 +20,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.*
-import ca.warp7.android.scouting.boardfile.exampleBoardfile
+import ca.warp7.android.scouting.boardfile.exampleEventInfo
 import ca.warp7.android.scouting.entry.*
 import ca.warp7.android.scouting.entry.Board.*
 import ca.warp7.android.scouting.ui.EntryListAdapter
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var entriesList: ListView
 
     private var board = R1
-    private val boardfile = exampleBoardfile
+    private val eventInfo = exampleEventInfo
 
     private val displayedItems = mutableListOf<EntryItem>()
     private val scoutedItems = mutableListOf<EntryItem>()
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.title = boardfile.eventName
+        supportActionBar?.title = eventInfo.eventName
         boardTextView = findViewById(R.id.board)
         scoutTextView = findViewById(R.id.scout_name)
         entriesList = findViewById(R.id.entries_list)
@@ -199,9 +199,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateExpectedItems() {
         expectedItems.clear()
-        boardfile.matchSchedule.forEach { matchNumber, teams ->
+        eventInfo.matchSchedule.forEach { matchNumber, teams ->
             val item = EntryItem(
-                "${boardfile.eventKey}_$matchNumber",
+                "${eventInfo.eventKey}_$matchNumber",
                 teams, board, EntryItemState.Waiting
             )
             expectedItems.add(item)
@@ -213,7 +213,7 @@ class MainActivity : AppCompatActivity() {
         displayedItems.addAll(expectedItems)
         if (showScoutedEntries && scoutedItems.isNotEmpty()) {
             displayedItems.addAll(scoutedItems)
-            val p = boardfile.eventKey + "_"
+            val p = eventInfo.eventKey + "_"
 
             // sort matches in the correct order
             displayedItems.sortBy {
@@ -275,7 +275,7 @@ class MainActivity : AppCompatActivity() {
                     .setTitle("Add New Entry")
                     .setView(layout)
                     .setPositiveButton("Ok") { _, _ ->
-                        val matchKey = "${boardfile.eventKey}_${matchEdit.text}"
+                        val matchKey = "${eventInfo.eventKey}_${matchEdit.text}"
                         startScouting(matchKey, teamEdit.text.toString(), scoutTextView.text.toString(), board)
                     }
                     .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
