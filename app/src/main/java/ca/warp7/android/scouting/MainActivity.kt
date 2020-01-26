@@ -81,6 +81,46 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?) = item?.itemId?.let {
+        when (it) {
+            R.id.menu_new_entry -> {
+                onNewEntry()
+                true
+            }
+            R.id.menu_toggle_scouted -> {
+                showScoutedEntries = !showScoutedEntries
+                if (showScoutedEntries) item.setIcon(R.drawable.ic_visibility_off_ablack)
+                else item.setIcon(R.drawable.ic_visibility_ablack)
+                if (scoutedItems.isNotEmpty()) updateDisplayedItems()
+                true
+            }
+            R.id.menu_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+                true
+            }
+            else -> false
+        }
+    } ?: false
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == MY_INTENT_REQUEST_SCOUTING) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    parseEntryResult(data)
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    /**
+     * Set up the activity when permission is granted
+     */
     private fun initActivity() {
         supportActionBar?.title = eventInfo.eventName
         val entryListAdapter = EntryListAdapter(this, displayedItems)
@@ -101,15 +141,22 @@ class MainActivity : AppCompatActivity() {
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
     }
 
+    /**
+     * Called when an entry is clicked in the list
+     */
     private fun onEntryClicked(adapter: EntryListAdapter, position: Int) {
         val item = adapter.getItem(position) ?: return
         if (item.state != EntryItemState.Waiting && item.data.isNotEmpty()) {
+            // we show the data in a qr code dialog
             val qrImage = ImageView(this)
             qrImage.setPadding(16, 0, 16, 0)
+
+            // create the dialog
             val dialog = AlertDialog.Builder(this)
                 .setTitle(item.match)
                 .setView(qrImage)
                 .setNeutralButton("Send With...") { _, _ ->
+                    // Send with an intent
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.putExtra(Intent.EXTRA_TEXT, item.data)
                     intent.type = "text/plain"
@@ -117,6 +164,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 .setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
                 .create()
+
+            // add the listener so we can figure out the width of the QR code to make
             dialog.setOnShowListener {
                 val dim = dialog.window?.decorView?.width ?: 0
                 try {
@@ -126,8 +175,11 @@ class MainActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }
+
             dialog.show()
         } else if (item.teams.size > 5) {
+
+            // actually start scouting the entry
             startScouting(
                 item.match, when (board) {
                     R1 -> item.teams[0].toString()
@@ -268,117 +320,6 @@ class MainActivity : AppCompatActivity() {
         return split.size == 2 && split[0][0].isUpperCase() && split[1].length == 1 && split[1][0].isUpperCase()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    //@SuppressLint("SetTextI18n")
-    override fun onOptionsItemSelected(item: MenuItem?) = item?.itemId?.let {
-        when (it) {
-            R.id.menu_new_entry -> {
-                if (board == RX || board == BX) return@let true
-                val layout = LinearLayout(this)
-                layout.orientation = LinearLayout.VERTICAL
-                layout.setPadding(16, 8, 16, 0)
-                val matchEdit = EditText(this).apply {
-                    hint = getString(R.string.hint_match)
-                    inputType = InputType.TYPE_CLASS_NUMBER
-                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_layers_ablack_small, 0, 0, 0)
-                    compoundDrawablePadding = 16
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-                }
-                val teamEdit = EditText(this).apply {
-                    hint = getString(R.string.hint_team)
-                    inputType = InputType.TYPE_CLASS_NUMBER
-                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people_ablack_small, 0, 0, 0)
-                    compoundDrawablePadding = 16
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-                }
-                layout.addView(matchEdit)
-                layout.addView(teamEdit)
-                val dialog = AlertDialog.Builder(this)
-                    .setTitle("Add New Entry")
-                    .setView(layout)
-                    .setPositiveButton("Ok") { _, _ ->
-                        val matchKey = "${eventInfo.eventKey}_${matchEdit.text}"
-                        startScouting(matchKey, teamEdit.text.toString(), scoutTextView.text.toString(), board)
-                    }
-                    .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
-                    .create()
-                dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-                dialog.show()
-                true
-            }
-            R.id.menu_toggle_scouted -> {
-                showScoutedEntries = !showScoutedEntries
-                if (showScoutedEntries) item.setIcon(R.drawable.ic_visibility_off_ablack)
-                else item.setIcon(R.drawable.ic_visibility_ablack)
-                if (scoutedItems.isNotEmpty()) updateDisplayedItems()
-                true
-            }
-            R.id.menu_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
-                true
-            }
-            else -> false
-        }
-    } ?: false
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == MY_INTENT_REQUEST_SCOUTING) {
-            if (resultCode == Activity.RESULT_OK) {
-                data?.also {
-                    val result = it.getStringExtra(ScoutingIntentKey.kResult)
-                    val match = it.getStringExtra(ScoutingIntentKey.kMatch) ?: "- - -"
-                    val team = it.getStringExtra(ScoutingIntentKey.kTeam).toIntOrNull() ?: 0
-                    val board = it.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
-                    var teams: List<Int> = listOf()
-                    var state = EntryItemState.Completed
-                    var foundData = false
-                    for (item in expectedItems) {
-                        if (item.match == match && item.board == board) {
-                            teams = item.teams
-                            foundData = true
-                            break
-                        }
-                    }
-                    if (teams.size > 5) {
-                        val expectedTeam = when (board) {
-                            R1 -> teams[0]
-                            R2 -> teams[1]
-                            R3 -> teams[2]
-                            B1 -> teams[3]
-                            B2 -> teams[4]
-                            B3 -> teams[5]
-                            RX, BX -> 0
-                        }
-                        if (team != expectedTeam) {
-                            foundData = false
-                        }
-                    } else foundData = false
-                    if (!foundData) {
-                        val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
-                        mutableTeams[values().indexOf(board)] = team
-                        teams = mutableTeams
-                        state = EntryItemState.Added
-                    }
-                    scoutedItems.add(
-                        EntryItem(
-                            match,
-                            teams,
-                            board,
-                            state,
-                            result
-                        )
-                    )
-                    updateDisplayedItems()
-                }
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     private fun startScouting(match: String, team: String, scout: String, board: Board) {
         startActivityForResult(Intent(this, ScoutingActivity::class.java).apply {
             putExtra(ScoutingIntentKey.kMatch, match)
@@ -388,4 +329,105 @@ class MainActivity : AppCompatActivity() {
         }, MY_INTENT_REQUEST_SCOUTING)
     }
 
+    private fun onNewEntry() {
+        if (board == RX || board == BX) return
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        layout.setPadding(16, 8, 16, 0)
+
+        // create the EditText for match
+        val matchEdit = EditText(this).apply {
+            hint = getString(R.string.hint_match)
+            inputType = InputType.TYPE_CLASS_NUMBER
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_layers_ablack_small, 0, 0, 0)
+            compoundDrawablePadding = 16
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+        }
+
+        // create the EditText for team
+        val teamEdit = EditText(this).apply {
+            hint = getString(R.string.hint_team)
+            inputType = InputType.TYPE_CLASS_NUMBER
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people_ablack_small, 0, 0, 0)
+            compoundDrawablePadding = 16
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+        }
+
+        layout.addView(matchEdit)
+        layout.addView(teamEdit)
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Add New Entry")
+            .setView(layout)
+            .setPositiveButton("Ok") { _, _ ->
+                val matchKey = "${eventInfo.eventKey}_${matchEdit.text}"
+                // start scouting when ok
+                startScouting(matchKey, teamEdit.text.toString(), scoutTextView.text.toString(), board)
+            }
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+            .create()
+
+        // make sure the keyboard is up
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog.show()
+    }
+
+    private fun parseEntryResult(intent: Intent) {
+
+        // get the extra data from the intent bundle
+        val result = intent.getStringExtra(ScoutingIntentKey.kResult)
+        val match = intent.getStringExtra(ScoutingIntentKey.kMatch) ?: "- - -"
+        val team = intent.getStringExtra(ScoutingIntentKey.kTeam).toIntOrNull() ?: 0
+        val board = intent.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
+
+        var teams: List<Int> = listOf()
+        var state = EntryItemState.Completed
+        var foundData = false
+
+        // we need to find the right entry in the expected items
+        // so we know what all the teams are
+        for (item in expectedItems) {
+            if (item.match == match && item.board == board) {
+                teams = item.teams
+                foundData = true
+                break
+            }
+        }
+
+        // add some more conditions to make sure everything's right
+        if (teams.size > 5) {
+            val expectedTeam = when (board) {
+                R1 -> teams[0]
+                R2 -> teams[1]
+                R3 -> teams[2]
+                B1 -> teams[3]
+                B2 -> teams[4]
+                B3 -> teams[5]
+                RX, BX -> 0
+            }
+            if (team != expectedTeam) {
+                foundData = false
+            }
+        } else foundData = false
+
+        // change the entry to Added state if data is really not found
+        if (!foundData) {
+            val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
+            mutableTeams[values().indexOf(board)] = team
+            teams = mutableTeams
+            state = EntryItemState.Added
+        }
+
+        // add to the list of scouted items
+        scoutedItems.add(
+            EntryItem(
+                match,
+                teams,
+                board,
+                state,
+                result
+            )
+        )
+        updateDisplayedItems()
+    }
 }
