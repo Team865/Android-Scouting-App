@@ -3,9 +3,9 @@ package ca.warp7.android.scouting.ui.field
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.Typeface
-import android.support.v4.content.ContextCompat
 import android.widget.Button
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.entry.DataPoint
 

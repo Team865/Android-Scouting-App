@@ -1,11 +1,8 @@
 package ca.warp7.android.scouting.ui.field
 
 import android.content.Context
-import android.graphics.PorterDuff
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.AppCompatButton
 import android.view.Gravity
-import ca.warp7.android.scouting.R
+import androidx.appcompat.widget.AppCompatButton
 
 /**
  * Creates a placeholder button that shows definition errors

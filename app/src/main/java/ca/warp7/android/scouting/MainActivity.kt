@@ -8,10 +8,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -20,6 +16,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import ca.warp7.android.scouting.boardfile.exampleEventInfo
 import ca.warp7.android.scouting.entry.*
 import ca.warp7.android.scouting.entry.Board.*
