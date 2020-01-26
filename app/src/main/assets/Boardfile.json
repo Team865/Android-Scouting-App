@@ -54,7 +54,7 @@
           [
             {
               "name": "field_area",
-              "type": "Toggle",
+              "type": "MultiToggle",
               "options": [
                 "Cross",
                 "Mid",
@@ -117,7 +117,7 @@
           [
             {
               "name": "field_area",
-              "type": "Toggle",
+              "type": "MultiToggle",
               "options": [
                 "Cross",
                 "Mid",
@@ -134,7 +134,7 @@
           [
             {
               "name": "climb",
-              "type": "Toggle",
+              "type": "MultiToggle",
               "options": [
                 "None",
                 "Attempt",
@@ -145,7 +145,7 @@
           [
             {
               "name": "climb_location",
-              "type": "Toggle",
+              "type": "MultiToggle",
               "options": [
                 "Middle",
                 "Up",

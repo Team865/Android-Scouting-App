@@ -27,7 +27,7 @@ val exampleBoardfile = Boardfile(
                     ),
                     listOf(
                         TemplateField(
-                            "field_area", FieldType.Toggle,
+                            "field_area", FieldType.MultiToggle,
                             listOf("Cross", "Mid", "Init", "Target")
                         )
                     )
@@ -51,7 +51,7 @@ val exampleBoardfile = Boardfile(
                     ),
                     listOf(
                         TemplateField(
-                            "field_area", FieldType.Toggle,
+                            "field_area", FieldType.MultiToggle,
                             listOf("Cross", "Mid", "Init", "Target")
                         )
                     )
@@ -60,12 +60,12 @@ val exampleBoardfile = Boardfile(
             TemplateScreen(
                 "Endgame", listOf(
                     listOf(
-                        TemplateField("climb", FieldType.Toggle,
+                        TemplateField("climb", FieldType.MultiToggle,
                             listOf("None", "Attempt", "Success"))
                     ),
                     listOf(
                         TemplateField(
-                            "climb_location", FieldType.Toggle,
+                            "climb_location", FieldType.MultiToggle,
                             listOf("Middle", "Up", "Down", "Balanced")
                         )
                     ),
