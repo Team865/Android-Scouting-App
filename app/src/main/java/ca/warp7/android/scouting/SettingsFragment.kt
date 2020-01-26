@@ -59,35 +59,40 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         findPreference<Preference>(getString(R.string.pref_team_key))?.setOnPreferenceClickListener {
+
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             val input = EditText(context)
             val lp = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
+
             input.layoutParams = lp
             val builder = AlertDialog.Builder(context)
+
             builder.setTitle("Enter team number")
                 .setView(input)
                 .setPositiveButton("OK") { _, _ -> }
                 .setNegativeButton("CANCEL") { _, _ -> }
+
             val dialog = builder.create()
-            input.setText(sharedPreferences.getString("teamNumber", ""))
+            input.setText(sharedPreferences.getString(getString(R.string.pref_team_key), ""))
+
             input.addTextChangedListener(object : TextWatcher {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
                 override fun afterTextChanged(s: Editable) {
-                    if (input.text.isNotEmpty() &&
-                        input.text.toString().matches("-?\\d+(\\.\\d+)?".toRegex()) &&
-                        input.text.toString().length <= 4) {
+                    if (validateTeamNumber(input.toString())) {
                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
-                        sharedPreferences.edit().putString("teamNumber", input.text.toString())
+                        sharedPreferences.edit()
+                            .putString(getString(R.string.pref_team_key), input.text.toString())
                             .apply()
                     } else {
                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     }
                 }
             })
+
             dialog.show()
 
             true
@@ -123,6 +128,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         if (aboutApp != null) {
             aboutApp.summary = "Version: " + BuildConfig.VERSION_NAME + "-" + BuildConfig.BUILD_TYPE
         }
+    }
+
+    private fun validateTeamNumber(input: String): Boolean {
+        return input.isNotEmpty() &&
+                input.matches("-?\\d+(\\.\\d+)?".toRegex()) &&
+                input.length <= 4
     }
 }
 

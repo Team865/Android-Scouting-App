@@ -16,7 +16,7 @@
     <string name="pref_licenses_title">Open Source Licenses</string>
 
     <string name="pref_team_key">pref_team</string>
-    <string name="pref_event_key">eventKey</string>
+    <string name="pref_event_key">pref_event</string>
 
     <string name="pref_tba_title">TBA</string>
     <string name="pref_set_team">Set Team Number</string>
