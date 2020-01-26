@@ -1,9 +1,16 @@
 package ca.warp7.android.scouting.boardfile
 
+import android.content.Context
 import org.json.JSONArray
 import org.json.JSONObject
 
 @Suppress("unused")
+fun createBoardfileFromAssets(context: Context): Boardfile {
+    val assets = context.assets
+    val json = assets.open("Boardfile.json").reader().readText()
+    return deserializeBoardfile(json)
+}
+
 fun deserializeBoardfile(json: String): Boardfile {
     val o = JSONObject(json)
     return Boardfile(

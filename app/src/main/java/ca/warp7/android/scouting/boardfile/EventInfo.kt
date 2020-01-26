@@ -5,9 +5,3 @@ class EventInfo (
     val eventKey: String,
     val matchSchedule: MatchSchedule
 )
-
-val exampleEventInfo = EventInfo(
-    "ONT Science Division",
-    "oncmp1",
-    MatchSchedule(exampleMatchSchedule)
-)
