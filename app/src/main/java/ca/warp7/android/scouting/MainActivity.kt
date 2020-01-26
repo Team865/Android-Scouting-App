@@ -313,13 +313,6 @@ class MainActivity : AppCompatActivity() {
         (entriesList.adapter as EntryListAdapter).notifyDataSetChanged()
     }
 
-    private fun validateName(str: String): Boolean {
-        val name = str.trim()
-        if (name.isEmpty()) return false
-        val split = name.split(" ")
-        return split.size == 2 && split[0][0].isUpperCase() && split[1].length == 1 && split[1][0].isUpperCase()
-    }
-
     private fun startScouting(match: String, team: String, scout: String, board: Board) {
         startActivityForResult(Intent(this, ScoutingActivity::class.java).apply {
             putExtra(ScoutingIntentKey.kMatch, match)
