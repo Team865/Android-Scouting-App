@@ -58,10 +58,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.my_toolbar))
+        initActivityWithPermissions()
+    }
+
+    private fun initActivityWithPermissions() {
+        val permission = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(WRITE_EXTERNAL_STORAGE), MY_PERMISSIONS_REQUEST_FILES)
+        } else {
+            initActivity()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_FILES -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    initActivity()
+                }
+            }
+        }
+    }
+
+    private fun initActivity() {
         supportActionBar?.title = eventInfo.eventName
         val entryListAdapter = EntryListAdapter(this, displayedItems)
         entriesList.adapter = entryListAdapter
-        ensurePermissions()
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         boardTextView.setOnClickListener { onSelectBoard(preferences) }
@@ -245,16 +268,6 @@ class MainActivity : AppCompatActivity() {
         return split.size == 2 && split[0][0].isUpperCase() && split[1].length == 1 && split[1][0].isUpperCase()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            MY_PERMISSIONS_REQUEST_FILES -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // TODO
-                }
-            }
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
@@ -364,13 +377,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    private fun ensurePermissions() {
-        val permission = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE), MY_PERMISSIONS_REQUEST_FILES)
-        }
     }
 
     private fun startScouting(match: String, team: String, scout: String, board: Board) {
