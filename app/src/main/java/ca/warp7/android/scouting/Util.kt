@@ -55,3 +55,10 @@ object MainSettingsKey {
     const val kScout = "$kMainSettingsRoot.scout"
 }
 
+fun validateName(str: String): Boolean {
+    val name = str.trim()
+    if (name.isEmpty()) return false
+    val split = name.split(" ")
+    return split.size >= 2 && split[0][0].isUpperCase() &&
+            split.subList(1, split.size).all { it.length == 1 && it[0].isUpperCase() }
+}
