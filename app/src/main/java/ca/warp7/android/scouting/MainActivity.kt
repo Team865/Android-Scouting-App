@@ -93,27 +93,30 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    /**
+     * Handle the top-right menu clicks
+     */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return item?.itemId?.let {
-            when (it) {
-                R.id.menu_new_entry -> {
-                    onNewEntry()
-                    true
-                }
-                R.id.menu_settings -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
-                    true
-                }
-                else -> false
+        val it = item?.itemId ?: return false
+        when (it) {
+            R.id.menu_new_entry -> {
+                onNewEntry()
             }
-        } ?: false
+            R.id.menu_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+            }
+        }
+        return true
     }
 
+    /**
+     * Get the data from the scouting activity
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == MY_INTENT_REQUEST_SCOUTING) {
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
-                    parseEntryResult(data)
+                    processScoutingActivityResult(data)
                 }
             }
         }
@@ -148,15 +151,15 @@ class MainActivity : AppCompatActivity() {
 
         boardTextView.setOnClickListener { onSelectBoard(preferences) }
 
+        val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
+        board = boardString?.toBoard() ?: R1
+        updateBoard()
+
         scoutTextView.setOnClickListener { onEnterScout(preferences) }
         entriesList.setOnItemClickListener { _, _, position, _ ->
             onEntryClicked(entryListAdapter, position)
         }
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
-
-        val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
-        board = boardString?.toBoard() ?: R1
-        updateBoard()
     }
 
     /**
@@ -167,7 +170,7 @@ class MainActivity : AppCompatActivity() {
             // we need to get
             val matches = createCachedTBAInstance(this).getEventMatchesSimple(key)
                 .filter { it.comp_level == "qm" }
-                .sortedBy { it.winning_alliance }
+                .sortedBy { it.match_number }
 
             eventInfo = EventInfo(
                 event,
@@ -243,8 +246,7 @@ class MainActivity : AppCompatActivity() {
                     B2 -> item.teams[4].toString()
                     B3 -> item.teams[5].toString()
                     RX, BX -> "ALL"
-                }, scoutTextView.text.toString(), board
-            )
+                }, scoutTextView.text.toString(), board)
         }
     }
 
@@ -421,7 +423,7 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun parseEntryResult(intent: Intent) {
+    private fun processScoutingActivityResult(intent: Intent) {
 
         // get the extra data from the intent bundle
         val result = intent.getStringExtra(ScoutingIntentKey.kResult)
