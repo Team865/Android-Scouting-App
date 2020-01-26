@@ -31,10 +31,10 @@ import com.google.zxing.WriterException
 class MainActivity : AppCompatActivity() {
 
 
-    private lateinit var boardTextView: TextView
-    private lateinit var scoutTextView: TextView
-    private lateinit var preferences: SharedPreferences
-    private lateinit var entriesList: ListView
+    private val boardTextView: TextView get() = findViewById(R.id.board)
+    private val scoutTextView: TextView get() = findViewById(R.id.scout_name)
+    private val entriesList: ListView get() = findViewById(R.id.entries_list)
+    private lateinit var entryListAdapter: EntryListAdapter
 
     private var board = R1
     private val eventInfo = exampleEventInfo
@@ -42,147 +42,149 @@ class MainActivity : AppCompatActivity() {
     private val displayedItems = mutableListOf<EntryItem>()
     private val scoutedItems = mutableListOf<EntryItem>()
     private val expectedItems = mutableListOf<EntryItem>()
-    private lateinit var entryListAdapter: EntryListAdapter
 
     private var showScoutedEntries = true
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.title = eventInfo.eventName
-        boardTextView = findViewById(R.id.board)
-        scoutTextView = findViewById(R.id.scout_name)
-        entriesList = findViewById(R.id.entries_list)
         entryListAdapter = EntryListAdapter(this, displayedItems)
         entriesList.adapter = entryListAdapter
         ensurePermissions()
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        boardTextView.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("Select board")
-                .setIcon(R.drawable.ic_book_ablack_small)
-                .setSingleChoiceItems(
-                    values().map { it.displayName }.toTypedArray(),
-                    values().indexOf(board)
-                ) { dialog, which ->
-                    values()[which].also {
-                        board = it
-                        updateBoard()
-                        updateExpectedItems()
-                        updateDisplayedItems()
-                        preferences.edit().apply {
-                            putString(MainSettingsKey.kBoard, it.name)
-                            apply()
-                        }
-                    }
-                    dialog.dismiss()
-                }.create().show()
-        }
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        boardTextView.setOnClickListener { onSelectBoard(preferences) }
 
         val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
         board = boardString?.toBoard() ?: R1
         updateBoard()
         updateExpectedItems()
         updateDisplayedItems()
-        scoutTextView.setOnClickListener {
-            val input = EditText(this).apply {
-                inputType = InputType.TYPE_CLASS_TEXT
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                hint = "First L"
-                setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_account_box_ablack_small, 0, 0, 0)
-                compoundDrawablePadding = 16
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-            }
-            val layout = LinearLayout(this)
-            layout.addView(input)
-            layout.setPadding(16, 8, 16, 0)
+        scoutTextView.setOnClickListener { onEnterScout(preferences) }
+        entriesList.setOnItemClickListener { _, _, position, _ -> onEntryClicked(position) }
+        scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
+    }
+
+    private fun onEntryClicked(position: Int) {
+        val item = entryListAdapter.getItem(position) ?: return
+        if (item.state != EntryItemState.Waiting && item.data.isNotEmpty()) {
+            val qrImage = ImageView(this)
+            qrImage.setPadding(16, 0, 16, 0)
             val dialog = AlertDialog.Builder(this)
-                .setTitle("Enter Name")
-                .setView(layout)
-                .setPositiveButton("OK") { _, _ -> }
-                .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                .setTitle(item.match)
+                .setView(qrImage)
+                .setNeutralButton("Send With...") { _, _ ->
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.putExtra(Intent.EXTRA_TEXT, item.data)
+                    intent.type = "text/plain"
+                    startActivity(Intent.createChooser(intent, item.data))
+                }
+                .setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
                 .create()
-            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+            dialog.setOnShowListener {
+                val dim = dialog.window?.decorView?.width ?: 0
+                try {
+                    qrImage.setImageBitmap(createQRBitmap(item.data, dim))
+                } catch (e: WriterException) {
+                    qrImage.setImageDrawable(getDrawable(R.drawable.ic_launcher_background))
+                    e.printStackTrace()
+                }
+            }
             dialog.show()
-            val ok = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-            ok.setOnClickListener {
-                val result = input.text.toString().trim()
-                scoutTextView.text = result
-                preferences.edit().apply {
-                    putString(MainSettingsKey.kScout, result)
-                    apply()
+        } else if (item.teams.size > 5) {
+            startScouting(
+                item.match, when (board) {
+                    R1 -> item.teams[0].toString()
+                    R2 -> item.teams[1].toString()
+                    R3 -> item.teams[2].toString()
+                    B1 -> item.teams[3].toString()
+                    B2 -> item.teams[4].toString()
+                    B3 -> item.teams[5].toString()
+                    RX, BX -> "ALL"
+                }, scoutTextView.text.toString(), board
+            )
+        }
+    }
+
+    private fun onSelectBoard(preferences: SharedPreferences) {
+        AlertDialog.Builder(this)
+            .setTitle("Select board")
+            .setIcon(R.drawable.ic_book_ablack_small)
+            .setSingleChoiceItems(
+                values().map { it.displayName }.toTypedArray(),
+                values().indexOf(board)
+            ) { dialog, which ->
+                values()[which].also {
+                    board = it
+                    updateBoard()
+                    updateExpectedItems()
+                    updateDisplayedItems()
+                    preferences.edit().apply {
+                        putString(MainSettingsKey.kBoard, it.name)
+                        apply()
+                    }
                 }
                 dialog.dismiss()
-            }
-            ok.isEnabled = validateName(input.text.toString())
-            input.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) = Unit
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    ok.isEnabled = validateName(input.text.toString())
-                }
-            })
+            }.create().show()
+    }
+
+    /**
+     * Create a dialog to let the scout enter their name
+     */
+    private fun onEnterScout(preferences: SharedPreferences) {
+        // create the edit text component
+        val input = EditText(this).apply {
+            inputType = InputType.TYPE_CLASS_TEXT
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            hint = "First L"
+            // add an icon
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_account_box_ablack_small, 0, 0, 0)
+            compoundDrawablePadding = 16
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
         }
-        entriesList.setOnItemClickListener { _, _, position, _ ->
-            entryListAdapter.getItem(position)?.also { item ->
-                if (item.state != EntryItemState.Waiting && item.data.isNotEmpty()) {
-                    val qrImage = ImageView(this)
-                    qrImage.setPadding(16, 0, 16, 0)
-                    val dialog = AlertDialog.Builder(this)
-                        .setTitle(item.match)
-                        .setView(qrImage)
-                        .setNeutralButton("Send With...") { _, _ ->
-                            val intent = Intent(Intent.ACTION_SEND)
-                            intent.putExtra(Intent.EXTRA_TEXT, item.data)
-                            intent.type = "text/plain"
-                            startActivity(Intent.createChooser(intent, item.data))
-                        }
-                        .setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
-                        .create()
-                    dialog.setOnShowListener {
-                        val dim = dialog.window?.decorView?.width ?: 0
-                        try {
-                            qrImage.setImageBitmap(createQRBitmap(item.data, dim))
-                        } catch (e: WriterException) {
-                            qrImage.setImageDrawable(getDrawable(R.drawable.ic_launcher_background))
-                            e.printStackTrace()
-                        }
-                    }
-                    dialog.show()
-                } else if (item.teams.size > 5) {
-                    startScouting(
-                        item.match, when (board) {
-                            R1 -> item.teams[0].toString()
-                            R2 -> item.teams[1].toString()
-                            R3 -> item.teams[2].toString()
-                            B1 -> item.teams[3].toString()
-                            B2 -> item.teams[4].toString()
-                            B3 -> item.teams[5].toString()
-                            RX, BX -> "ALL"
-                        }, scoutTextView.text.toString(), board
-                    )
-                }
+
+        // create a layout with this input
+        val layout = LinearLayout(this)
+        layout.addView(input)
+        layout.setPadding(16, 8, 16, 0)
+
+        // create the dialog
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Enter Name")
+            .setView(layout)
+            .setPositiveButton("OK") { _, _ -> }
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+            .create()
+
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog.show()
+
+        // get the ok button
+        val ok = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+        ok.setOnClickListener {
+            val result = input.text.toString().trim()
+            scoutTextView.text = result
+            preferences.edit().apply {
+                putString(MainSettingsKey.kScout, result)
+                apply()
             }
+            dialog.dismiss()
         }
-//        entriesList.setOnItemLongClickListener { _, _, position, _ ->
-//            entryListAdapter.getItem(position)?.also {
-//                if (it.state != EntryItemState.Waiting) AlertDialog.Builder(this)
-//                    .setTitle("Delete Entry ${it.match}?")
-//                    .setMessage("Deleted entry cannot be recovered")
-//                    .setPositiveButton("Don't Delete") { _, _ -> }
-//                    .setNegativeButton("Keep") { _, _ -> }
-//                    .create()
-//                    .show()
-//            }
-//            true
-//        }
-        scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
+        ok.isEnabled = validateName(input.text.toString())
+
+        // add text validation to the
+        input.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) = Unit
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                ok.isEnabled = validateName(input.text.toString())
+            }
+        })
     }
 
     private fun updateBoard() {
