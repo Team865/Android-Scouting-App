@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 
-class EqualizedVLayout : ViewGroup {
+class EqualRowLayout : ViewGroup {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val desiredWidth = suggestedMinimumWidth + paddingLeft + paddingRight

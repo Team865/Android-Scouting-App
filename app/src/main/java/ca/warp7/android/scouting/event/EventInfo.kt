@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.boardfile
+package ca.warp7.android.scouting.event
 
 class EventInfo (
     val eventName: String,

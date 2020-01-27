@@ -44,7 +44,7 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
 
         screenFrameLayout = view.findViewById(R.id.screen_frame)
 
-        screenTable = EqualizedVLayout(context).apply {
+        screenTable = EqualRowLayout(context).apply {
             //isStretchAllColumns = true
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
