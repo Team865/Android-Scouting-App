@@ -16,8 +16,7 @@ class TabPagerAdapter(
     fragmentManager: FragmentManager,
     private val layoutsSize: Int,
     private val pager: ViewPager
-) :
-    FragmentPagerAdapter(fragmentManager) {
+) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
         return if (position < layoutsSize) {
