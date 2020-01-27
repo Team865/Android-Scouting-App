@@ -20,12 +20,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import ca.warp7.android.scouting.boardfile.exampleEventInfo
+import ca.warp7.android.scouting.boardfile.EventInfo
+import ca.warp7.android.scouting.boardfile.MatchSchedule
 import ca.warp7.android.scouting.entry.*
 import ca.warp7.android.scouting.entry.Board.*
+import ca.warp7.android.scouting.tba.getEventMatchesSimple
 import ca.warp7.android.scouting.ui.EntryListAdapter
 import ca.warp7.android.scouting.ui.createQRBitmap
 import com.google.zxing.WriterException
+import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
     // the current board
     private var board = R1
-    private val eventInfo = exampleEventInfo
+    private var eventInfo = EventInfo("No Event", "No Key", MatchSchedule(listOf()))
 
     // the list of items that are actually displayed on screen
     private val displayedItems = ArrayList<EntryItem>()
@@ -65,7 +68,8 @@ class MainActivity : AppCompatActivity() {
     private fun initActivityWithPermissions() {
         val permission = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
         if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions(
+                this,
                 arrayOf(WRITE_EXTERNAL_STORAGE), MY_PERMISSIONS_REQUEST_FILES
             )
         } else {
@@ -89,27 +93,30 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    /**
+     * Handle the top-right menu clicks
+     */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return item?.itemId?.let {
-            when (it) {
-                R.id.menu_new_entry -> {
-                    onNewEntry()
-                    true
-                }
-                R.id.menu_settings -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
-                    true
-                }
-                else -> false
+        val it = item?.itemId ?: return false
+        when (it) {
+            R.id.menu_new_entry -> {
+                onNewEntry()
             }
-        } ?: false
+            R.id.menu_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+            }
+        }
+        return true
     }
 
+    /**
+     * Get the data from the scouting activity
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == MY_INTENT_REQUEST_SCOUTING) {
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
-                    parseEntryResult(data)
+                    processScoutingActivityResult(data)
                 }
             }
         }
@@ -117,26 +124,77 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * The match schedule stuff is in onResume because the activity must be updated
+     * when the user returns from the settings screen
+     */
+    override fun onResume() {
+        super.onResume()
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val key = preferences.getString(getString(R.string.pref_event_key), "NoKey")
+        val event = preferences.getString(getString(R.string.pref_event_name), "No Event")
+
+        // only regenerate match schedule if the key is different
+        if (key != null && event != null && key != eventInfo.eventKey) {
+            // run match schedule getter on a new thread
+            thread { updateMatchScheduleInThread(event, key) }
+        }
+    }
+
+    /**
      * Set up the activity when permission is granted
      */
     private fun initActivity() {
-        supportActionBar?.title = eventInfo.eventName
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+
         val entryListAdapter = EntryListAdapter(this, displayedItems)
         entriesList.adapter = entryListAdapter
 
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         boardTextView.setOnClickListener { onSelectBoard(preferences) }
 
         val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
         board = boardString?.toBoard() ?: R1
         updateBoard()
-        updateExpectedItems()
-        updateDisplayedItems()
+
         scoutTextView.setOnClickListener { onEnterScout(preferences) }
         entriesList.setOnItemClickListener { _, _, position, _ ->
             onEntryClicked(entryListAdapter, position)
         }
         scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
+    }
+
+    /**
+     * Computes the match schedule in a thread, then update the UI
+     */
+    private fun updateMatchScheduleInThread(event: String, key: String) {
+        try {
+            // we need to get
+            val matches = createCachedTBAInstance(this).getEventMatchesSimple(key)
+                .filter { it.comp_level == "qm" }
+                .sortedBy { it.match_number }
+
+            eventInfo = EventInfo(
+                event,
+                key,
+                MatchSchedule(matches.flatMap { match ->
+                    match.alliances!!.red!!.team_keys!!.map { it.substring(3).toInt() } +
+                            match.alliances.blue!!.team_keys!!.map { it.substring(3).toInt() }
+                })
+            )
+            runOnUiThread {
+                supportActionBar?.title = event
+
+                updateExpectedItems()
+                updateDisplayedItems()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            runOnUiThread {
+                android.app.AlertDialog.Builder(this)
+                    .setTitle("Error Retrieving Event")
+                    .setMessage(e.localizedMessage)
+                    .create().show()
+            }
+        }
     }
 
     /**
@@ -188,8 +246,7 @@ class MainActivity : AppCompatActivity() {
                     B2 -> item.teams[4].toString()
                     B3 -> item.teams[5].toString()
                     RX, BX -> "ALL"
-                }, scoutTextView.text.toString(), board
-            )
+                }, scoutTextView.text.toString(), board)
         }
     }
 
@@ -366,7 +423,7 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun parseEntryResult(intent: Intent) {
+    private fun processScoutingActivityResult(intent: Intent) {
 
         // get the extra data from the intent bundle
         val result = intent.getStringExtra(ScoutingIntentKey.kResult)
