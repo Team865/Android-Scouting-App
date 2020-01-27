@@ -5,9 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <!--<item name="android:textViewStyle">@style/RobotoTextViewStyle</item>-->
-        <!--<item name="android:buttonStyle">@style/RobotoButtonStyle</item>-->
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto</item>
+        <item name="android:fontFamily">@font/roboto</item>
         <item name="android:actionOverflowButtonStyle">@style/OverFlow</item>
 
     </style>
@@ -15,6 +13,11 @@
     <!-- Styles -->
     <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:src">@drawable/ic_menu_ablack</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
 </resources>

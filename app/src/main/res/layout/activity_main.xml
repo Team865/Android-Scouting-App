@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:id="@+id/my_toolbar"
-        app:titleTextColor="@color/colorAccent"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
         />
 
     <View
@@ -32,14 +32,14 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             android:drawableStart="@drawable/ic_book_ablack_small"
             android:background="@drawable/ripple_transparent"
             android:focusable="true"
             android:drawablePadding="4dp"
             android:clickable="true"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"/>
 
@@ -49,13 +49,13 @@
             android:layout_height="wrap_content"
             android:gravity="end"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             android:textColor="@color/colorAlmostBlack"
             android:drawableStart="@drawable/ic_account_box_ablack_small"
             android:background="@drawable/ripple_transparent"
             android:drawablePadding="4dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:paddingTop="8dp"
             android:clickable="true"
             android:paddingBottom="8dp"

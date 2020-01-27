@@ -16,7 +16,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.apply {
-            title = "Scouting App Options"
+            title = "Settings"
             setDisplayHomeAsUpEnabled(true)
         }
         supportFragmentManager.beginTransaction().add(
