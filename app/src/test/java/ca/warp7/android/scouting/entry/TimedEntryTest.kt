@@ -1,7 +1,6 @@
 package ca.warp7.android.scouting.entry
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class TimedEntryTest {
@@ -27,14 +26,35 @@ class TimedEntryTest {
     }
 
     @Test
+    fun testNextIndexAtEnd() {
+        val entry = TimedEntry("M", "T", "S", Board.R1, 0) { 0.0 }
+        entry.dataPoints.add(DataPoint(0, 0, 6.0))
+        entry.dataPoints.add(DataPoint(0, 0, 7.0))
+
+        assertEquals(2, entry.getNextIndex(8.0))
+    }
+
+    @Test
     fun testNextIndexSameTime() {
         val entry = TimedEntry("M", "T", "S", Board.R1, 0) { 0.0 }
+        entry.dataPoints.add(DataPoint(0, 0, 5.0))
         entry.dataPoints.add(DataPoint(0, 0, 7.0))
         entry.dataPoints.add(DataPoint(0, 0, 7.0))
         entry.dataPoints.add(DataPoint(0, 0, 8.0))
 
-        assertEquals(1, entry.getNextIndex(7.0))
-        assertEquals(2, entry.getNextIndex(7.1))
+        assertEquals(3, entry.getNextIndex(7.0))
+        assertEquals(3, entry.getNextIndex(7.1))
+    }
+
+    @Test
+    fun testNextIndexSameTimeAtBeginning() {
+        val entry = TimedEntry("M", "T", "S", Board.R1, 0) { 0.0 }
+        entry.dataPoints.add(DataPoint(0, 0, 0.0))
+        entry.dataPoints.add(DataPoint(0, 0, 0.0))
+        entry.dataPoints.add(DataPoint(0, 0, 8.0))
+
+        assertEquals(2, entry.getNextIndex(0.0))
+        assertEquals(2, entry.getNextIndex(0.1))
     }
 
     @Test
@@ -52,7 +72,8 @@ class TimedEntryTest {
         entry.dataPoints.add(DataPoint(0, 0, 8.0))
         entry.dataPoints.add(DataPoint(0, 0, 10.0))
 
-        assertTrue(entry.isFocused(0, 6.5))
+        assertTrue(entry.isFocused(0, 6.4))
+        assertFalse(entry.isFocused(0, 6.5))
     }
 
     @Test
