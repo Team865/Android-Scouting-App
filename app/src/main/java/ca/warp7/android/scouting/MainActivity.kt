@@ -20,8 +20,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import ca.warp7.android.scouting.boardfile.EventInfo
-import ca.warp7.android.scouting.boardfile.MatchSchedule
+import ca.warp7.android.scouting.event.EventInfo
+import ca.warp7.android.scouting.event.MatchSchedule
 import ca.warp7.android.scouting.entry.*
 import ca.warp7.android.scouting.entry.Board.*
 import ca.warp7.android.scouting.tba.getEventMatchesSimple
@@ -49,7 +49,10 @@ class MainActivity : AppCompatActivity() {
 
     // the current board
     private var board = R1
-    private var eventInfo = EventInfo("No Event", "No Key", MatchSchedule(listOf()))
+    private var eventInfo = EventInfo(
+        "No Event", "No Key",
+        MatchSchedule(listOf())
+    )
 
     // the list of items that are actually displayed on screen
     private val displayedItems = ArrayList<EntryItem>()
@@ -181,7 +184,7 @@ class MainActivity : AppCompatActivity() {
                 })
             )
             runOnUiThread {
-                supportActionBar?.title = event
+                supportActionBar?.title = eventInfo.eventName
 
                 updateExpectedItems()
                 updateDisplayedItems()

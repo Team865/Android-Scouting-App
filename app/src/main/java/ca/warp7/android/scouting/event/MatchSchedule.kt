@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting.boardfile
+package ca.warp7.android.scouting.event
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 data class MatchSchedule(
