@@ -6,7 +6,8 @@ import org.json.JSONObject
 @Suppress("unused")
 fun serializeBoardfile(bf: Boardfile): String {
     val o = JSONObject()
-    o.put("version", bf.version)
+    o.put("year", bf.year)
+    o.put("revision", bf.revision)
     o.put("robot_scout", bf.robotScoutTemplate.toJSON())
     o.put("super_scout", bf.superScoutTemplate.toJSON())
     return o.toString()
