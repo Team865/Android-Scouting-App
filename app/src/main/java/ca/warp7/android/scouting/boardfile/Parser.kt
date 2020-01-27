@@ -14,7 +14,8 @@ fun createBoardfileFromAssets(context: Context): Boardfile {
 fun deserializeBoardfile(json: String): Boardfile {
     val o = JSONObject(json)
     return Boardfile(
-        version = o.getString("version"),
+        year = o.getInt("year"),
+        revision = o.getInt("revision"),
         robotScoutTemplate = o.getJSONObject("robot_scout").toTemplate(),
         superScoutTemplate = o.getJSONObject("super_scout").toTemplate()
     )

@@ -2,6 +2,7 @@ package ca.warp7.android.scouting
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.Editable
@@ -15,16 +16,11 @@ import ca.warp7.android.scouting.tba.getEventMatchesSimple
 import ca.warp7.android.scouting.tba.getTeamEventsByYearSimple
 import kotlin.concurrent.thread
 
-/**
- * @since v0.4.1
- */
-
 class SettingsFragment : PreferenceFragmentCompat() {
 
-    private fun updateEntries(listEvents: List<EventSimple>) {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private fun updateEntries(preferences: SharedPreferences, listEvents: List<EventSimple>) {
 
-        val currentKey = sharedPreferences.getString(getString(R.string.pref_event_key), "") ?: ""
+        val currentKey = preferences.getString(getString(R.string.pref_event_key), "") ?: ""
         var i = listEvents.indexOfFirst { it.key == currentKey }
         if (i == -1) {
             i = 0
@@ -35,7 +31,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             AlertDialog.Builder(context).setTitle("Select events")
                 .setSingleChoiceItems(listEvents.map { it.name }.toTypedArray(), i) { dialog, which ->
                     val eventKey = listEvents[which]
-                    sharedPreferences
+                    preferences
                         .edit()
                         .putString(getString(R.string.pref_event_key), eventKey.key!!)
                         .putString(getString(R.string.pref_event_name), eventKey.name!!)
@@ -52,14 +48,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun showEventList() {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val teamNumber = sharedPreferences.getString(getString(R.string.pref_team_key), "") ?: ""
-        val tba = createCachedTBAInstance(context!!)
+        val context = context ?: return
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val teamNumber = preferences.getString(getString(R.string.pref_team_key), "") ?: ""
+        val tba = createCachedTBAInstance(context)
 
         thread {
             try {
                 val events = tba.getTeamEventsByYearSimple("frc$teamNumber", 2019)
-                updateEntries(events)
+                updateEntries(preferences, events)
             } catch (e: Exception) {
                 activity?.runOnUiThread {
                     AlertDialog.Builder(context)
