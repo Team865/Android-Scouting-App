@@ -114,10 +114,11 @@ data class TimedEntry(
     internal fun getNextIndex(currentTime: Double): Int {
 
         if (dataPoints.isEmpty()) {
-            return 0;
+            return 0
         }
 
-        if (currentTime <= dataPoints.first().time) {
+        // Fix: Don't use <= because we want the last of data points with first time
+        if (currentTime < dataPoints.first().time) {
             return 1
         }
 
