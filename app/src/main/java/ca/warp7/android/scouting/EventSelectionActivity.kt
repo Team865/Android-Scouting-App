@@ -1,11 +1,14 @@
 package ca.warp7.android.scouting
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import ca.warp7.android.scouting.tba.EventSimple
 import ca.warp7.android.scouting.tba.getTeamEventsByYearSimple
@@ -26,6 +29,7 @@ class EventSelectionActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
         val teamSearch = findViewById<EditText>(R.id.team_search)
+        val yearEdit = findViewById<EditText>(R.id.year)
         teamSearch.setOnEditorActionListener { v, _, _ ->
             val teamNumber = v.text.toString()
 
@@ -40,20 +44,33 @@ class EventSelectionActivity : AppCompatActivity() {
                 )
             }
             v.clearFocus()
+            val year = yearEdit.text.toString().toInt()
 
             thread {
-                val result = createCachedTBAInstance(this)
-                    .getTeamEventsByYearSimple("frc$teamNumber", 2019)
-                    .sortedBy { it.start_date }
-                // update the events on the UI thread
-                runOnUiThread {
-                    updateListView(result)
+                try {
+                    val result = createCachedTBAInstance(this)
+                        .getTeamEventsByYearSimple("frc$teamNumber", year)
+                        .sortedBy { it.start_date }
+                    // update the events on the UI thread
+                    runOnUiThread {
+                        updateListView(result)
+                    }
+                } catch (e: Exception) {
+                    runOnUiThread {
+                        AlertDialog.Builder(this)
+                            .setTitle("Error")
+                            .setMessage(e.toString())
+                            .create().show()
+                    }
                 }
+
             }
             true
         }
 
         findViewById<ListView>(R.id.event_list).adapter = EventListAdapter(this, eventList)
+        yearEdit.setText(PreferenceManager.getDefaultSharedPreferences(this)
+            .getInt("year", 2020).toString(), TextView.BufferType.EDITABLE)
     }
 
     private fun updateListView(result: List<EventSimple>) {

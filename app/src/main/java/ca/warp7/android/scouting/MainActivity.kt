@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 android.app.AlertDialog.Builder(this)
                     .setTitle("Error Retrieving Event")
-                    .setMessage(e.localizedMessage)
+                    .setMessage(e.toString())
                     .create().show()
             }
         }

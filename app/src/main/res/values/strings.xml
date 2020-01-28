@@ -8,6 +8,7 @@
 
     <string name="hint_match">Match</string>
     <string name="hint_team">Team</string>
+    <string name="hint_year">Year</string>
 
     <string name="start_timer">Start Timer</string>
 

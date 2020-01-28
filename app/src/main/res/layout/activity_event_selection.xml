@@ -15,22 +15,41 @@
             app:titleTextAppearance="@style/Toolbar.TitleText"/>
 
 
-    <EditText android:layout_width="110dp"
-              android:layout_height="wrap_content"
-              android:id="@+id/team_search"
-              android:inputType="number"
-              android:maxLength="4"
-              android:hint="@string/hint_team"
-              android:imeOptions="actionSearch"
-              android:layout_marginStart="16dp"
-              android:layout_marginEnd="16dp"
-              android:layout_marginBottom="8dp"
-              android:layout_gravity="center_horizontal"
-              android:drawableStart="@drawable/ic_people_ablack_small"
-              android:drawablePadding="8dp"
-              android:paddingStart="16dp"
-              android:paddingEnd="16dp"
-              android:importantForAutofill="no"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+        <EditText android:layout_width="0dp"
+                  android:layout_weight="1.0"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/year"
+                  android:inputType="number"
+                  android:maxLength="4"
+                  android:imeOptions="actionNext"
+                  android:hint="@string/hint_year"
+                  android:layout_marginStart="16dp"
+                  android:layout_marginEnd="8dp"
+                  android:layout_marginBottom="8dp"
+                  android:drawableStart="@drawable/ic_date_range_ablack_small"
+                  android:drawablePadding="8dp"
+                  android:paddingStart="8dp"
+                  android:paddingEnd="8dp"
+                  android:importantForAutofill="no"/>
+        <EditText android:layout_width="0dp"
+                  android:layout_weight="1.0"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/team_search"
+                  android:inputType="number"
+                  android:maxLength="4"
+                  android:hint="@string/hint_team"
+                  android:imeOptions="actionSearch"
+                  android:layout_marginStart="8dp"
+                  android:layout_marginEnd="16dp"
+                  android:layout_marginBottom="8dp"
+                  android:drawableStart="@drawable/ic_people_ablack_small"
+                  android:drawablePadding="8dp"
+                  android:paddingStart="8dp"
+                  android:paddingEnd="8dp"
+                  android:importantForAutofill="no"/>
+    </LinearLayout>
+
 
     <ListView android:layout_width="match_parent"
               android:layout_height="match_parent"

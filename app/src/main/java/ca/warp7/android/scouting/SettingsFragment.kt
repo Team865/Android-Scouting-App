@@ -61,7 +61,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 activity?.runOnUiThread {
                     AlertDialog.Builder(context)
                         .setTitle("Error Retrieving Event")
-                        .setMessage(e.localizedMessage)
+                        .setMessage(e.toString())
                         .create().show()
                 }
             }
