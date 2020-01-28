@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.RelativeLayout
 import android.widget.TextView
+import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.tba.EventSimple
 
 class EventListAdapter(
@@ -19,14 +20,14 @@ class EventListAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val itemView = if (convertView is RelativeLayout)
             convertView else layoutInflater.inflate(
-            android.R.layout.simple_list_item_2, parent, false)
+            R.layout.list_item_event_info, parent, false)
         val item = getItem(position) ?: return itemView
 
-        val text1 = itemView.findViewById<TextView>(android.R.id.text1)
-        val text2 = itemView.findViewById<TextView>(android.R.id.text2)
+        val text1 = itemView.findViewById<TextView>(R.id.text1)
+        val text2 = itemView.findViewById<TextView>(R.id.text2)
 
         text1.text = item.name
-        val date = "${item.start_date} to ${item.end_date}"
+        val date = "${item.start_date} in ${item.city}, ${item.state_prov}, ${item.country}"
         text2.text = date
         return itemView
     }
