@@ -47,14 +47,6 @@ object ScoutingIntentKey {
     const val kResult = "$root.result"
 }
 
-object MainSettingsKey {
-
-    private const val kMainSettingsRoot = "ca.warp7.android.scouting.main"
-
-    const val kBoard = "$kMainSettingsRoot.board"
-    const val kScout = "$kMainSettingsRoot.scout"
-}
-
 fun validateName(str: String): Boolean {
     val name = str.trim()
     if (name.isEmpty()) return false

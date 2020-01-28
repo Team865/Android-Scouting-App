@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".EventSelectionActivity">
+
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:titleTextAppearance="@style/Toolbar.TitleText"/>
+
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+        <EditText android:layout_width="0dp"
+                  android:layout_weight="1.0"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/year"
+                  android:inputType="number"
+                  android:maxLength="4"
+                  android:imeOptions="actionNext"
+                  android:hint="@string/hint_year"
+                  android:layout_marginStart="16dp"
+                  android:layout_marginEnd="8dp"
+                  android:layout_marginBottom="8dp"
+                  android:drawableStart="@drawable/ic_date_range_ablack_small"
+                  android:drawablePadding="8dp"
+                  android:paddingStart="8dp"
+                  android:paddingEnd="8dp"
+                  android:importantForAutofill="no"/>
+        <EditText android:layout_width="0dp"
+                  android:layout_weight="1.0"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/team_search"
+                  android:inputType="number"
+                  android:maxLength="4"
+                  android:hint="@string/hint_team"
+                  android:imeOptions="actionSearch"
+                  android:layout_marginStart="8dp"
+                  android:layout_marginEnd="16dp"
+                  android:layout_marginBottom="8dp"
+                  android:drawableStart="@drawable/ic_people_ablack_small"
+                  android:drawablePadding="8dp"
+                  android:paddingStart="8dp"
+                  android:paddingEnd="8dp"
+                  android:importantForAutofill="no"/>
+    </LinearLayout>
+
+
+    <ListView android:layout_width="match_parent"
+              android:layout_height="match_parent"
+    android:id="@+id/event_list"/>
+
+</LinearLayout>
