@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
         boardTextView.setOnClickListener { onSelectBoard(preferences) }
 
-        val boardString = preferences.getString(MainSettingsKey.kBoard, "R1")
+        val boardString = preferences.getString(PreferenceKeys.kBoard, "R1")
         board = boardString?.toBoard() ?: R1
         updateBoard()
 
@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity() {
         entriesList.setOnItemClickListener { _, _, position, _ ->
             onEntryClicked(entryListAdapter, position)
         }
-        scoutTextView.text = preferences.getString(MainSettingsKey.kScout, "Unknown Scout")
+        scoutTextView.text = preferences.getString(PreferenceKeys.kScout, "Unknown Scout")
     }
 
     /**
@@ -267,7 +267,7 @@ class MainActivity : AppCompatActivity() {
                     updateExpectedItems()
                     updateDisplayedItems()
                     preferences.edit().apply {
-                        putString(MainSettingsKey.kBoard, it.name)
+                        putString(PreferenceKeys.kBoard, it.name)
                         apply()
                     }
                 }
@@ -315,7 +315,7 @@ class MainActivity : AppCompatActivity() {
             val result = input.text.toString().trim()
             scoutTextView.text = result
             preferences.edit().apply {
-                putString(MainSettingsKey.kScout, result)
+                putString(PreferenceKeys.kScout, result)
                 apply()
             }
             dialog.dismiss()

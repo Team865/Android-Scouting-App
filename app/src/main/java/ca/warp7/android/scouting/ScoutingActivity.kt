@@ -26,6 +26,7 @@ import ca.warp7.android.scouting.entry.Board.BX
 import ca.warp7.android.scouting.entry.Board.RX
 import ca.warp7.android.scouting.entry.MutableEntry
 import ca.warp7.android.scouting.entry.TimedEntry
+import ca.warp7.android.scouting.ui.ActionVibrator
 import ca.warp7.android.scouting.ui.TabPagerAdapter
 
 class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {

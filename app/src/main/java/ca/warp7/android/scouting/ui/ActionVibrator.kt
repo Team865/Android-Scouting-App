@@ -1,4 +1,4 @@
-package ca.warp7.android.scouting
+package ca.warp7.android.scouting.ui
 
 import android.content.Context
 import android.os.Build
