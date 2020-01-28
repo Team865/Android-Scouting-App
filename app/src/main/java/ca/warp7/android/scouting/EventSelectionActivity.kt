@@ -130,20 +130,12 @@ class EventSelectionActivity : AppCompatActivity() {
         (lv.adapter as EventListAdapter).notifyDataSetChanged()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.event_selection_menu, menu)
-        return true
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 return true
-            }
-            R.id.menu_unlisted_event -> {
-
             }
         }
         return super.onOptionsItemSelected(item)
