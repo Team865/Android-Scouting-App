@@ -15,17 +15,21 @@
             app:titleTextAppearance="@style/Toolbar.TitleText"/>
 
 
-    <EditText android:layout_width="match_parent"
+    <EditText android:layout_width="110dp"
               android:layout_height="wrap_content"
               android:id="@+id/team_search"
               android:inputType="number"
               android:maxLength="4"
-              android:hint="Enter Team Number"
+              android:hint="@string/hint_team"
               android:layout_marginStart="16dp"
               android:layout_marginEnd="16dp"
-              android:layout_marginTop="8dp"
               android:layout_marginBottom="8dp"
-              android:gravity="center"/>
+              android:layout_gravity="center_horizontal"
+              android:drawableStart="@drawable/ic_people_ablack_small"
+              android:drawablePadding="8dp"
+              android:paddingStart="16dp"
+              android:paddingEnd="16dp"
+              android:importantForAutofill="no"/>
 
     <ListView android:layout_width="match_parent" android:layout_height="match_parent"/>
 
