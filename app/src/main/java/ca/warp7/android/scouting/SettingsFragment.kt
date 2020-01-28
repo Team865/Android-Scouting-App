@@ -129,6 +129,18 @@ class SettingsFragment : PreferenceFragmentCompat() {
         if (aboutApp != null) {
             aboutApp.summary = "Version: " + BuildConfig.VERSION_NAME + "-" + BuildConfig.BUILD_TYPE
         }
+
+
+        val eventSelector = findPreference<Preference>("pref_event_selection")
+        if (eventSelector != null) {
+            eventSelector.setOnPreferenceClickListener {
+                startActivity(Intent(context, EventSelectionActivity::class.java))
+                true
+            }
+            eventSelector.summary = "Current Event: " + PreferenceManager
+                .getDefaultSharedPreferences(context)
+                .getString(getString(R.string.pref_event_name), "No Event")
+        }
     }
 }
 

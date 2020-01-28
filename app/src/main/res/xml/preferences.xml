@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+            android:key = "pref_event_selection"
+            android:title="Select FRC Event">
+    </Preference>
+
     <SwitchPreference
         android:defaultValue="true"
         android:key="@string/pref_use_vibration_key"
