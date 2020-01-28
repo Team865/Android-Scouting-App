@@ -8,3 +8,4 @@
 /app/build
 .idea/
 *.iml
+gradle.properties
