@@ -1,10 +1,14 @@
-package ca.warp7.android.scouting
+package ca.warp7.android.scouting.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import ca.warp7.android.scouting.BuildConfig
+import ca.warp7.android.scouting.EventSelectionActivity
+import ca.warp7.android.scouting.LicensesActivity
+import ca.warp7.android.scouting.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
 

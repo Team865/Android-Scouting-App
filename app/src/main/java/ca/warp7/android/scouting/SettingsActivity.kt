@@ -3,13 +3,9 @@ package ca.warp7.android.scouting
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-
-/**
- * @since v0.4.2
- */
+import ca.warp7.android.scouting.ui.SettingsFragment
 
 class SettingsActivity : AppCompatActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
