@@ -21,6 +21,7 @@
               android:inputType="number"
               android:maxLength="4"
               android:hint="@string/hint_team"
+              android:imeOptions="actionSearch"
               android:layout_marginStart="16dp"
               android:layout_marginEnd="16dp"
               android:layout_marginBottom="8dp"
@@ -31,6 +32,8 @@
               android:paddingEnd="16dp"
               android:importantForAutofill="no"/>
 
-    <ListView android:layout_width="match_parent" android:layout_height="match_parent"/>
+    <ListView android:layout_width="match_parent"
+              android:layout_height="match_parent"
+    android:id="@+id/event_list"/>
 
 </LinearLayout>
