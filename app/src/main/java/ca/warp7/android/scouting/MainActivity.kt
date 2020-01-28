@@ -133,8 +133,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val key = preferences.getString(getString(R.string.pref_event_key), "No Key")
-        val event = preferences.getString(getString(R.string.pref_event_name), "No Event")
+        val key = preferences.getString(PreferenceKeys.kEventKey, "No Key")
+        val event = preferences.getString(PreferenceKeys.kEventName, "No Event")
 
         // only regenerate match schedule if the key is different
         if (key != null && event != null && key != eventInfo.eventKey) {

@@ -15,9 +15,5 @@
     <string name="pref_licenses_key">pref_licenses</string>
     <string name="pref_licenses_title">Open Source Licenses</string>
 
-    <string name="pref_team_key">pref_team</string>
-    <string name="pref_event_key">pref_event</string>
-    <string name="pref_event_name">pref_event_name</string>
     <string name="pref_event_selection">pref_event_selection</string>
-
 </resources>

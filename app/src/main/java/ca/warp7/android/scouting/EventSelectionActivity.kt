@@ -39,21 +39,30 @@ class EventSelectionActivity : AppCompatActivity() {
         val adapter = EventListAdapter(this, eventList)
         eventListView.adapter = adapter
         eventListView.setOnItemClickListener { _, _, position, _ ->
-            onEventListItemClicked(adapter, position, teamSearch)
+            onEventListItemClicked(adapter, position,
+                teamSearch.text.toString().toInt(),
+                yearEdit.text.toString().toInt()
+            )
         }
-        yearEdit.setText(
-            PreferenceManager.getDefaultSharedPreferences(this)
-                .getInt("year", 2020).toString(), TextView.BufferType.EDITABLE
-        )
-
+        val year = PreferenceManager.getDefaultSharedPreferences(this)
+            .getString(PreferenceKeys.kYear, "2020")
+        yearEdit.setText(year, TextView.BufferType.EDITABLE)
         val teamNumber = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString(getString(R.string.pref_team_key), "")!!
+            .getString(PreferenceKeys.kTeam, "")!!
         teamSearch.setText(teamNumber, TextView.BufferType.EDITABLE)
+        if (teamNumber.isNotEmpty()) {
+            // show previous results
+            onSearch(teamSearch, yearEdit)
+        }
     }
 
-    private fun onEventListItemClicked(adapter: EventListAdapter, position: Int, teamSearch: EditText) {
+    private fun onEventListItemClicked(
+        adapter: EventListAdapter,
+        position: Int,
+        teamNumber: Int,
+        year: Int
+    ) {
         val event = adapter.getItem(position) ?: return
-        val teamNumber = teamSearch.text.toString().toInt()
         AlertDialog.Builder(this)
             .setTitle("Team $teamNumber")
             .setMessage("Select \"${event.year} ${event.name}\" as the event? This will load the match schedule and delete entries from other events")
@@ -61,9 +70,10 @@ class EventSelectionActivity : AppCompatActivity() {
                 val preferences = PreferenceManager.getDefaultSharedPreferences(this)
                 preferences
                     .edit()
-                    .putString(getString(R.string.pref_team_key), teamNumber.toString())
-                    .putString(getString(R.string.pref_event_key), event.key!!)
-                    .putString(getString(R.string.pref_event_name), event.name)
+                    .putString(PreferenceKeys.kTeam, teamNumber.toString())
+                    .putString(PreferenceKeys.kEventKey, event.key!!)
+                    .putString(PreferenceKeys.kEventName, event.name)
+                    .putString(PreferenceKeys.kYear, year.toString())
                     .apply()
                 thread {
                     // pre-fetch the event matches so it's cached
@@ -71,6 +81,7 @@ class EventSelectionActivity : AppCompatActivity() {
                     createCachedTBAInstance(this).getEventMatchesSimple(event.key)
                 }
                 dialog.dismiss()
+                onBackPressed()
             }
             .setNegativeButton("Cancel") {dialog, _ -> dialog.dismiss() }
             .create().show()

@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import ca.warp7.android.scouting.BuildConfig
-import ca.warp7.android.scouting.EventSelectionActivity
-import ca.warp7.android.scouting.LicensesActivity
-import ca.warp7.android.scouting.R
+import ca.warp7.android.scouting.*
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -35,10 +32,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
         val eventSelector = findPreference<Preference>(getString(R.string.pref_event_selection))
+        val preferences =  PreferenceManager
+            .getDefaultSharedPreferences(context)
+        val event = preferences.getString(PreferenceKeys.kEventName, "No Event")
+        val year = preferences.getString(PreferenceKeys.kYear, "")
         if (eventSelector != null) {
-            eventSelector.summary = "Current Event: " + PreferenceManager
-                .getDefaultSharedPreferences(context)
-                .getString(getString(R.string.pref_event_name), "No Event")
+            eventSelector.summary = "Current Event: $year $event"
         }
     }
 }
