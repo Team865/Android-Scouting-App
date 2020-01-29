@@ -138,6 +138,11 @@ class MainActivity : AppCompatActivity() {
 
         // only regenerate match schedule if the key is different
         if (key != null && event != null && key != eventInfo.eventKey) {
+            val adapter = entriesList.adapter as? EntryListAdapter
+            if (adapter != null) {
+                adapter.highlightTeam = preferences
+                    .getString(PreferenceKeys.kTeam, "0")!!.toInt()
+            }
             // run match schedule getter on a new thread
             thread { updateMatchScheduleInThread(event, key) }
         }

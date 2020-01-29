@@ -23,6 +23,9 @@ class EntryListAdapter(
     private val blue = ContextCompat.getColor(context, R.color.colorBlue)
     private val gray = ContextCompat.getColor(context, R.color.colorGray)
     private val completeColor = ContextCompat.getColor(context, R.color.colorEntryCompleted)
+    private val almostYellow = ContextCompat.getColor(context, R.color.colorAlmostYellow)
+
+    var highlightTeam = 0
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val itemView = if (convertView is LinearLayout)
@@ -80,10 +83,23 @@ class EntryListAdapter(
         if (item.teams.size > 5) {
             for (i in 0 until 6) {
                 val number = item.teams[i]
-                teamsArray[i].text = if (number > 0) number.toString() else "- - -"
+                val textView = teamsArray[i]
+                textView.setBackgroundColor(0)
+                if (number > 0) {
+                    textView.text = number.toString()
+                    if (number == highlightTeam) {
+                        textView.setBackgroundColor(almostYellow)
+                    }
+                } else {
+                    textView.text = "- - -"
+                }
             }
         } else {
-            for (i in 0 until 6) teamsArray[i].text = "- - - "
+            for (i in 0 until 6) {
+                val textView = teamsArray[i]
+                textView.text = "- - -"
+                textView.setBackgroundColor(0)
+            }
         }
 
         return itemView
