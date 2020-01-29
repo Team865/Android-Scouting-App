@@ -138,6 +138,11 @@ class MainActivity : AppCompatActivity() {
 
         // only regenerate match schedule if the key is different
         if (key != null && event != null && key != eventInfo.eventKey) {
+            val adapter = entriesList.adapter as? EntryListAdapter
+            if (adapter != null) {
+                adapter.highlightTeam = preferences
+                    .getString(PreferenceKeys.kTeam, "0")!!.toInt()
+            }
             // run match schedule getter on a new thread
             thread { updateMatchScheduleInThread(event, key) }
         }
@@ -290,7 +295,7 @@ class MainActivity : AppCompatActivity() {
             // add an icon
             setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_account_box_ablack_small, 0, 0, 0)
             compoundDrawablePadding = 16
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+            setPadding(16, paddingTop, 16, paddingBottom)
         }
 
         // create a layout with this input
@@ -393,18 +398,18 @@ class MainActivity : AppCompatActivity() {
         val matchEdit = EditText(this).apply {
             hint = getString(R.string.hint_match)
             inputType = InputType.TYPE_CLASS_NUMBER
+            setPadding(16, paddingTop, 16, paddingBottom)
             setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_layers_ablack_small, 0, 0, 0)
             compoundDrawablePadding = 16
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
         }
 
         // create the EditText for team
         val teamEdit = EditText(this).apply {
             hint = getString(R.string.hint_team)
             inputType = InputType.TYPE_CLASS_NUMBER
+            setPadding(16, paddingTop, 16, paddingBottom)
             setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people_ablack_small, 0, 0, 0)
             compoundDrawablePadding = 16
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
         }
 
         layout.addView(matchEdit)

@@ -9,8 +9,8 @@
     <color name="colorRed">#ff0000</color>
     <color name="colorLightGreen">#009933</color>
     <color name="colorTeleOpGreen">#006633</color>
-    <color name="colorEntryCompleted">#6080ff88</color>
-    <color name="colorEntryAdded">#60ffe088</color>
+    <color name="colorEntryCompleted">#6066ff88</color>
+    <color name="colorAlmostYellow">#ffee88</color>
     <color name="colorAutoYellow">#cc9900</color>
     <color name="colorDarkAlmostWhite">#d4d4d4</color>
     <color name="colorAlmostWhite">#e0e0e0</color>
