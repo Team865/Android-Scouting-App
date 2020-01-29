@@ -30,12 +30,12 @@
               "options": []
             },
             {
-              "name": "inner",
+              "name": "outer",
               "type": "Button",
               "options": []
             },
             {
-              "name": "outer",
+              "name": "inner",
               "type": "Button",
               "options": []
             }
@@ -93,12 +93,12 @@
               "options": []
             },
             {
-              "name": "inner",
+              "name": "outer",
               "type": "Button",
               "options": []
             },
             {
-              "name": "outer",
+              "name": "inner",
               "type": "Button",
               "options": []
             }
