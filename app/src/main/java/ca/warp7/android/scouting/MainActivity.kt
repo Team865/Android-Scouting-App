@@ -209,7 +209,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun onEntryClicked(adapter: EntryListAdapter, position: Int) {
         val item = adapter.getItem(position) ?: return
-        if (item.state != EntryItemState.Waiting && item.data.isNotEmpty()) {
+        if (item.isComplete && item.data.isNotEmpty()) {
             // we show the data in a qr code dialog
             val qrImage = ImageView(this)
             qrImage.setPadding(16, 0, 16, 0)
@@ -241,19 +241,20 @@ class MainActivity : AppCompatActivity() {
             }
 
             dialog.show()
-        } else if (item.teams.size > 5) {
-
-            // actually start scouting the entry
-            startScouting(
-                item.match, when (board) {
-                    R1 -> item.teams[0].toString()
-                    R2 -> item.teams[1].toString()
-                    R3 -> item.teams[2].toString()
-                    B1 -> item.teams[3].toString()
-                    B2 -> item.teams[4].toString()
-                    B3 -> item.teams[5].toString()
-                    RX, BX -> "ALL"
-                }, scoutTextView.text.toString(), board)
+        } else {
+            if (item.teams.size > 5) {
+                // actually start scouting the entry
+                startScouting(
+                    item.match, when (board) {
+                        R1 -> item.teams[0].toString()
+                        R2 -> item.teams[1].toString()
+                        R3 -> item.teams[2].toString()
+                        B1 -> item.teams[3].toString()
+                        B2 -> item.teams[4].toString()
+                        B3 -> item.teams[5].toString()
+                        RX, BX -> "ALL"
+                    }, scoutTextView.text.toString(), board)
+            }
         }
     }
 
@@ -353,7 +354,7 @@ class MainActivity : AppCompatActivity() {
         eventInfo.matchSchedule.forEach { matchNumber, teams ->
             val item = EntryItem(
                 "${eventInfo.eventKey}_$matchNumber",
-                teams, board, EntryItemState.Waiting
+                teams, board, isComplete = false, isScheduled = true
             )
             expectedItems.add(item)
         }
@@ -439,7 +440,7 @@ class MainActivity : AppCompatActivity() {
         val board = intent.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
 
         var teams: List<Int> = listOf()
-        var state = EntryItemState.Completed
+        var isScheduled = true
         var foundData = false
 
         // we need to find the right entry in the expected items
@@ -473,17 +474,18 @@ class MainActivity : AppCompatActivity() {
             val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
             mutableTeams[values().indexOf(board)] = team
             teams = mutableTeams
-            state = EntryItemState.Added
+            isScheduled = false
         }
 
         // add to the list of scouted items
         scoutedItems.add(
             EntryItem(
-                match,
-                teams,
-                board,
-                state,
-                result
+                match = match,
+                teams = teams,
+                board = board,
+                isComplete = true,
+                isScheduled = isScheduled,
+                data = result
             )
         )
         updateDisplayedItems()
