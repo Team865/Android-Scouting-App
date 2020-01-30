@@ -20,12 +20,11 @@ import ca.warp7.android.scouting.boardfile.Boardfile
 import ca.warp7.android.scouting.boardfile.ScoutTemplate
 import ca.warp7.android.scouting.boardfile.createBoardfileFromAssets
 import ca.warp7.android.scouting.entry.Alliance
-import ca.warp7.android.scouting.entry.Board
-import ca.warp7.android.scouting.entry.Board.BX
-import ca.warp7.android.scouting.entry.Board.RX
+import ca.warp7.android.scouting.entry.Board.*
 import ca.warp7.android.scouting.entry.MutableEntry
 import ca.warp7.android.scouting.entry.TimedEntry
 import ca.warp7.android.scouting.ui.ActionVibrator
+import ca.warp7.android.scouting.ui.EntryInMatch
 import ca.warp7.android.scouting.ui.TabPagerAdapter
 
 class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
@@ -84,9 +83,11 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     // keep track for dt calculations
     private var lastTime = 0.0
 
-    private val screens get() = template?.screens
-
     private val periodicUpdater = Runnable { periodicUpdate() }
+
+    private var entryInMatch: EntryInMatch? = null
+
+    private fun getScreens() = template?.screens
 
     private fun periodicUpdate() {
         if (activityState != TimedScouting) {
@@ -199,11 +200,24 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
 
         boardfile = createBoardfileFromAssets(this)
-        val match = intent.getStringExtra(ScoutingIntentKey.kMatch)
-        val team = intent.getStringExtra(ScoutingIntentKey.kTeam)
-        val scout = intent.getStringExtra(ScoutingIntentKey.kScout)
-        val board = intent.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
 
+        val scout = intent.getStringExtra(ScoutingIntentKey.kScout)
+        val entryInMatch = EntryInMatch.fromCSV(intent.getStringExtra(ScoutingIntentKey.kEntryInMatch))
+        val match = entryInMatch.match
+        val board = entryInMatch.board
+        val teams = entryInMatch.teams
+
+        val team = when (board) {
+            R1 -> teams[0].toString()
+            R2 -> teams[1].toString()
+            R3 -> teams[2].toString()
+            B1 -> teams[3].toString()
+            B2 -> teams[4].toString()
+            B3 -> teams[5].toString()
+            RX, BX -> "ALL"
+        }
+
+        this.entryInMatch = entryInMatch
         entry = TimedEntry(match, team, scout, board, getCurrentTime().toInt()) { matchTime }
 
         findViewById<TextView>(R.id.toolbar_match).text = match.let {
@@ -227,7 +241,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
 
         val pager = pager
-        pagerAdapter = TabPagerAdapter(supportFragmentManager, screens?.size ?: 0, pager)
+        pagerAdapter = TabPagerAdapter(supportFragmentManager, getScreens()?.size ?: 0, pager)
         pager.adapter = pagerAdapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
@@ -248,15 +262,20 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             setResult(Activity.RESULT_CANCELED, null)
         } else {
             val entry = entry
-            if (entry == null) {
+            val eim = entryInMatch
+            if (entry == null || eim == null) {
                 setResult(Activity.RESULT_CANCELED, null)
                 return
             }
             setResult(Activity.RESULT_OK, Intent().apply {
-                putExtra(ScoutingIntentKey.kResult, entry.getEncoded())
-                putExtra(ScoutingIntentKey.kMatch, entry.match)
-                putExtra(ScoutingIntentKey.kBoard, entry.board)
-                putExtra(ScoutingIntentKey.kTeam, entry.team)
+                putExtra(ScoutingIntentKey.kEntryInMatch, EntryInMatch(
+                    eim.match,
+                    eim.teams,
+                    eim.board,
+                    true,
+                    eim.isScheduled,
+                    entry.getEncoded()
+                ).toCSV())
             })
         }
         super.onBackPressed()
@@ -286,6 +305,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private val alphaAnimationOut: Animation = AlphaAnimation(1.0f, 0.0f).apply { duration = kFadeDuration.toLong() }
 
     private fun updateCurrentTab() {
+        val screens = getScreens()
         val title = if (currentTab >= 0 && currentTab < screens?.size ?: -1) {
             screens?.get(currentTab)?.title ?: "Unknown"
         } else if (currentTab == screens?.size ?: -1) {

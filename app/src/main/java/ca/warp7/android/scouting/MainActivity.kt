@@ -19,8 +19,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import ca.warp7.android.scouting.entry.*
+import ca.warp7.android.scouting.entry.Alliance
 import ca.warp7.android.scouting.entry.Board.*
+import ca.warp7.android.scouting.entry.toBoard
 import ca.warp7.android.scouting.event.EventInfo
 import ca.warp7.android.scouting.event.MatchSchedule
 import ca.warp7.android.scouting.tba.getEventMatchesSimple
@@ -247,16 +248,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             if (item.teams.size > 5) {
                 // actually start scouting the entry
-                startScouting(
-                    item.match, when (board) {
-                        R1 -> item.teams[0].toString()
-                        R2 -> item.teams[1].toString()
-                        R3 -> item.teams[2].toString()
-                        B1 -> item.teams[3].toString()
-                        B2 -> item.teams[4].toString()
-                        B3 -> item.teams[5].toString()
-                        RX, BX -> "ALL"
-                    }, scoutTextView.text.toString(), board)
+                startScoutingActivity(item)
             }
         }
     }
@@ -382,12 +374,10 @@ class MainActivity : AppCompatActivity() {
         (entriesList.adapter as EntryListAdapter).notifyDataSetChanged()
     }
 
-    private fun startScouting(match: String, team: String, scout: String, board: Board) {
+    private fun startScoutingActivity(entryInMatch: EntryInMatch) {
         startActivityForResult(Intent(this, ScoutingActivity::class.java).apply {
-            putExtra(ScoutingIntentKey.kMatch, match)
-            putExtra(ScoutingIntentKey.kBoard, board)
-            putExtra(ScoutingIntentKey.kTeam, team)
-            putExtra(ScoutingIntentKey.kScout, scout)
+            putExtra(ScoutingIntentKey.kEntryInMatch, entryInMatch.toCSV())
+            putExtra(ScoutingIntentKey.kScout, scoutTextView.text.toString())
         }, MY_INTENT_REQUEST_SCOUTING)
     }
 
@@ -424,7 +414,19 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("Ok") { _, _ ->
                 val matchKey = "${eventInfo.eventKey}_${matchEdit.text}"
                 // start scouting when ok
-                startScouting(matchKey, teamEdit.text.toString(), scoutTextView.text.toString(), board)
+
+                val team = teamEdit.text.toString().toInt()
+                val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
+                mutableTeams[values().indexOf(board)] = team
+
+                val entryInMatch = EntryInMatch(
+                    matchKey,
+                    mutableTeams,
+                    board,
+                    isComplete = false,
+                    isScheduled = false
+                )
+                startScoutingActivity(entryInMatch)
             }
             .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
             .create()
@@ -437,60 +439,10 @@ class MainActivity : AppCompatActivity() {
     private fun processScoutingActivityResult(intent: Intent) {
 
         // get the extra data from the intent bundle
-        val result = intent.getStringExtra(ScoutingIntentKey.kResult)
-        val match = intent.getStringExtra(ScoutingIntentKey.kMatch) ?: "- - -"
-        val team = intent.getStringExtra(ScoutingIntentKey.kTeam).toIntOrNull() ?: 0
-        val board = intent.getSerializableExtra(ScoutingIntentKey.kBoard) as Board
+        val entryString = intent.getStringExtra(ScoutingIntentKey.kEntryInMatch)
+        val entryInMatch = EntryInMatch.fromCSV(entryString)
 
-        var teams: List<Int> = listOf()
-        var isScheduled = true
-        var foundData = false
-
-        // we need to find the right entry in the expected items
-        // so we know what all the teams are
-        for (item in expectedEntries) {
-            if (item.match == match && item.board == board) {
-                teams = item.teams
-                foundData = true
-                break
-            }
-        }
-
-        // add some more conditions to make sure everything's right
-        if (teams.size > 5) {
-            val expectedTeam = when (board) {
-                R1 -> teams[0]
-                R2 -> teams[1]
-                R3 -> teams[2]
-                B1 -> teams[3]
-                B2 -> teams[4]
-                B3 -> teams[5]
-                RX, BX -> 0
-            }
-            if (team != expectedTeam) {
-                foundData = false
-            }
-        } else foundData = false
-
-        // change the entry to Added state if data is really not found
-        if (!foundData) {
-            val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
-            mutableTeams[values().indexOf(board)] = team
-            teams = mutableTeams
-            isScheduled = false
-        }
-
-        // add to the list of scouted items
-        scoutedEntries.add(
-            EntryInMatch(
-                match = match,
-                teams = teams,
-                board = board,
-                isComplete = true,
-                isScheduled = isScheduled,
-                data = result
-            )
-        )
+        scoutedEntries.add(entryInMatch)
         updateDisplayedItems()
     }
 }
