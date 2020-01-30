@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package ca.warp7.android.scouting.entry
 
 fun String.toBoard() = Board.values().firstOrNull { it.name == this }
@@ -30,30 +28,6 @@ fun encodeDataPoint(dp: DataPoint): String {
     val builder = StringBuilder()
     builder.appendDataPoint(dp)
     return builder.toString()
-}
-
-fun decodeDataPoint(s: String): List<DataPoint> {
-    require(s.length % 4 == 0) { "Invalid Encode String" }
-    val dp: MutableList<DataPoint> = ArrayList()
-    var i = 0
-    while (i < s.length) {
-        dp.add(decodeDataPoint(s, i))
-        i += 4
-    }
-    return dp
-}
-
-fun decodeDataPoint(s: String, i: Int): DataPoint {
-    val a = fromBase64(s[i].toInt())
-    val b = fromBase64(s[i + 1].toInt())
-    val c = fromBase64(s[i + 2].toInt())
-    val d = fromBase64(s[i + 3].toInt())
-    val intTime = ((b and 0b11) shl 12) or (c shl 6) or d
-    return DataPoint(
-        type = a,
-        value = (b and 0b111100) shr 2,
-        time = intTime / 100.0
-    )
 }
 
 fun fromBase64(ch: Int): Int = when (ch) {
