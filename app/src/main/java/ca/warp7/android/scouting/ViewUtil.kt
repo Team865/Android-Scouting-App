@@ -34,18 +34,8 @@ const val kAutonomousTime = 15
 const val kFadeDuration = 100
 const val kTotalTimerDigits = 3
 
-
-object ScoutingIntentKey {
-
-    private const val root = "ca.warp7.android.scouting.intent"
-
-    const val kMatch = "$root.match"
-    const val kTeam = "$root.team"
-    const val kScout = "$root.scout"
-    const val kBoard = "$root.board"
-
-    const val kResult = "$root.result"
-}
+const val kScoutIntent = "intent.scout"
+const val kEntryInMatchIntent = "intent.entry"
 
 fun validateName(str: String): Boolean {
     val name = str.trim()

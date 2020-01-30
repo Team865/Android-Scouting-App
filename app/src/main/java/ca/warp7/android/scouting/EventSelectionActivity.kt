@@ -2,7 +2,6 @@ package ca.warp7.android.scouting
 
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -29,12 +28,14 @@ class EventSelectionActivity : AppCompatActivity() {
             title = "Select FRC Event"
             setDisplayHomeAsUpEnabled(true)
         }
+
         val teamSearch = findViewById<EditText>(R.id.team_search)
         val yearEdit = findViewById<EditText>(R.id.year)
         teamSearch.setOnEditorActionListener { textView, _, _ ->
             onSearch(textView, yearEdit)
             true
         }
+
         val eventListView = findViewById<ListView>(R.id.event_list)
         val adapter = EventListAdapter(this, eventList)
         eventListView.adapter = adapter
@@ -44,12 +45,14 @@ class EventSelectionActivity : AppCompatActivity() {
                 yearEdit.text.toString().toInt()
             )
         }
+
         val year = PreferenceManager.getDefaultSharedPreferences(this)
             .getString(PreferenceKeys.kYear, "2020")
         yearEdit.setText(year, TextView.BufferType.EDITABLE)
         val teamNumber = PreferenceManager.getDefaultSharedPreferences(this)
             .getString(PreferenceKeys.kTeam, "")!!
         teamSearch.setText(teamNumber, TextView.BufferType.EDITABLE)
+
         if (teamNumber.isNotEmpty()) {
             // show previous results
             onSearch(teamSearch, yearEdit)

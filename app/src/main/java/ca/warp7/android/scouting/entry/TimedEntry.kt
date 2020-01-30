@@ -5,7 +5,7 @@ package ca.warp7.android.scouting.entry
 import kotlin.math.abs
 
 
-data class TimedEntry(
+class TimedEntry(
 
     override val match: String,
 

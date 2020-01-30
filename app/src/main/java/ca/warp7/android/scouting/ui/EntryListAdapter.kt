@@ -10,13 +10,11 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.entry.Board.*
-import ca.warp7.android.scouting.entry.EntryItem
-import ca.warp7.android.scouting.entry.EntryItemState.*
 
 class EntryListAdapter(
     context: Context,
-    scheduleItems: List<EntryItem>
-) : ArrayAdapter<EntryItem>(context, 0, scheduleItems) {
+    scheduledEntries: List<EntryInMatch>
+) : ArrayAdapter<EntryInMatch>(context, 0, scheduledEntries) {
 
     private val layoutInflater = LayoutInflater.from(context)
     private val red = ContextCompat.getColor(context, R.color.colorRed)
@@ -40,20 +38,22 @@ class EntryListAdapter(
         }
 
         // set the icon on top of the match number
+        val iconDrawable =  if (item.isComplete) {
+            if (item.isScheduled) {
+                R.drawable.ic_done_ablack_small
+            } else {
+                R.drawable.ic_add_ablack
+            }
+        } else R.drawable.ic_layers_ablack_small
+
         matchNumber.setCompoundDrawablesWithIntrinsicBounds(
-            0,
-            when (item.state) {
-                Waiting -> R.drawable.ic_layers_ablack_small
-                Added -> R.drawable.ic_add_ablack
-                Completed -> R.drawable.ic_done_ablack_small
-            }, 0, 0
-        )
+            0, iconDrawable, 0, 0)
 
         // set the background of the list item
-        when (item.state) {
-            Waiting -> itemView.setBackgroundColor(0)
-            Completed -> itemView.setBackgroundColor(completeColor)
-            Added -> itemView.setBackgroundColor(completeColor)
+        if (item.isComplete) {
+            itemView.setBackgroundColor(completeColor)
+        } else {
+            itemView.setBackgroundColor(0)
         }
 
         val red1 = itemView.findViewById<TextView>(R.id.red_1)
