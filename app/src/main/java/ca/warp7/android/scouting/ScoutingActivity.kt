@@ -88,7 +88,9 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
     private val screens get() = template?.screens
 
-    private val timedUpdater = Runnable {
+    private val periodicUpdater = Runnable { periodicUpdate() }
+
+    private fun periodicUpdate() {
         if (activityState != TimedScouting) {
             timerIsRunning = false
         } else {
@@ -105,16 +107,12 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
             matchTime += dt
             if (matchTime <= kTimerLimit) {
-                postTimerUpdate()
+                handler.postDelayed(periodicUpdater, 1000)
             } else {
                 timerIsRunning = false
                 startActivityState(Pausing)
             }
         }
-    }
-
-    private fun postTimerUpdate() {
-        handler.postDelayed(timedUpdater, 1000)
     }
 
     private fun showCommentBox(entry: MutableEntry) {
@@ -343,7 +341,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 vibrator.vibrateStart()
                 // need to reset the time so that dt doesn't get messed up
                 lastTime = getCurrentTime()
-                timedUpdater.run()
+                periodicUpdater.run()
             }
             Pausing -> {
                 playAndPauseImage.show()
