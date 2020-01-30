@@ -1,6 +1,8 @@
-package ca.warp7.android.scouting.entry
+package ca.warp7.android.scouting.ui
 
-class EntryItem(
+import ca.warp7.android.scouting.entry.Board
+
+class EntryInMatch(
     val match: String,
     val teams: List<Int>,
     val board: Board,

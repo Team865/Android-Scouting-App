@@ -24,6 +24,7 @@ import ca.warp7.android.scouting.entry.Board.*
 import ca.warp7.android.scouting.event.EventInfo
 import ca.warp7.android.scouting.event.MatchSchedule
 import ca.warp7.android.scouting.tba.getEventMatchesSimple
+import ca.warp7.android.scouting.ui.EntryInMatch
 import ca.warp7.android.scouting.ui.EntryListAdapter
 import ca.warp7.android.scouting.ui.createQRBitmap
 import com.google.zxing.WriterException
@@ -54,11 +55,13 @@ class MainActivity : AppCompatActivity() {
     )
 
     // the list of items that are actually displayed on screen
-    private val displayedItems = ArrayList<EntryItem>()
+    private val displayedEntries = ArrayList<EntryInMatch>()
 
-    // the entries that have been scouted
-    private val scoutedItems = ArrayList<EntryItem>()
-    private val expectedItems = ArrayList<EntryItem>()
+    // the entries that are in the schedule
+    private val expectedEntries = ArrayList<EntryInMatch>()
+
+    // the entries that are not in the schedule
+    private val scoutedEntries = ArrayList<EntryInMatch>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -153,7 +156,7 @@ class MainActivity : AppCompatActivity() {
     private fun initActivity() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-        val entryListAdapter = EntryListAdapter(this, displayedItems)
+        val entryListAdapter = EntryListAdapter(this, displayedEntries)
         entriesList.adapter = entryListAdapter
 
         boardTextView.setOnClickListener { onSelectBoard(preferences) }
@@ -350,25 +353,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateExpectedItems() {
-        expectedItems.clear()
+        expectedEntries.clear()
         eventInfo.matchSchedule.forEach { matchNumber, teams ->
-            val item = EntryItem(
+            val item = EntryInMatch(
                 "${eventInfo.eventKey}_$matchNumber",
                 teams, board, isComplete = false, isScheduled = true
             )
-            expectedItems.add(item)
+            expectedEntries.add(item)
         }
     }
 
     private fun updateDisplayedItems() {
-        displayedItems.clear()
-        displayedItems.addAll(expectedItems)
-        if (scoutedItems.isNotEmpty()) {
-            displayedItems.addAll(scoutedItems)
+        displayedEntries.clear()
+        displayedEntries.addAll(expectedEntries)
+        if (scoutedEntries.isNotEmpty()) {
+            displayedEntries.addAll(scoutedEntries)
             val p = eventInfo.eventKey + "_"
 
             // sort matches in the correct order
-            displayedItems.sortBy {
+            displayedEntries.sortBy {
                 it.match.run {
                     if (startsWith(p)) {
                         substring(p.length).toIntOrNull() ?: 0
@@ -445,7 +448,7 @@ class MainActivity : AppCompatActivity() {
 
         // we need to find the right entry in the expected items
         // so we know what all the teams are
-        for (item in expectedItems) {
+        for (item in expectedEntries) {
             if (item.match == match && item.board == board) {
                 teams = item.teams
                 foundData = true
@@ -478,8 +481,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // add to the list of scouted items
-        scoutedItems.add(
-            EntryItem(
+        scoutedEntries.add(
+            EntryInMatch(
                 match = match,
                 teams = teams,
                 board = board,

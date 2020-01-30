@@ -10,12 +10,11 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.entry.Board.*
-import ca.warp7.android.scouting.entry.EntryItem
 
 class EntryListAdapter(
     context: Context,
-    scheduleItems: List<EntryItem>
-) : ArrayAdapter<EntryItem>(context, 0, scheduleItems) {
+    scheduledEntries: List<EntryInMatch>
+) : ArrayAdapter<EntryInMatch>(context, 0, scheduledEntries) {
 
     private val layoutInflater = LayoutInflater.from(context)
     private val red = ContextCompat.getColor(context, R.color.colorRed)
