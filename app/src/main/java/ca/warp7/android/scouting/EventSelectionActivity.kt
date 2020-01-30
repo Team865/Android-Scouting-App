@@ -1,5 +1,6 @@
 package ca.warp7.android.scouting
 
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.MenuItem
@@ -84,7 +85,12 @@ class EventSelectionActivity : AppCompatActivity() {
                     createCachedTBAInstance(this).getEventMatchesSimple(event.key)
                 }
                 dialog.dismiss()
-                onBackPressed()
+
+                val intent = Intent(this, MainActivity::class.java)
+
+                // this make so that we go back instead of restarting the activity
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                startActivity(intent)
             }
             .setNegativeButton("Cancel") {dialog, _ -> dialog.dismiss() }
             .create().show()
