@@ -78,7 +78,6 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private lateinit var pagerAdapter: TabPagerAdapter
 
     private var activityState = WaitingToStart
-    private var timerIsCountingUp = false
     private var timerIsRunning = false
     private var currentTab = 0
 
@@ -179,10 +178,6 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         findViewById<ImageButton>(R.id.comment_button).setOnClickListener {
             entry?.also { showCommentBox(it) }
         }
-        findViewById<TextView>(R.id.title_banner).setOnClickListener {
-            timerIsCountingUp = !timerIsCountingUp
-            updateActivityStatus()
-        }
 
         timeProgress.apply {
             max = kTimerLimit
@@ -269,13 +264,12 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     }
 
     private fun updateActivityStatus() {
-        val time = if (timerIsCountingUp) {
-            timerStatus.setTypeface(null, Typeface.BOLD)
-            matchTime
+        val time = if (matchTime <= kAutonomousTime) {
+            kAutonomousTime - matchTime
         } else {
-            timerStatus.setTypeface(null, Typeface.NORMAL)
-            if (matchTime <= kAutonomousTime) kAutonomousTime - matchTime else kTimerLimit - matchTime
+            kTimerLimit - matchTime
         }
+
         val status = time.toInt().toString()
         val placeholder = CharArray(kTotalTimerDigits - status.length)
         val filledStatus = String(placeholder).replace("\u0000", "0") + status
