@@ -34,11 +34,8 @@ const val kAutonomousTime = 15
 const val kFadeDuration = 100
 const val kTotalTimerDigits = 3
 
-
-object ScoutingIntentKey {
-    const val kScout = "intent.scout"
-    const val kEntryInMatch = "intent.entry"
-}
+const val kScoutIntent = "intent.scout"
+const val kEntryInMatchIntent = "intent.entry"
 
 fun validateName(str: String): Boolean {
     val name = str.trim()

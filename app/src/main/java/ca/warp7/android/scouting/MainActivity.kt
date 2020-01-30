@@ -376,8 +376,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun startScoutingActivity(entryInMatch: EntryInMatch) {
         startActivityForResult(Intent(this, ScoutingActivity::class.java).apply {
-            putExtra(ScoutingIntentKey.kEntryInMatch, entryInMatch.toCSV())
-            putExtra(ScoutingIntentKey.kScout, scoutTextView.text.toString())
+            putExtra(kEntryInMatchIntent, entryInMatch.toCSV())
+            putExtra(kScoutIntent, scoutTextView.text.toString())
         }, MY_INTENT_REQUEST_SCOUTING)
     }
 
@@ -439,7 +439,7 @@ class MainActivity : AppCompatActivity() {
     private fun processScoutingActivityResult(intent: Intent) {
 
         // get the extra data from the intent bundle
-        val entryString = intent.getStringExtra(ScoutingIntentKey.kEntryInMatch)
+        val entryString = intent.getStringExtra(kEntryInMatchIntent)
         val entryInMatch = EntryInMatch.fromCSV(entryString)
 
         scoutedEntries.add(entryInMatch)

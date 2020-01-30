@@ -201,8 +201,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
         boardfile = createBoardfileFromAssets(this)
 
-        val scout = intent.getStringExtra(ScoutingIntentKey.kScout)
-        val entryInMatch = EntryInMatch.fromCSV(intent.getStringExtra(ScoutingIntentKey.kEntryInMatch))
+        val scout = intent.getStringExtra(kScoutIntent)
+        val entryInMatch = EntryInMatch.fromCSV(intent.getStringExtra(kEntryInMatchIntent))
         val match = entryInMatch.match
         val board = entryInMatch.board
         val teams = entryInMatch.teams
@@ -268,7 +268,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 return
             }
             setResult(Activity.RESULT_OK, Intent().apply {
-                putExtra(ScoutingIntentKey.kEntryInMatch, EntryInMatch(
+                putExtra(kEntryInMatchIntent, EntryInMatch(
                     eim.match,
                     eim.teams,
                     eim.board,
