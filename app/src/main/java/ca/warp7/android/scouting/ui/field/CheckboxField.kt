@@ -10,11 +10,6 @@ import androidx.core.content.ContextCompat
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.entry.DataPoint
 
-/**
- * A Base button for other buttons to extend onto
- * @since v0.2.0
- */
-
 class CheckboxField : LinearLayout, BaseFieldWidget {
 
     override val fieldData: FieldData?
