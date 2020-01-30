@@ -3,7 +3,6 @@ package ca.warp7.android.scouting.ui.field
 import android.content.Context
 import android.graphics.Typeface
 import android.view.Gravity
-import android.view.View
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -31,9 +30,9 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
         gravity = Gravity.CENTER
 
         checkBox = CheckBox(data.context).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+            layoutParams = LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
             )
             isAllCaps = false
             textSize = 18f
@@ -42,7 +41,7 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
             text = data.modifiedName
         }.also { addView(it) }
 
-        val clickListener = View.OnClickListener {
+        val clickListener = OnClickListener {
             data.scoutingActivity.apply {
                 if (timeEnabled) {
                     vibrateAction()
@@ -58,17 +57,19 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
     }
 
     override fun updateControlState() {
-        fieldData?.apply {
-            if (!scoutingActivity.timeEnabled) {
-                checkBox!!.isEnabled = false
-                checkBox.setTextColor(gray)
-            } else {
-                checkBox!!.isEnabled = true
-                checkBox.setTextColor(accent)
-                scoutingActivity.entry?.apply {
-                    checkBox.isChecked = count(typeIndex) % 2 != 0
-                }
+        val fieldData = fieldData ?: return
+        val checkBox = checkBox ?: return
+
+        if (fieldData.scoutingActivity.timeEnabled) {
+            checkBox.isEnabled = true
+            checkBox.setTextColor(accent)
+            val entry = fieldData.scoutingActivity.entry
+            if (entry != null) {
+                checkBox.isChecked = entry.count(fieldData.typeIndex) % 2 != 0
             }
+        } else {
+            checkBox.isEnabled = false
+            checkBox.setTextColor(gray)
         }
     }
 }

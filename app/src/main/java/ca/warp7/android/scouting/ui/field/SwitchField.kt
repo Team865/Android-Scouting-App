@@ -55,25 +55,27 @@ class SwitchField : FrameLayout, BaseFieldWidget {
     }
 
     override fun updateControlState() {
-        fieldData?.apply {
-            val button = button!!
-            if (!scoutingActivity.timeEnabled) {
-                button.isEnabled = false
-                button.setTextColor(gray)
-                background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
-            } else {
-                button.isEnabled = true
-                scoutingActivity.entry?.apply {
-                    isOn = count(typeIndex) % 2 != 0
-                    if (isOn) {
-                        button.setTextColor(white)
-                        background.setColorFilter(red, PorterDuff.Mode.SRC)
-                    } else {
-                        button.setTextColor(lightGreen)
-                        background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
-                    }
+        val fieldData = fieldData ?: return
+        val button = button ?: return
+
+        if (fieldData.scoutingActivity.timeEnabled) {
+            button.isEnabled = true
+            val entry = fieldData.scoutingActivity.entry
+            if (entry != null) {
+                isOn = entry.count(fieldData.typeIndex) % 2 != 0
+
+                if (isOn) {
+                    button.setTextColor(white)
+                    background.setColorFilter(red, PorterDuff.Mode.SRC)
+                } else {
+                    button.setTextColor(lightGreen)
+                    background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
                 }
             }
+        } else {
+            button.isEnabled = false
+            button.setTextColor(gray)
+            background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
         }
     }
 }

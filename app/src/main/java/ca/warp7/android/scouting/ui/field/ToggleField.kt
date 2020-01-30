@@ -31,6 +31,7 @@ class ToggleField : LinearLayout, BaseFieldWidget {
         toggleSwitch = null
     }
 
+    @Suppress("SameParameterValue")
     private fun sp2Px(sp: Int): Float {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp.toFloat(), context.resources.displayMetrics)
     }
@@ -48,7 +49,7 @@ class ToggleField : LinearLayout, BaseFieldWidget {
             setTextColor(almostBlack)
             textSize = 14f
             setPadding(0, 8, 0, 0)
-            layoutParams = LinearLayout.LayoutParams(
+            layoutParams = LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
@@ -88,14 +89,13 @@ class ToggleField : LinearLayout, BaseFieldWidget {
     }
 
     override fun updateControlState() {
-        fieldData?.apply {
-            scoutingActivity.entry?.apply {
-                val newPos = lastValue(typeIndex)?.value ?: defaultPosition
-                if (newPos != checkedPosition) {
-                    checkedPosition = newPos
-                    toggleSwitch?.setCheckedPosition(checkedPosition)
-                }
-            }
+        val fieldData = fieldData ?: return
+        val entry = fieldData.scoutingActivity.entry ?: return
+
+        val newPos = entry.lastValue(fieldData.typeIndex)?.value ?: defaultPosition
+        if (newPos != checkedPosition) {
+            checkedPosition = newPos
+            toggleSwitch?.setCheckedPosition(checkedPosition)
         }
     }
 }
