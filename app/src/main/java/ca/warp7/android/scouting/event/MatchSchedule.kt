@@ -1,7 +1,7 @@
 package ca.warp7.android.scouting.event
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-data class MatchSchedule(
+class MatchSchedule(
     val matches: List<Int>
 ) {
     val size = matches.size / 6

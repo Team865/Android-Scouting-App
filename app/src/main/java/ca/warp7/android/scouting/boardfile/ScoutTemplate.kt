@@ -1,6 +1,6 @@
 package ca.warp7.android.scouting.boardfile
 
-data class ScoutTemplate(val screens: List<TemplateScreen>, val tags: List<String>) {
+class ScoutTemplate(val screens: List<TemplateScreen>, val tags: List<String>) {
     private val indices = screens.map { it.layout.flatten() }.flatten()
 
     fun lookup(templateField: TemplateField): Int {
