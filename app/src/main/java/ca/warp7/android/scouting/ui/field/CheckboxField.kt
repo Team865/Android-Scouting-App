@@ -3,6 +3,7 @@ package ca.warp7.android.scouting.ui.field
 import android.content.Context
 import android.graphics.Typeface
 import android.view.Gravity
+import android.view.View.OnClickListener
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat

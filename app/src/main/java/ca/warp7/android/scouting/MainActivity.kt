@@ -11,7 +11,6 @@ import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
-import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
@@ -20,10 +19,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import ca.warp7.android.scouting.event.EventInfo
-import ca.warp7.android.scouting.event.MatchSchedule
 import ca.warp7.android.scouting.entry.*
 import ca.warp7.android.scouting.entry.Board.*
+import ca.warp7.android.scouting.event.EventInfo
+import ca.warp7.android.scouting.event.MatchSchedule
 import ca.warp7.android.scouting.tba.getEventMatchesSimple
 import ca.warp7.android.scouting.ui.EntryListAdapter
 import ca.warp7.android.scouting.ui.createQRBitmap

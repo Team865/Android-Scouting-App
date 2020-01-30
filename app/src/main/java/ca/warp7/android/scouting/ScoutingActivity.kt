@@ -3,7 +3,6 @@ package ca.warp7.android.scouting
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager

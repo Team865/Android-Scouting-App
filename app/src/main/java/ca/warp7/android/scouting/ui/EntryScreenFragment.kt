@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.BaseScoutingActivity
+import ca.warp7.android.scouting.R
+import ca.warp7.android.scouting.boardfile.FieldType.*
 import ca.warp7.android.scouting.boardfile.TemplateField
 import ca.warp7.android.scouting.boardfile.TemplateScreen
-import ca.warp7.android.scouting.boardfile.FieldType.*
 import ca.warp7.android.scouting.ui.field.*
 
 /**
