@@ -8,7 +8,6 @@ import android.os.Handler
 import android.preference.PreferenceManager
 import android.text.InputType
 import android.util.TypedValue
-import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.*
@@ -63,9 +62,17 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     override var template: ScoutTemplate? = null
 
     private var startTime = 0.0
-    private var relativeTimeAtPause = 0 // this is int to make rounding errors easier
+    private var relativeTimeAtPause = 0.0 // this is int to make rounding errors easier
 
     override fun getRelativeTime(): Double {
+        return when(activityState) {
+            WaitingToStart -> 0.0
+            TimedScouting -> getCurrentToStartTime()
+            Pausing -> relativeTimeAtPause
+        }
+    }
+
+    private fun getCurrentToStartTime(): Double {
         return getCurrentTime() - startTime
     }
 
@@ -80,7 +87,6 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private lateinit var pagerAdapter: TabPagerAdapter
 
     private var activityState = WaitingToStart
-    private var timerIsRunning = false
     private var currentTab = 0
 
     private var entryInMatch: EntryInMatch? = null
@@ -92,10 +98,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private val periodicUpdater = Runnable { periodicUpdate() }
 
     private fun periodicUpdate() {
-        if (activityState != TimedScouting) {
-            timerIsRunning = false
-        } else {
-            timerIsRunning = true
+        if (activityState == TimedScouting) {
             val relativeTime = getRelativeTime()
             updateActivityStatus(relativeTime.toInt())
             updateTabStates()
@@ -105,7 +108,6 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             if (relativeTime <= kTimerLimit) {
                 handler.postDelayed(periodicUpdater, 1000)
             } else {
-                timerIsRunning = false
                 startActivityState(Pausing)
             }
         }
@@ -140,7 +142,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             .setPositiveButton("OK") { _, _ -> entry.comments = input.text.toString() }
             .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
             .create()
-            .apply { window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) }.show()
+            .show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -189,7 +191,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     if (fromUser && activityState == Pausing) {
                         // set the paused relative time
-                        relativeTimeAtPause = progress
+                        relativeTimeAtPause = progress.toDouble()
                         // also set the start time because otherwise the update will fail
                         startTime = getCurrentTime() - relativeTimeAtPause
                         // show stuff in the UI
@@ -341,12 +343,12 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     }
 
     private fun startActivityState(wantedState: State) {
-        if (wantedState == TimedScouting && (timerIsRunning || getRelativeTime() >= kTimerLimit)) {
+        if (wantedState == TimedScouting && getRelativeTime() >= kTimerLimit) {
             // We are already at the end. Cannot continue to scout
             return
         }
         activityState = wantedState
-        when (activityState) {
+        when (wantedState) {
             WaitingToStart -> {
                 playAndPauseImage.hide()
                 undoButton.hide()
@@ -373,7 +375,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 timeSeeker.show()
                 timeProgress.hide()
                 // save the relative time
-                relativeTimeAtPause = getRelativeTime().toInt()
+                relativeTimeAtPause = getCurrentToStartTime()
             }
         }
     }
