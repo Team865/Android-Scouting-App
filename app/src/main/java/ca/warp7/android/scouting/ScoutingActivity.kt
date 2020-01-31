@@ -8,7 +8,6 @@ import android.os.Handler
 import android.preference.PreferenceManager
 import android.text.InputType
 import android.util.TypedValue
-import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.*
@@ -63,9 +62,17 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     override var template: ScoutTemplate? = null
 
     private var startTime = 0.0
-    private var relativeTimeAtPause = 0 // this is int to make rounding errors easier
+    private var relativeTimeAtPause = 0.0 // this is int to make rounding errors easier
 
     override fun getRelativeTime(): Double {
+        return when(activityState) {
+            WaitingToStart -> 0.0
+            TimedScouting -> getCurrentToStartTime()
+            Pausing -> relativeTimeAtPause
+        }
+    }
+
+    private fun getCurrentToStartTime(): Double {
         return getCurrentTime() - startTime
     }
 
@@ -140,7 +147,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             .setPositiveButton("OK") { _, _ -> entry.comments = input.text.toString() }
             .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
             .create()
-            .apply { window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) }.show()
+            .show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -189,7 +196,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     if (fromUser && activityState == Pausing) {
                         // set the paused relative time
-                        relativeTimeAtPause = progress
+                        relativeTimeAtPause = progress.toDouble()
                         // also set the start time because otherwise the update will fail
                         startTime = getCurrentTime() - relativeTimeAtPause
                         // show stuff in the UI
@@ -346,7 +353,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             return
         }
         activityState = wantedState
-        when (activityState) {
+        when (wantedState) {
             WaitingToStart -> {
                 playAndPauseImage.hide()
                 undoButton.hide()
@@ -373,7 +380,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 timeSeeker.show()
                 timeProgress.hide()
                 // save the relative time
-                relativeTimeAtPause = getRelativeTime().toInt()
+                relativeTimeAtPause = getCurrentToStartTime()
             }
         }
     }
