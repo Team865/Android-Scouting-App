@@ -87,7 +87,6 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private lateinit var pagerAdapter: TabPagerAdapter
 
     private var activityState = WaitingToStart
-    private var timerIsRunning = false
     private var currentTab = 0
 
     private var entryInMatch: EntryInMatch? = null
@@ -99,10 +98,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private val periodicUpdater = Runnable { periodicUpdate() }
 
     private fun periodicUpdate() {
-        if (activityState != TimedScouting) {
-            timerIsRunning = false
-        } else {
-            timerIsRunning = true
+        if (activityState == TimedScouting) {
             val relativeTime = getRelativeTime()
             updateActivityStatus(relativeTime.toInt())
             updateTabStates()
@@ -112,7 +108,6 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             if (relativeTime <= kTimerLimit) {
                 handler.postDelayed(periodicUpdater, 1000)
             } else {
-                timerIsRunning = false
                 startActivityState(Pausing)
             }
         }
@@ -348,7 +343,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     }
 
     private fun startActivityState(wantedState: State) {
-        if (wantedState == TimedScouting && (timerIsRunning || getRelativeTime() >= kTimerLimit)) {
+        if (wantedState == TimedScouting && getRelativeTime() >= kTimerLimit) {
             // We are already at the end. Cannot continue to scout
             return
         }
