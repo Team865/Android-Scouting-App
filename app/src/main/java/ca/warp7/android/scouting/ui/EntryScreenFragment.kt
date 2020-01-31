@@ -78,9 +78,13 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
         val scoutingActivity = scoutingActivity
         val context = context
         if (scoutingActivity != null && context != null) {
+            val typeIndex = scoutingActivity.template?.lookup(templateField) ?: 0 + 1
             val data = FieldData(
-                context, templateField, scoutingActivity, modifyName(templateField.name),
-                scoutingActivity.template?.lookup(templateField) ?: 0 + 1
+                context,
+                templateField,
+                scoutingActivity,
+                modifyName(templateField.name),
+                typeIndex
             )
             return when (templateField.type) {
                 Button -> ButtonField(data)
