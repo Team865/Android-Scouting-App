@@ -258,6 +258,13 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         startActivityState(WaitingToStart)
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (activityState == TimedScouting) {
+            startActivityState(Pausing)
+        }
+    }
+
     override fun onBackPressed() {
         if (activityState == WaitingToStart) {
             setResult(Activity.RESULT_CANCELED, null)
