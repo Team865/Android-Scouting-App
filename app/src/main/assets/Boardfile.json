@@ -1,6 +1,6 @@
 {
   "year": 2020,
-  "revision": 2,
+  "revision": 3,
   "robot_scout": {
     "screens": [
       {
@@ -25,29 +25,24 @@
           ],
           [
             {
-              "name": "low",
+              "name": "auto_high_miss",
               "type": "Button",
               "options": []
             },
             {
-              "name": "outer",
-              "type": "Button",
-              "options": []
-            },
-            {
-              "name": "inner",
+              "name": "auto_high_hit",
               "type": "Button",
               "options": []
             }
           ],
           [
             {
-              "name": "low_miss",
+              "name": "auto_low_miss",
               "type": "Button",
               "options": []
             },
             {
-              "name": "high_miss",
+              "name": "auto_low_hit",
               "type": "Button",
               "options": []
             }
@@ -88,17 +83,12 @@
           ],
           [
             {
-              "name": "low",
+              "name": "high_miss",
               "type": "Button",
               "options": []
             },
             {
-              "name": "outer",
-              "type": "Button",
-              "options": []
-            },
-            {
-              "name": "inner",
+              "name": "high_hit",
               "type": "Button",
               "options": []
             }
@@ -110,7 +100,7 @@
               "options": []
             },
             {
-              "name": "high_miss",
+              "name": "low_hit",
               "type": "Button",
               "options": []
             }
