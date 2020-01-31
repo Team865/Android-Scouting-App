@@ -18,6 +18,7 @@ import androidx.viewpager.widget.ViewPager
 import ca.warp7.android.scouting.ScoutingActivity.State.*
 import ca.warp7.android.scouting.boardfile.Boardfile
 import ca.warp7.android.scouting.boardfile.ScoutTemplate
+import ca.warp7.android.scouting.boardfile.TemplateScreen
 import ca.warp7.android.scouting.boardfile.createBoardfileFromAssets
 import ca.warp7.android.scouting.entry.Alliance
 import ca.warp7.android.scouting.entry.Board.*
@@ -50,7 +51,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         )
     }
 
-    private lateinit var handler: Handler
+    private val handler = Handler()
 
     override fun vibrateAction() {
         vibrator.vibrateAction()
@@ -61,8 +62,11 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     override var boardfile: Boardfile? = null
     override var template: ScoutTemplate? = null
 
+    private var startTime = 0.0
+    private var relativeTimeAtPause = 0 // this is int to make rounding errors easier
+
     override fun getRelativeTime(): Double {
-        return matchTime
+        return getCurrentTime() - startTime
     }
 
     private val timerStatus: TextView get() = findViewById(R.id.timer_status)
@@ -79,33 +83,26 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private var timerIsRunning = false
     private var currentTab = 0
 
-    var matchTime = 0.0
-    // keep track for dt calculations
-    private var lastTime = 0.0
-
-    private val periodicUpdater = Runnable { periodicUpdate() }
-
     private var entryInMatch: EntryInMatch? = null
 
-    private fun getScreens() = template?.screens
+    private fun getScreens(): List<TemplateScreen>? {
+        return template?.screens
+    }
+
+    private val periodicUpdater = Runnable { periodicUpdate() }
 
     private fun periodicUpdate() {
         if (activityState != TimedScouting) {
             timerIsRunning = false
         } else {
             timerIsRunning = true
-            updateActivityStatus()
+            val relativeTime = getRelativeTime()
+            updateActivityStatus(relativeTime.toInt())
             updateTabStates()
 
-            // Calculate the time relative to the start of the match, and
             // determine if the timer should stop
 
-            val time = getCurrentTime()
-            val dt = time - lastTime
-            lastTime = time
-
-            matchTime += dt
-            if (matchTime <= kTimerLimit) {
+            if (relativeTime <= kTimerLimit) {
                 handler.postDelayed(periodicUpdater, 1000)
             } else {
                 timerIsRunning = false
@@ -148,12 +145,12 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        handler = Handler()
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_scouting)
 
         startButton.setOnClickListener {
-            entry?.timestamp = getCurrentTime().toInt()
+            startTime = getCurrentTime()
+            entry?.timestamp = startTime.toInt()
             startActivityState(TimedScouting)
             updateTabStates()
         }
@@ -162,7 +159,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             when (activityState) {
                 TimedScouting -> startActivityState(Pausing)
                 Pausing -> startActivityState(TimedScouting)
-                else -> Unit
+                else -> throw IllegalStateException("activityState incorrect")
             }
         }
         undoButton.setOnClickListener {
@@ -191,8 +188,12 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     if (fromUser && activityState == Pausing) {
-                        matchTime = progress.toDouble()
-                        updateActivityStatus()
+                        // set the paused relative time
+                        relativeTimeAtPause = progress
+                        // also set the start time because otherwise the update will fail
+                        startTime = getCurrentTime() - relativeTimeAtPause
+                        // show stuff in the UI
+                        updateActivityStatus(progress)
                         updateTabStates()
                     }
                 }
@@ -218,7 +219,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
 
         this.entryInMatch = entryInMatch
-        entry = TimedEntry(match, team, scout, board, getCurrentTime().toInt()) { matchTime }
+        entry = TimedEntry(match, team, scout, board, getCurrentTime().toInt()) { getRelativeTime() }
 
         findViewById<TextView>(R.id.toolbar_match).text = match.let {
             val split = it.split("_")
@@ -252,7 +253,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             }
         })
 
-        updateActivityStatus()
+        updateActivityStatus(0)
         updateCurrentTab()
         startActivityState(WaitingToStart)
     }
@@ -281,14 +282,14 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         super.onBackPressed()
     }
 
-    private fun updateActivityStatus() {
+    private fun updateActivityStatus(matchTime : Int) {
         val time = if (matchTime <= kAutonomousTime) {
             kAutonomousTime - matchTime
         } else {
             kTimerLimit - matchTime
         }
 
-        val status = time.toInt().toString()
+        val status = time.toString()
         val placeholder = CharArray(kTotalTimerDigits - status.length)
         val filledStatus = String(placeholder).replace("\u0000", "0") + status
         timerStatus.text = filledStatus
@@ -297,8 +298,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             else -> R.color.colorTeleOpGreen
         }
         timerStatus.setTextColor(ContextCompat.getColor(this, statusColor))
-        timeProgress.progress = matchTime.toInt()
-        timeSeeker.progress = matchTime.toInt()
+        timeProgress.progress = matchTime
+        timeSeeker.progress = matchTime
     }
 
     private val alphaAnimationIn: Animation = AlphaAnimation(0.0f, 1.0f).apply { duration = kFadeDuration.toLong() }
@@ -333,7 +334,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     }
 
     private fun startActivityState(wantedState: State) {
-        if (wantedState == TimedScouting && (timerIsRunning || matchTime >= kTimerLimit)) {
+        if (wantedState == TimedScouting && (timerIsRunning || getRelativeTime() >= kTimerLimit)) {
+            // We are already at the end. Cannot continue to scout
             return
         }
         activityState = wantedState
@@ -352,8 +354,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 timeProgress.show()
                 playAndPauseImage.setImageResource(R.drawable.ic_pause_ablack)
                 vibrator.vibrateStart()
-                // need to reset the time so that dt doesn't get messed up
-                lastTime = getCurrentTime()
+                // restore the absolute time
+                startTime = getCurrentTime() - relativeTimeAtPause
                 periodicUpdater.run()
             }
             Pausing -> {
@@ -363,6 +365,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 playAndPauseImage.setImageResource(R.drawable.ic_play_arrow_ablack)
                 timeSeeker.show()
                 timeProgress.hide()
+                // save the relative time
+                relativeTimeAtPause = getRelativeTime().toInt()
             }
         }
     }
