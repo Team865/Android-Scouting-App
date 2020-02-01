@@ -56,8 +56,13 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         vibrator.vibrateAction()
     }
 
+    override fun isTimeEnabled(): Boolean {
+        // this includes paused state because time is still tracked
+        return activityState != WaitingToStart
+    }
+
     override var entry: MutableEntry? = null
-    override val timeEnabled get() = activityState != WaitingToStart
+
     override var boardfile: Boardfile? = null
     override var template: ScoutTemplate? = null
 

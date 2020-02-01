@@ -62,7 +62,7 @@ class ButtonField : FrameLayout, BaseFieldWidget {
 
     private fun onClick(data: FieldData) {
         val activity = data.scoutingActivity
-        if (activity.timeEnabled) {
+        if (activity.isTimeEnabled()) {
             activity.vibrateAction()
             val entry = activity.entry ?: return
             entry.add(DataPoint(data.typeIndex, 1, activity.getRelativeTime()))
@@ -75,7 +75,7 @@ class ButtonField : FrameLayout, BaseFieldWidget {
         val button = button ?: return
         val counter = counter ?: return
 
-        if (fieldData.scoutingActivity.timeEnabled) {
+        if (fieldData.scoutingActivity.isTimeEnabled()) {
             button.isEnabled = true
 
             val entry = fieldData.scoutingActivity.entry

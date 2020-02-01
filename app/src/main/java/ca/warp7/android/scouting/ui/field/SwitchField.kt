@@ -49,7 +49,7 @@ class SwitchField : FrameLayout, BaseFieldWidget {
 
     private fun onClick(data: FieldData) {
         val activity = data.scoutingActivity
-        if (activity.timeEnabled) {
+        if (activity.isTimeEnabled()) {
             activity.vibrateAction()
             val entry = activity.entry ?: return
             entry.add(DataPoint(data.typeIndex, if (isOn) 1 else 0, activity.getRelativeTime()))
@@ -61,7 +61,7 @@ class SwitchField : FrameLayout, BaseFieldWidget {
         val fieldData = fieldData ?: return
         val button = button ?: return
 
-        if (fieldData.scoutingActivity.timeEnabled) {
+        if (fieldData.scoutingActivity.isTimeEnabled()) {
             button.isEnabled = true
             val entry = fieldData.scoutingActivity.entry
             if (entry != null) {

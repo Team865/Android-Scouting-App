@@ -55,7 +55,7 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
     private fun onClick(data: FieldData, isChecked: Boolean) {
         val activity = data.scoutingActivity
 
-        if (activity.timeEnabled) {
+        if (activity.isTimeEnabled()) {
             activity.vibrateAction()
             val entry = activity.entry ?: return
             entry.add(DataPoint(data.typeIndex, if (isChecked) 1 else 0, activity.getRelativeTime()))
@@ -67,7 +67,7 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
         val fieldData = fieldData ?: return
         val checkBox = checkBox ?: return
 
-        if (fieldData.scoutingActivity.timeEnabled) {
+        if (fieldData.scoutingActivity.isTimeEnabled()) {
             checkBox.isEnabled = true
             checkBox.setTextColor(accent)
             val entry = fieldData.scoutingActivity.entry
