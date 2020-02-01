@@ -31,9 +31,8 @@ class ToggleField : LinearLayout, BaseFieldWidget {
         toggleSwitch = null
     }
 
-    @Suppress("SameParameterValue")
-    private fun sp2Px(sp: Int): Float {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp.toFloat(), context.resources.displayMetrics)
+    private fun getToggleButtonTextSize(): Float {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 18f, context.resources.displayMetrics)
     }
 
     internal constructor(data: FieldData) : super(data.context) {
@@ -53,39 +52,49 @@ class ToggleField : LinearLayout, BaseFieldWidget {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-        }.also { addView(it) }
+            addView(this)
+        }
+
+        // parse the default options
+        val options = mutableListOf<String>()
+        data.templateField.options?.forEachIndexed { i, v ->
+            if (v.startsWith("default:")) {
+                defaultPosition = i
+                options.add(v.substring(8))
+            } else options.add(v)
+        }
 
         toggleSwitch = ToggleSwitchCompat(data.context).apply {
             checkedBackgroundColor = accent
             uncheckedBackgroundColor = almostWhite
-            textSize = sp2Px(18)
+            textSize = getToggleButtonTextSize()
             uncheckedTextColor = accent
             separatorVisible = false
             elevation = 4f
-            val options = mutableListOf<String>()
-            data.templateField.options?.forEachIndexed { i, v ->
-                if (v.startsWith("default:")) {
-                    defaultPosition = i
-                    options.add(v.substring(8))
-                } else options.add(v)
-            }
+
             setEntries(options)
+
             layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+
             setPadding(8, 4, 8, 8)
-            setOnChangeListener {
-                if (it != checkedPosition) {
-                    checkedPosition = it
-                    data.scoutingActivity.apply {
-                        vibrateAction()
-                        entry!!.add(DataPoint(data.typeIndex, checkedPosition, getRelativeTime()))
-                        updateControlState()
-                    }
-                }
-            }
+            setOnChangeListener { index -> onToggle(data, index) }
 
         }.also { addView(it) }
         updateControlState()
+    }
+
+    private fun onToggle(data: FieldData, index: Int) {
+        if (index != checkedPosition) {
+            checkedPosition = index
+            val activity = data.scoutingActivity
+            activity.vibrateAction()
+            val entry = activity.entry
+            if (entry != null) {
+                entry.add(DataPoint(data.typeIndex, checkedPosition, activity.getRelativeTime()))
+                updateControlState()
+            }
+        }
     }
 
     override fun updateControlState() {

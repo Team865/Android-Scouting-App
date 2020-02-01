@@ -19,14 +19,14 @@ interface BaseScoutingActivity {
     fun vibrateAction()
 
     /**
+     * whether the activity is in a state not accepting timed data
+     */
+    fun isTimeEnabled(): Boolean
+
+    /**
      * The entry model object tracking data history
      */
     val entry: MutableEntry?
-
-    /**
-     * whether the activity is in a state not accepting timed data
-     */
-    val timeEnabled: Boolean
 
     /**
      * Boardfile

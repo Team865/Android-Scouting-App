@@ -21,10 +21,6 @@ class ButtonField : FrameLayout, BaseFieldWidget {
     private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
 
-    private var hasReset: Boolean = false
-    private var resetTypeIndex: Int = 0
-    private var resetValue: Int = 0
-
     constructor(context: Context) : super(context) {
         fieldData = null
         counter = null
@@ -33,9 +29,6 @@ class ButtonField : FrameLayout, BaseFieldWidget {
 
     internal constructor(data: FieldData) : super(data.context) {
         fieldData = data
-        setBackgroundResource(R.drawable.layer_list_bg_group)
-        // make sure we can change this background without affecting others
-        background.mutate()
 
         button = Button(data.context).apply {
             isAllCaps = false
@@ -44,25 +37,11 @@ class ButtonField : FrameLayout, BaseFieldWidget {
             stateListAnimator = null
             text = data.modifiedName
             setLines(2)
-            setBackgroundColor(0)
-            setOnClickListener {
-                data.scoutingActivity.apply {
-                    if (timeEnabled) {
-                        vibrateAction()
-                        val entry = entry!!
-                        entry.add(DataPoint(data.typeIndex, 1, getRelativeTime()))
-                        if (hasReset) {
-                            if (entry.lastValue(resetTypeIndex)?.value ?: resetValue != resetValue) {
-                                entry.add(DataPoint(resetTypeIndex, resetValue, getRelativeTime()))
-                            }
-                            updateTabStates()
-                        } else {
-                            updateControlState()
-                        }
-                    }
-                }
-            }
-        }.also { addView(it) }
+            setBackgroundResource(R.drawable.ripple_button)
+            this.background.mutate()
+            setOnClickListener { onClick(data) }
+            addView(this)
+        }
 
         counter = TextView(data.context).apply {
             text = "0"
@@ -74,17 +53,22 @@ class ButtonField : FrameLayout, BaseFieldWidget {
                 LayoutParams.WRAP_CONTENT
             )
             setPadding(18, 10, 18, 10)
-        }.also { addView(it) }
+            addView(this)
+        }
 
-        data.templateField.options?.forEach {
-            if (it.startsWith("resets:")) {
-                hasReset = true
-                val split = it.substring(7).split("=")
-                resetTypeIndex = data.scoutingActivity.template?.lookup(split[0]) ?: 0
-                resetValue = split[1].toInt()
+        updateControlState()
+    }
+
+    private fun onClick(data: FieldData) {
+        val activity = data.scoutingActivity
+        if (activity.isTimeEnabled()) {
+            activity.vibrateAction()
+            val entry = activity.entry
+            if (entry != null) {
+                entry.add(DataPoint(data.typeIndex, 1, activity.getRelativeTime()))
+                updateControlState()
             }
         }
-        updateControlState()
     }
 
     override fun updateControlState() {
@@ -92,7 +76,7 @@ class ButtonField : FrameLayout, BaseFieldWidget {
         val button = button ?: return
         val counter = counter ?: return
 
-        if (fieldData.scoutingActivity.timeEnabled) {
+        if (fieldData.scoutingActivity.isTimeEnabled()) {
             button.isEnabled = true
 
             val entry = fieldData.scoutingActivity.entry
@@ -103,18 +87,18 @@ class ButtonField : FrameLayout, BaseFieldWidget {
 
                 if (entry.isFocused(fieldData.typeIndex)) {
                     button.setTextColor(white)
-                    background.setColorFilter(accent, PorterDuff.Mode.SRC)
+                    button.background.setColorFilter(accent, PorterDuff.Mode.SRC)
                     counter.setTextColor(white)
                 } else {
                     button.setTextColor(accent)
-                    background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+                    button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
                     counter.setTextColor(almostBlack)
                 }
             }
         } else {
             button.isEnabled = false
             button.setTextColor(ContextCompat.getColor(context, R.color.colorGray))
-            background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+            button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
         }
     }
 }
