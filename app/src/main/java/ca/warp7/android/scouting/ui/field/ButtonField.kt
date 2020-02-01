@@ -21,10 +21,6 @@ class ButtonField : FrameLayout, BaseFieldWidget {
     private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
 
-    private var hasReset: Boolean = false
-    private var resetTypeIndex: Int = 0
-    private var resetValue: Int = 0
-
     constructor(context: Context) : super(context) {
         fieldData = null
         counter = null
@@ -45,24 +41,9 @@ class ButtonField : FrameLayout, BaseFieldWidget {
             text = data.modifiedName
             setLines(2)
             setBackgroundColor(0)
-            setOnClickListener {
-                data.scoutingActivity.apply {
-                    if (timeEnabled) {
-                        vibrateAction()
-                        val entry = entry!!
-                        entry.add(DataPoint(data.typeIndex, 1, getRelativeTime()))
-                        if (hasReset) {
-                            if (entry.lastValue(resetTypeIndex)?.value ?: resetValue != resetValue) {
-                                entry.add(DataPoint(resetTypeIndex, resetValue, getRelativeTime()))
-                            }
-                            updateTabStates()
-                        } else {
-                            updateControlState()
-                        }
-                    }
-                }
-            }
-        }.also { addView(it) }
+            setOnClickListener { onClick(data) }
+            addView(this)
+        }
 
         counter = TextView(data.context).apply {
             text = "0"
@@ -76,15 +57,17 @@ class ButtonField : FrameLayout, BaseFieldWidget {
             setPadding(18, 10, 18, 10)
         }.also { addView(it) }
 
-        data.templateField.options?.forEach {
-            if (it.startsWith("resets:")) {
-                hasReset = true
-                val split = it.substring(7).split("=")
-                resetTypeIndex = data.scoutingActivity.template?.lookup(split[0]) ?: 0
-                resetValue = split[1].toInt()
-            }
-        }
         updateControlState()
+    }
+
+    private fun onClick(data: FieldData) {
+        val activity = data.scoutingActivity
+        if (activity.timeEnabled) {
+            activity.vibrateAction()
+            val entry = activity.entry ?: return
+            entry.add(DataPoint(data.typeIndex, 1, activity.getRelativeTime()))
+            updateControlState()
+        }
     }
 
     override fun updateControlState() {

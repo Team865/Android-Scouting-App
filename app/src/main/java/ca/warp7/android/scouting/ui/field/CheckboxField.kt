@@ -42,19 +42,25 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
             text = data.modifiedName
         }.also { addView(it) }
 
+        // click listener for both the check box and the area box
         val clickListener = OnClickListener {
-            data.scoutingActivity.apply {
-                if (timeEnabled) {
-                    vibrateAction()
-                    entry!!.add(DataPoint(data.typeIndex, if (checkBox.isChecked) 1 else 0, getRelativeTime()))
-                    updateControlState()
-                }
-            }
+            onClick(data, checkBox.isChecked)
         }
 
         checkBox.setOnClickListener(clickListener)
         this.setOnClickListener(clickListener)
         updateControlState()
+    }
+
+    private fun onClick(data: FieldData, isChecked: Boolean) {
+        val activity = data.scoutingActivity
+
+        if (activity.timeEnabled) {
+            activity.vibrateAction()
+            val entry = activity.entry ?: return
+            entry.add(DataPoint(data.typeIndex, if (isChecked) 1 else 0, activity.getRelativeTime()))
+            updateControlState()
+        }
     }
 
     override fun updateControlState() {

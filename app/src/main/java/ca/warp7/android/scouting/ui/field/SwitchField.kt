@@ -40,18 +40,21 @@ class SwitchField : FrameLayout, BaseFieldWidget {
             text = data.modifiedName
             setLines(2)
             setBackgroundColor(0)
-            setOnClickListener {
-                data.scoutingActivity.apply {
-                    if (timeEnabled) {
-                        vibrateAction()
-                        entry!!.add(DataPoint(data.typeIndex, if (isOn) 1 else 0, getRelativeTime()))
-                        updateControlState()
-                    }
-                }
-            }
-        }.also { addView(it) }
+            setOnClickListener { onClick(data) }
+            addView(this)
+        }
 
         updateControlState()
+    }
+
+    private fun onClick(data: FieldData) {
+        val activity = data.scoutingActivity
+        if (activity.timeEnabled) {
+            activity.vibrateAction()
+            val entry = activity.entry ?: return
+            entry.add(DataPoint(data.typeIndex, if (isOn) 1 else 0, activity.getRelativeTime()))
+            updateControlState()
+        }
     }
 
     override fun updateControlState() {
