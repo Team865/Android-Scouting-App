@@ -29,9 +29,6 @@ class ButtonField : FrameLayout, BaseFieldWidget {
 
     internal constructor(data: FieldData) : super(data.context) {
         fieldData = data
-        setBackgroundResource(R.drawable.layer_list_bg_group)
-        // make sure we can change this background without affecting others
-        background.mutate()
 
         button = Button(data.context).apply {
             isAllCaps = false
@@ -40,7 +37,8 @@ class ButtonField : FrameLayout, BaseFieldWidget {
             stateListAnimator = null
             text = data.modifiedName
             setLines(2)
-            setBackgroundColor(0)
+            setBackgroundResource(R.drawable.ripple_button)
+            this.background.mutate()
             setOnClickListener { onClick(data) }
             addView(this)
         }
@@ -55,7 +53,8 @@ class ButtonField : FrameLayout, BaseFieldWidget {
                 LayoutParams.WRAP_CONTENT
             )
             setPadding(18, 10, 18, 10)
-        }.also { addView(it) }
+            addView(this)
+        }
 
         updateControlState()
     }
@@ -88,18 +87,18 @@ class ButtonField : FrameLayout, BaseFieldWidget {
 
                 if (entry.isFocused(fieldData.typeIndex)) {
                     button.setTextColor(white)
-                    background.setColorFilter(accent, PorterDuff.Mode.SRC)
+                    button.background.setColorFilter(accent, PorterDuff.Mode.SRC)
                     counter.setTextColor(white)
                 } else {
                     button.setTextColor(accent)
-                    background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+                    button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
                     counter.setTextColor(almostBlack)
                 }
             }
         } else {
             button.isEnabled = false
             button.setTextColor(ContextCompat.getColor(context, R.color.colorGray))
-            background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+            button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
         }
     }
 }

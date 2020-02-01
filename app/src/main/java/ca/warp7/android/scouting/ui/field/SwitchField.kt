@@ -29,9 +29,6 @@ class SwitchField : FrameLayout, BaseFieldWidget {
     internal constructor(data: FieldData) : super(data.context) {
         fieldData = data
 
-        setBackgroundResource(R.drawable.layer_list_bg_group)
-        background.mutate()
-
         button = Button(data.context).apply {
             isAllCaps = false
             textSize = 18f
@@ -39,7 +36,8 @@ class SwitchField : FrameLayout, BaseFieldWidget {
             stateListAnimator = null
             text = data.modifiedName
             setLines(2)
-            setBackgroundColor(0)
+            setBackgroundResource(R.drawable.ripple_button)
+            background.mutate()
             setOnClickListener { onClick(data) }
             addView(this)
         }
@@ -73,16 +71,16 @@ class SwitchField : FrameLayout, BaseFieldWidget {
 
                 if (isChecked) {
                     button.setTextColor(white)
-                    background.setColorFilter(red, PorterDuff.Mode.SRC)
+                    button.background.setColorFilter(red, PorterDuff.Mode.SRC)
                 } else {
                     button.setTextColor(lightGreen)
-                    background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+                    button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
                 }
             }
         } else {
             button.isEnabled = false
             button.setTextColor(gray)
-            background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+            button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
         }
     }
 }
