@@ -26,7 +26,7 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
     internal constructor(data: FieldData) : super(data.context) {
         fieldData = data
 
-        setBackgroundResource(R.drawable.layer_list_bg_group)
+        setBackgroundResource(R.drawable.ripple_button)
         background.mutate()
         gravity = Gravity.CENTER
 
@@ -40,15 +40,17 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
             setLines(2)
             typeface = Typeface.SANS_SERIF
             text = data.modifiedName
-        }.also { addView(it) }
-
-        // click listener for both the check box and the area box
-        val clickListener = OnClickListener {
-            onClick(data, checkBox.isChecked)
+            addView(this)
         }
 
-        checkBox.setOnClickListener(clickListener)
-        this.setOnClickListener(clickListener)
+        checkBox.setOnClickListener {
+            onClick(data, checkBox.isChecked)
+        }
+        setOnClickListener {
+            val checked = !checkBox.isChecked
+            checkBox.isChecked = checked
+            onClick(data, checked)
+        }
         updateControlState()
     }
 
