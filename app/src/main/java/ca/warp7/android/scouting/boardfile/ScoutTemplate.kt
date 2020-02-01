@@ -4,6 +4,6 @@ class ScoutTemplate(val screens: List<TemplateScreen>, val tags: List<String>) {
     private val indices = screens.map { it.layout.flatten() }.flatten()
 
     fun lookup(templateField: TemplateField): Int {
-        return indices.indexOf(templateField) + 1
+        return indices.indexOf(templateField)
     }
 }
