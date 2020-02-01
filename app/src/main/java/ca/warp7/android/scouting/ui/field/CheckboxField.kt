@@ -57,9 +57,11 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
 
         if (activity.isTimeEnabled()) {
             activity.vibrateAction()
-            val entry = activity.entry ?: return
-            entry.add(DataPoint(data.typeIndex, if (isChecked) 1 else 0, activity.getRelativeTime()))
-            updateControlState()
+            val entry = activity.entry
+            if (entry != null) {
+                entry.add(DataPoint(data.typeIndex, if (isChecked) 1 else 0, activity.getRelativeTime()))
+                updateControlState()
+            }
         }
     }
 

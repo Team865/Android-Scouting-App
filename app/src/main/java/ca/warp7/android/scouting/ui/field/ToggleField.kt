@@ -89,9 +89,11 @@ class ToggleField : LinearLayout, BaseFieldWidget {
             checkedPosition = index
             val activity = data.scoutingActivity
             activity.vibrateAction()
-            val entry = activity.entry ?: return
-            entry.add(DataPoint(data.typeIndex, checkedPosition, activity.getRelativeTime()))
-            updateControlState()
+            val entry = activity.entry
+            if (entry != null) {
+                entry.add(DataPoint(data.typeIndex, checkedPosition, activity.getRelativeTime()))
+                updateControlState()
+            }
         }
     }
 

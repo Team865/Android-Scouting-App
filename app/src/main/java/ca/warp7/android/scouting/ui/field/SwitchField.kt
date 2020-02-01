@@ -51,9 +51,11 @@ class SwitchField : FrameLayout, BaseFieldWidget {
         val activity = data.scoutingActivity
         if (activity.isTimeEnabled()) {
             activity.vibrateAction()
-            val entry = activity.entry ?: return
-            entry.add(DataPoint(data.typeIndex, if (isOn) 1 else 0, activity.getRelativeTime()))
-            updateControlState()
+            val entry = activity.entry
+            if (entry != null) {
+                entry.add(DataPoint(data.typeIndex, if (isOn) 1 else 0, activity.getRelativeTime()))
+                updateControlState()
+            }
         }
     }
 
