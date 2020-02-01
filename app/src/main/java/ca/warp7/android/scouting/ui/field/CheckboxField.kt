@@ -59,7 +59,8 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
             activity.vibrateAction()
             val entry = activity.entry
             if (entry != null) {
-                entry.add(DataPoint(data.typeIndex, if (isChecked) 1 else 0, activity.getRelativeTime()))
+                val newState = !isChecked
+                entry.add(DataPoint(data.typeIndex, if (newState) 1 else 0, activity.getRelativeTime()))
                 updateControlState()
             }
         }
@@ -74,7 +75,8 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
             checkBox.setTextColor(accent)
             val entry = fieldData.scoutingActivity.entry
             if (entry != null) {
-                checkBox.isChecked = entry.count(fieldData.typeIndex) % 2 != 0
+                val lv  = entry.lastValue(fieldData.typeIndex)
+                checkBox.isChecked = if (lv != null) lv.value == 1 else false
             }
         } else {
             checkBox.isEnabled = false

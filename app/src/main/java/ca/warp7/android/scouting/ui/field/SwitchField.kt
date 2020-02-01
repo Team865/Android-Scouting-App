@@ -19,7 +19,7 @@ class SwitchField : FrameLayout, BaseFieldWidget {
     private val lightGreen = ContextCompat.getColor(context, R.color.colorLightGreen)
     private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
 
-    private var isOn = false
+    private var isChecked = false
     private var button: Button? = null
 
     constructor(context: Context) : super(context) {
@@ -53,7 +53,8 @@ class SwitchField : FrameLayout, BaseFieldWidget {
             activity.vibrateAction()
             val entry = activity.entry
             if (entry != null) {
-                entry.add(DataPoint(data.typeIndex, if (isOn) 1 else 0, activity.getRelativeTime()))
+                val newState = !isChecked
+                entry.add(DataPoint(data.typeIndex, if (newState) 1 else 0, activity.getRelativeTime()))
                 updateControlState()
             }
         }
@@ -67,9 +68,10 @@ class SwitchField : FrameLayout, BaseFieldWidget {
             button.isEnabled = true
             val entry = fieldData.scoutingActivity.entry
             if (entry != null) {
-                isOn = entry.count(fieldData.typeIndex) % 2 != 0
+                val lv  = entry.lastValue(fieldData.typeIndex)
+                isChecked = if (lv != null) lv.value == 1 else false
 
-                if (isOn) {
+                if (isChecked) {
                     button.setTextColor(white)
                     background.setColorFilter(red, PorterDuff.Mode.SRC)
                 } else {
