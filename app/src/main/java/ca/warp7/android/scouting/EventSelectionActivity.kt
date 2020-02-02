@@ -26,7 +26,7 @@ class EventSelectionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_event_selection)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.apply {
-            title = "Select FRC Event"
+            title = getString(R.string.select_frc_event)
             setDisplayHomeAsUpEnabled(true)
         }
 
@@ -68,9 +68,9 @@ class EventSelectionActivity : AppCompatActivity() {
     ) {
         val event = adapter.getItem(position) ?: return
         AlertDialog.Builder(this)
-            .setTitle("Team $teamNumber")
-            .setMessage("Select \"${event.year} ${event.name}\" as the event? This will load the match schedule and delete entries from other events")
-            .setPositiveButton("Continue") {dialog, _ ->
+            .setTitle(getString(R.string.team_template, teamNumber))
+            .setMessage(getString(R.string.override_message_template, event.year, event.name))
+            .setPositiveButton(getString(R.string.button_continue)) { dialog, _ ->
                 val preferences = PreferenceManager.getDefaultSharedPreferences(this)
                 preferences
                     .edit()
@@ -92,7 +92,7 @@ class EventSelectionActivity : AppCompatActivity() {
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                 startActivity(intent)
             }
-            .setNegativeButton("Cancel") {dialog, _ -> dialog.dismiss() }
+            .setNegativeButton(getString(R.string.button_cancel)) {dialog, _ -> dialog.dismiss() }
             .create().show()
     }
 
@@ -124,8 +124,8 @@ class EventSelectionActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 runOnUiThread {
                     AlertDialog.Builder(this)
-                        .setTitle("Error")
-                        .setMessage(e.toString())
+                        .setTitle(getString(R.string.error_retrieving_data))
+                        .setMessage(getString(R.string.check_connection))
                         .create().show()
                 }
             }

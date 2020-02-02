@@ -21,6 +21,7 @@ import ca.warp7.android.scouting.boardfile.TemplateScreen
 import ca.warp7.android.scouting.boardfile.createBoardfileFromAssets
 import ca.warp7.android.scouting.entry.Alliance
 import ca.warp7.android.scouting.entry.Board.*
+import ca.warp7.android.scouting.entry.DataPoint
 import ca.warp7.android.scouting.entry.MutableEntry
 import ca.warp7.android.scouting.entry.TimedEntry
 import ca.warp7.android.scouting.ui.ActionVibrator
@@ -70,7 +71,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private var relativeTimeAtPause = 0.0 // this is int to make rounding errors easier
 
     override fun getRelativeTime(): Double {
-        return when(activityState) {
+        return when (activityState) {
             WaitingToStart -> 0.0
             TimedScouting -> getCurrentToStartTime()
             Pausing -> relativeTimeAtPause
@@ -119,8 +120,30 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     }
 
     private fun showCommentBox(entry: MutableEntry) {
+
+        val template = template ?: return
+        val tags = template.tags
+
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        layout.setPadding(16, 16, 16, 0)
+
+        for ((index, tag) in tags.withIndex()) {
+            layout.addView(CheckBox(this).also { cb ->
+                cb.text = modifyNameForDisplay(tag)
+                cb.textSize = 18f
+                val typeIndex = template.lookupForTag(index)
+                val lastValue = entry.lastValue(typeIndex)?.value ?: 0
+                cb.isChecked = lastValue != 0
+                cb.setOnCheckedChangeListener { _, isChecked ->
+                    vibrateAction()
+                    entry.add(DataPoint(typeIndex, if (isChecked) 1 else 0, getRelativeTime()))
+                }
+            })
+        }
+
         // Create the comments EditText
-        val input = EditText(this).apply {
+        val commentInput = EditText(this).apply {
             inputType = InputType.TYPE_CLASS_TEXT or
                     InputType.TYPE_TEXT_FLAG_MULTI_LINE or
                     InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
@@ -135,17 +158,16 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
             setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_comment_ablack_small, 0, 0, 0)
         }
-
-        val layout = LinearLayout(this)
-        layout.addView(input)
-        layout.setPadding(16, 8, 16, 0)
+        layout.addView(commentInput)
 
         // Create the alert
         AlertDialog.Builder(this)
-            .setTitle(R.string.edit_comments)
+            .setTitle(getString(R.string.additional_info))
             .setView(layout)
-            .setPositiveButton("OK") { _, _ -> entry.comments = input.text.toString() }
-            .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+            .setPositiveButton(getString(R.string.button_ok)) { _, _ ->
+                entry.comments = commentInput.text.toString()
+            }
+            .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.cancel() }
             .create()
             .show()
     }
@@ -180,7 +202,10 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
 
         findViewById<ImageButton>(R.id.comment_button).setOnClickListener {
-            entry?.also { showCommentBox(it) }
+            val entry = entry
+            if (entry != null) {
+                showCommentBox(entry)
+            }
         }
 
         timeProgress.apply {
@@ -283,20 +308,22 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 return
             }
             setResult(Activity.RESULT_OK, Intent().apply {
-                putExtra(kEntryInMatchIntent, EntryInMatch(
-                    eim.match,
-                    eim.teams,
-                    eim.board,
-                    true,
-                    eim.isScheduled,
-                    entry.getEncoded()
-                ).toCSV())
+                putExtra(
+                    kEntryInMatchIntent, EntryInMatch(
+                        eim.match,
+                        eim.teams,
+                        eim.board,
+                        true,
+                        eim.isScheduled,
+                        entry.getEncoded()
+                    ).toCSV()
+                )
             })
         }
         super.onBackPressed()
     }
 
-    private fun updateActivityStatus(matchTime : Int) {
+    private fun updateActivityStatus(matchTime: Int) {
         val time = if (matchTime <= kAutonomousTime) {
             kAutonomousTime - matchTime
         } else {
@@ -320,13 +347,15 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private val alphaAnimationOut: Animation = AlphaAnimation(1.0f, 0.0f).apply { duration = kFadeDuration.toLong() }
 
     private fun updateCurrentTab() {
-        val screens = getScreens()
-        val title = if (currentTab >= 0 && currentTab < screens?.size ?: -1) {
-            screens?.get(currentTab)?.title ?: "Unknown"
-        } else if (currentTab == screens?.size ?: -1) {
+        val screens = getScreens() ?: return
+        val title = if (currentTab >= 0 && currentTab < screens.size) {
+            screens.get(currentTab).title
+        } else if (currentTab == screens.size) {
             pagerAdapter[currentTab].updateTabState()
-            "QR Code"
-        } else "Unknown"
+            getString(R.string.qr_code_tab)
+        } else {
+            getString(R.string.unknown_tab)
+        }
         val titleBanner = findViewById<TextView>(R.id.title_banner)
         if (titleBanner.text.toString().isNotEmpty()) {
             alphaAnimationOut.setAnimationListener(object : Animation.AnimationListener {

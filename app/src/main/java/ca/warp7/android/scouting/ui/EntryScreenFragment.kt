@@ -1,6 +1,5 @@
 package ca.warp7.android.scouting.ui
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +13,7 @@ import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.boardfile.FieldType.*
 import ca.warp7.android.scouting.boardfile.TemplateField
 import ca.warp7.android.scouting.boardfile.TemplateScreen
+import ca.warp7.android.scouting.modifyNameForDisplay
 import ca.warp7.android.scouting.ui.field.*
 
 /**
@@ -83,7 +83,7 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
                 context,
                 templateField,
                 scoutingActivity,
-                modifyName(templateField.name),
+                modifyNameForDisplay(templateField.name),
                 typeIndex
             )
             return when (templateField.type) {
@@ -95,11 +95,6 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
             }
         }
         return View(context)
-    }
-
-    @SuppressLint("DefaultLocale")
-    private fun modifyName(name: String): String {
-        return name.split("_".toRegex()).joinToString(" ") { it.toLowerCase().capitalize() }
     }
 
     private fun layoutRow(row: List<TemplateField>) {

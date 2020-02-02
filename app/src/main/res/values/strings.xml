@@ -1,8 +1,6 @@
 <resources>
 
     <string name="app_name">Scouting</string>
-    <string name="menu_select_specs">Change</string>
-    <string name="menu_toggle_scouted">Toggle Scouted</string>
     <string name="menu_settings">Scouting Options</string>
     <string name="menu_new_entry">New Entry</string>
 
@@ -12,11 +10,7 @@
 
     <string name="start_timer">Start Timer</string>
 
-    <string name="comments_hint">
-        No Comments
-    </string>
-
-    <string name="edit_comments">Edit Comments</string>
+    <string name="comments_hint">Comments</string>
 
     <string name="layout_error">There was a problem with the layout</string>
 
@@ -24,5 +18,24 @@
     <string name="btn_pause">Pause</string>
     <string name="btn_undo">Undo</string>
     <string name="open_source_licenses">Open Source Licenses</string>
+    <string name="additional_info">Additional Info</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="unknown_tab">Unknown</string>
+    <string name="qr_code_tab">QR Code</string>
+    <string name="error_retrieving_data">Error Retrieving Data</string>
+    <string name="check_connection">Check your Internet Connection</string>
+    <string name="send_with">Send With…</string>
+    <string name="button_continue">Continue</string>
+    <string name="settings_title">Settings</string>
+    <string name="select_frc_event">Select FRC Event</string>
+    <string name="add_new_entry">Add New Entry</string>
+
+    <string name="team_template">Team %1$d</string>
+    <string name="override_message_template">
+        Select %1$d %2$s? This will load the match schedule and hide previous entries
+    </string>
+    <string name="version_name">Version:</string>
+    <string name="current_event">Current Event: %1$s %2$s</string>
 
 </resources>
