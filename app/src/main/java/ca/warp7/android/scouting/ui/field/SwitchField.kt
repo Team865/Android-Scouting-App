@@ -66,8 +66,8 @@ class SwitchField : FrameLayout, BaseFieldWidget {
             button.isEnabled = true
             val entry = fieldData.scoutingActivity.entry
             if (entry != null) {
-                val lv  = entry.lastValue(fieldData.typeIndex)
-                isChecked = if (lv != null) lv.value == 1 else false
+                val lastDP  = entry.lastValue(fieldData.typeIndex)
+                isChecked = if (lastDP != null) lastDP.value == 1 else false
 
                 if (isChecked) {
                     button.setTextColor(white)

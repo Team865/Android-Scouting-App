@@ -6,4 +6,8 @@ class ScoutTemplate(val screens: List<TemplateScreen>, val tags: List<String>) {
     fun lookup(templateField: TemplateField): Int {
         return indices.indexOf(templateField)
     }
+
+    fun lookupForTag(tagIndex: Int): Int {
+        return indices.size + tagIndex
+    }
 }

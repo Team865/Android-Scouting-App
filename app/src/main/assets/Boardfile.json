@@ -1,6 +1,6 @@
 {
   "year": 2020,
-  "revision": 3,
+  "revision": 4,
   "robot_scout": {
     "screens": [
       {
@@ -162,7 +162,12 @@
         ]
       }
     ],
-    "tags": []
+    "tags": [
+      "robot_DISABLED",
+      "robot_incapacitated",
+      "entry_started_late",
+      "rescout_required"
+    ]
   },
   "super_scout": {
     "screens": [],

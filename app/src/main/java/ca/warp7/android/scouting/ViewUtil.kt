@@ -1,5 +1,6 @@
 package ca.warp7.android.scouting
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Html
 import android.text.Spanned
@@ -43,4 +44,9 @@ fun validateName(str: String): Boolean {
     val split = name.split(" ")
     return split.size >= 2 && split[0][0].isUpperCase() &&
             split.subList(1, split.size).all { it.length == 1 && it[0].isUpperCase() }
+}
+
+@SuppressLint("DefaultLocale")
+fun modifyNameForDisplay(name: String): String {
+    return name.split("_".toRegex()).joinToString(" ") { it.capitalize() }
 }

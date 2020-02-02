@@ -3,7 +3,6 @@ package ca.warp7.android.scouting.ui.field
 import android.content.Context
 import android.graphics.Typeface
 import android.view.Gravity
-import android.view.View.OnClickListener
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -73,14 +72,16 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
 
         if (fieldData.scoutingActivity.isTimeEnabled()) {
             checkBox.isEnabled = true
+            this.isEnabled = true
             checkBox.setTextColor(accent)
             val entry = fieldData.scoutingActivity.entry
             if (entry != null) {
-                val lv  = entry.lastValue(fieldData.typeIndex)
-                checkBox.isChecked = if (lv != null) lv.value == 1 else false
+                val lastDP = entry.lastValue(fieldData.typeIndex)
+                checkBox.isChecked = if (lastDP != null) lastDP.value == 1 else false
             }
         } else {
             checkBox.isEnabled = false
+            this.isEnabled = false
             checkBox.setTextColor(gray)
         }
     }

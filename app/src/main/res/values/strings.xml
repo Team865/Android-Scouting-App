@@ -1,8 +1,6 @@
 <resources>
 
     <string name="app_name">Scouting</string>
-    <string name="menu_select_specs">Change</string>
-    <string name="menu_toggle_scouted">Toggle Scouted</string>
     <string name="menu_settings">Scouting Options</string>
     <string name="menu_new_entry">New Entry</string>
 
@@ -12,11 +10,7 @@
 
     <string name="start_timer">Start Timer</string>
 
-    <string name="comments_hint">
-        No Comments
-    </string>
-
-    <string name="edit_comments">Edit Comments</string>
+    <string name="comments_hint">Comments</string>
 
     <string name="layout_error">There was a problem with the layout</string>
 
