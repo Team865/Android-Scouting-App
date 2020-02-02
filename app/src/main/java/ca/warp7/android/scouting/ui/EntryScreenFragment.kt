@@ -13,17 +13,7 @@ import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.boardfile.FieldType.*
 import ca.warp7.android.scouting.boardfile.TemplateField
 import ca.warp7.android.scouting.boardfile.TemplateScreen
-import ca.warp7.android.scouting.modifyNameForDisplay
 import ca.warp7.android.scouting.ui.field.*
-
-/**
- * The fragment that is shown in the biggest portion
- * of ScoutingActivity -- it manages a TableLayout that
- * contains the views from InputControls defined in Specs
- *
- * @author Team 865
- * @since v0.2.0
- */
 
 class EntryScreenFragment : Fragment(), ScoutingEntryTab {
 
@@ -45,7 +35,6 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
         screenFrameLayout = view.findViewById(R.id.screen_frame)
 
         screenTable = EqualRowLayout(context).apply {
-            //isStretchAllColumns = true
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
@@ -86,7 +75,7 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
                 context,
                 templateField,
                 scoutingActivity,
-                modifyNameForDisplay(templateField.name),
+                scoutingActivity.modifyName(templateField.name),
                 typeIndex
             )
             return when (templateField.type) {

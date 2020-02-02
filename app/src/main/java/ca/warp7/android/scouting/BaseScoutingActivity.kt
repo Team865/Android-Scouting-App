@@ -31,4 +31,9 @@ interface BaseScoutingActivity {
      * Scout template
      */
     val template: ScoutTemplate?
+
+    /**
+     * Replaces the template name with the display name
+     */
+    fun modifyName(name: String): String
 }

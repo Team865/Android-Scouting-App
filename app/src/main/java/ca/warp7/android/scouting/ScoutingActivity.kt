@@ -17,11 +17,8 @@ import androidx.viewpager.widget.ViewPager
 import ca.warp7.android.scouting.ScoutingActivity.State.*
 import ca.warp7.android.scouting.boardfile.ScoutTemplate
 import ca.warp7.android.scouting.boardfile.createBoardfileFromAssets
-import ca.warp7.android.scouting.entry.Alliance
+import ca.warp7.android.scouting.entry.*
 import ca.warp7.android.scouting.entry.Board.*
-import ca.warp7.android.scouting.entry.DataPoint
-import ca.warp7.android.scouting.entry.MutableEntry
-import ca.warp7.android.scouting.entry.TimedEntry
 import ca.warp7.android.scouting.ui.ActionVibrator
 import ca.warp7.android.scouting.ui.EntryInMatch
 import ca.warp7.android.scouting.ui.TabPagerAdapter
@@ -46,6 +43,19 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             TimedScouting -> getCurrentToStartTime()
             Pausing -> relativeTimeAtPause
         }
+    }
+
+    @Suppress("RemoveRedundantQualifierName")
+    override fun modifyName(name: String): String {
+        val eim = entryInMatch
+        var varName = name
+        if (eim != null && eim.teams.size > 5) {
+            val values = Board.values()
+            for (i in 0 until 6) {
+                varName = varName.replace(values[i].name, eim.teams[i].toString())
+            }
+        }
+        return modifyNameForDisplay(varName)
     }
 
     enum class State {
