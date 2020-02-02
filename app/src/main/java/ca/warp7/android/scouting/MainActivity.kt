@@ -201,8 +201,8 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
             runOnUiThread {
                 AlertDialog.Builder(this)
-                    .setTitle("Error Retrieving Data")
-                    .setMessage("Check your internet Connection")
+                    .setTitle(getString(R.string.error_retrieving_data))
+                    .setMessage(getString(R.string.check_connection))
                     .create().show()
             }
         }
@@ -222,7 +222,7 @@ class MainActivity : AppCompatActivity() {
             val dialog = AlertDialog.Builder(this)
                 .setTitle(item.match)
                 .setView(qrImage)
-                .setNeutralButton("Send With...") { _, _ ->
+                .setNeutralButton(getString(R.string.send_with)) { _, _ ->
 
                     // Send with an intent
                     val intent = Intent(Intent.ACTION_SEND)
@@ -230,7 +230,7 @@ class MainActivity : AppCompatActivity() {
                     intent.type = "text/plain"
                     startActivity(Intent.createChooser(intent, item.data))
                 }
-                .setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
+                .setPositiveButton(getString(R.string.button_ok)) { dialog, _ -> dialog.dismiss() }
                 .create()
 
             // add the listener so we can figure out the width of the QR code to make

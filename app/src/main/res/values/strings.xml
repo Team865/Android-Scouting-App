@@ -23,5 +23,8 @@
     <string name="button_cancel">Cancel</string>
     <string name="unknown_tab">Unknown</string>
     <string name="qr_code_tab">QR Code</string>
+    <string name="error_retrieving_data">Error Retrieving Data</string>
+    <string name="check_connection">Check your Internet Connection</string>
+    <string name="send_with">Send With…</string>
 
 </resources>

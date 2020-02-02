@@ -92,7 +92,7 @@ class EventSelectionActivity : AppCompatActivity() {
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                 startActivity(intent)
             }
-            .setNegativeButton("Cancel") {dialog, _ -> dialog.dismiss() }
+            .setNegativeButton(getString(R.string.button_cancel)) {dialog, _ -> dialog.dismiss() }
             .create().show()
     }
 
@@ -124,8 +124,8 @@ class EventSelectionActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 runOnUiThread {
                     AlertDialog.Builder(this)
-                        .setTitle("Error")
-                        .setMessage(e.toString())
+                        .setTitle(getString(R.string.error_retrieving_data))
+                        .setMessage(getString(R.string.check_connection))
                         .create().show()
                 }
             }
