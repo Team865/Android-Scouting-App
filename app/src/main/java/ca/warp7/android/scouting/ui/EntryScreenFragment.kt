@@ -59,8 +59,11 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is BaseScoutingActivity) scoutingActivity = context
-        screen = scoutingActivity?.template?.screens?.get(arguments?.getInt("tab") ?: 0)
+        if (context is BaseScoutingActivity) {
+            scoutingActivity = context
+            val template = context.template ?: return
+            screen = template.screens[arguments?.getInt("tab") ?: 0]
+        }
     }
 
     override fun onDetach() {
