@@ -26,7 +26,7 @@ class EventSelectionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_event_selection)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.apply {
-            title = "Select FRC Event"
+            title = getString(R.string.select_frc_event)
             setDisplayHomeAsUpEnabled(true)
         }
 
@@ -70,7 +70,7 @@ class EventSelectionActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle("Team $teamNumber")
             .setMessage("Select \"${event.year} ${event.name}\" as the event? This will load the match schedule and delete entries from other events")
-            .setPositiveButton("Continue") {dialog, _ ->
+            .setPositiveButton(getString(R.string.button_continue)) { dialog, _ ->
                 val preferences = PreferenceManager.getDefaultSharedPreferences(this)
                 preferences
                     .edit()

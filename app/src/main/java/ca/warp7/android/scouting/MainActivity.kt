@@ -409,9 +409,9 @@ class MainActivity : AppCompatActivity() {
         layout.addView(teamEdit)
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Add New Entry")
+            .setTitle(getString(R.string.add_new_entry))
             .setView(layout)
-            .setPositiveButton("Ok") { _, _ ->
+            .setPositiveButton(getString(R.string.button_ok)) { _, _ ->
                 val matchKey = "${eventInfo.eventKey}_${matchEdit.text}"
                 // start scouting when ok
 
@@ -428,7 +428,7 @@ class MainActivity : AppCompatActivity() {
                 )
                 startScoutingActivity(entryInMatch)
             }
-            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+            .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.dismiss() }
             .create()
 
         // make sure the keyboard is up

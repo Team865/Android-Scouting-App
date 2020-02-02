@@ -12,7 +12,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.apply {
-            title = "Settings"
+            title = getString(R.string.settings_title)
             setDisplayHomeAsUpEnabled(true)
         }
         supportFragmentManager.beginTransaction().add(

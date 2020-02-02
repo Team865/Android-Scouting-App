@@ -26,5 +26,9 @@
     <string name="error_retrieving_data">Error Retrieving Data</string>
     <string name="check_connection">Check your Internet Connection</string>
     <string name="send_with">Send With…</string>
+    <string name="button_continue">Continue</string>
+    <string name="settings_title">Settings</string>
+    <string name="select_frc_event">Select FRC Event</string>
+    <string name="add_new_entry">Add New Entry</string>
 
 </resources>
