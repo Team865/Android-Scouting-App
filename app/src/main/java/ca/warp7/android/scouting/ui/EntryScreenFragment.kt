@@ -17,13 +17,9 @@ import ca.warp7.android.scouting.ui.field.*
 
 class EntryScreenFragment : Fragment(), ScoutingEntryTab {
 
-
     private var scoutingActivity: BaseScoutingActivity? = null
     private var screenTable: ViewGroup? = null
-
     private var screen: TemplateScreen? = null
-
-    private var screenFrameLayout: FrameLayout? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_screen, container, false)
@@ -32,14 +28,9 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        screenFrameLayout = view.findViewById(R.id.screen_frame)
-
-        screenTable = EqualRowLayout(context).apply {
-            layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-            )
-        }.also { screenFrameLayout?.addView(it) }
+        screenTable = EqualRowLayout(context)
+        val screenFrameLayout = view.findViewById<FrameLayout>(R.id.screen_frame)
+        screenFrameLayout.addView(screenTable)
 
         if (screen != null) {
             layoutTable()
@@ -90,7 +81,8 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
     }
 
     private fun layoutRow(row: List<TemplateField>) {
-        screenTable?.addView(LinearLayout(context).apply {
+        val screenTable = screenTable ?: return
+        screenTable.addView(LinearLayout(context).apply {
             row.forEach {
                 addView(createControlFromTemplateField(it).apply {
                     layoutParams = LinearLayout.LayoutParams(
@@ -107,20 +99,18 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
      */
 
     private fun layoutTable() {
-        screen?.apply {
-            layout.forEach { layoutRow(it) }
-        }
-        screenTable?.requestLayout()
+        val screen = screen ?: return
+        screen.layout.forEach { layoutRow(it) }
+        screenTable!!.requestLayout()
     }
 
     override fun updateTabState() {
-        screenTable?.apply {
-            for (i in 0 until childCount) {
-                val child = getChildAt(i)
-                if (child is ViewGroup) {
-                    for (j in 0 until child.childCount) {
-                        (child.getChildAt(j) as? BaseFieldWidget)?.updateControlState()
-                    }
+        val screenTable = screenTable ?: return
+        for (i in 0 until screenTable.childCount) {
+            val child = screenTable.getChildAt(i)
+            if (child is ViewGroup) {
+                for (j in 0 until child.childCount) {
+                    (child.getChildAt(j) as? BaseFieldWidget)?.updateControlState()
                 }
             }
         }
