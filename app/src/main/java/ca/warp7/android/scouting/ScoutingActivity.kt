@@ -162,10 +162,12 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
         // Create the alert
         AlertDialog.Builder(this)
-            .setTitle("Additional Info")
+            .setTitle(getString(R.string.additional_info))
             .setView(layout)
-            .setPositiveButton("OK") { _, _ -> entry.comments = commentInput.text.toString() }
-            .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+            .setPositiveButton(getString(R.string.button_ok)) { _, _ ->
+                entry.comments = commentInput.text.toString()
+            }
+            .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.cancel() }
             .create()
             .show()
     }
@@ -345,13 +347,15 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private val alphaAnimationOut: Animation = AlphaAnimation(1.0f, 0.0f).apply { duration = kFadeDuration.toLong() }
 
     private fun updateCurrentTab() {
-        val screens = getScreens()
-        val title = if (currentTab >= 0 && currentTab < screens?.size ?: -1) {
-            screens?.get(currentTab)?.title ?: "Unknown"
-        } else if (currentTab == screens?.size ?: -1) {
+        val screens = getScreens() ?: return
+        val title = if (currentTab >= 0 && currentTab < screens.size) {
+            screens.get(currentTab).title
+        } else if (currentTab == screens.size) {
             pagerAdapter[currentTab].updateTabState()
-            "QR Code"
-        } else "Unknown"
+            getString(R.string.qr_code_tab)
+        } else {
+            getString(R.string.unknown_tab)
+        }
         val titleBanner = findViewById<TextView>(R.id.title_banner)
         if (titleBanner.text.toString().isNotEmpty()) {
             alphaAnimationOut.setAnimationListener(object : Animation.AnimationListener {

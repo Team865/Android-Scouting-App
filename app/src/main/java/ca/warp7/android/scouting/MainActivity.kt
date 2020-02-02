@@ -200,9 +200,9 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
             runOnUiThread {
-                android.app.AlertDialog.Builder(this)
-                    .setTitle("Error Retrieving Event")
-                    .setMessage(e.toString())
+                AlertDialog.Builder(this)
+                    .setTitle("Error Retrieving Data")
+                    .setMessage("Check your internet Connection")
                     .create().show()
             }
         }

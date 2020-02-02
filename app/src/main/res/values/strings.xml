@@ -18,5 +18,10 @@
     <string name="btn_pause">Pause</string>
     <string name="btn_undo">Undo</string>
     <string name="open_source_licenses">Open Source Licenses</string>
+    <string name="additional_info">Additional Info</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="unknown_tab">Unknown</string>
+    <string name="qr_code_tab">QR Code</string>
 
 </resources>
