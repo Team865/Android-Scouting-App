@@ -68,8 +68,8 @@ class EventSelectionActivity : AppCompatActivity() {
     ) {
         val event = adapter.getItem(position) ?: return
         AlertDialog.Builder(this)
-            .setTitle("Team $teamNumber")
-            .setMessage("Select \"${event.year} ${event.name}\" as the event? This will load the match schedule and delete entries from other events")
+            .setTitle(getString(R.string.team_template, teamNumber))
+            .setMessage(getString(R.string.override_message_template, event.year, event.name))
             .setPositiveButton(getString(R.string.button_continue)) { dialog, _ ->
                 val preferences = PreferenceManager.getDefaultSharedPreferences(this)
                 preferences

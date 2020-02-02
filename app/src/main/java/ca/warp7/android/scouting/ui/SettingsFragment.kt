@@ -20,7 +20,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val aboutApp = findPreference<Preference>(getString(R.string.pref_about_key))
         if (aboutApp != null) {
-            aboutApp.summary = "Version: " + BuildConfig.VERSION_NAME + "-" + BuildConfig.BUILD_TYPE
+            aboutApp.summary = getString(R.string.version_name) +
+                    BuildConfig.VERSION_NAME + "-" + BuildConfig.BUILD_TYPE
         }
 
         findPreference<Preference>(getString(R.string.pref_event_selection))?.setOnPreferenceClickListener {
@@ -37,7 +38,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val event = preferences.getString(PreferenceKeys.kEventName, "No Event")
         val year = preferences.getString(PreferenceKeys.kYear, "")
         if (eventSelector != null) {
-            eventSelector.summary = "Current Event: $year $event"
+            eventSelector.summary = getString(R.string.current_event, year, event)
         }
     }
 }

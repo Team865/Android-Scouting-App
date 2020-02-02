@@ -31,4 +31,11 @@
     <string name="select_frc_event">Select FRC Event</string>
     <string name="add_new_entry">Add New Entry</string>
 
+    <string name="team_template">Team %1$d</string>
+    <string name="override_message_template">
+        Select %1$d %2$s? This will load the match schedule and hide previous entries
+    </string>
+    <string name="version_name">Version:</string>
+    <string name="current_event">Current Event: %1$s %2$s</string>
+
 </resources>
