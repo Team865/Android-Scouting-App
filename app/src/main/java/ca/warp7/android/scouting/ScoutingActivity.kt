@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import ca.warp7.android.scouting.ScoutingActivity.State.*
 import ca.warp7.android.scouting.boardfile.ScoutTemplate
-import ca.warp7.android.scouting.boardfile.TemplateScreen
 import ca.warp7.android.scouting.boardfile.createBoardfileFromAssets
 import ca.warp7.android.scouting.entry.Alliance
 import ca.warp7.android.scouting.entry.Board.*
@@ -79,16 +78,12 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private val undoButton: ImageButton get() = findViewById(R.id.undo_now_image)
     private val pager: ViewPager get() = findViewById(R.id.pager)
 
-    private lateinit var pagerAdapter: TabPagerAdapter
+    private var pagerAdapter: TabPagerAdapter? = null
 
     private var activityState = WaitingToStart
     private var currentTab = 0
 
     private var entryInMatch: EntryInMatch? = null
-
-    private fun getScreens(): List<TemplateScreen>? {
-        return template?.screens
-    }
 
     private val handler = Handler()
     private val periodicUpdater = Runnable { periodicUpdate() }
@@ -116,6 +111,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
      * Update all adjacent tabs
      */
     private fun updateAdjacentTabState() {
+        val pagerAdapter = pagerAdapter ?: return
         if (currentTab != 0) {
             pagerAdapter[currentTab - 1].updateTabState()
         }
@@ -274,13 +270,14 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
 
         val boardFile = createBoardfileFromAssets(this)
-        template = when (board) {
+        val template = when (board) {
             RX, BX -> boardFile.superScoutTemplate
             else -> boardFile.robotScoutTemplate
         }
+        this.template = template
 
         val pager = pager
-        pagerAdapter = TabPagerAdapter(supportFragmentManager, getScreens()?.size ?: 0, pager)
+        pagerAdapter = TabPagerAdapter(supportFragmentManager, template.screens.size, pager)
         pager.adapter = pagerAdapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
@@ -353,16 +350,25 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private val alphaAnimationOut: Animation = AlphaAnimation(1.0f, 0.0f).apply { duration = kFadeDuration.toLong() }
 
     private fun updateCurrentTab() {
-        val screens = getScreens() ?: return
+        val screens = template!!.screens
+
+        // get the correct title of the tab
         val title = if (currentTab >= 0 && currentTab < screens.size) {
             screens[currentTab].title
         } else if (currentTab == screens.size) {
-            pagerAdapter[currentTab].updateTabState()
             getString(R.string.qr_code_tab)
         } else {
             getString(R.string.unknown_tab)
         }
+
+        // update the tab
+        if (currentTab == screens.size) {
+            pagerAdapter!![currentTab].updateTabState()
+        }
+
         val titleBanner = findViewById<TextView>(R.id.title_banner)
+
+        // animate the title banner
         if (titleBanner.text.toString().isNotEmpty()) {
             alphaAnimationOut.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation) = Unit
