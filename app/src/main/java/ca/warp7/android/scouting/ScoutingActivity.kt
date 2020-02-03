@@ -148,7 +148,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
         for ((index, tag) in tags.withIndex()) {
             layout.addView(CheckBox(this).also { cb ->
-                cb.text = modifyNameForDisplay(tag)
+                cb.text = modifyName(tag)
                 cb.textSize = 18f
                 val typeIndex = template.lookupForTag(index)
                 val lastValue = entry.lastValue(typeIndex)?.value ?: 0
