@@ -50,9 +50,15 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         val eim = entryInMatch
         var varName = name
         if (eim != null && eim.teams.size > 5) {
-            val values = Board.values()
+            val boards = Board.values()
             for (i in 0 until 6) {
-                varName = varName.replace(values[i].name, eim.teams[i].toString())
+                varName = varName.replace(boards[i].name, eim.teams[i].toString())
+            }
+            val relBoards = RelativeBoard.values()
+            for (i in 0 until 6) {
+                val relBoard = relBoards[i]
+                val team = eim.teams[relBoard.relativeTo(eim.board).ordinal].toString()
+                varName = varName.replace(relBoard.name, team)
             }
         }
         return modifyNameForDisplay(varName)
