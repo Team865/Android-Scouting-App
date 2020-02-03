@@ -18,12 +18,15 @@ class SwitchField : FrameLayout, BaseFieldWidget {
     private val red = ContextCompat.getColor(context, R.color.colorRed)
     private val lightGreen = ContextCompat.getColor(context, R.color.colorLightGreen)
     private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
+    private val accent = ContextCompat.getColor(context, R.color.colorAccent)
 
     private var isChecked = false
     private var button: Button? = null
+    private val isLite: Boolean
 
     constructor(context: Context) : super(context) {
         fieldData = null
+        isLite = false
     }
 
     internal constructor(data: FieldData) : super(data.context) {
@@ -41,6 +44,8 @@ class SwitchField : FrameLayout, BaseFieldWidget {
             setOnClickListener { onClick(data) }
             addView(this)
         }
+
+        isLite = data.templateField.options?.contains("lite") ?: false
 
         updateControlState()
     }
@@ -71,7 +76,11 @@ class SwitchField : FrameLayout, BaseFieldWidget {
 
                 if (isChecked) {
                     button.setTextColor(white)
-                    button.background.setColorFilter(red, PorterDuff.Mode.SRC)
+                    if (isLite) {
+                        button.background.setColorFilter(accent, PorterDuff.Mode.SRC)
+                    } else {
+                        button.background.setColorFilter(red, PorterDuff.Mode.SRC)
+                    }
                 } else {
                     button.setTextColor(lightGreen)
                     button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)

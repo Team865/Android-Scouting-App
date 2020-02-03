@@ -147,16 +147,21 @@
           ],
           [
             {
-              "name": "balanced_after_climb",
+              "name": "balanced",
+              "type": "Checkbox",
+              "options": []
+            },
+            {
+              "name": "active_movement",
               "type": "Checkbox",
               "options": []
             }
           ],
           [
             {
-              "name": "active_movement",
-              "type": "Checkbox",
-              "options": []
+              "name": "driver_skill_rating",
+              "type": "MultiToggle",
+              "options": ["1", "2", "3", "4", "5"]
             }
           ]
         ]
@@ -170,7 +175,255 @@
     ]
   },
   "super_scout": {
-    "screens": [],
-    "tags": []
+    "screens": [
+      {
+        "title": "Robot 1",
+        "layout": [
+          [
+            {
+              "name": "A1_defends_O1",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A1_defends_O2",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A1_defends_O3",
+              "type": "Switch",
+              "options": ["lite"]
+            }
+          ],
+          [
+            {
+              "name": "A1_blocking_shots",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A1_following_team",
+              "type": "Switch",
+              "options": ["lite"]
+            }
+          ],
+          [
+            {
+              "name": "A1_defends_cross_field",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A1_defends_mid_field",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A1_defends_close_field",
+              "type": "Switch",
+              "options": ["lite"]
+            }
+          ],
+          [
+            {
+              "name": "A1_defence_rating",
+              "type": "MultiToggle",
+              "options": ["N/A", "1", "2", "3", "4", "5"]
+            }
+          ],
+          [
+            {
+              "name": "A1_resistance_rating",
+              "type": "MultiToggle",
+              "options": ["N/A", "1", "2", "3", "4", "5"]
+            }
+          ]
+        ]
+      },
+      {
+        "title": "Robot 2",
+        "layout": [
+          [
+            {
+              "name": "A2_defends_O1",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A2_defends_O2",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A2_defends_O3",
+              "type": "Switch",
+              "options": ["lite"]
+            }
+          ],
+          [
+            {
+              "name": "A2_blocking_shots",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A2_following_team",
+              "type": "Switch",
+              "options": ["lite"]
+            }
+          ],
+          [
+            {
+              "name": "A2_defends_cross_field",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A2_defends_mid_field",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A2_defends_close_field",
+              "type": "Switch",
+              "options": ["lite"]
+            }
+          ],
+          [
+            {
+              "name": "A2_defence_rating",
+              "type": "MultiToggle",
+              "options": ["N/A", "1", "2", "3", "4", "5"]
+            }
+          ],
+          [
+            {
+              "name": "A2_resistance_rating",
+              "type": "MultiToggle",
+              "options": ["N/A", "1", "2", "3", "4", "5"]
+            }
+          ]
+        ]
+      },
+      {
+        "title": "Robot 3",
+        "layout": [
+          [
+            {
+              "name": "A3_defends_O1",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A3_defends_O2",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A3_defends_O3",
+              "type": "Switch",
+              "options": ["lite"]
+            }
+          ],
+          [
+            {
+              "name": "A3_blocking_shots",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A3_following_team",
+              "type": "Switch",
+              "options": ["lite"]
+            }
+          ],
+          [
+            {
+              "name": "A3_defends_cross_field",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A3_defends_mid_field",
+              "type": "Switch",
+              "options": ["lite"]
+            },
+            {
+              "name": "A3_defends_close_field",
+              "type": "Switch",
+              "options": ["lite"]
+            }
+          ],
+          [
+            {
+              "name": "A3_defence_rating",
+              "type": "MultiToggle",
+              "options": ["N/A", "1", "2", "3", "4", "5"]
+            }
+          ],
+          [
+            {
+              "name": "A3_resistance_rating",
+              "type": "MultiToggle",
+              "options": ["N/A", "1", "2", "3", "4", "5"]
+            }
+          ]
+        ]
+      },
+      {
+        "title": "Buddy climb",
+        "layout": [
+          [
+            {
+              "name": "lifter",
+              "type":"MultiToggle",
+              "options": [
+                "N/A",
+                "A1",
+                "A2",
+                "A3"
+              ]
+            }
+          ],
+          [
+            {
+              "name": "A1_lifted",
+              "type": "Switch",
+              "options": []
+            },
+            {
+              "name": "A2_lifted",
+              "type": "Switch",
+              "options": []
+            },
+            {
+              "name": "A3_lifted",
+              "type": "Switch",
+              "options": []
+            }
+          ],
+          [
+            {
+              "name": "Climb_status",
+              "type": "MultiToggle",
+              "options": [
+                "N/A",
+                "Attempted",
+                "Success",
+                "Failed"
+              ]
+            }
+          ],
+          [],
+          []
+        ]
+      }
+    ],
+    "tags": [
+      "comment_applies_to_A1",
+      "comment_applies_to_A2",
+      "comment_applies_to_A3"
+    ]
   }
 }

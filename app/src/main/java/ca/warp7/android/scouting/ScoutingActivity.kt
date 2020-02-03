@@ -148,7 +148,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
         for ((index, tag) in tags.withIndex()) {
             layout.addView(CheckBox(this).also { cb ->
-                cb.text = modifyNameForDisplay(tag)
+                cb.text = modifyName(tag)
                 cb.textSize = 18f
                 val typeIndex = template.lookupForTag(index)
                 val lastValue = entry.lastValue(typeIndex)?.value ?: 0
@@ -266,8 +266,16 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             RX, BX -> "ALL"
         }
 
+        // special entry team string to encode match schedule with super scouts
+        val entryTeam = when(board) {
+            RX -> teams.joinToString("_")
+            // invert the list order for the blue alliance
+            BX -> (teams.subList(3, 6) + teams.subList(0, 3)).joinToString("_")
+            else -> team
+        }
+
         this.entryInMatch = entryInMatch
-        entry = TimedEntry(match, team, scout, board, getCurrentTime().toInt()) { getRelativeTime() }
+        entry = TimedEntry(match, entryTeam, scout, board, getCurrentTime().toInt()) { getRelativeTime() }
 
         findViewById<TextView>(R.id.toolbar_match).text = match.let {
             val split = it.split("_")
