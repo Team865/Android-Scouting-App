@@ -60,8 +60,8 @@ class ToggleField : LinearLayout, BaseFieldWidget {
         data.templateField.options?.forEachIndexed { i, v ->
             if (v.startsWith("default:")) {
                 defaultPosition = i
-                options.add(v.substring(8))
-            } else options.add(v)
+                options.add(data.scoutingActivity.modifyName(v.substring(8)))
+            } else options.add(data.scoutingActivity.modifyName(v))
         }
 
         toggleSwitch = ToggleSwitchCompat(data.context).apply {

@@ -246,7 +246,7 @@
         "layout": [
           [
             {
-              "name": "A2_defends_O2",
+              "name": "A2_defends_O1",
               "type": "Switch",
               "options": ["lite"]
             },
@@ -294,14 +294,14 @@
             {
               "name": "A2_defence_rating",
               "type": "MultiToggle",
-              "options": ["N/A", "2", "2", "3", "4", "5"]
+              "options": ["N/A", "1", "2", "3", "4", "5"]
             }
           ],
           [
             {
               "name": "A2_resistance_rating",
               "type": "MultiToggle",
-              "options": ["N/A", "2", "2", "3", "4", "5"]
+              "options": ["N/A", "1", "2", "3", "4", "5"]
             }
           ]
         ]
@@ -311,7 +311,7 @@
         "layout": [
           [
             {
-              "name": "A3_defends_O3",
+              "name": "A3_defends_O1",
               "type": "Switch",
               "options": ["lite"]
             },
@@ -359,14 +359,14 @@
             {
               "name": "A3_defence_rating",
               "type": "MultiToggle",
-              "options": ["N/A", "3", "2", "3", "4", "5"]
+              "options": ["N/A", "1", "2", "3", "4", "5"]
             }
           ],
           [
             {
               "name": "A3_resistance_rating",
               "type": "MultiToggle",
-              "options": ["N/A", "3", "2", "3", "4", "5"]
+              "options": ["N/A", "1", "2", "3", "4", "5"]
             }
           ]
         ]
@@ -376,30 +376,30 @@
         "layout": [
           [
             {
-              "name": "Lifter",
+              "name": "lifter",
               "type":"MultiToggle",
               "options": [
                 "N/A",
-                "Robot 1",
-                "Robot 2",
-                "Robot 3"
+                "A1",
+                "A2",
+                "A3"
               ]
             }
           ],
           [
             {
-              "name": "Robot 1",
-              "type": "Checkbox",
+              "name": "A1_lifted",
+              "type": "Switch",
               "options": []
             },
             {
-              "name": "Robot 2",
-              "type": "Checkbox",
+              "name": "A2_lifted",
+              "type": "Switch",
               "options": []
             },
             {
-              "name": "Robot 3",
-              "type": "Checkbox",
+              "name": "A3_lifted",
+              "type": "Switch",
               "options": []
             }
           ],
