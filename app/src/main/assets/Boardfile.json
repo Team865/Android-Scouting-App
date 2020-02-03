@@ -183,46 +183,46 @@
             {
               "name": "A1_defends_O1",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A1_defends_O2",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A1_defends_O3",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             }
           ],
           [
             {
               "name": "A1_blocking_shots",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A1_following_team",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             }
           ],
           [
             {
               "name": "A1_defends_cross_field",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A1_defends_mid_field",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A1_defends_close_field",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             }
           ],
           [
@@ -248,46 +248,46 @@
             {
               "name": "A2_defends_O2",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A2_defends_O2",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A2_defends_O3",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             }
           ],
           [
             {
               "name": "A2_blocking_shots",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A2_following_team",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             }
           ],
           [
             {
               "name": "A2_defends_cross_field",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A2_defends_mid_field",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A2_defends_close_field",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             }
           ],
           [
@@ -313,46 +313,46 @@
             {
               "name": "A3_defends_O3",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A3_defends_O2",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A3_defends_O3",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             }
           ],
           [
             {
               "name": "A3_blocking_shots",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A3_following_team",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             }
           ],
           [
             {
               "name": "A3_defends_cross_field",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A3_defends_mid_field",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A3_defends_close_field",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             }
           ],
           [
@@ -414,7 +414,9 @@
                 "Failed"
               ]
             }
-          ]
+          ],
+          [],
+          []
         ]
       }
     ],
