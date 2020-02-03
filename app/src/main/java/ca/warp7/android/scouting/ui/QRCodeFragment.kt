@@ -22,10 +22,14 @@ import com.google.zxing.WriterException
 
 class QRCodeFragment : Fragment(), ScoutingEntryTab {
 
-
     private var scoutingActivity: BaseScoutingActivity? = null
 
     private var sendButton: Button? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

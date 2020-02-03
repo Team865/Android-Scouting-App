@@ -21,6 +21,11 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
     private var screenTable: ViewGroup? = null
     private var screen: TemplateScreen? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_screen, container, false)
     }
