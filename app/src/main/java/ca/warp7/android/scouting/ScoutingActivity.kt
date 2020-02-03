@@ -15,43 +15,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import ca.warp7.android.scouting.ScoutingActivity.State.*
-import ca.warp7.android.scouting.boardfile.Boardfile
 import ca.warp7.android.scouting.boardfile.ScoutTemplate
-import ca.warp7.android.scouting.boardfile.TemplateScreen
 import ca.warp7.android.scouting.boardfile.createBoardfileFromAssets
-import ca.warp7.android.scouting.entry.Alliance
+import ca.warp7.android.scouting.entry.*
 import ca.warp7.android.scouting.entry.Board.*
-import ca.warp7.android.scouting.entry.DataPoint
-import ca.warp7.android.scouting.entry.MutableEntry
-import ca.warp7.android.scouting.entry.TimedEntry
 import ca.warp7.android.scouting.ui.ActionVibrator
 import ca.warp7.android.scouting.ui.EntryInMatch
 import ca.warp7.android.scouting.ui.TabPagerAdapter
 
 class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
-
-    enum class State {
-        WaitingToStart, TimedScouting, Pausing
-    }
-
-    override fun updateTabStates() {
-        if (currentTab != 0) pagerAdapter[currentTab - 1].updateTabState()
-        pagerAdapter[currentTab].updateTabState()
-        if (currentTab != pagerAdapter.count - 1) pagerAdapter[currentTab + 1].updateTabState()
-    }
-
-    private fun getCurrentTime(): Double {
-        return System.currentTimeMillis() / 1000.0
-    }
-
-    private val vibrator by lazy {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        ActionVibrator(
-            this, sharedPreferences.getBoolean(this.getString(R.string.pref_use_vibration_key), true)
-        )
-    }
-
-    private val handler = Handler()
 
     override fun vibrateAction() {
         vibrator.vibrateAction()
@@ -63,12 +35,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     }
 
     override var entry: MutableEntry? = null
-
-    override var boardfile: Boardfile? = null
     override var template: ScoutTemplate? = null
-
-    private var startTime = 0.0
-    private var relativeTimeAtPause = 0.0 // this is int to make rounding errors easier
 
     override fun getRelativeTime(): Double {
         return when (activityState) {
@@ -78,8 +45,45 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
     }
 
+    @Suppress("RemoveRedundantQualifierName")
+    override fun modifyName(name: String): String {
+        val eim = entryInMatch
+        var varName = name
+        if (eim != null && eim.teams.size > 5) {
+            val boards = Board.values()
+            for (i in 0 until 6) {
+                varName = varName.replace(boards[i].name, eim.teams[i].toString())
+            }
+            val relBoards = RelativeBoard.values()
+            for (i in 0 until 6) {
+                val relBoard = relBoards[i]
+                val team = eim.teams[relBoard.relativeTo(eim.board).ordinal].toString()
+                varName = varName.replace(relBoard.name, team)
+            }
+        }
+        return modifyNameForDisplay(varName)
+    }
+
+    enum class State {
+        WaitingToStart, TimedScouting, Pausing
+    }
+
+    private var startTime = 0.0
+    private var relativeTimeAtPause = 0.0 // this is int to make rounding errors easier
+
+    private fun getCurrentTime(): Double {
+        return System.currentTimeMillis() / 1000.0
+    }
+
     private fun getCurrentToStartTime(): Double {
         return getCurrentTime() - startTime
+    }
+
+    private val vibrator by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        ActionVibrator(
+            this, sharedPreferences.getBoolean(this.getString(R.string.pref_use_vibration_key), true)
+        )
     }
 
     private val timerStatus: TextView get() = findViewById(R.id.timer_status)
@@ -90,24 +94,24 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private val undoButton: ImageButton get() = findViewById(R.id.undo_now_image)
     private val pager: ViewPager get() = findViewById(R.id.pager)
 
-    private lateinit var pagerAdapter: TabPagerAdapter
+    private var pagerAdapter: TabPagerAdapter? = null
 
     private var activityState = WaitingToStart
     private var currentTab = 0
 
     private var entryInMatch: EntryInMatch? = null
 
-    private fun getScreens(): List<TemplateScreen>? {
-        return template?.screens
-    }
-
+    private val handler = Handler()
     private val periodicUpdater = Runnable { periodicUpdate() }
 
+    /**
+     * Updates the timer once every second
+     */
     private fun periodicUpdate() {
         if (activityState == TimedScouting) {
             val relativeTime = getRelativeTime()
             updateActivityStatus(relativeTime.toInt())
-            updateTabStates()
+            updateAdjacentTabState()
 
             // determine if the timer should stop
 
@@ -116,6 +120,20 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             } else {
                 startActivityState(Pausing)
             }
+        }
+    }
+
+    /**
+     * Update all adjacent tabs
+     */
+    private fun updateAdjacentTabState() {
+        val pagerAdapter = pagerAdapter ?: return
+        if (currentTab != 0) {
+            pagerAdapter[currentTab - 1].updateTabState()
+        }
+        pagerAdapter[currentTab].updateTabState()
+        if (currentTab != pagerAdapter.count - 1) {
+            pagerAdapter[currentTab + 1].updateTabState()
         }
     }
 
@@ -181,7 +199,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             startTime = getCurrentTime()
             entry?.timestamp = startTime.toInt()
             startActivityState(TimedScouting)
-            updateTabStates()
+            updateAdjacentTabState()
         }
 
         playAndPauseImage.setOnClickListener {
@@ -196,7 +214,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 val dataPoint = undo()
                 dataPoint?.also {
                     vibrateAction()
-                    updateTabStates()
+                    updateAdjacentTabState()
                 }
             }
         }
@@ -226,13 +244,11 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                         startTime = getCurrentTime() - relativeTimeAtPause
                         // show stuff in the UI
                         updateActivityStatus(progress)
-                        updateTabStates()
+                        updateAdjacentTabState()
                     }
                 }
             })
         }
-
-        boardfile = createBoardfileFromAssets(this)
 
         val scout = intent.getStringExtra(kScoutIntent)
         val entryInMatch = EntryInMatch.fromCSV(intent.getStringExtra(kEntryInMatchIntent))
@@ -268,13 +284,16 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             }
             it.setTextColor(ContextCompat.getColor(this, color))
         }
-        template = when (board) {
-            RX, BX -> boardfile?.superScoutTemplate
-            else -> boardfile?.robotScoutTemplate
+
+        val boardFile = createBoardfileFromAssets(this)
+        val template = when (board) {
+            RX, BX -> boardFile.superScoutTemplate
+            else -> boardFile.robotScoutTemplate
         }
+        this.template = template
 
         val pager = pager
-        pagerAdapter = TabPagerAdapter(supportFragmentManager, getScreens()?.size ?: 0, pager)
+        pagerAdapter = TabPagerAdapter(supportFragmentManager, template.screens.size, pager)
         pager.adapter = pagerAdapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
@@ -347,16 +366,25 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private val alphaAnimationOut: Animation = AlphaAnimation(1.0f, 0.0f).apply { duration = kFadeDuration.toLong() }
 
     private fun updateCurrentTab() {
-        val screens = getScreens() ?: return
+        val screens = template!!.screens
+
+        // get the correct title of the tab
         val title = if (currentTab >= 0 && currentTab < screens.size) {
-            screens.get(currentTab).title
+            screens[currentTab].title
         } else if (currentTab == screens.size) {
-            pagerAdapter[currentTab].updateTabState()
             getString(R.string.qr_code_tab)
         } else {
             getString(R.string.unknown_tab)
         }
+
+        // update the tab
+        if (currentTab == screens.size) {
+            pagerAdapter!![currentTab].updateTabState()
+        }
+
         val titleBanner = findViewById<TextView>(R.id.title_banner)
+
+        // animate the title banner
         if (titleBanner.text.toString().isNotEmpty()) {
             alphaAnimationOut.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation) = Unit

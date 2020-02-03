@@ -2,14 +2,13 @@
 
 package ca.warp7.android.scouting
 
-import ca.warp7.android.scouting.boardfile.Boardfile
 import ca.warp7.android.scouting.boardfile.ScoutTemplate
 import ca.warp7.android.scouting.entry.MutableEntry
 
 interface BaseScoutingActivity {
 
     /**
-     * Relative time
+     * @return the number of seconds since the start of the entry
      */
     fun getRelativeTime(): Double
 
@@ -29,18 +28,12 @@ interface BaseScoutingActivity {
     val entry: MutableEntry?
 
     /**
-     * Boardfile
-     */
-    val boardfile: Boardfile?
-
-    /**
      * Scout template
      */
     val template: ScoutTemplate?
 
     /**
-     * Forces update on the screen
+     * Replaces the template name with the display name
      */
-
-    fun updateTabStates()
+    fun modifyName(name: String): String
 }
