@@ -16,7 +16,7 @@ https://github.com/llollox/Android-Toggle-Switch
  */
 class ToggleField : LinearLayout, BaseFieldWidget {
 
-    override val fieldData: FieldData?
+    private val fieldData: FieldData?
 
     private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
     private val almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)

@@ -11,7 +11,7 @@ import ca.warp7.android.scouting.entry.DataPoint
 
 class CheckboxField : LinearLayout, BaseFieldWidget {
 
-    override val fieldData: FieldData?
+    private val fieldData: FieldData?
     private val checkBox: CheckBox?
 
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)

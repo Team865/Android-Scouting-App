@@ -11,7 +11,7 @@ import ca.warp7.android.scouting.entry.DataPoint
 
 class SwitchField : FrameLayout, BaseFieldWidget {
 
-    override val fieldData: FieldData?
+    private val fieldData: FieldData?
 
     private val white = ContextCompat.getColor(context, R.color.colorWhite)
     private val gray = ContextCompat.getColor(context, R.color.colorGray)

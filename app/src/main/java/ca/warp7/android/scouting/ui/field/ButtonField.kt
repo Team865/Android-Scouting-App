@@ -12,7 +12,7 @@ import ca.warp7.android.scouting.entry.DataPoint
 
 class ButtonField : FrameLayout, BaseFieldWidget {
 
-    override val fieldData: FieldData?
+    private val fieldData: FieldData?
     private val counter: TextView?
     private val button: Button?
 
