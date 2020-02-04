@@ -386,12 +386,12 @@ class MainActivity : AppCompatActivity() {
         displayedEntries.addAll(expectedEntries)
         if (scoutedEntries.isNotEmpty()) {
             displayedEntries.addAll(scoutedEntries)
-            val p = eventInfo.eventKey + "_"
+            val eventPrefix = eventInfo.eventKey + "_"
 
             // sort matches in the correct order
             displayedEntries.sortBy {
-                if (it.match.startsWith(p)) {
-                    it.match.substring(p.length).toIntOrNull() ?: 0
+                if (it.match.startsWith(eventPrefix)) {
+                    it.match.substring(eventPrefix.length).toIntOrNull() ?: 0
                 } else 0
             }
         }
