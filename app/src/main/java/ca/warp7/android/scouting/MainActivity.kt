@@ -325,11 +325,9 @@ class MainActivity : AppCompatActivity() {
 
             // sort matches in the correct order
             displayedEntries.sortBy {
-                it.match.run {
-                    if (startsWith(p)) {
-                        substring(p.length).toIntOrNull() ?: 0
-                    } else 0
-                }
+                if (it.match.startsWith(p)) {
+                    it.match.substring(p.length).toIntOrNull() ?: 0
+                } else 0
             }
         }
         (entriesList.adapter as EntryListAdapter).notifyDataSetChanged()
@@ -383,6 +381,21 @@ class MainActivity : AppCompatActivity() {
         // make sure the keyboard is up
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         dialog.show()
+
+        // get the ok button
+        val ok = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+        ok.isEnabled = false
+
+        val watcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) = Unit
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                ok.isEnabled = matchEdit.text.isNotEmpty() && teamEdit.text.isNotEmpty()
+            }
+        }
+
+        matchEdit.addTextChangedListener(watcher)
+        teamEdit.addTextChangedListener(watcher)
     }
 
     private fun startUnscheduledEntry(match: String, team: String) {
