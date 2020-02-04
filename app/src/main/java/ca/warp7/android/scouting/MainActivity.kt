@@ -1,11 +1,9 @@
 package ca.warp7.android.scouting
 
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.Editable
@@ -17,7 +15,6 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import ca.warp7.android.scouting.entry.Alliance
 import ca.warp7.android.scouting.entry.Board.*
@@ -35,8 +32,6 @@ import kotlin.concurrent.thread
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        // the id to use when requesting permissions
-        private const val MY_PERMISSIONS_REQUEST_FILES = 0
         // the id to use when getting data back from ScoutingActivity
         private const val MY_INTENT_REQUEST_SCOUTING = 1
     }
@@ -68,30 +63,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        initActivityWithPermissions()
-    }
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-    private fun initActivityWithPermissions() {
-        val permission = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(WRITE_EXTERNAL_STORAGE), MY_PERMISSIONS_REQUEST_FILES
-            )
-        } else {
-            initActivity()
-        }
-    }
+        val entryListAdapter = EntryListAdapter(this, displayedEntries)
+        entriesList.adapter = entryListAdapter
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            MY_PERMISSIONS_REQUEST_FILES -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission granted - continue to setup
-                    initActivity()
-                }
-            }
+        boardTextView.setOnClickListener { onSelectBoard(preferences) }
+
+        val boardString = preferences.getString(PreferenceKeys.kBoard, "R1")
+        board = boardString?.toBoard() ?: R1
+        updateBoard()
+
+        scoutTextView.setOnClickListener { onEnterScout(preferences) }
+        entriesList.setOnItemClickListener { _, _, position, _ ->
+            onEntryClicked(entryListAdapter, position)
         }
+        scoutTextView.text = preferences.getString(PreferenceKeys.kScout, "Unknown Scout")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -105,12 +92,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val it = item?.itemId ?: return false
         when (it) {
-            R.id.menu_new_entry -> {
-                onNewEntry()
-            }
-            R.id.menu_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
-            }
+            R.id.menu_new_entry -> onNewEntry()
+            R.id.menu_settings -> startActivity(Intent(this, SettingsActivity::class.java))
         }
         return true
     }
@@ -149,28 +132,6 @@ class MainActivity : AppCompatActivity() {
             // run match schedule getter on a new thread
             thread { updateMatchScheduleInThread(event, key) }
         }
-    }
-
-    /**
-     * Set up the activity when permission is granted
-     */
-    private fun initActivity() {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-
-        val entryListAdapter = EntryListAdapter(this, displayedEntries)
-        entriesList.adapter = entryListAdapter
-
-        boardTextView.setOnClickListener { onSelectBoard(preferences) }
-
-        val boardString = preferences.getString(PreferenceKeys.kBoard, "R1")
-        board = boardString?.toBoard() ?: R1
-        updateBoard()
-
-        scoutTextView.setOnClickListener { onEnterScout(preferences) }
-        entriesList.setOnItemClickListener { _, _, position, _ ->
-            onEntryClicked(entryListAdapter, position)
-        }
-        scoutTextView.text = preferences.getString(PreferenceKeys.kScout, "Unknown Scout")
     }
 
     /**
