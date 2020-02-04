@@ -37,5 +37,6 @@
     </string>
     <string name="version_name">Version:</string>
     <string name="current_event">Current Event: %1$s %2$s</string>
+    <string name="delete_this_entry">Delete This Entry?</string>
 
 </resources>

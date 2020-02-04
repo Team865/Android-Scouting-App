@@ -79,6 +79,9 @@ class MainActivity : AppCompatActivity() {
         entriesList.setOnItemClickListener { _, _, position, _ ->
             onEntryClicked(entryListAdapter, position)
         }
+        entriesList.setOnItemLongClickListener { _, _, position, _ ->
+            onEntryLongClicked(entryListAdapter,position)
+        }
 
         val eventCheck = {
             val key = preferences.getString(PreferenceKeys.kEventKey, "No Key")
@@ -170,7 +173,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun updateMatchScheduleInThread(event: String, key: String) {
         try {
-            // we need to get
+            // we get the tba matches, then sort it
             val matches = createCachedTBAInstance(this).getEventMatchesSimple(key)
                 .filter { it.comp_level == "qm" }
                 .sortedBy { it.match_number }
@@ -184,6 +187,7 @@ class MainActivity : AppCompatActivity() {
                 })
             )
 
+            // reload the scouted entries from disk
             scoutedEntries.clear()
             val entriesFile = File(filesDir, "$key.csv")
             if (entriesFile.exists()) {
@@ -194,7 +198,6 @@ class MainActivity : AppCompatActivity() {
 
             runOnUiThread {
                 supportActionBar?.title = eventInfo.eventName
-
                 updateExpectedItems()
                 updateDisplayedItems()
             }
@@ -252,6 +255,26 @@ class MainActivity : AppCompatActivity() {
                 startScoutingActivity(entryInMatch)
             }
         }
+    }
+
+    /**
+     * Delete a scouted entry
+     */
+    private fun onEntryLongClicked(adapter: EntryListAdapter, position: Int): Boolean {
+        val entryInMatch = adapter.getItem(position) ?: return false
+        if (!entryInMatch.isComplete) return false
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.delete_this_entry))
+            .setMessage(entryInMatch.data)
+            .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.dismiss()}
+            .setPositiveButton(getString(R.string.button_ok)) { dialog, _ ->
+                scoutedEntries.remove(entryInMatch)
+                updateDisplayedItems()
+                dialog.dismiss()
+            }
+            .create()
+        dialog.show()
+        return true
     }
 
     private fun onSelectBoard(preferences: SharedPreferences) {
