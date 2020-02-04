@@ -362,7 +362,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onNewEntry() {
-        if (board == RX || board == BX) return
         val layout = LinearLayout(this)
         layout.orientation = LinearLayout.VERTICAL
         layout.setPadding(16, 8, 16, 0)
@@ -429,7 +428,10 @@ class MainActivity : AppCompatActivity() {
 
         val teamNumber = team.toInt()
         val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
-        mutableTeams[values().indexOf(board)] = teamNumber
+
+        if (board != RX && board != BX) {
+            mutableTeams[values().indexOf(board)] = teamNumber
+        }
 
         val entryInMatch = EntryInMatch(
             matchKey,
