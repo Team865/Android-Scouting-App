@@ -11,7 +11,8 @@ import javax.net.ssl.HttpsURLConnection
  */
 class TBA(
     private val authKey: String,
-    private val cacheRoot: File
+    private val cacheRoot: File,
+    private val cacheFirst: Boolean
 ) {
 
     private fun getTBAStringNoCache(requestURL: String): String {
@@ -25,21 +26,30 @@ class TBA(
     }
 
     private fun getTBAString(requestURL: String): String {
-        try {
-            // Get rid of the slash
-            val strippedURL = requestURL.substring(1) + ".json"
+        // Get rid of the slash
+        val strippedURL = requestURL.substring(1) + ".json"
 
-            val cacheFile = File(cacheRoot, strippedURL)
-            if (cacheFile.exists()) {
-                return String(cacheFile.inputStream().use { stream -> stream.readBytes() })
-            }
+        val cacheFile = File(cacheRoot, strippedURL)
+
+        if (cacheFirst && cacheFile.exists()) {
+            return cacheFile.readText()
+        }
+
+        return try {
             val result = getTBAStringNoCache(requestURL)
+
             // make sure we have the parent directories made
             cacheFile.parentFile?.mkdirs()
-            cacheFile.outputStream().use { stream -> stream.write(result.toByteArray()) }
-            return result
-        } catch (e: Throwable) {
-            throw e
+            cacheFile.writeText(result)
+
+            result
+        } catch (e: Exception) {
+
+            if (!cacheFirst && cacheFile.exists()) {
+                cacheFile.readText()
+            } else {
+                throw e
+            }
         }
     }
 

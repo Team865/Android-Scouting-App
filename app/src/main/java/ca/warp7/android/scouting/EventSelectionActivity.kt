@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import ca.warp7.android.scouting.tba.EventSimple
+import ca.warp7.android.scouting.tba.createCachedTBAInstance
 import ca.warp7.android.scouting.tba.getEventMatchesSimple
 import ca.warp7.android.scouting.tba.getTeamEventsByYearSimple
 import ca.warp7.android.scouting.ui.EventListAdapter
@@ -33,7 +34,7 @@ class EventSelectionActivity : AppCompatActivity() {
         val teamSearch = findViewById<EditText>(R.id.team_search)
         val yearEdit = findViewById<EditText>(R.id.year)
         teamSearch.setOnEditorActionListener { textView, _, _ ->
-            onSearch(textView, yearEdit)
+            onSearch(textView, yearEdit, cacheFirst = false)
             true
         }
 
@@ -56,7 +57,7 @@ class EventSelectionActivity : AppCompatActivity() {
 
         if (teamNumber.isNotEmpty()) {
             // show previous results
-            onSearch(teamSearch, yearEdit)
+            onSearch(teamSearch, yearEdit, cacheFirst = true)
         }
     }
 
@@ -81,8 +82,12 @@ class EventSelectionActivity : AppCompatActivity() {
                     .apply()
                 thread {
                     // pre-fetch the event matches so it's cached
-                    // we don't process anything here
-                    createCachedTBAInstance(this).getEventMatchesSimple(event.key)
+                    // we don't process anything here. Make sure to catch errors
+                    try {
+                        createCachedTBAInstance(this, cacheFirst = false)
+                            .getEventMatchesSimple(event.key)
+                    } catch (ignored: Exception) {
+                    }
                 }
                 dialog.dismiss()
 
@@ -96,7 +101,7 @@ class EventSelectionActivity : AppCompatActivity() {
             .create().show()
     }
 
-    private fun onSearch(textView: TextView, yearEdit: EditText) {
+    private fun onSearch(textView: TextView, yearEdit: EditText, cacheFirst: Boolean) {
         val teamNumber = textView.text.toString()
 
         // https://stackoverflow.com/questions/1109022/close-hide-android-soft-keyboard
@@ -114,7 +119,7 @@ class EventSelectionActivity : AppCompatActivity() {
 
         thread {
             try {
-                val result = createCachedTBAInstance(this)
+                val result = createCachedTBAInstance(this, cacheFirst)
                     .getTeamEventsByYearSimple("frc$teamNumber", year)
                     .sortedBy { it.start_date }
                 // update the events on the UI thread
