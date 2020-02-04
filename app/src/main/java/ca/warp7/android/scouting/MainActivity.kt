@@ -74,11 +74,30 @@ class MainActivity : AppCompatActivity() {
         board = boardString?.toBoard() ?: R1
         updateBoard()
 
-        scoutTextView.setOnClickListener { onEnterScout(preferences) }
+        scoutTextView.setOnClickListener { onEnterScout(preferences, null) }
         entriesList.setOnItemClickListener { _, _, position, _ ->
             onEntryClicked(entryListAdapter, position)
         }
-        scoutTextView.text = preferences.getString(PreferenceKeys.kScout, "Unknown Scout")
+
+        val eventCheck = {
+            val key = preferences.getString(PreferenceKeys.kEventKey, "No Key")
+            val event = preferences.getString(PreferenceKeys.kEventName, "No Event")
+
+            if (key == null || event == null || key == eventInfo.eventKey) {
+                startActivity(Intent(this, EventSelectionActivity::class.java))
+            }
+        }
+
+        val scoutPref = preferences.getString(PreferenceKeys.kScout, null)
+        if (scoutPref != null) {
+            scoutTextView.text = scoutPref
+            eventCheck()
+        } else {
+            val scoutName = "Unknown Scout"
+            scoutTextView.text = scoutName
+            onEnterScout(preferences, eventCheck)
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -239,7 +258,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Create a dialog to let the scout enter their name
      */
-    private fun onEnterScout(preferences: SharedPreferences) {
+    private fun onEnterScout(preferences: SharedPreferences, nextStep: (() -> Unit)?) {
         // create the edit text component
         val input = EditText(this).apply {
             inputType = InputType.TYPE_CLASS_TEXT
@@ -280,6 +299,8 @@ class MainActivity : AppCompatActivity() {
                 apply()
             }
             dialog.dismiss()
+            // execute the next step
+            nextStep?.invoke()
         }
         ok.isEnabled = validateName(input.text.toString())
 
