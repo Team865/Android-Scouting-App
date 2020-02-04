@@ -75,7 +75,7 @@ class QRCodeFragment : Fragment(), ScoutingEntryTab {
         }
     }
 
-    private var prevSize = 0
+    private var prevSize = -1
     private var prevComment = ""
     private var message = " "
 
@@ -86,6 +86,7 @@ class QRCodeFragment : Fragment(), ScoutingEntryTab {
         if (newSize != prevSize || prevComment != comment) {
             message = entry.getEncoded()
             sendButton?.text = message
+            prevSize = newSize
             view?.let { setQRImage(it) }
         }
     }
