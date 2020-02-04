@@ -26,6 +26,7 @@ import ca.warp7.android.scouting.ui.EntryInMatch
 import ca.warp7.android.scouting.ui.EntryListAdapter
 import ca.warp7.android.scouting.ui.createQRBitmap
 import com.google.zxing.WriterException
+import java.io.File
 import kotlin.concurrent.thread
 
 
@@ -132,11 +133,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * The match schedule stuff is in onResume because the activity must be updated
+     * The match schedule stuff is in onStart because the activity must be updated
      * when the user returns from the settings screen
      */
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val key = preferences.getString(PreferenceKeys.kEventKey, "No Key")
         val event = preferences.getString(PreferenceKeys.kEventName, "No Event")
@@ -150,6 +151,17 @@ class MainActivity : AppCompatActivity() {
             }
             // run match schedule getter on a new thread
             thread { updateMatchScheduleInThread(event, key) }
+        }
+    }
+
+    /**
+     * Save the scouted entries before pausing the activity
+     */
+    override fun onStop() {
+        super.onStop()
+        if (scoutedEntries.isNotEmpty()) {
+            val entriesFile = File(filesDir, eventInfo.eventKey + ".csv")
+            entriesFile.writeText(scoutedEntries.joinToString("\n") { it.toCSV() })
         }
     }
 
@@ -171,6 +183,15 @@ class MainActivity : AppCompatActivity() {
                             match.alliances.blue!!.team_keys!!.map { it.substring(3).toInt() }
                 })
             )
+
+            scoutedEntries.clear()
+            val entriesFile = File(filesDir, "$key.csv")
+            if (entriesFile.exists()) {
+                val lines = entriesFile.readLines()
+                val data = lines.map { EntryInMatch.fromCSV(it) }
+                scoutedEntries.addAll(data)
+            }
+
             runOnUiThread {
                 supportActionBar?.title = eventInfo.eventName
 
