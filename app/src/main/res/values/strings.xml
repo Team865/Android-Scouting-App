@@ -38,5 +38,8 @@
     <string name="version_name">Version:</string>
     <string name="current_event">Current Event: %1$s %2$s</string>
     <string name="delete_this_entry">Delete This Entry?</string>
+    <string name="scout_input_hint">First L</string>
+    <string name="scout_input_title">Enter Name</string>
+    <string name="select_board_title">Select Board</string>
 
 </resources>

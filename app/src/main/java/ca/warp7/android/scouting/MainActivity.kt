@@ -84,8 +84,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         val eventCheck = {
-            val key = preferences.getString(PreferenceKeys.kEventKey, "No Key")
-            val event = preferences.getString(PreferenceKeys.kEventName, "No Event")
+            val key = preferences.getString(PreferenceKeys.kEventKey, null)
+            val event = preferences.getString(PreferenceKeys.kEventName, null)
 
             if (key == null || event == null || key == eventInfo.eventKey) {
                 startActivity(Intent(this, EventSelectionActivity::class.java))
@@ -142,8 +142,8 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val key = preferences.getString(PreferenceKeys.kEventKey, "No Key")
-        val event = preferences.getString(PreferenceKeys.kEventName, "No Event")
+        val key = preferences.getString(PreferenceKeys.kEventKey, null)
+        val event = preferences.getString(PreferenceKeys.kEventName, null)
 
         // only regenerate match schedule if the key is different
         if (key != null && event != null && key != eventInfo.eventKey) {
@@ -279,7 +279,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onSelectBoard(preferences: SharedPreferences) {
         AlertDialog.Builder(this)
-            .setTitle("Select board")
+            .setTitle(getString(R.string.select_board_title))
             .setIcon(R.drawable.ic_book_ablack_small)
             .setSingleChoiceItems(
                 values().map { it.displayName }.toTypedArray(),
@@ -310,7 +310,7 @@ class MainActivity : AppCompatActivity() {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            hint = "First L"
+            hint = getString(R.string.scout_input_hint)
             // add an icon
             setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_account_box_ablack_small, 0, 0, 0)
             compoundDrawablePadding = 16
@@ -324,10 +324,10 @@ class MainActivity : AppCompatActivity() {
 
         // create the dialog
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Enter Name")
+            .setTitle(getString(R.string.scout_input_title))
             .setView(layout)
-            .setPositiveButton("OK") { _, _ -> }
-            .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+            .setPositiveButton(getString(R.string.button_ok)) { _, _ -> }
+            .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.cancel() }
             .create()
 
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
