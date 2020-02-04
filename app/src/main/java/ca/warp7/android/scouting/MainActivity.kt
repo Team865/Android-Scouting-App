@@ -173,23 +173,23 @@ class MainActivity : AppCompatActivity() {
      * Called when an entry is clicked in the list
      */
     private fun onEntryClicked(adapter: EntryListAdapter, position: Int) {
-        val item = adapter.getItem(position) ?: return
-        if (item.isComplete && item.data.isNotEmpty()) {
+        val entryInMatch = adapter.getItem(position) ?: return
+        if (entryInMatch.isComplete && entryInMatch.data.isNotEmpty()) {
             // we show the data in a qr code dialog
             val qrImage = ImageView(this)
             qrImage.setPadding(16, 0, 16, 0)
 
             // create the dialog
             val dialog = AlertDialog.Builder(this)
-                .setTitle(item.match)
+                .setTitle(entryInMatch.match)
                 .setView(qrImage)
                 .setNeutralButton(getString(R.string.send_with)) { _, _ ->
 
                     // Send with an intent
                     val intent = Intent(Intent.ACTION_SEND)
-                    intent.putExtra(Intent.EXTRA_TEXT, item.data)
+                    intent.putExtra(Intent.EXTRA_TEXT, entryInMatch.data)
                     intent.type = "text/plain"
-                    startActivity(Intent.createChooser(intent, item.data))
+                    startActivity(Intent.createChooser(intent, entryInMatch.data))
                 }
                 .setPositiveButton(getString(R.string.button_ok)) { dialog, _ -> dialog.dismiss() }
                 .create()
@@ -198,7 +198,7 @@ class MainActivity : AppCompatActivity() {
             dialog.setOnShowListener {
                 val dim = dialog.window?.decorView?.width ?: 0
                 try {
-                    qrImage.setImageBitmap(createQRBitmap(item.data, dim))
+                    qrImage.setImageBitmap(createQRBitmap(entryInMatch.data, dim))
                 } catch (e: WriterException) {
                     qrImage.setImageDrawable(getDrawable(R.drawable.ic_launcher_background))
                     e.printStackTrace()
@@ -207,9 +207,9 @@ class MainActivity : AppCompatActivity() {
 
             dialog.show()
         } else {
-            if (item.teams.size > 5) {
+            if (entryInMatch.teams.size > 5) {
                 // actually start scouting the entry
-                startScoutingActivity(item)
+                startScoutingActivity(entryInMatch)
             }
         }
     }
@@ -373,21 +373,9 @@ class MainActivity : AppCompatActivity() {
             .setTitle(getString(R.string.add_new_entry))
             .setView(layout)
             .setPositiveButton(getString(R.string.button_ok)) { _, _ ->
-                val matchKey = "${eventInfo.eventKey}_${matchEdit.text}"
-                // start scouting when ok
-
-                val team = teamEdit.text.toString().toInt()
-                val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
-                mutableTeams[values().indexOf(board)] = team
-
-                val entryInMatch = EntryInMatch(
-                    matchKey,
-                    mutableTeams,
-                    board,
-                    isComplete = false,
-                    isScheduled = false
-                )
-                startScoutingActivity(entryInMatch)
+                val matchText = matchEdit.text.toString()
+                val teamText = teamEdit.text.toString()
+                startUnscheduledEntry(matchText, teamText)
             }
             .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.dismiss() }
             .create()
@@ -395,6 +383,28 @@ class MainActivity : AppCompatActivity() {
         // make sure the keyboard is up
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         dialog.show()
+    }
+
+    private fun startUnscheduledEntry(match: String, team: String) {
+
+        if (match.isEmpty() || team.isEmpty()) {
+            return
+        }
+
+        val matchKey = "${eventInfo.eventKey}_$match"
+
+        val teamNumber = team.toInt()
+        val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
+        mutableTeams[values().indexOf(board)] = teamNumber
+
+        val entryInMatch = EntryInMatch(
+            matchKey,
+            mutableTeams,
+            board,
+            isComplete = false,
+            isScheduled = false
+        )
+        startScoutingActivity(entryInMatch)
     }
 
     private fun processScoutingActivityResult(intent: Intent) {
