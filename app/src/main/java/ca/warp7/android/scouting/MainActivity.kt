@@ -1,11 +1,9 @@
 package ca.warp7.android.scouting
 
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.Editable
@@ -17,7 +15,6 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import ca.warp7.android.scouting.entry.Alliance
 import ca.warp7.android.scouting.entry.Board.*
@@ -29,14 +26,13 @@ import ca.warp7.android.scouting.ui.EntryInMatch
 import ca.warp7.android.scouting.ui.EntryListAdapter
 import ca.warp7.android.scouting.ui.createQRBitmap
 import com.google.zxing.WriterException
+import java.io.File
 import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        // the id to use when requesting permissions
-        private const val MY_PERMISSIONS_REQUEST_FILES = 0
         // the id to use when getting data back from ScoutingActivity
         private const val MY_INTENT_REQUEST_SCOUTING = 1
     }
@@ -68,30 +64,44 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        initActivityWithPermissions()
-    }
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-    private fun initActivityWithPermissions() {
-        val permission = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(WRITE_EXTERNAL_STORAGE), MY_PERMISSIONS_REQUEST_FILES
-            )
-        } else {
-            initActivity()
+        val entryListAdapter = EntryListAdapter(this, displayedEntries)
+        entriesList.adapter = entryListAdapter
+
+        boardTextView.setOnClickListener { onSelectBoard(preferences) }
+
+        val boardString = preferences.getString(PreferenceKeys.kBoard, "R1")
+        board = boardString?.toBoard() ?: R1
+        updateBoard()
+
+        scoutTextView.setOnClickListener { onEnterScout(preferences, null) }
+        entriesList.setOnItemClickListener { _, _, position, _ ->
+            onEntryClicked(entryListAdapter, position)
         }
-    }
+        entriesList.setOnItemLongClickListener { _, _, position, _ ->
+            onEntryLongClicked(entryListAdapter,position)
+        }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            MY_PERMISSIONS_REQUEST_FILES -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission granted - continue to setup
-                    initActivity()
-                }
+        val eventCheck = {
+            val key = preferences.getString(PreferenceKeys.kEventKey, null)
+            val event = preferences.getString(PreferenceKeys.kEventName, null)
+
+            if (key == null || event == null || key == eventInfo.eventKey) {
+                startActivity(Intent(this, EventSelectionActivity::class.java))
             }
         }
+
+        val scoutPref = preferences.getString(PreferenceKeys.kScout, null)
+        if (scoutPref != null) {
+            scoutTextView.text = scoutPref
+            eventCheck()
+        } else {
+            val scoutName = "Unknown Scout"
+            scoutTextView.text = scoutName
+            onEnterScout(preferences, eventCheck)
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -105,12 +115,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val it = item?.itemId ?: return false
         when (it) {
-            R.id.menu_new_entry -> {
-                onNewEntry()
-            }
-            R.id.menu_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
-            }
+            R.id.menu_new_entry -> onNewEntry()
+            R.id.menu_settings -> startActivity(Intent(this, SettingsActivity::class.java))
         }
         return true
     }
@@ -130,14 +136,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * The match schedule stuff is in onResume because the activity must be updated
+     * The match schedule stuff is in onStart because the activity must be updated
      * when the user returns from the settings screen
      */
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val key = preferences.getString(PreferenceKeys.kEventKey, "No Key")
-        val event = preferences.getString(PreferenceKeys.kEventName, "No Event")
+        val key = preferences.getString(PreferenceKeys.kEventKey, null)
+        val event = preferences.getString(PreferenceKeys.kEventName, null)
 
         // only regenerate match schedule if the key is different
         if (key != null && event != null && key != eventInfo.eventKey) {
@@ -152,25 +158,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Set up the activity when permission is granted
+     * Save the scouted entries before pausing the activity
      */
-    private fun initActivity() {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-
-        val entryListAdapter = EntryListAdapter(this, displayedEntries)
-        entriesList.adapter = entryListAdapter
-
-        boardTextView.setOnClickListener { onSelectBoard(preferences) }
-
-        val boardString = preferences.getString(PreferenceKeys.kBoard, "R1")
-        board = boardString?.toBoard() ?: R1
-        updateBoard()
-
-        scoutTextView.setOnClickListener { onEnterScout(preferences) }
-        entriesList.setOnItemClickListener { _, _, position, _ ->
-            onEntryClicked(entryListAdapter, position)
+    override fun onStop() {
+        super.onStop()
+        if (scoutedEntries.isNotEmpty()) {
+            val entriesFile = File(filesDir, eventInfo.eventKey + ".csv")
+            entriesFile.writeText(scoutedEntries.joinToString("\n") { it.toCSV() })
         }
-        scoutTextView.text = preferences.getString(PreferenceKeys.kScout, "Unknown Scout")
     }
 
     /**
@@ -178,7 +173,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun updateMatchScheduleInThread(event: String, key: String) {
         try {
-            // we need to get
+            // we get the tba matches, then sort it
             val matches = createCachedTBAInstance(this).getEventMatchesSimple(key)
                 .filter { it.comp_level == "qm" }
                 .sortedBy { it.match_number }
@@ -191,9 +186,18 @@ class MainActivity : AppCompatActivity() {
                             match.alliances.blue!!.team_keys!!.map { it.substring(3).toInt() }
                 })
             )
+
+            // reload the scouted entries from disk
+            scoutedEntries.clear()
+            val entriesFile = File(filesDir, "$key.csv")
+            if (entriesFile.exists()) {
+                val lines = entriesFile.readLines()
+                val data = lines.map { EntryInMatch.fromCSV(it) }
+                scoutedEntries.addAll(data)
+            }
+
             runOnUiThread {
                 supportActionBar?.title = eventInfo.eventName
-
                 updateExpectedItems()
                 updateDisplayedItems()
             }
@@ -212,23 +216,23 @@ class MainActivity : AppCompatActivity() {
      * Called when an entry is clicked in the list
      */
     private fun onEntryClicked(adapter: EntryListAdapter, position: Int) {
-        val item = adapter.getItem(position) ?: return
-        if (item.isComplete && item.data.isNotEmpty()) {
+        val entryInMatch = adapter.getItem(position) ?: return
+        if (entryInMatch.isComplete && entryInMatch.data.isNotEmpty()) {
             // we show the data in a qr code dialog
             val qrImage = ImageView(this)
             qrImage.setPadding(16, 0, 16, 0)
 
             // create the dialog
             val dialog = AlertDialog.Builder(this)
-                .setTitle(item.match)
+                .setTitle(entryInMatch.match)
                 .setView(qrImage)
                 .setNeutralButton(getString(R.string.send_with)) { _, _ ->
 
                     // Send with an intent
                     val intent = Intent(Intent.ACTION_SEND)
-                    intent.putExtra(Intent.EXTRA_TEXT, item.data)
+                    intent.putExtra(Intent.EXTRA_TEXT, entryInMatch.data)
                     intent.type = "text/plain"
-                    startActivity(Intent.createChooser(intent, item.data))
+                    startActivity(Intent.createChooser(intent, entryInMatch.data))
                 }
                 .setPositiveButton(getString(R.string.button_ok)) { dialog, _ -> dialog.dismiss() }
                 .create()
@@ -237,7 +241,7 @@ class MainActivity : AppCompatActivity() {
             dialog.setOnShowListener {
                 val dim = dialog.window?.decorView?.width ?: 0
                 try {
-                    qrImage.setImageBitmap(createQRBitmap(item.data, dim))
+                    qrImage.setImageBitmap(createQRBitmap(entryInMatch.data, dim))
                 } catch (e: WriterException) {
                     qrImage.setImageDrawable(getDrawable(R.drawable.ic_launcher_background))
                     e.printStackTrace()
@@ -246,16 +250,36 @@ class MainActivity : AppCompatActivity() {
 
             dialog.show()
         } else {
-            if (item.teams.size > 5) {
+            if (entryInMatch.teams.size > 5) {
                 // actually start scouting the entry
-                startScoutingActivity(item)
+                startScoutingActivity(entryInMatch)
             }
         }
     }
 
+    /**
+     * Delete a scouted entry
+     */
+    private fun onEntryLongClicked(adapter: EntryListAdapter, position: Int): Boolean {
+        val entryInMatch = adapter.getItem(position) ?: return false
+        if (!entryInMatch.isComplete) return false
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.delete_this_entry))
+            .setMessage(entryInMatch.data)
+            .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.dismiss()}
+            .setPositiveButton(getString(R.string.button_ok)) { dialog, _ ->
+                scoutedEntries.remove(entryInMatch)
+                updateDisplayedItems()
+                dialog.dismiss()
+            }
+            .create()
+        dialog.show()
+        return true
+    }
+
     private fun onSelectBoard(preferences: SharedPreferences) {
         AlertDialog.Builder(this)
-            .setTitle("Select board")
+            .setTitle(getString(R.string.select_board_title))
             .setIcon(R.drawable.ic_book_ablack_small)
             .setSingleChoiceItems(
                 values().map { it.displayName }.toTypedArray(),
@@ -278,7 +302,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Create a dialog to let the scout enter their name
      */
-    private fun onEnterScout(preferences: SharedPreferences) {
+    private fun onEnterScout(preferences: SharedPreferences, nextStep: (() -> Unit)?) {
         // create the edit text component
         val input = EditText(this).apply {
             inputType = InputType.TYPE_CLASS_TEXT
@@ -286,7 +310,7 @@ class MainActivity : AppCompatActivity() {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            hint = "First L"
+            hint = getString(R.string.scout_input_hint)
             // add an icon
             setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_account_box_ablack_small, 0, 0, 0)
             compoundDrawablePadding = 16
@@ -300,10 +324,10 @@ class MainActivity : AppCompatActivity() {
 
         // create the dialog
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Enter Name")
+            .setTitle(getString(R.string.scout_input_title))
             .setView(layout)
-            .setPositiveButton("OK") { _, _ -> }
-            .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+            .setPositiveButton(getString(R.string.button_ok)) { _, _ -> }
+            .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.cancel() }
             .create()
 
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
@@ -319,6 +343,8 @@ class MainActivity : AppCompatActivity() {
                 apply()
             }
             dialog.dismiss()
+            // execute the next step
+            nextStep?.invoke()
         }
         ok.isEnabled = validateName(input.text.toString())
 
@@ -360,15 +386,13 @@ class MainActivity : AppCompatActivity() {
         displayedEntries.addAll(expectedEntries)
         if (scoutedEntries.isNotEmpty()) {
             displayedEntries.addAll(scoutedEntries)
-            val p = eventInfo.eventKey + "_"
+            val eventPrefix = eventInfo.eventKey + "_"
 
             // sort matches in the correct order
             displayedEntries.sortBy {
-                it.match.run {
-                    if (startsWith(p)) {
-                        substring(p.length).toIntOrNull() ?: 0
-                    } else 0
-                }
+                if (it.match.startsWith(eventPrefix)) {
+                    it.match.substring(eventPrefix.length).toIntOrNull() ?: 0
+                } else 0
             }
         }
         (entriesList.adapter as EntryListAdapter).notifyDataSetChanged()
@@ -382,7 +406,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onNewEntry() {
-        if (board == RX || board == BX) return
         val layout = LinearLayout(this)
         layout.orientation = LinearLayout.VERTICAL
         layout.setPadding(16, 8, 16, 0)
@@ -412,21 +435,9 @@ class MainActivity : AppCompatActivity() {
             .setTitle(getString(R.string.add_new_entry))
             .setView(layout)
             .setPositiveButton(getString(R.string.button_ok)) { _, _ ->
-                val matchKey = "${eventInfo.eventKey}_${matchEdit.text}"
-                // start scouting when ok
-
-                val team = teamEdit.text.toString().toInt()
-                val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
-                mutableTeams[values().indexOf(board)] = team
-
-                val entryInMatch = EntryInMatch(
-                    matchKey,
-                    mutableTeams,
-                    board,
-                    isComplete = false,
-                    isScheduled = false
-                )
-                startScoutingActivity(entryInMatch)
+                val matchText = matchEdit.text.toString()
+                val teamText = teamEdit.text.toString()
+                startUnscheduledEntry(matchText, teamText)
             }
             .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.dismiss() }
             .create()
@@ -434,6 +445,46 @@ class MainActivity : AppCompatActivity() {
         // make sure the keyboard is up
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         dialog.show()
+
+        // get the ok button
+        val ok = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+        ok.isEnabled = false
+
+        val watcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) = Unit
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                ok.isEnabled = matchEdit.text.isNotEmpty() && teamEdit.text.isNotEmpty()
+            }
+        }
+
+        matchEdit.addTextChangedListener(watcher)
+        teamEdit.addTextChangedListener(watcher)
+    }
+
+    private fun startUnscheduledEntry(match: String, team: String) {
+
+        if (match.isEmpty() || team.isEmpty()) {
+            return
+        }
+
+        val matchKey = "${eventInfo.eventKey}_$match"
+
+        val teamNumber = team.toInt()
+        val mutableTeams = mutableListOf(0, 0, 0, 0, 0, 0)
+
+        if (board != RX && board != BX) {
+            mutableTeams[values().indexOf(board)] = teamNumber
+        }
+
+        val entryInMatch = EntryInMatch(
+            matchKey,
+            mutableTeams,
+            board,
+            isComplete = false,
+            isScheduled = false
+        )
+        startScoutingActivity(entryInMatch)
     }
 
     private fun processScoutingActivityResult(intent: Intent) {
