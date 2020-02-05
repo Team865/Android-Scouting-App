@@ -6,10 +6,6 @@ import android.os.VibrationEffect
 import android.os.VibrationEffect.DEFAULT_AMPLITUDE
 import android.os.Vibrator
 
-/**
- * @since v0.4.1
- */
-
 class ActionVibrator(
     context: Context,
     private val mVibrationOn: Boolean

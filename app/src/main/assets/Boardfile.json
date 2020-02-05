@@ -390,17 +390,17 @@
             {
               "name": "A1_lifted",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A2_lifted",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             },
             {
               "name": "A3_lifted",
               "type": "Switch",
-              "options": []
+              "options": ["lite"]
             }
           ],
           [

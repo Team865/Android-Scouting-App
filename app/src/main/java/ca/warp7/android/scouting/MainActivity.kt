@@ -21,6 +21,7 @@ import ca.warp7.android.scouting.entry.Board.*
 import ca.warp7.android.scouting.entry.toBoard
 import ca.warp7.android.scouting.event.EventInfo
 import ca.warp7.android.scouting.event.MatchSchedule
+import ca.warp7.android.scouting.tba.createCachedTBAInstance
 import ca.warp7.android.scouting.tba.getEventMatchesSimple
 import ca.warp7.android.scouting.ui.EntryInMatch
 import ca.warp7.android.scouting.ui.EntryListAdapter
@@ -174,7 +175,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateMatchScheduleInThread(event: String, key: String) {
         try {
             // we get the tba matches, then sort it
-            val matches = createCachedTBAInstance(this).getEventMatchesSimple(key)
+            val matches = createCachedTBAInstance(this, cacheFirst = true)
+                .getEventMatchesSimple(key)
                 .filter { it.comp_level == "qm" }
                 .sortedBy { it.match_number }
 

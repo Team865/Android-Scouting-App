@@ -11,7 +11,7 @@ import ca.warp7.android.scouting.entry.DataPoint
 
 class SwitchField : FrameLayout, BaseFieldWidget {
 
-    override val fieldData: FieldData?
+    private val fieldData: FieldData?
 
     private val white = ContextCompat.getColor(context, R.color.colorWhite)
     private val gray = ContextCompat.getColor(context, R.color.colorGray)
@@ -52,7 +52,7 @@ class SwitchField : FrameLayout, BaseFieldWidget {
 
     private fun onClick(data: FieldData) {
         val activity = data.scoutingActivity
-        if (activity.isTimeEnabled()) {
+        if (activity.isTimeEnabled() || isLite) {
             activity.vibrateAction()
             val entry = activity.entry
             if (entry != null) {
@@ -67,11 +67,11 @@ class SwitchField : FrameLayout, BaseFieldWidget {
         val fieldData = fieldData ?: return
         val button = button ?: return
 
-        if (fieldData.scoutingActivity.isTimeEnabled()) {
+        if (fieldData.scoutingActivity.isTimeEnabled() || isLite) {
             button.isEnabled = true
             val entry = fieldData.scoutingActivity.entry
             if (entry != null) {
-                val lastDP  = entry.lastValue(fieldData.typeIndex)
+                val lastDP = entry.lastValue(fieldData.typeIndex)
                 isChecked = if (lastDP != null) lastDP.value == 1 else false
 
                 if (isChecked) {
