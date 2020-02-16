@@ -21,7 +21,7 @@ fun deserializeBoardfile(json: String): Boardfile {
     )
 }
 
-private inline fun <T> JSONArray.mapToList(func: (Any?) -> T): List<T> {
+internal inline fun <T> JSONArray.mapToList(func: (Any?) -> T): List<T> {
     val list = ArrayList<T>()
     var i = 0
     val len = length()
@@ -52,8 +52,8 @@ private fun JSONObject.toScreen(): TemplateScreen {
 
 private fun JSONObject.toField(): TemplateField {
     return TemplateField(
+        this,
         getString("name"),
-        FieldType.valueOf(getString("type")),
-        getJSONArray("options").mapToList { it as String }
+        FieldType.valueOf(getString("type"))
     )
 }

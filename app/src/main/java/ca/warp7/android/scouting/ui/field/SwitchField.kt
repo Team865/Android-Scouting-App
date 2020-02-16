@@ -45,7 +45,7 @@ class SwitchField : FrameLayout, BaseFieldWidget {
             addView(this)
         }
 
-        isLite = data.templateField.options?.contains("lite") ?: false
+        isLite = data.templateField.json.optBoolean("is_lite", false)
 
         updateControlState()
     }

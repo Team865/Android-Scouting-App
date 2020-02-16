@@ -1,6 +1,6 @@
 {
   "year": 2020,
-  "revision": 4,
+  "revision": 5,
   "robot_scout": {
     "screens": [
       {
@@ -9,52 +9,45 @@
           [
             {
               "name": "trench_intake",
-              "type": "Button",
-              "options": []
+              "type": "Button"
             },
             {
-              "name": "fed",
-              "type": "Button",
-              "options": []
+              "name": "fed_by_robot",
+              "type": "Button"
             },
             {
               "name": "other_intake",
-              "type": "Button",
-              "options": []
+              "type": "Button"
             }
           ],
           [
             {
               "name": "auto_high_miss",
-              "type": "Button",
-              "options": []
+              "type": "Button"
             },
             {
               "name": "auto_high_hit",
-              "type": "Button",
-              "options": []
+              "type": "Button"
             }
           ],
           [
             {
               "name": "auto_low_miss",
-              "type": "Button",
-              "options": []
+              "type": "Button"
             },
             {
               "name": "auto_low_hit",
-              "type": "Button",
-              "options": []
+              "type": "Button"
             }
           ],
           [
             {
               "name": "field_area",
               "type": "MultiToggle",
-              "options": [
+              "choices": [
                 "Cross",
+                "Trench",
                 "Mid",
-                "Init",
                 "Target"
               ]
             }
@@ -67,52 +60,45 @@
           [
             {
               "name": "control_panel",
-              "type": "Switch",
-              "options": []
+              "type": "Switch"
             },
             {
               "name": "defending",
-              "type": "Switch",
-              "options": []
+              "type": "Switch"
             },
             {
               "name": "resisting",
-              "type": "Switch",
-              "options": []
+              "type": "Switch"
             }
           ],
           [
             {
               "name": "high_miss",
-              "type": "Button",
-              "options": []
+              "type": "Button"
             },
             {
               "name": "high_hit",
-              "type": "Button",
-              "options": []
+              "type": "Button"
             }
           ],
           [
             {
               "name": "low_miss",
-              "type": "Button",
-              "options": []
+              "type": "Button"
             },
             {
               "name": "low_hit",
-              "type": "Button",
-              "options": []
+              "type": "Button"
             }
           ],
           [
             {
               "name": "field_area",
               "type": "MultiToggle",
-              "options": [
+              "choices": [
                 "Cross",
+                "Trench",
                 "Mid",
-                "Init",
                 "Target"
               ]
             }
@@ -126,7 +112,7 @@
             {
               "name": "climb",
               "type": "MultiToggle",
-              "options": [
+              "choices": [
                 "None",
                 "Attempt",
                 "Success"
@@ -137,7 +123,7 @@
             {
               "name": "climb_location",
               "type": "MultiToggle",
-              "options": [
+              "choices": [
                 "Middle",
                 "Up",
                 "Down",
@@ -148,20 +134,25 @@
           [
             {
               "name": "balanced",
-              "type": "Checkbox",
-              "options": []
+              "type": "Checkbox"
             },
             {
               "name": "active_movement",
-              "type": "Checkbox",
-              "options": []
+              "type": "Checkbox"
             }
           ],
           [
             {
               "name": "driver_skill_rating",
               "type": "MultiToggle",
-              "options": ["1", "2", "3", "4", "5"]
+              "choices": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ],
+              "default_choice": 2
             }
           ]
         ]
@@ -183,60 +174,74 @@
             {
               "name": "A1_defends_O1",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A1_defends_O2",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A1_defends_O3",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             }
           ],
           [
             {
               "name": "A1_blocking_shots",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A1_following_team",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             }
           ],
           [
             {
               "name": "A1_defends_cross_field",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A1_defends_mid_field",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A1_defends_close_field",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             }
           ],
           [
             {
               "name": "A1_defence_rating",
               "type": "MultiToggle",
-              "options": ["N/A", "1", "2", "3", "4", "5"]
+              "choices": [
+                "N/A",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
             }
           ],
           [
             {
               "name": "A1_resistance_rating",
               "type": "MultiToggle",
-              "options": ["N/A", "1", "2", "3", "4", "5"]
+              "choices": [
+                "N/A",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
             }
           ]
         ]
@@ -248,60 +253,74 @@
             {
               "name": "A2_defends_O1",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A2_defends_O2",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A2_defends_O3",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             }
           ],
           [
             {
               "name": "A2_blocking_shots",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A2_following_team",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             }
           ],
           [
             {
               "name": "A2_defends_cross_field",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A2_defends_mid_field",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A2_defends_close_field",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             }
           ],
           [
             {
               "name": "A2_defence_rating",
               "type": "MultiToggle",
-              "options": ["N/A", "1", "2", "3", "4", "5"]
+              "choices": [
+                "N/A",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
             }
           ],
           [
             {
               "name": "A2_resistance_rating",
               "type": "MultiToggle",
-              "options": ["N/A", "1", "2", "3", "4", "5"]
+              "choices": [
+                "N/A",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
             }
           ]
         ]
@@ -313,60 +332,74 @@
             {
               "name": "A3_defends_O1",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A3_defends_O2",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A3_defends_O3",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             }
           ],
           [
             {
               "name": "A3_blocking_shots",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A3_following_team",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             }
           ],
           [
             {
               "name": "A3_defends_cross_field",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A3_defends_mid_field",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A3_defends_close_field",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             }
           ],
           [
             {
               "name": "A3_defence_rating",
               "type": "MultiToggle",
-              "options": ["N/A", "1", "2", "3", "4", "5"]
+              "choices": [
+                "N/A",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
             }
           ],
           [
             {
               "name": "A3_resistance_rating",
               "type": "MultiToggle",
-              "options": ["N/A", "1", "2", "3", "4", "5"]
+              "choices": [
+                "N/A",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
             }
           ]
         ]
@@ -377,8 +410,8 @@
           [
             {
               "name": "lifter",
-              "type":"MultiToggle",
-              "options": [
+              "type": "MultiToggle",
+              "choices": [
                 "N/A",
                 "A1",
                 "A2",
@@ -390,28 +423,28 @@
             {
               "name": "A1_lifted",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A2_lifted",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             },
             {
               "name": "A3_lifted",
               "type": "Switch",
-              "options": ["lite"]
+              "is_lite": true
             }
           ],
           [
             {
               "name": "Climb_status",
               "type": "MultiToggle",
-              "options": [
+              "choices": [
                 "N/A",
-                "Attempted",
+                "Attempt",
                 "Success",
-                "Failed"
+                "Fail"
               ]
             }
           ],
