@@ -137,7 +137,7 @@
               "type": "Checkbox"
             },
             {
-              "name": "active_movement",
+              "name": "active_balance",
               "type": "Checkbox"
             }
           ],
@@ -189,12 +189,12 @@
           ],
           [
             {
-              "name": "A1_blocking_shots",
+              "name": "A1_blocks_shots",
               "type": "Switch",
               "is_lite": true
             },
             {
-              "name": "A1_following_team",
+              "name": "A1_follows_team",
               "type": "Switch",
               "is_lite": true
             }
@@ -268,12 +268,12 @@
           ],
           [
             {
-              "name": "A2_blocking_shots",
+              "name": "A2_blocks_shots",
               "type": "Switch",
               "is_lite": true
             },
             {
-              "name": "A2_following_team",
+              "name": "A2_follows_team",
               "type": "Switch",
               "is_lite": true
             }
@@ -347,12 +347,12 @@
           ],
           [
             {
-              "name": "A3_blocking_shots",
+              "name": "A3_blocks_shots",
               "type": "Switch",
               "is_lite": true
             },
             {
-              "name": "A3_following_team",
+              "name": "A3_follows_team",
               "type": "Switch",
               "is_lite": true
             }
@@ -405,7 +405,7 @@
         ]
       },
       {
-        "title": "Buddy climb",
+        "title": "Buddy Climb",
         "layout": [
           [
             {
