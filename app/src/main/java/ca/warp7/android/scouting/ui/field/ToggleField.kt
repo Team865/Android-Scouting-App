@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import ca.warp7.android.scouting.R
+import ca.warp7.android.scouting.boardfile.mapToList
 import ca.warp7.android.scouting.entry.DataPoint
 import ca.warp7.android.scouting.ui.toggle.ToggleSwitchCompat
 
@@ -55,14 +56,9 @@ class ToggleField : LinearLayout, BaseFieldWidget {
             addView(this)
         }
 
-        // parse the default options
-        val options = mutableListOf<String>()
-        data.templateField.options?.forEachIndexed { i, v ->
-            if (v.startsWith("default:")) {
-                defaultPosition = i
-                options.add(data.scoutingActivity.modifyName(v.substring(8)))
-            } else options.add(data.scoutingActivity.modifyName(v))
-        }
+        val choices = data.templateField.json.getJSONArray("choices")
+            .mapToList { data.scoutingActivity.modifyName(it as String) }
+        defaultPosition = data.templateField.json.optInt("default_choice", 0)
 
         toggleSwitch = ToggleSwitchCompat(data.context).apply {
             checkedBackgroundColor = accent
@@ -72,7 +68,7 @@ class ToggleField : LinearLayout, BaseFieldWidget {
             separatorVisible = false
             elevation = 4f
 
-            setEntries(options)
+            setEntries(choices)
 
             layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
