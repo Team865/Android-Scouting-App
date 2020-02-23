@@ -267,7 +267,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         }
 
         // special entry team string to encode match schedule with super scouts
-        val entryTeam = when(board) {
+        val entryTeam = when (board) {
             RX -> teams.joinToString("_")
             // invert the list order for the blue alliance
             BX -> (teams.subList(3, 6) + teams.subList(0, 3)).joinToString("_")
@@ -325,27 +325,25 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     }
 
     override fun onBackPressed() {
-        if (activityState == WaitingToStart) {
+        val entry = entry
+        val eim = entryInMatch
+
+        if (entry == null || eim == null || entry.dataPoints.isEmpty()) {
             setResult(Activity.RESULT_CANCELED, null)
         } else {
-            val entry = entry
-            val eim = entryInMatch
-            if (entry == null || eim == null) {
-                setResult(Activity.RESULT_CANCELED, null)
-                return
-            }
-            setResult(Activity.RESULT_OK, Intent().apply {
-                putExtra(
-                    kEntryInMatchIntent, EntryInMatch(
-                        eim.match,
-                        eim.teams,
-                        eim.board,
-                        true,
-                        eim.isScheduled,
-                        entry.getEncoded()
-                    ).toCSV()
-                )
-            })
+            val resultData = EntryInMatch(
+                eim.match,
+                eim.teams,
+                eim.board,
+                true,
+                eim.isScheduled,
+                entry.getEncoded()
+            ).toCSV()
+
+            setResult(
+                Activity.RESULT_OK,
+                Intent().putExtra(kEntryInMatchIntent, resultData)
+            )
         }
         super.onBackPressed()
     }
