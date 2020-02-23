@@ -85,9 +85,9 @@ class QRCodeFragment : Fragment(), ScoutingEntryTab {
         val comment = entry.comments
         if (newSize != prevSize || prevComment != comment) {
             message = entry.getEncoded()
-            sendButton?.text = message
             prevSize = newSize
             view?.let { setQRImage(it) }
         }
+        sendButton?.text = message
     }
 }
