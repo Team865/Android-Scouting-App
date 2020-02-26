@@ -156,6 +156,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 cb.setOnCheckedChangeListener { _, isChecked ->
                     vibrateAction()
                     entry.add(DataPoint(typeIndex, if (isChecked) 1 else 0, getRelativeTime()))
+                    updateAdjacentTabState()
                 }
             })
         }
@@ -184,6 +185,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             .setView(layout)
             .setPositiveButton(getString(R.string.button_ok)) { _, _ ->
                 entry.comments = commentInput.text.toString()
+                updateAdjacentTabState()
             }
             .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.cancel() }
             .create()
@@ -199,7 +201,6 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             startTime = getCurrentTime()
             entry?.timestamp = startTime.toInt()
             startActivityState(TimedScouting)
-            updateAdjacentTabState()
         }
 
         playAndPauseImage.setOnClickListener {
