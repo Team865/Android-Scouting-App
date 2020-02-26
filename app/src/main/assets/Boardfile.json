@@ -1,6 +1,6 @@
 {
   "year": 2020,
-  "revision": 5,
+  "revision": 6,
   "robot_scout": {
     "screens": [
       {
@@ -8,15 +8,15 @@
         "layout": [
           [
             {
-              "name": "trench_intake",
+              "name": "opponent_trench",
               "type": "Button"
             },
             {
-              "name": "fed_by_robot",
+              "name": "rendezvous",
               "type": "Button"
             },
             {
-              "name": "other_intake",
+              "name": "alliance_trench",
               "type": "Button"
             }
           ],
