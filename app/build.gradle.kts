@@ -17,7 +17,7 @@ android {
         minSdkVersion(21)
         targetSdkVersion(28)
         versionCode = 1
-        versionName = "2020.1.1"
+        versionName = "2020.1.3"
         resConfigs("en", "hdpi")
 
         // Read the TBA key from local properties
