@@ -101,7 +101,8 @@
                 "Trench",
                 "Mid",
                 "Target"
-              ]
+              ],
+              "default_choice": 2
             }
           ]
         ]
