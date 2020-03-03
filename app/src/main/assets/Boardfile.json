@@ -1,6 +1,6 @@
 {
   "year": 2020,
-  "revision": 6,
+  "revision": 7,
   "robot_scout": {
     "screens": [
       {
@@ -69,7 +69,7 @@
             },
             {
               "name": "resisting",
-              "type": "Switch"
+              "type": "Button"
             }
           ],
           [
@@ -202,17 +202,17 @@
           ],
           [
             {
-              "name": "A1_defends_cross_field",
+              "name": "A1_defends_loading_area",
               "type": "Switch",
               "is_lite": true
             },
             {
-              "name": "A1_defends_mid_field",
+              "name": "A1_defends_rendezvous",
               "type": "Switch",
               "is_lite": true
             },
             {
-              "name": "A1_defends_close_field",
+              "name": "A1_defends_shooting_area",
               "type": "Switch",
               "is_lite": true
             }
@@ -281,17 +281,17 @@
           ],
           [
             {
-              "name": "A2_defends_cross_field",
+              "name": "A2_defends_loading_area",
               "type": "Switch",
               "is_lite": true
             },
             {
-              "name": "A2_defends_mid_field",
+              "name": "A2_defends_rendezvous",
               "type": "Switch",
               "is_lite": true
             },
             {
-              "name": "A2_defends_close_field",
+              "name": "A2_defends_shooting_area",
               "type": "Switch",
               "is_lite": true
             }
@@ -360,17 +360,17 @@
           ],
           [
             {
-              "name": "A3_defends_cross_field",
+              "name": "A3_defends_loading_area",
               "type": "Switch",
               "is_lite": true
             },
             {
-              "name": "A3_defends_mid_field",
+              "name": "A3_defends_rendezvous",
               "type": "Switch",
               "is_lite": true
             },
             {
-              "name": "A3_defends_close_field",
+              "name": "A3_defends_shooting_area",
               "type": "Switch",
               "is_lite": true
             }
