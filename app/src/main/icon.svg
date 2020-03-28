@@ -1,0 +1,30 @@
+<svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="grad1" x1="100%" y1="0%" x2="70%" y2="100%">
+            <stop offset="0%" style="stop-color:#1e2e4a;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#5a8ade;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <g>
+        <title>Layer 1</title>
+
+        <path fill="white" stroke="none" stroke-width="0" d="
+        M0,0 h 256 v 256 h -256 Z"/>
+
+        <path fill="url(#grad1)" stroke="none" stroke-width="0" d="
+        M128,48 l80,60 l-80,60 l-80,-60 Z
+        m-80,60 m16,28 l64,48 l64,-48 l16,12 l-80,60 l-80,-60 Z"/>
+
+        <path fill="#f22" stroke="none" stroke-width="0" d="
+        M128,48 m0,12 l16,12 l-16,12 l-16,-12 Z
+        m16,12 m8, 6 l16,12 l-16,12 l-16,-12 Z
+        m16,12 m8,6 l16,12 l-16,12 l-16,-12 Z
+        "/>
+
+        <path fill="#0bf" stroke="none" stroke-width="0" d="
+        M128,48 m0,120 m0,-36 l16,12 l-16,12 l-16,-12 Z
+        m-24,-18 l16,12 l-16,12 l-16,-12 Z
+        m-24,-18 l16,12 l-16,12 l-16,-12 Z
+        "/>
+    </g>
+</svg>

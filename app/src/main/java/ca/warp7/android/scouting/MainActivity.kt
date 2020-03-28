@@ -245,7 +245,7 @@ class MainActivity : AppCompatActivity() {
                 try {
                     qrImage.setImageBitmap(createQRBitmap(entryInMatch.data, dim))
                 } catch (e: WriterException) {
-                    qrImage.setImageDrawable(getDrawable(R.drawable.ic_launcher_background))
+                    qrImage.setImageDrawable(getDrawable(R.drawable.ic_launcher_foreground))
                     e.printStackTrace()
                 }
             }
