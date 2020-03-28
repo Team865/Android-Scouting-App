@@ -1,6 +1,6 @@
 # Android-Scouting-App
 
-![](app/src/main/res/mipmap-hdpi/ic_launcher_round.png)
+![](app/src/main/icon.svg)
 
 ![CI](https://github.com/Team865/Android-Scouting-App/workflows/CI/badge.svg)
 
