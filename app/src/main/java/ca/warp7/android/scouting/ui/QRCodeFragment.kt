@@ -70,7 +70,7 @@ class QRCodeFragment : Fragment(), ScoutingEntryTab {
         try {
             qrImage.setImageBitmap(createQRBitmap(message, dim))
         } catch (e: WriterException) {
-            qrImage.setImageDrawable(context?.getDrawable(R.drawable.ic_launcher_background))
+            qrImage.setImageDrawable(context?.getDrawable(R.drawable.ic_launcher_foreground))
             e.printStackTrace()
         }
     }
