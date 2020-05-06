@@ -19,4 +19,5 @@ jobs:
       - name: Gradle Build
         run: |
           chmod +x ./gradlew
+          echo "android.useAndroidX=true" > gradle.properties
           ./gradlew assembleDebug

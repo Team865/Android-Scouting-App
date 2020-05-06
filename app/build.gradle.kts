@@ -17,8 +17,8 @@ android {
         minSdkVersion(21)
         targetSdkVersion(28)
         versionCode = 1
-        versionName = "2020.1.3"
-        resConfigs("en", "hdpi")
+        versionName = "2020.2.0"
+        resConfigs("en")
 
         // Read the TBA key from local properties
         val propsFile = rootProject.file("local.properties")
@@ -45,7 +45,7 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation("androidx.appcompat:appcompat:1.1.0")
-    implementation("androidx.preference:preference:1.1.0")
+    implementation("androidx.preference:preference:1.1.1")
     implementation("com.google.zxing:core:3.4.0")
 
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "5.6.0")
