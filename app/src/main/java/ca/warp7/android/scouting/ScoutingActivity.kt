@@ -47,21 +47,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
 
     @Suppress("RemoveRedundantQualifierName")
     override fun modifyName(name: String): String {
-        val eim = entryInMatch
-        var varName = name
-        if (eim != null && eim.teams.size > 5) {
-            val boards = Board.values()
-            for (i in 0 until 6) {
-                varName = varName.replace(boards[i].name, eim.teams[i].toString())
-            }
-            val relBoards = RelativeBoard.values()
-            for (i in 0 until 6) {
-                val relBoard = relBoards[i]
-                val team = eim.teams[relBoard.relativeTo(eim.board).ordinal].toString()
-                varName = varName.replace(relBoard.name, team)
-            }
-        }
-        return modifyNameForDisplay(varName)
+        return modifyNameForDisplay(entryInMatch, name)
     }
 
     enum class State {
@@ -69,7 +55,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     }
 
     private var startTime = 0.0
-    private var relativeTimeAtPause = 0.0 // this is int to make rounding errors easier
+    private var relativeTimeAtPause = 0.0
 
     private fun getCurrentTime(): Double {
         return System.currentTimeMillis() / 1000.0

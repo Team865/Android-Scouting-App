@@ -1,6 +1,6 @@
 package ca.warp7.android.scouting.ui.field
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.widget.Button
@@ -9,9 +9,9 @@ import androidx.core.content.ContextCompat
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.entry.DataPoint
 
-class SwitchField : FrameLayout, BaseFieldWidget {
-
-    private val fieldData: FieldData?
+@SuppressLint("ViewConstructor")
+class SwitchField internal constructor(private val data: FieldData) :
+        FrameLayout(data.context), BaseFieldWidget {
 
     private val white = ContextCompat.getColor(context, R.color.colorWhite)
     private val gray = ContextCompat.getColor(context, R.color.colorGray)
@@ -21,32 +21,24 @@ class SwitchField : FrameLayout, BaseFieldWidget {
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
 
     private var isChecked = false
-    private var button: Button? = null
-    private val isLite: Boolean
 
-    constructor(context: Context) : super(context) {
-        fieldData = null
-        isLite = false
+    private val button: Button = Button(data.context).apply {
+        isAllCaps = false
+        textSize = 18f
+        typeface = Typeface.SANS_SERIF
+        stateListAnimator = null
+        text = data.modifiedName
+        setLines(2)
+        setBackgroundResource(R.drawable.ripple_button)
+        background.mutate()
+        setOnClickListener { onClick(data) }
+        addView(this)
     }
 
-    internal constructor(data: FieldData) : super(data.context) {
-        fieldData = data
+    private val isLite: Boolean =
+            data.templateField.json.optBoolean("is_lite", false)
 
-        button = Button(data.context).apply {
-            isAllCaps = false
-            textSize = 18f
-            typeface = Typeface.SANS_SERIF
-            stateListAnimator = null
-            text = data.modifiedName
-            setLines(2)
-            setBackgroundResource(R.drawable.ripple_button)
-            background.mutate()
-            setOnClickListener { onClick(data) }
-            addView(this)
-        }
-
-        isLite = data.templateField.json.optBoolean("is_lite", false)
-
+    init {
         updateControlState()
     }
 
@@ -64,14 +56,11 @@ class SwitchField : FrameLayout, BaseFieldWidget {
     }
 
     override fun updateControlState() {
-        val fieldData = fieldData ?: return
-        val button = button ?: return
-
-        if (fieldData.scoutingActivity.isTimeEnabled() || isLite) {
+        if (data.scoutingActivity.isTimeEnabled() || isLite) {
             button.isEnabled = true
-            val entry = fieldData.scoutingActivity.entry
+            val entry = data.scoutingActivity.entry
             if (entry != null) {
-                val lastDP = entry.lastValue(fieldData.typeIndex)
+                val lastDP = entry.lastValue(data.typeIndex)
                 isChecked = if (lastDP != null) lastDP.value == 1 else false
 
                 if (isChecked) {

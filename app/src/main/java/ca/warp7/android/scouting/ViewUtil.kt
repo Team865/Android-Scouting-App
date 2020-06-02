@@ -5,12 +5,15 @@ import android.content.Context
 import android.text.Html
 import android.text.Spanned
 import android.view.View
+import ca.warp7.android.scouting.entry.Board
+import ca.warp7.android.scouting.entry.RelativeBoard
+import ca.warp7.android.scouting.ui.EntryInMatch
 
-fun View.show(){
+fun View.show() {
     visibility = View.VISIBLE
 }
 
-fun View.hide(){
+fun View.hide() {
     visibility = View.GONE
 }
 
@@ -46,7 +49,21 @@ fun validateName(str: String): Boolean {
             split.subList(1, split.size).all { it.length == 1 && it[0].isUpperCase() }
 }
 
+val boards = Board.values()
+val relBoards = RelativeBoard.values()
+
 @SuppressLint("DefaultLocale")
-fun modifyNameForDisplay(name: String): String {
-    return name.split("_".toRegex()).joinToString(" ") { it.capitalize() }
+fun modifyNameForDisplay(eim: EntryInMatch?, name: String): String {
+    var varName = name
+    if (eim != null && eim.teams.size > 5) {
+        for (i in 0 until 6) {
+            varName = varName.replace(boards[i].name, eim.teams[i].toString())
+        }
+        for (i in 0 until 6) {
+            val relBoard = relBoards[i]
+            val team = eim.teams[relBoard.relativeTo(eim.board).ordinal].toString()
+            varName = varName.replace(relBoard.name, team)
+        }
+    }
+    return varName.split("_".toRegex()).joinToString(" ") { it.capitalize() }
 }
