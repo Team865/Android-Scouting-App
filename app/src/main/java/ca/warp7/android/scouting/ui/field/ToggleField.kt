@@ -1,6 +1,6 @@
 package ca.warp7.android.scouting.ui.field
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.ViewGroup
@@ -15,29 +15,23 @@ import ca.warp7.android.scouting.ui.toggle.ToggleSwitchCompat
 /*
 https://github.com/llollox/Android-Toggle-Switch
  */
-class ToggleField : LinearLayout, BaseFieldWidget {
-
-    private val fieldData: FieldData?
+@SuppressLint("ViewConstructor")
+class ToggleField internal constructor(private val data: FieldData) :
+        LinearLayout(data.context), BaseFieldWidget {
 
     private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
     private val almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
 
-    private val toggleSwitch: ToggleSwitchCompat?
     private var checkedPosition = -1
     private var defaultPosition = 0
 
-    constructor(context: Context) : super(context) {
-        fieldData = null
-        toggleSwitch = null
-    }
-
     private fun getToggleButtonTextSize(): Float {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 18f, context.resources.displayMetrics)
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                18f, context.resources.displayMetrics)
     }
 
-    internal constructor(data: FieldData) : super(data.context) {
-        fieldData = data
+    init {
         orientation = VERTICAL
 
         setBackgroundResource(R.drawable.layer_list_bg_group)
@@ -50,37 +44,42 @@ class ToggleField : LinearLayout, BaseFieldWidget {
             textSize = 14f
             setPadding(0, 8, 0, 0)
             layoutParams = LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
             )
             addView(this)
         }
 
-        val choices = data.templateField.json.getJSONArray("choices")
-            .mapToList { data.scoutingActivity.modifyName(it as String) }
         defaultPosition = data.templateField.json.optInt("default_choice", 0)
+    }
 
-        toggleSwitch = ToggleSwitchCompat(data.context).apply {
-            checkedBackgroundColor = accent
-            uncheckedBackgroundColor = almostWhite
-            textSize = getToggleButtonTextSize()
-            uncheckedTextColor = accent
-            separatorVisible = false
-            elevation = 4f
+    private val toggleSwitch: ToggleSwitchCompat = ToggleSwitchCompat(data.context).apply {
 
-            setEntries(choices)
+        val choices = data.templateField.json.getJSONArray("choices")
+                .mapToList { data.scoutingActivity.modifyName(it as String) }
 
-            layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
-            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+        checkedBackgroundColor = accent
+        uncheckedBackgroundColor = almostWhite
+        textSize = getToggleButtonTextSize()
+        uncheckedTextColor = accent
+        separatorVisible = false
+        elevation = 4f
 
-            setPadding(8, 4, 8, 8)
-            setOnChangeListener { index -> onToggle(data, index) }
+        setEntries(choices)
 
-        }.also { addView(it) }
+        layoutHeight = ViewGroup.LayoutParams.MATCH_PARENT
+        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+
+        setPadding(8, 4, 8, 8)
+        setOnChangeListener { index -> onToggle(index) }
+    }
+
+    init {
+        addView(toggleSwitch)
         updateControlState()
     }
 
-    private fun onToggle(data: FieldData, index: Int) {
+    private fun onToggle(index: Int) {
         if (index != checkedPosition) {
             checkedPosition = index
             val activity = data.scoutingActivity
@@ -94,13 +93,12 @@ class ToggleField : LinearLayout, BaseFieldWidget {
     }
 
     override fun updateControlState() {
-        val fieldData = fieldData ?: return
-        val entry = fieldData.scoutingActivity.entry ?: return
+        val entry = data.scoutingActivity.entry ?: return
 
-        val newPos = entry.lastValue(fieldData.typeIndex)?.value ?: defaultPosition
+        val newPos = entry.lastValue(data.typeIndex)?.value ?: defaultPosition
         if (newPos != checkedPosition) {
             checkedPosition = newPos
-            toggleSwitch?.setCheckedPosition(checkedPosition)
+            toggleSwitch.setCheckedPosition(checkedPosition)
         }
     }
 }

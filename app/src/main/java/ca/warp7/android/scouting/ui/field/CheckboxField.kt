@@ -1,6 +1,6 @@
 package ca.warp7.android.scouting.ui.field
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.view.Gravity
 import android.widget.CheckBox
@@ -9,42 +9,38 @@ import androidx.core.content.ContextCompat
 import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.entry.DataPoint
 
-class CheckboxField : LinearLayout, BaseFieldWidget {
-
-    private val fieldData: FieldData?
-    private val checkBox: CheckBox?
+@SuppressLint("ViewConstructor")
+class CheckboxField internal constructor(private val data: FieldData) :
+        LinearLayout(data.context), BaseFieldWidget {
 
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
     private val gray = ContextCompat.getColor(context, R.color.colorGray)
 
-    constructor(context: Context) : super(context) {
-        fieldData = null
-        checkBox = null
-    }
-
-    internal constructor(data: FieldData) : super(data.context) {
-        fieldData = data
-
+    init {
         setBackgroundResource(R.drawable.ripple_button)
         background.mutate()
         gravity = Gravity.CENTER
+    }
 
-        checkBox = CheckBox(data.context).apply {
-            layoutParams = LayoutParams(
+    private val checkBox: CheckBox = CheckBox(data.context).apply {
+        layoutParams = LayoutParams(
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT
-            )
-            isAllCaps = false
-            textSize = 18f
-            setLines(2)
-            typeface = Typeface.SANS_SERIF
-            text = data.modifiedName
-            addView(this)
+        )
+        isAllCaps = false
+        textSize = 18f
+        setLines(2)
+        typeface = Typeface.SANS_SERIF
+        text = data.modifiedName
+
+        setOnClickListener {
+            onClick(data, this.isChecked)
         }
 
-        checkBox.setOnClickListener {
-            onClick(data, checkBox.isChecked)
-        }
+        addView(this)
+    }
+
+    init {
         setOnClickListener {
             val checked = !checkBox.isChecked
             checkBox.isChecked = checked
@@ -67,16 +63,13 @@ class CheckboxField : LinearLayout, BaseFieldWidget {
     }
 
     override fun updateControlState() {
-        val fieldData = fieldData ?: return
-        val checkBox = checkBox ?: return
-
-        if (fieldData.scoutingActivity.isTimeEnabled()) {
+        if (data.scoutingActivity.isTimeEnabled()) {
             checkBox.isEnabled = true
             this.isEnabled = true
             checkBox.setTextColor(accent)
-            val entry = fieldData.scoutingActivity.entry
+            val entry = data.scoutingActivity.entry
             if (entry != null) {
-                val lastDP = entry.lastValue(fieldData.typeIndex)
+                val lastDP = entry.lastValue(data.typeIndex)
                 checkBox.isChecked = if (lastDP != null) lastDP.value == 1 else false
             }
         } else {
