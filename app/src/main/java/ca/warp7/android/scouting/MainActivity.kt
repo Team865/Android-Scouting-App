@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -16,6 +15,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import ca.warp7.android.scouting.entry.Alliance
 import ca.warp7.android.scouting.entry.Board.*
 import ca.warp7.android.scouting.entry.toBoard
@@ -492,7 +492,7 @@ class MainActivity : AppCompatActivity() {
     private fun processScoutingActivityResult(intent: Intent) {
 
         // get the extra data from the intent bundle
-        val entryString = intent.getStringExtra(kEntryInMatchIntent)
+        val entryString = intent.getStringExtra(kEntryInMatchIntent)!!
         val entryInMatch = EntryInMatch.fromCSV(entryString)
 
         scoutedEntries.add(entryInMatch)

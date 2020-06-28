@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.preference.PreferenceManager
 import android.text.InputType
 import android.util.TypedValue
 import android.view.animation.AlphaAnimation
@@ -13,6 +12,7 @@ import android.view.animation.Animation
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import androidx.viewpager.widget.ViewPager
 import ca.warp7.android.scouting.ScoutingActivity.State.*
 import ca.warp7.android.scouting.boardfile.ScoutTemplate
@@ -237,8 +237,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             })
         }
 
-        val scout = intent.getStringExtra(kScoutIntent)
-        val entryInMatch = EntryInMatch.fromCSV(intent.getStringExtra(kEntryInMatchIntent))
+        val scout = intent.getStringExtra(kScoutIntent)!!
+        val entryInMatch = EntryInMatch.fromCSV(intent.getStringExtra(kEntryInMatchIntent)!!)
         val match = entryInMatch.match
         val board = entryInMatch.board
         val teams = entryInMatch.teams

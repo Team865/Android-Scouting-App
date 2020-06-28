@@ -2,9 +2,9 @@ package ca.warp7.android.scouting.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import ca.warp7.android.scouting.*
 
 class SettingsFragment : PreferenceFragmentCompat() {

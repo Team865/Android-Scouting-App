@@ -2,7 +2,6 @@ package ca.warp7.android.scouting
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -10,6 +9,7 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import ca.warp7.android.scouting.tba.EventSimple
 import ca.warp7.android.scouting.tba.createCachedTBAInstance
 import ca.warp7.android.scouting.tba.getEventMatchesSimple
@@ -48,11 +48,12 @@ class EventSelectionActivity : AppCompatActivity() {
             )
         }
 
-        val year = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString(PreferenceKeys.kYear, "2020")
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+
+        val year = sharedPref.getString(PreferenceKeys.kYear, "2020")
         yearEdit.setText(year, TextView.BufferType.EDITABLE)
-        val teamNumber = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString(PreferenceKeys.kTeam, "")!!
+
+        val teamNumber = sharedPref.getString(PreferenceKeys.kTeam, "")!!
         teamSearch.setText(teamNumber, TextView.BufferType.EDITABLE)
 
         if (teamNumber.isNotEmpty()) {
