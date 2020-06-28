@@ -1,4 +1,4 @@
-// The Blue Alliance API Version 3.5 
+// The Blue Alliance API Version 3.8.0 
 
 @file:Suppress("unused", "SpellCheckingInspection", "KDocUnresolvedReference")
 
@@ -80,6 +80,9 @@ class Team(
 
     /** Official long name registered with FIRST. */
     val name: String?,
+
+    /** Name of team school or affilited group registered with FIRST. */
+    val school_name: String?,
 
     /** City of team derived from parsing the address registered with FIRST. */
     val city: String?,
@@ -790,6 +793,31 @@ class MatchAlliance(
     val dq_team_keys: List<String>?
 )
 
+class Zebra(
+    val data: JSONObject,
+
+    /** TBA match key with the format `yyyy[EVENT_CODE]_[COMP_LEVEL]m[MATCH_NUMBER]`, where `yyyy` is the year, and `EVENT_CODE` is the event code of the event, `COMP_LEVEL` is (qm, ef, qf, sf, f), and `MATCH_NUMBER` is the match number in the competition level. A set number may be appended to the competition level if more than one match in required per set. */
+    val key: String?,
+
+    /** A list of relative timestamps for each data point. Each timestamp will correspond to the X and Y value at the same index in a team xs and ys arrays. `times`, all teams `xs` and all teams `ys` are guarenteed to be the same length. */
+    val times: List<Double>?,
+
+    val alliances: Alliances<ZebraTeam?>?
+)
+
+class ZebraTeam(
+    val data: JSONObject,
+
+    /** The TBA team key for the Zebra MotionWorks data. */
+    val team_key: String?,
+
+    /** A list containing doubles and nulls representing a teams X position in feet at the corresponding timestamp. A null value represents no tracking data for a given timestamp. */
+    val xs: List<Double>?,
+
+    /** A list containing doubles and nulls representing a teams Y position in feet at the corresponding timestamp. A null value represents no tracking data for a given timestamp. */
+    val ys: List<Double>?
+)
+
 /** See the 2015 FMS API documentation for a description of each value */
 class MatchScoreBreakdown2015(
     val data: JSONObject,
@@ -1023,7 +1051,7 @@ class MatchScoreBreakdown2017Alliance(
     val touchpadFar: String?
 )
 
-/** See the 2018 FMS API documentation for a description of each value. */
+/** See the 2018 FMS API documentation for a description of each value. https://frcevents2.docs.apiary.io/#/reference/match-results/score-details */
 class MatchScoreBreakdown2018(
     val data: JSONObject,
 
@@ -1210,7 +1238,7 @@ class MatchTimeseries2018(
     val red_switch_owned: Int?
 )
 
-/** See the 2019 FMS API documentation for a description of each value. https://frcevents2.docs.apiary.io/#reference/match-results/score-details */
+/** See the 2019 FMS API documentation for a description of each value. https://frcevents2.docs.apiary.io/#/reference/match-results/score-details */
 class MatchScoreBreakdown2019(
     val data: JSONObject,
 
@@ -1325,12 +1353,92 @@ class MatchScoreBreakdown2019Alliance(
     val totalPoints: Int?
 )
 
+/** See the 2020 FMS API documentation for a description of each value. https://frcevents2.docs.apiary.io/#/reference/match-results/score-details */
+class MatchScoreBreakdown2020(
+    val data: JSONObject,
+
+    val blue: MatchScoreBreakdown2020Alliance?,
+
+    val red: MatchScoreBreakdown2020Alliance?
+)
+
+class MatchScoreBreakdown2020Alliance(
+    val data: JSONObject,
+
+    val initLineRobot1: String?,
+
+    val endgameRobot1: String?,
+
+    val initLineRobot2: String?,
+
+    val endgameRobot2: String?,
+
+    val initLineRobot3: String?,
+
+    val endgameRobot3: String?,
+
+    val autoCellsBottom: Int?,
+
+    val autoCellsOuter: Int?,
+
+    val autoCellsInner: Int?,
+
+    val teleopCellsBottom: Int?,
+
+    val teleopCellsOuter: Int?,
+
+    val teleopCellsInner: Int?,
+
+    val stage1Activated: Boolean?,
+
+    val stage2Activated: Boolean?,
+
+    val stage3Activated: Boolean?,
+
+    val stage3TargetColor: String?,
+
+    val endgameRungIsLevel: String?,
+
+    val autoInitLinePoints: Int?,
+
+    val autoCellPoints: Int?,
+
+    val autoPoints: Int?,
+
+    val teleopCellPoints: Int?,
+
+    val controlPanelPoints: Int?,
+
+    val endgamePoints: Int?,
+
+    val teleopPoints: Int?,
+
+    val shieldOperationalRankingPoint: Boolean?,
+
+    val shieldEnergizedRankingPoint: Boolean?,
+
+    /** Unofficial TBA-computed value that indicates whether the shieldEnergizedRankingPoint was earned normally or awarded due to a foul. */
+    val tba_shieldEnergizedRankingPointFromFoul: Boolean?,
+
+    /** Unofficial TBA-computed value that counts the number of robots who were hanging at the end of the match. */
+    val tba_numRobotsHanging: Int?,
+
+    val foulCount: Int?,
+
+    val techFoulCount: Int?,
+
+    val adjustPoints: Int?,
+
+    val foulPoints: Int?,
+
+    val rp: Int?,
+
+    val totalPoints: Int?
+)
+
 /** The `Media` object contains a reference for most any media associated with a team or event on TBA. */
 class Media(
     val data: JSONObject,
-
-    /** TBA identifier for this media. */
-    val key: String?,
 
     /** String type of the media element. */
     val type: String?,
@@ -1457,6 +1565,9 @@ class Webcast(
 
     /** Type specific channel information. May be the YouTube stream, or Twitch channel name. In the case of iframe types, contains HTML to embed the stream in an HTML iframe. */
     val channel: String?,
+
+    /** The date for the webcast in `yyyy-mm-dd` format. May be null. */
+    val date: String?,
 
     /** File identification as may be required for some types. May be null. */
     val file: String?

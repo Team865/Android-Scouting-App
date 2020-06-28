@@ -1,4 +1,4 @@
-// The Blue Alliance API Version 3.5 
+// The Blue Alliance API Version 3.8.0 
 
 @file:Suppress("unused", "SpellCheckingInspection", "KDocUnresolvedReference")
 
@@ -40,6 +40,7 @@ fun JSONObject.toTeam() = Team(
     int("team_number"),
     string("nickname"),
     string("name"),
+    string("school_name"),
     string("city"),
     string("state_prov"),
     string("country"),
@@ -336,6 +337,23 @@ fun JSONObject.toMatchAlliance() = MatchAlliance(
     stringList("dq_team_keys")
 )
 
+fun JSONObject.toZebra() = Zebra(
+    this,
+    string("key"),
+    doubleList("times"),
+    Alliances(
+        obj("alliances")?.obj("blue")?.toZebraTeam(),
+        obj("alliances")?.obj("red")?.toZebraTeam()
+    )
+)
+
+fun JSONObject.toZebraTeam() = ZebraTeam(
+    this,
+    string("team_key"),
+    doubleList("xs"),
+    doubleList("ys")
+)
+
 fun JSONObject.toMatchScoreBreakdown2015() = MatchScoreBreakdown2015(
     this,
     obj("blue")?.toMatchScoreBreakdown2015Alliance(),
@@ -606,9 +624,52 @@ fun JSONObject.toMatchScoreBreakdown2019Alliance() = MatchScoreBreakdown2019Alli
     int("totalPoints")
 )
 
+fun JSONObject.toMatchScoreBreakdown2020() = MatchScoreBreakdown2020(
+    this,
+    obj("blue")?.toMatchScoreBreakdown2020Alliance(),
+    obj("red")?.toMatchScoreBreakdown2020Alliance()
+)
+
+fun JSONObject.toMatchScoreBreakdown2020Alliance() = MatchScoreBreakdown2020Alliance(
+    this,
+    string("initLineRobot1"),
+    string("endgameRobot1"),
+    string("initLineRobot2"),
+    string("endgameRobot2"),
+    string("initLineRobot3"),
+    string("endgameRobot3"),
+    int("autoCellsBottom"),
+    int("autoCellsOuter"),
+    int("autoCellsInner"),
+    int("teleopCellsBottom"),
+    int("teleopCellsOuter"),
+    int("teleopCellsInner"),
+    boolean("stage1Activated"),
+    boolean("stage2Activated"),
+    boolean("stage3Activated"),
+    string("stage3TargetColor"),
+    string("endgameRungIsLevel"),
+    int("autoInitLinePoints"),
+    int("autoCellPoints"),
+    int("autoPoints"),
+    int("teleopCellPoints"),
+    int("controlPanelPoints"),
+    int("endgamePoints"),
+    int("teleopPoints"),
+    boolean("shieldOperationalRankingPoint"),
+    boolean("shieldEnergizedRankingPoint"),
+    boolean("tba_shieldEnergizedRankingPointFromFoul"),
+    int("tba_numRobotsHanging"),
+    int("foulCount"),
+    int("techFoulCount"),
+    int("adjustPoints"),
+    int("foulPoints"),
+    int("rp"),
+    int("totalPoints")
+)
+
 fun JSONObject.toMedia() = Media(
     this,
-    string("key"),
     string("type"),
     string("foreign_key"),
     obj("details"),
@@ -669,5 +730,6 @@ fun JSONObject.toWebcast() = Webcast(
     this,
     string("type"),
     string("channel"),
+    string("date"),
     string("file")
 )
