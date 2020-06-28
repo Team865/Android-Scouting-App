@@ -1,4 +1,4 @@
-@file:Suppress("unused", "NOTHING_TO_INLINE")
+@file:Suppress("NOTHING_TO_INLINE")
 
 package ca.warp7.android.scouting.tba
 
@@ -36,14 +36,6 @@ internal fun JSONObject.stringList(key: String): List<String>? {
 
 internal fun JSONObject.doubleList(key: String): List<Double>? {
     return optJSONArray(key)?.map { it as Double }
-}
-
-internal fun JSONObject.intList(key: String): List<Int>? {
-    return optJSONArray(key)?.map { it as Int }
-}
-
-internal fun JSONObject.booleanList(key: String): List<Boolean>? {
-    return optJSONArray(key)?.map { it as Boolean }
 }
 
 internal fun JSONObject.objList(key: String): List<JSONObject>? {

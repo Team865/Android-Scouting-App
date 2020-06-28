@@ -1,4 +1,4 @@
-// API Version 3.5 
+// The Blue Alliance API Version 3.8.0 
 
 @file:Suppress("unused", "SpellCheckingInspection", "KDocUnresolvedReference", "UNUSED_VARIABLE", "DuplicatedCode")
 
@@ -420,6 +420,13 @@ fun TBA.getMatchSimple(
 fun TBA.getMatchTimeseries(
     match_key: String
 ): List<JSONObject> = getArray("/match/$match_key/timeseries").map { it as JSONObject }
+
+/**
+ * Gets Zebra MotionWorks data for a Match for the given match key.
+ */
+fun TBA.getMatchZebra(
+    match_key: String
+): Zebra = get("/match/$match_key/zebra_motionworks").toZebra()
 
 /**
  * Gets a list of districts and their corresponding district key, for the given year.
