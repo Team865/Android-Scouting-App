@@ -24,10 +24,11 @@ class ButtonField internal constructor(private val data: FieldData) :
 
     private val button: Button = Button(data.context).apply {
         isAllCaps = false
-        textSize = 18f
+        textSize = 17f
         typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
         stateListAnimator = null
         text = data.modifiedName
+        setPadding(4, 4, 4, 4)
         setLines(2)
         setBackgroundResource(R.drawable.ripple_button)
         this.background.mutate()

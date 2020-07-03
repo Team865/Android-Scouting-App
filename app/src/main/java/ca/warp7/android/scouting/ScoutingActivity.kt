@@ -135,7 +135,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         for ((index, tag) in tags.withIndex()) {
             layout.addView(CheckBox(this).also { cb ->
                 cb.text = modifyName(tag)
-                cb.textSize = 18f
+                cb.textSize = 17f
                 val typeIndex = template.lookupForTag(index)
                 val lastValue = entry.lastValue(typeIndex)?.value ?: 0
                 cb.isChecked = lastValue != 0
@@ -160,7 +160,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             setHint(R.string.comments_hint)
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 17f)
             setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_comment_ablack_small, 0, 0, 0)
         }
         layout.addView(commentInput)

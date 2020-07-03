@@ -28,7 +28,7 @@ class CheckboxField internal constructor(private val data: FieldData) :
                 LayoutParams.WRAP_CONTENT
         )
         isAllCaps = false
-        textSize = 18f
+        textSize = 17f
         setLines(2)
         typeface = Typeface.SANS_SERIF
         text = data.modifiedName

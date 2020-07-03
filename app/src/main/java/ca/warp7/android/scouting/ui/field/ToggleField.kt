@@ -28,7 +28,7 @@ class ToggleField internal constructor(private val data: FieldData) :
 
     private fun getToggleButtonTextSize(): Float {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
-                18f, context.resources.displayMetrics)
+                17f, context.resources.displayMetrics)
     }
 
     init {
