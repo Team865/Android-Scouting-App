@@ -67,12 +67,15 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.my_toolbar))
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
 
+        val darkTheme = preferences.getString(getString(R.string.pref_dark_theme_key), null)
+        setDarkTheme(darkTheme)
+
         val entryListAdapter = EntryListAdapter(this, displayedEntries)
         entriesList.adapter = entryListAdapter
 
         boardTextView.setOnClickListener { onSelectBoard(preferences) }
 
-        val boardString = preferences.getString(PreferenceKeys.kBoard, "R1")
+        val boardString = preferences.getString(PreferenceKeys.kBoard, null)
         board = boardString?.toBoard() ?: R1
         updateBoard()
 
