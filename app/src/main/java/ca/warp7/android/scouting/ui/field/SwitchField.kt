@@ -1,7 +1,6 @@
 package ca.warp7.android.scouting.ui.field
 
 import android.annotation.SuppressLint
-import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.widget.Button
 import android.widget.FrameLayout
@@ -19,6 +18,10 @@ class SwitchField internal constructor(private val data: FieldData) :
     private val lightGreen = ContextCompat.getColor(context, R.color.colorLightGreen)
     private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
+
+    private val almostWhiteFilter = colorFilter(almostWhite)
+    private val accentFilter = colorFilter(accent)
+    private val redFilter = colorFilter(red)
 
     private var isChecked = false
 
@@ -66,19 +69,19 @@ class SwitchField internal constructor(private val data: FieldData) :
                 if (isChecked) {
                     button.setTextColor(white)
                     if (isLite) {
-                        button.background.setColorFilter(accent, PorterDuff.Mode.SRC)
+                        button.background.colorFilter = accentFilter
                     } else {
-                        button.background.setColorFilter(red, PorterDuff.Mode.SRC)
+                        button.background.colorFilter = redFilter
                     }
                 } else {
                     button.setTextColor(lightGreen)
-                    button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+                    button.background.colorFilter = almostWhiteFilter
                 }
             }
         } else {
             button.isEnabled = false
             button.setTextColor(gray)
-            button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+            button.background.colorFilter = almostWhiteFilter
         }
     }
 }

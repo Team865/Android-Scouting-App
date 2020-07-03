@@ -1,7 +1,6 @@
 package ca.warp7.android.scouting.ui.field
 
 import android.annotation.SuppressLint
-import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.widget.Button
 import android.widget.FrameLayout
@@ -18,6 +17,10 @@ class ButtonField internal constructor(private val data: FieldData) :
     private val almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)
     private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
     private val accent = ContextCompat.getColor(context, R.color.colorAccent)
+    private val gray = ContextCompat.getColor(context, R.color.colorGray)
+
+    private val almostWhiteFilter = colorFilter(almostWhite)
+    private val accentFilter = colorFilter(accent)
 
     private val button: Button = Button(data.context).apply {
         isAllCaps = false
@@ -73,18 +76,18 @@ class ButtonField internal constructor(private val data: FieldData) :
 
                 if (entry.isFocused(data.typeIndex)) {
                     button.setTextColor(white)
-                    button.background.setColorFilter(accent, PorterDuff.Mode.SRC)
+                    button.background.colorFilter = accentFilter
                     counter.setTextColor(white)
                 } else {
                     button.setTextColor(accent)
-                    button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+                    button.background.colorFilter = almostWhiteFilter
                     counter.setTextColor(almostBlack)
                 }
             }
         } else {
             button.isEnabled = false
-            button.setTextColor(ContextCompat.getColor(context, R.color.colorGray))
-            button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+            button.setTextColor(gray)
+            button.background.colorFilter = almostWhiteFilter
         }
     }
 }
