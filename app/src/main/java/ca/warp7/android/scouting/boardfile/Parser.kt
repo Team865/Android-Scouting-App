@@ -14,10 +14,10 @@ fun createBoardfileFromAssets(context: Context): Boardfile {
 fun deserializeBoardfile(json: String): Boardfile {
     val o = JSONObject(json)
     return Boardfile(
-        year = o.getInt("year"),
-        revision = o.getInt("revision"),
-        robotScoutTemplate = o.getJSONObject("robot_scout").toTemplate(),
-        superScoutTemplate = o.getJSONObject("super_scout").toTemplate()
+            year = o.getInt("year"),
+            revision = o.getInt("revision"),
+            robotScoutTemplate = o.getJSONObject("robot_scout").toTemplate(),
+            superScoutTemplate = o.getJSONObject("super_scout").toTemplate()
     )
 }
 
@@ -34,26 +34,26 @@ internal inline fun <T> JSONArray.mapToList(func: (Any?) -> T): List<T> {
 
 private fun JSONObject.toTemplate(): ScoutTemplate {
     return ScoutTemplate(
-        getJSONArray("screens").mapToList { (it as JSONObject).toScreen() },
-        getJSONArray("tags").mapToList { it as String }
+            getJSONArray("screens").mapToList { (it as JSONObject).toScreen() },
+            getJSONArray("tags").mapToList { it as String }
     )
 }
 
 private fun JSONObject.toScreen(): TemplateScreen {
     return TemplateScreen(
-        getString("title"),
-        getJSONArray("layout").mapToList { row ->
-            (row as JSONArray).mapToList { field ->
-                (field as JSONObject).toField()
+            getString("title"),
+            getJSONArray("layout").mapToList { row ->
+                (row as JSONArray).mapToList { field ->
+                    (field as JSONObject).toField()
+                }
             }
-        }
     )
 }
 
 private fun JSONObject.toField(): TemplateField {
     return TemplateField(
-        this,
-        getString("name"),
-        FieldType.valueOf(getString("type"))
+            this,
+            getString("name"),
+            FieldType.valueOf(getString("type"))
     )
 }
