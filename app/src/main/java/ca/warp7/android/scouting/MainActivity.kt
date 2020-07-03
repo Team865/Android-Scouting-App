@@ -10,6 +10,7 @@ import android.text.InputType
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -230,43 +231,48 @@ class MainActivity : AppCompatActivity() {
     private fun onEntryClicked(adapter: EntryListAdapter, position: Int) {
         val entryInMatch = adapter.getItem(position) ?: return
         if (entryInMatch.isComplete && entryInMatch.data.isNotEmpty()) {
-            // we show the data in a qr code dialog
-            val qrImage = ImageView(this)
-            qrImage.setPadding(16, 0, 16, 0)
-
-            // create the dialog
-            val dialog = AlertDialog.Builder(this)
-                    .setTitle(entryInMatch.match)
-                    .setView(qrImage)
-                    .setNeutralButton(getString(R.string.send_with)) { _, _ ->
-
-                        // Send with an intent
-                        val intent = Intent(Intent.ACTION_SEND)
-                        intent.putExtra(Intent.EXTRA_TEXT, entryInMatch.data)
-                        intent.type = "text/plain"
-                        startActivity(Intent.createChooser(intent, entryInMatch.data))
-                    }
-                    .setPositiveButton(getString(R.string.button_ok)) { dialog, _ -> dialog.dismiss() }
-                    .create()
-
-            // add the listener so we can figure out the width of the QR code to make
-            dialog.setOnShowListener {
-                val dim = dialog.window?.decorView?.width ?: 0
-                try {
-                    qrImage.setImageBitmap(createQRBitmap(entryInMatch.data, dim))
-                } catch (e: WriterException) {
-                    qrImage.setImageDrawable(getDrawable(R.drawable.ic_launcher_foreground))
-                    e.printStackTrace()
-                }
-            }
-
-            dialog.show()
+            showCompletedEntry(entryInMatch)
         } else {
             if (entryInMatch.teams.size > 5) {
                 // actually start scouting the entry
                 startScoutingActivity(entryInMatch)
             }
         }
+    }
+
+    private fun showCompletedEntry(entryInMatch: EntryInMatch) {
+        // we show the data in a qr code dialog
+        val qrImage = ImageView(this)
+        qrImage.setPadding(16, 0, 16, 0)
+
+        // create the dialog
+        val dialog = AlertDialog.Builder(this)
+                .setTitle(entryInMatch.match)
+                .setView(qrImage)
+                .setNeutralButton(getString(R.string.send_with)) { _, _ ->
+                    // Send with an intent
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.putExtra(Intent.EXTRA_TEXT, entryInMatch.data)
+                    intent.type = "text/plain"
+                    startActivity(Intent.createChooser(intent, entryInMatch.data))
+                }
+                .setPositiveButton(getString(R.string.button_ok)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+
+        // add the listener so we can figure out the width of the QR code to make
+        dialog.setOnShowListener {
+            val dim = dialog.window?.decorView?.width ?: 0
+            try {
+                qrImage.setImageBitmap(createQRBitmap(entryInMatch.data, dim))
+            } catch (e: WriterException) {
+                qrImage.setImageDrawable(getDrawable(R.drawable.ic_launcher_foreground))
+                e.printStackTrace()
+            }
+        }
+
+        dialog.show()
     }
 
     /**
@@ -315,25 +321,8 @@ class MainActivity : AppCompatActivity() {
      * Create a dialog to let the scout enter their name
      */
     private fun onEnterScout(preferences: SharedPreferences, nextStep: (() -> Unit)?) {
-        // create the edit text component
-        val input = EditText(this).apply {
-            inputType = InputType.TYPE_CLASS_TEXT
-            layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            hint = getString(R.string.scout_input_hint)
-            textSize = 17f
-            // add an icon
-            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_account_box_small, 0, 0, 0)
-            compoundDrawablePadding = 16
-            setPadding(16, paddingTop, 16, paddingBottom)
-        }
-
-        // create a layout with this input
-        val layout = LinearLayout(this)
-        layout.addView(input)
-        layout.setPadding(16, 8, 16, 0)
+        val layout = View.inflate(this, R.layout.dialog_scout, null) as LinearLayout
+        val input = layout.findViewById<EditText>(R.id.dialog_scout)
 
         // create the dialog
         val dialog = AlertDialog.Builder(this)
