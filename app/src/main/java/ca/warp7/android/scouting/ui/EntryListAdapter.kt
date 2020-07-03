@@ -19,9 +19,9 @@ class EntryListAdapter(
     private val layoutInflater = LayoutInflater.from(context)
     private val red = ContextCompat.getColor(context, R.color.redAlliance)
     private val blue = ContextCompat.getColor(context, R.color.blueAlliance)
-    private val gray = ContextCompat.getColor(context, R.color.unselectedTeam)
+    private val unselected = ContextCompat.getColor(context, R.color.unselectedTeam)
     private val completeColor = ContextCompat.getColor(context, R.color.entryCompleted)
-    private val almostYellow = ContextCompat.getColor(context, R.color.teamHighlight)
+    private val teamHighlight = ContextCompat.getColor(context, R.color.teamHighlight)
 
     var highlightTeam = 0
 
@@ -65,7 +65,7 @@ class EntryListAdapter(
 
         // reset team colors
         val teamsArray = arrayOf(red1, red2, red3, blue1, blue2, blue3)
-        teamsArray.forEach { it.setTextColor(gray) }
+        teamsArray.forEach { it.setTextColor(unselected) }
 
         // set the correct color for board
         when (item.board) {
@@ -88,7 +88,7 @@ class EntryListAdapter(
                 if (number > 0) {
                     textView.text = number.toString()
                     if (number == highlightTeam) {
-                        textView.setBackgroundColor(almostYellow)
+                        textView.setBackgroundColor(teamHighlight)
                     }
                 } else {
                     textView.text = "- - -"

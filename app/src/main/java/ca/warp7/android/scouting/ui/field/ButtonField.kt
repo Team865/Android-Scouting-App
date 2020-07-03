@@ -13,13 +13,13 @@ import ca.warp7.android.scouting.entry.DataPoint
 class ButtonField internal constructor(private val data: FieldData) :
         FrameLayout(data.context), BaseFieldWidget {
 
-    private val white = ContextCompat.getColor(context, R.color.invertedButtonText)
-    private val almostBlack = ContextCompat.getColor(context, R.color.primaryDark)
-    private val almostWhite = ContextCompat.getColor(context, R.color.buttonBackground)
+    private val invertedText = ContextCompat.getColor(context, R.color.invertedButtonText)
+    private val primaryDark = ContextCompat.getColor(context, R.color.primaryDark)
+    private val buttonBack = ContextCompat.getColor(context, R.color.buttonBackground)
     private val accent = ContextCompat.getColor(context, R.color.accent)
-    private val gray = ContextCompat.getColor(context, R.color.buttonDisabled)
+    private val disabled = ContextCompat.getColor(context, R.color.buttonDisabled)
 
-    private val almostWhiteFilter = colorFilter(almostWhite)
+    private val almostWhiteFilter = colorFilter(buttonBack)
     private val accentFilter = colorFilter(accent)
 
     private val button: Button = Button(data.context).apply {
@@ -40,7 +40,7 @@ class ButtonField internal constructor(private val data: FieldData) :
         text = "0"
         textSize = 15f
         elevation = 10f
-        setTextColor(almostBlack)
+        setTextColor(primaryDark)
         layoutParams = LayoutParams(
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT
@@ -76,18 +76,18 @@ class ButtonField internal constructor(private val data: FieldData) :
                 counter.text = count.toString()
 
                 if (entry.isFocused(data.typeIndex)) {
-                    button.setTextColor(white)
+                    button.setTextColor(invertedText)
                     button.background.colorFilter = accentFilter
-                    counter.setTextColor(white)
+                    counter.setTextColor(invertedText)
                 } else {
                     button.setTextColor(accent)
                     button.background.colorFilter = almostWhiteFilter
-                    counter.setTextColor(almostBlack)
+                    counter.setTextColor(primaryDark)
                 }
             }
         } else {
             button.isEnabled = false
-            button.setTextColor(gray)
+            button.setTextColor(disabled)
             button.background.colorFilter = almostWhiteFilter
         }
     }

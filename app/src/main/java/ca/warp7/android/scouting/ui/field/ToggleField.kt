@@ -19,8 +19,8 @@ https://github.com/llollox/Android-Toggle-Switch
 class ToggleField internal constructor(private val data: FieldData) :
         LinearLayout(data.context), BaseFieldWidget {
 
-    private val almostWhite = ContextCompat.getColor(context, R.color.buttonBackground)
-    private val almostBlack = ContextCompat.getColor(context, R.color.primaryDark)
+    private val buttonBack = ContextCompat.getColor(context, R.color.buttonBackground)
+    private val primaryDark = ContextCompat.getColor(context, R.color.primaryDark)
     private val accent = ContextCompat.getColor(context, R.color.accent)
 
     private var checkedPosition = -1
@@ -40,7 +40,7 @@ class ToggleField internal constructor(private val data: FieldData) :
 
         TextView(data.context).apply {
             text = data.modifiedName
-            setTextColor(almostBlack)
+            setTextColor(primaryDark)
             textSize = 14f
             setPadding(0, 8, 0, 0)
             layoutParams = LayoutParams(
@@ -59,7 +59,7 @@ class ToggleField internal constructor(private val data: FieldData) :
                 .mapToList { data.scoutingActivity.modifyName(it as String) }
 
         checkedBackgroundColor = accent
-        uncheckedBackgroundColor = almostWhite
+        uncheckedBackgroundColor = buttonBack
         textSize = getToggleButtonTextSize()
         uncheckedTextColor = accent
         separatorVisible = false

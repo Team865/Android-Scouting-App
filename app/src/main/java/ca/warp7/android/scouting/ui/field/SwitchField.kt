@@ -12,16 +12,16 @@ import ca.warp7.android.scouting.entry.DataPoint
 class SwitchField internal constructor(private val data: FieldData) :
         FrameLayout(data.context), BaseFieldWidget {
 
-    private val white = ContextCompat.getColor(context, R.color.invertedButtonText)
-    private val gray = ContextCompat.getColor(context, R.color.buttonDisabled)
-    private val red = ContextCompat.getColor(context, R.color.switchButtonSelected)
-    private val lightGreen = ContextCompat.getColor(context, R.color.switchButtonText)
-    private val almostWhite = ContextCompat.getColor(context, R.color.buttonBackground)
+    private val invertedText = ContextCompat.getColor(context, R.color.invertedButtonText)
+    private val disabled = ContextCompat.getColor(context, R.color.buttonDisabled)
+    private val selected = ContextCompat.getColor(context, R.color.switchButtonSelected)
+    private val buttonTextColor = ContextCompat.getColor(context, R.color.switchButtonText)
+    private val buttonBack = ContextCompat.getColor(context, R.color.buttonBackground)
     private val accent = ContextCompat.getColor(context, R.color.accent)
 
-    private val almostWhiteFilter = colorFilter(almostWhite)
+    private val almostWhiteFilter = colorFilter(buttonBack)
     private val accentFilter = colorFilter(accent)
-    private val redFilter = colorFilter(red)
+    private val redFilter = colorFilter(selected)
 
     private var isChecked = false
 
@@ -68,20 +68,20 @@ class SwitchField internal constructor(private val data: FieldData) :
                 isChecked = if (lastDP != null) lastDP.value == 1 else false
 
                 if (isChecked) {
-                    button.setTextColor(white)
+                    button.setTextColor(invertedText)
                     if (isLite) {
                         button.background.colorFilter = accentFilter
                     } else {
                         button.background.colorFilter = redFilter
                     }
                 } else {
-                    button.setTextColor(lightGreen)
+                    button.setTextColor(buttonTextColor)
                     button.background.colorFilter = almostWhiteFilter
                 }
             }
         } else {
             button.isEnabled = false
-            button.setTextColor(gray)
+            button.setTextColor(disabled)
             button.background.colorFilter = almostWhiteFilter
         }
     }

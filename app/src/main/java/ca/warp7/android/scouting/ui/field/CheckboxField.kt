@@ -14,7 +14,7 @@ class CheckboxField internal constructor(private val data: FieldData) :
         LinearLayout(data.context), BaseFieldWidget {
 
     private val accent = ContextCompat.getColor(context, R.color.accent)
-    private val gray = ContextCompat.getColor(context, R.color.buttonDisabled)
+    private val disabled = ContextCompat.getColor(context, R.color.buttonDisabled)
 
     init {
         setBackgroundResource(R.drawable.ripple_button)
@@ -75,7 +75,7 @@ class CheckboxField internal constructor(private val data: FieldData) :
         } else {
             checkBox.isEnabled = false
             this.isEnabled = false
-            checkBox.setTextColor(gray)
+            checkBox.setTextColor(disabled)
         }
     }
 }
