@@ -12,7 +12,7 @@
         android:id="@+id/match_number"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:drawableTop="@drawable/ic_layers_ablack_small"
+        android:drawableTop="@drawable/ic_layers_small"
         android:gravity="center_vertical|center_horizontal"
         android:lineSpacingExtra="0dp"
         android:paddingTop="6dp"

@@ -161,7 +161,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             )
             setHint(R.string.comments_hint)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 17f)
-            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_comment_ablack_small, 0, 0, 0)
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_comment_small, 0, 0, 0)
         }
         layout.addView(commentInput)
 
@@ -416,7 +416,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 startButton.hide()
                 timeSeeker.hide()
                 timeProgress.show()
-                playAndPauseImage.setImageResource(R.drawable.ic_pause_ablack)
+                playAndPauseImage.setImageResource(R.drawable.ic_pause)
                 vibrator.vibrateStart()
                 // restore the absolute time
                 startTime = getCurrentTime() - relativeTimeAtPause
@@ -426,7 +426,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 playAndPauseImage.show()
                 undoButton.show()
                 startButton.hide()
-                playAndPauseImage.setImageResource(R.drawable.ic_play_arrow_ablack)
+                playAndPauseImage.setImageResource(R.drawable.ic_play_arrow)
                 timeSeeker.show()
                 timeProgress.hide()
                 // save the relative time

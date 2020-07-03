@@ -5,11 +5,11 @@
     <item
         android:id="@+id/menu_new_entry"
         android:title="@string/menu_new_entry"
-        android:icon="@drawable/ic_add_ablack"
+        android:icon="@drawable/ic_add"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/menu_settings"
         android:title="@string/menu_settings"
-        android:icon="@drawable/ic_settings_ablack"
+        android:icon="@drawable/ic_settings"
         app:showAsAction="ifRoom"/>
 </menu>

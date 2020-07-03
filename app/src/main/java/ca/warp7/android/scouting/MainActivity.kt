@@ -292,7 +292,7 @@ class MainActivity : AppCompatActivity() {
     private fun onSelectBoard(preferences: SharedPreferences) {
         AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_board_title))
-                .setIcon(R.drawable.ic_book_ablack_small)
+                .setIcon(R.drawable.ic_book_small)
                 .setSingleChoiceItems(
                         values().map { it.displayName }.toTypedArray(),
                         values().indexOf(board)
@@ -325,7 +325,7 @@ class MainActivity : AppCompatActivity() {
             hint = getString(R.string.scout_input_hint)
             textSize = 17f
             // add an icon
-            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_account_box_ablack_small, 0, 0, 0)
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_account_box_small, 0, 0, 0)
             compoundDrawablePadding = 16
             setPadding(16, paddingTop, 16, paddingBottom)
         }
@@ -428,7 +428,7 @@ class MainActivity : AppCompatActivity() {
             hint = getString(R.string.hint_match)
             inputType = InputType.TYPE_CLASS_NUMBER
             setPadding(16, paddingTop, 16, paddingBottom)
-            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_layers_ablack_small, 0, 0, 0)
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_layers_small, 0, 0, 0)
             compoundDrawablePadding = 16
             textSize = 17f
         }
@@ -438,7 +438,7 @@ class MainActivity : AppCompatActivity() {
             hint = getString(R.string.hint_team)
             inputType = InputType.TYPE_CLASS_NUMBER
             setPadding(16, paddingTop, 16, paddingBottom)
-            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people_ablack_small, 0, 0, 0)
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people_small, 0, 0, 0)
             compoundDrawablePadding = 16
             textSize = 17f
         }

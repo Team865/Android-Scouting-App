@@ -11,7 +11,7 @@
 
     <!-- Styles -->
     <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
-        <item name="android:src">@drawable/ic_menu_ablack</item>
+        <item name="android:src">@drawable/ic_menu</item>
     </style>
 
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">

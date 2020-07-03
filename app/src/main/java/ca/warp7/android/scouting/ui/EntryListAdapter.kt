@@ -40,11 +40,11 @@ class EntryListAdapter(
         // set the icon on top of the match number
         val iconDrawable =  if (item.isComplete) {
             if (item.isScheduled) {
-                R.drawable.ic_done_ablack_small
+                R.drawable.ic_done_small
             } else {
-                R.drawable.ic_add_ablack
+                R.drawable.ic_add
             }
-        } else R.drawable.ic_layers_ablack_small
+        } else R.drawable.ic_layers_small
 
         matchNumber.setCompoundDrawablesWithIntrinsicBounds(
             0, iconDrawable, 0, 0)
