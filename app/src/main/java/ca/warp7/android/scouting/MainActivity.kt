@@ -313,6 +313,7 @@ class MainActivity : AppCompatActivity() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             hint = getString(R.string.scout_input_hint)
+            textSize = 17f
             // add an icon
             setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_account_box_ablack_small, 0, 0, 0)
             compoundDrawablePadding = 16
@@ -419,6 +420,7 @@ class MainActivity : AppCompatActivity() {
             setPadding(16, paddingTop, 16, paddingBottom)
             setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_layers_ablack_small, 0, 0, 0)
             compoundDrawablePadding = 16
+            textSize = 17f
         }
 
         // create the EditText for team
@@ -428,6 +430,7 @@ class MainActivity : AppCompatActivity() {
             setPadding(16, paddingTop, 16, paddingBottom)
             setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people_ablack_small, 0, 0, 0)
             compoundDrawablePadding = 16
+            textSize = 17f
         }
 
         layout.addView(matchEdit)

@@ -18,7 +18,7 @@
         android:paddingTop="6dp"
         android:paddingBottom="6dp"
         android:textColor="@color/colorAlmostBlack"
-        android:textSize="18sp"/>
+        android:textSize="@dimen/alliance_view_text_size"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
