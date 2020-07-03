@@ -7,16 +7,16 @@
     android:paddingRight="8dp"
     android:paddingBottom="0dp">
     <EditText
-        android:id="@+id/dialog_scout"
-        android:inputType="text"
+        android:id="@+id/dialog_comment"
+        android:inputType="text|textMultiLine"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:drawablePadding="6dp"
-        android:drawableStart="@drawable/ic_account_box_small"
-        android:autofillHints="@string/scout_input_hint"
+        android:drawableStart="@drawable/ic_comment_small"
+        android:autofillHints="@string/comments_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="17sp"
-        android:hint="@string/scout_input_hint"
+        android:hint="@string/comments_hint"
         />
 </LinearLayout>
