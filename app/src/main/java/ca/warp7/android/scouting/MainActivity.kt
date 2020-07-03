@@ -408,32 +408,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onNewEntry() {
-        val layout = LinearLayout(this)
-        layout.orientation = LinearLayout.VERTICAL
-        layout.setPadding(16, 8, 16, 0)
-
-        // create the EditText for match
-        val matchEdit = EditText(this).apply {
-            hint = getString(R.string.hint_match)
-            inputType = InputType.TYPE_CLASS_NUMBER
-            setPadding(16, paddingTop, 16, paddingBottom)
-            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_layers_small, 0, 0, 0)
-            compoundDrawablePadding = 16
-            textSize = 17f
-        }
-
-        // create the EditText for team
-        val teamEdit = EditText(this).apply {
-            hint = getString(R.string.hint_team)
-            inputType = InputType.TYPE_CLASS_NUMBER
-            setPadding(16, paddingTop, 16, paddingBottom)
-            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people_small, 0, 0, 0)
-            compoundDrawablePadding = 16
-            textSize = 17f
-        }
-
-        layout.addView(matchEdit)
-        layout.addView(teamEdit)
+        val layout = View.inflate(this, R.layout.dialog_new_entry, null) as LinearLayout
+        val matchEdit = layout.findViewById<EditText>(R.id.dialog_match)
+        val teamEdit = layout.findViewById<EditText>(R.id.dialog_match)
 
         val dialog = AlertDialog.Builder(this)
                 .setTitle(getString(R.string.add_new_entry))
