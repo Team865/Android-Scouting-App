@@ -7,9 +7,9 @@ import android.os.VibrationEffect.DEFAULT_AMPLITUDE
 import android.os.Vibrator
 
 class ActionVibrator(
-    context: Context,
-    private val mVibrationOn: Boolean
-)  {
+        context: Context,
+        private val mVibrationOn: Boolean
+) {
 
     private val actual = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 

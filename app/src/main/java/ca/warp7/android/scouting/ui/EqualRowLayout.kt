@@ -18,8 +18,8 @@ class EqualRowLayout : ViewGroup {
                 getChildAt(i).also {
                     if (it.visibility != View.GONE) {
                         it.measure(
-                            MeasureSpec.makeMeasureSpec(resolvedWidth, MeasureSpec.EXACTLY),
-                            MeasureSpec.makeMeasureSpec(rowHeight, MeasureSpec.EXACTLY)
+                                MeasureSpec.makeMeasureSpec(resolvedWidth, MeasureSpec.EXACTLY),
+                                MeasureSpec.makeMeasureSpec(rowHeight, MeasureSpec.EXACTLY)
                         )
                     }
                 }
@@ -29,8 +29,8 @@ class EqualRowLayout : ViewGroup {
     }
 
     private fun resolveIgnoreDesired(desiredSize: Int, measureSpec: Int): Int {
-        val specMode = View.MeasureSpec.getMode(measureSpec)
-        val specSize = View.MeasureSpec.getSize(measureSpec)
+        val specMode = MeasureSpec.getMode(measureSpec)
+        val specSize = MeasureSpec.getSize(measureSpec)
         return when (specMode) {
             MeasureSpec.EXACTLY -> specSize
             MeasureSpec.AT_MOST -> specSize
@@ -54,6 +54,7 @@ class EqualRowLayout : ViewGroup {
     }
 
     override fun shouldDelayChildPressedState() = false
+
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attributeSet: AttributeSet) : super(context, attributeSet)
 }

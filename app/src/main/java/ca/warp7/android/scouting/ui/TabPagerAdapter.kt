@@ -13,9 +13,9 @@ import androidx.viewpager.widget.ViewPager
  */
 
 class TabPagerAdapter(
-    fragmentManager: FragmentManager,
-    private val layoutsSize: Int,
-    private val pager: ViewPager
+        fragmentManager: FragmentManager,
+        private val layoutsSize: Int,
+        private val pager: ViewPager
 ) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {

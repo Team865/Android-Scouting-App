@@ -26,7 +26,11 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
         retainInstance = true
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_screen, container, false)
     }
 
@@ -68,11 +72,11 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
         if (scoutingActivity != null && context != null) {
             val typeIndex = scoutingActivity.template?.lookup(templateField) ?: 0 + 1
             val data = FieldData(
-                context,
-                templateField,
-                scoutingActivity,
-                scoutingActivity.modifyName(templateField.name),
-                typeIndex
+                    context,
+                    templateField,
+                    scoutingActivity,
+                    scoutingActivity.modifyName(templateField.name),
+                    typeIndex
             )
             return when (templateField.type) {
                 Button -> ButtonField(data)
@@ -91,8 +95,8 @@ class EntryScreenFragment : Fragment(), ScoutingEntryTab {
             row.forEach {
                 addView(createControlFromTemplateField(it).apply {
                     layoutParams = LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT, 1.0f
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT, 1.0f
                     )
                 })
             }

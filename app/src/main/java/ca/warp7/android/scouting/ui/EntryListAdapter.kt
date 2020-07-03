@@ -12,8 +12,8 @@ import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.entry.Board.*
 
 class EntryListAdapter(
-    context: Context,
-    scheduledEntries: List<EntryInMatch>
+        context: Context,
+        scheduledEntries: List<EntryInMatch>
 ) : ArrayAdapter<EntryInMatch>(context, 0, scheduledEntries) {
 
     private val layoutInflater = LayoutInflater.from(context)
@@ -26,8 +26,11 @@ class EntryListAdapter(
     var highlightTeam = 0
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val itemView = if (convertView is LinearLayout)
-            convertView else layoutInflater.inflate(R.layout.list_item_match_info, parent, false)
+        val itemView = if (convertView is LinearLayout) {
+            convertView
+        } else {
+            layoutInflater.inflate(R.layout.list_item_match_info, parent, false)
+        }
         val item = getItem(position) ?: return itemView
 
         // update the match number
@@ -38,7 +41,7 @@ class EntryListAdapter(
         }
 
         // set the icon on top of the match number
-        val iconDrawable =  if (item.isComplete) {
+        val iconDrawable = if (item.isComplete) {
             if (item.isScheduled) {
                 R.drawable.ic_done_small
             } else {
@@ -47,7 +50,7 @@ class EntryListAdapter(
         } else R.drawable.ic_layers_small
 
         matchNumber.setCompoundDrawablesWithIntrinsicBounds(
-            0, iconDrawable, 0, 0)
+                0, iconDrawable, 0, 0)
 
         // set the background of the list item
         if (item.isComplete) {

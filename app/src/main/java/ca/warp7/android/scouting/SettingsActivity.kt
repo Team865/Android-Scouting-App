@@ -16,8 +16,8 @@ class SettingsActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
         supportFragmentManager.beginTransaction().add(
-            R.id.settings_frame,
-            SettingsFragment()
+                R.id.settings_frame,
+                SettingsFragment()
         ).commit()
         setTheme(R.style.AppTheme)
     }
