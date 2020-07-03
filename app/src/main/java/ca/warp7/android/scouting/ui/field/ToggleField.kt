@@ -64,6 +64,8 @@ class ToggleField internal constructor(private val data: FieldData) :
         uncheckedTextColor = accent
         separatorVisible = false
         elevation = 4f
+        borderRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                6f, context.resources.displayMetrics)
 
         setEntries(choices)
 

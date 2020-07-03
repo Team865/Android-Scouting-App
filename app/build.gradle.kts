@@ -18,7 +18,7 @@ android {
         targetSdkVersion(29)
         versionCode = 1
         versionName = "2020.2.0"
-        resConfigs("en")
+        resConfigs("en", "hdpi")
 
         // Read the TBA key from local properties
         val propsFile = rootProject.file("local.properties")
