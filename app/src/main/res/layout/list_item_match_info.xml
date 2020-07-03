@@ -17,7 +17,7 @@
         android:lineSpacingExtra="0dp"
         android:paddingTop="6dp"
         android:paddingBottom="6dp"
-        android:textColor="@color/colorAlmostBlack"
+        android:textColor="@color/primaryDark"
         android:textSize="@dimen/alliance_view_text_size"/>
 
     <LinearLayout
@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/redAlliance"
                 android:textStyle="normal"
                 android:gravity="center"
                 android:textSize="@dimen/alliance_view_text_size"/>
@@ -50,7 +50,7 @@
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/redAlliance"
                 android:textStyle="normal"
                 android:textSize="@dimen/alliance_view_text_size"
                 android:gravity="center"/>
@@ -61,7 +61,7 @@
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/redAlliance"
                 android:textStyle="normal"
                 android:textSize="@dimen/alliance_view_text_size"
                 android:gravity="center"/>
@@ -80,7 +80,7 @@
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/blueAlliance"
                 android:textStyle="normal"
                 android:gravity="center"
                 android:textSize="@dimen/alliance_view_text_size"/>
@@ -91,7 +91,7 @@
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/blueAlliance"
                 android:textStyle="normal"
                 android:textSize="@dimen/alliance_view_text_size"
                 android:gravity="center"/>
@@ -102,7 +102,7 @@
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/blueAlliance"
                 android:textStyle="normal"
                 android:textSize="@dimen/alliance_view_text_size"
                 android:gravity="center"/>

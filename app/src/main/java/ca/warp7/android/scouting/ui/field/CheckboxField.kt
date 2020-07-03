@@ -13,8 +13,8 @@ import ca.warp7.android.scouting.entry.DataPoint
 class CheckboxField internal constructor(private val data: FieldData) :
         LinearLayout(data.context), BaseFieldWidget {
 
-    private val accent = ContextCompat.getColor(context, R.color.colorAccent)
-    private val gray = ContextCompat.getColor(context, R.color.colorGray)
+    private val accent = ContextCompat.getColor(context, R.color.accent)
+    private val gray = ContextCompat.getColor(context, R.color.buttonDisabled)
 
     init {
         setBackgroundResource(R.drawable.ripple_button)

@@ -274,8 +274,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         findViewById<TextView>(R.id.toolbar_board).also {
             it.text = board.name
             val color = when (board.alliance) {
-                Alliance.Red -> R.color.colorRed
-                Alliance.Blue -> R.color.colorBlue
+                Alliance.Red -> R.color.redAlliance
+                Alliance.Blue -> R.color.blueAlliance
             }
             it.setTextColor(ContextCompat.getColor(this, color))
         }
@@ -347,8 +347,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         val filledStatus = String(placeholder).replace("\u0000", "0") + status
         timerStatus.text = filledStatus
         val statusColor = when {
-            matchTime <= kAutonomousTime -> R.color.colorAutoYellow
-            else -> R.color.colorTeleOpGreen
+            matchTime <= kAutonomousTime -> R.color.timerAutonomous
+            else -> R.color.timerOperatorControl
         }
         timerStatus.setTextColor(ContextCompat.getColor(this, statusColor))
         timeProgress.progress = matchTime

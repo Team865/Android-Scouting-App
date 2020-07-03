@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:paddingEnd="12dp"
             android:paddingStart="0dp"
-            android:textColor="@color/colorAlmostBlack"
+            android:textColor="@color/primaryDark"
             android:textSize="17sp"/>
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="17sp"
-            android:textColor="@color/colorAlmostBlack"
+            android:textColor="@color/primaryDark"
             android:paddingEnd="12dp"
             android:paddingStart="0dp"/>
 
@@ -106,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
-            android:textColor="@color/colorAlmostBlack"
+            android:textColor="@color/primaryDark"
             android:textSize="24sp"
             tools:text="Tab Title"/>
 
@@ -148,7 +148,7 @@
                 android:paddingBottom="8dp"
                 android:text="@string/start_timer"
                 android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/invertedButtonText"
                 android:textSize="17sp"/>
 
             <ImageButton

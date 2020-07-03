@@ -14,7 +14,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorDarkAlmostWhite"/>
+        android:background="@color/horizontalDivider"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,6 +26,6 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:textSize="16sp"
-            android:textColor="@color/colorAlmostBlack"/>
+            android:textColor="@color/primaryDark"/>
     </ScrollView>
 </LinearLayout>

@@ -376,8 +376,8 @@ class MainActivity : AppCompatActivity() {
         boardTextView.setTextColor(
                 ContextCompat.getColor(
                         this, when (board.alliance) {
-                    Alliance.Red -> R.color.colorRed
-                    Alliance.Blue -> R.color.colorBlue
+                    Alliance.Red -> R.color.redAlliance
+                    Alliance.Blue -> R.color.blueAlliance
                 }
                 )
         )

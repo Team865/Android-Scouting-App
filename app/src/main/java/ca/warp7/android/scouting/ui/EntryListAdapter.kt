@@ -17,11 +17,11 @@ class EntryListAdapter(
 ) : ArrayAdapter<EntryInMatch>(context, 0, scheduledEntries) {
 
     private val layoutInflater = LayoutInflater.from(context)
-    private val red = ContextCompat.getColor(context, R.color.colorRed)
-    private val blue = ContextCompat.getColor(context, R.color.colorBlue)
-    private val gray = ContextCompat.getColor(context, R.color.colorGray)
-    private val completeColor = ContextCompat.getColor(context, R.color.colorEntryCompleted)
-    private val almostYellow = ContextCompat.getColor(context, R.color.colorAlmostYellow)
+    private val red = ContextCompat.getColor(context, R.color.redAlliance)
+    private val blue = ContextCompat.getColor(context, R.color.blueAlliance)
+    private val gray = ContextCompat.getColor(context, R.color.unselectedTeam)
+    private val completeColor = ContextCompat.getColor(context, R.color.entryCompleted)
+    private val almostYellow = ContextCompat.getColor(context, R.color.teamHighlight)
 
     var highlightTeam = 0
 

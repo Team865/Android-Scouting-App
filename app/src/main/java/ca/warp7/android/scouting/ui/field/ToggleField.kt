@@ -19,9 +19,9 @@ https://github.com/llollox/Android-Toggle-Switch
 class ToggleField internal constructor(private val data: FieldData) :
         LinearLayout(data.context), BaseFieldWidget {
 
-    private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
-    private val almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)
-    private val accent = ContextCompat.getColor(context, R.color.colorAccent)
+    private val almostWhite = ContextCompat.getColor(context, R.color.buttonBackground)
+    private val almostBlack = ContextCompat.getColor(context, R.color.primaryDark)
+    private val accent = ContextCompat.getColor(context, R.color.accent)
 
     private var checkedPosition = -1
     private var defaultPosition = 0

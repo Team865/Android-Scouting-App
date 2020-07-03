@@ -12,12 +12,12 @@ import ca.warp7.android.scouting.entry.DataPoint
 class SwitchField internal constructor(private val data: FieldData) :
         FrameLayout(data.context), BaseFieldWidget {
 
-    private val white = ContextCompat.getColor(context, R.color.colorWhite)
-    private val gray = ContextCompat.getColor(context, R.color.colorGray)
-    private val red = ContextCompat.getColor(context, R.color.colorRed)
-    private val lightGreen = ContextCompat.getColor(context, R.color.colorLightGreen)
-    private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
-    private val accent = ContextCompat.getColor(context, R.color.colorAccent)
+    private val white = ContextCompat.getColor(context, R.color.invertedButtonText)
+    private val gray = ContextCompat.getColor(context, R.color.buttonDisabled)
+    private val red = ContextCompat.getColor(context, R.color.switchButtonSelected)
+    private val lightGreen = ContextCompat.getColor(context, R.color.switchButtonText)
+    private val almostWhite = ContextCompat.getColor(context, R.color.buttonBackground)
+    private val accent = ContextCompat.getColor(context, R.color.accent)
 
     private val almostWhiteFilter = colorFilter(almostWhite)
     private val accentFilter = colorFilter(accent)

@@ -18,7 +18,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorDarkAlmostWhite"/>
+        android:background="@color/horizontalDivider"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,7 +50,7 @@
             android:gravity="end"
             android:textSize="17sp"
             android:textStyle="normal"
-            android:textColor="@color/colorAlmostBlack"
+            android:textColor="@color/primaryDark"
             android:drawableStart="@drawable/ic_account_box_ablack_small"
             android:background="@drawable/ripple_transparent"
             android:drawablePadding="4dp"
@@ -66,7 +66,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorDarkAlmostWhite"/>
+        android:background="@color/horizontalDivider"/>
 
     <ListView
         android:id="@+id/entries_list"

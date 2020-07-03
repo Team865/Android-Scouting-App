@@ -13,11 +13,11 @@ import ca.warp7.android.scouting.entry.DataPoint
 class ButtonField internal constructor(private val data: FieldData) :
         FrameLayout(data.context), BaseFieldWidget {
 
-    private val white = ContextCompat.getColor(context, R.color.colorWhite)
-    private val almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)
-    private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
-    private val accent = ContextCompat.getColor(context, R.color.colorAccent)
-    private val gray = ContextCompat.getColor(context, R.color.colorGray)
+    private val white = ContextCompat.getColor(context, R.color.invertedButtonText)
+    private val almostBlack = ContextCompat.getColor(context, R.color.primaryDark)
+    private val almostWhite = ContextCompat.getColor(context, R.color.buttonBackground)
+    private val accent = ContextCompat.getColor(context, R.color.accent)
+    private val gray = ContextCompat.getColor(context, R.color.buttonDisabled)
 
     private val almostWhiteFilter = colorFilter(almostWhite)
     private val accentFilter = colorFilter(accent)

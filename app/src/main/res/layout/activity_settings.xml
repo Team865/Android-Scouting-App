@@ -14,7 +14,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorDarkAlmostWhite"/>
+        android:background="@color/horizontalDivider"/>
 
     <FrameLayout
         android:id="@+id/settings_frame"
