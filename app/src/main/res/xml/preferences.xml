@@ -2,31 +2,34 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
-            android:key = "pref_event_selection"
-            android:title="Select FRC Event">
-    </Preference>
+        android:key="pref_event_selection"
+        android:title="Select FRC Event" />
+
+    <ListPreference
+        android:defaultValue="Default"
+        android:entries="@array/pref_dark_theme_options"
+        android:entryValues="@array/pref_dark_theme_options"
+        android:key="@string/pref_dark_theme_key"
+        android:title="@string/pref_dark_theme_title" />
 
     <SwitchPreference
         android:defaultValue="true"
         android:key="@string/pref_use_vibration_key"
-        android:summary="@string/pref_use_vibration_summary"
-        android:title="@string/pref_use_vibration_title"/>
+        android:title="@string/pref_use_vibration_title" />
 
     <PreferenceCategory android:title="@string/pref_cat_about">
         <Preference
+            android:icon="@mipmap/ic_launcher"
             android:key="@string/pref_about_key"
-            android:title="@string/pref_app_name"
-            android:icon="@mipmap/ic_launcher"/>
-        <Preference
-            android:title="@string/pref_github_title"
-            android:summary="@string/pref_github_summary">
+            android:title="@string/pref_app_name" />
+        <Preference android:title="@string/pref_github_title">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://github.com/Team865/Android-Scouting-App"/>
+                android:data="https://github.com/Team865/Android-Scouting-App" />
         </Preference>
         <Preference
             android:key="@string/pref_licenses_key"
-            android:title="@string/pref_licenses_title"/>
+            android:title="@string/pref_licenses_title" />
     </PreferenceCategory>
 
 
