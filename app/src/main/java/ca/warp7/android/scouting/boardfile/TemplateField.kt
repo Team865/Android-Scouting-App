@@ -3,9 +3,9 @@ package ca.warp7.android.scouting.boardfile
 import org.json.JSONObject
 
 class TemplateField(
-    val json: JSONObject,
-    val name: String,
-    val type: FieldType
+        val json: JSONObject,
+        val name: String,
+        val type: FieldType
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

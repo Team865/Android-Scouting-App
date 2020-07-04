@@ -294,12 +294,12 @@ abstract class BaseToggleSwitch : LinearLayout, ToggleSwitchButton.Listener {
                     val textToggleRight = attributes.getString(R.styleable.BaseToggleSwitch_textToggleRight)
 
                     if (!TextUtils.isEmpty(textToggleLeft) && !TextUtils.isEmpty(textToggleRight)) {
-                        entriesList.add(textToggleLeft)
+                        entriesList.add(textToggleLeft!!)
                         val textToggleCenter  = attributes.getString(R.styleable.BaseToggleSwitch_textToggleCenter)
                         if (!TextUtils.isEmpty(textToggleCenter)) {
-                            entriesList.add(textToggleCenter)
+                            entriesList.add(textToggleCenter!!)
                         }
-                        entriesList.add(textToggleRight)
+                        entriesList.add(textToggleRight!!)
                         setEntries(entriesList)
                     }
                 }

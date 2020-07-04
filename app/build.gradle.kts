@@ -11,14 +11,14 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 android {
-    compileSdkVersion(28)
+    compileSdkVersion(29)
     defaultConfig {
         applicationId = "ca.warp7.android.scouting"
         minSdkVersion(21)
-        targetSdkVersion(28)
+        targetSdkVersion(29)
         versionCode = 1
         versionName = "2020.2.0"
-        resConfigs("en")
+        resConfigs("en", "hdpi")
 
         // Read the TBA key from local properties
         val propsFile = rootProject.file("local.properties")

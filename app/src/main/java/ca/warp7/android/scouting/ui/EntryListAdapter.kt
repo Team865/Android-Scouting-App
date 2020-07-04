@@ -12,22 +12,25 @@ import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.entry.Board.*
 
 class EntryListAdapter(
-    context: Context,
-    scheduledEntries: List<EntryInMatch>
+        context: Context,
+        scheduledEntries: List<EntryInMatch>
 ) : ArrayAdapter<EntryInMatch>(context, 0, scheduledEntries) {
 
     private val layoutInflater = LayoutInflater.from(context)
-    private val red = ContextCompat.getColor(context, R.color.colorRed)
-    private val blue = ContextCompat.getColor(context, R.color.colorBlue)
-    private val gray = ContextCompat.getColor(context, R.color.colorGray)
-    private val completeColor = ContextCompat.getColor(context, R.color.colorEntryCompleted)
-    private val almostYellow = ContextCompat.getColor(context, R.color.colorAlmostYellow)
+    private val red = ContextCompat.getColor(context, R.color.redAlliance)
+    private val blue = ContextCompat.getColor(context, R.color.blueAlliance)
+    private val unselected = ContextCompat.getColor(context, R.color.unselectedTeam)
+    private val completeColor = ContextCompat.getColor(context, R.color.entryCompleted)
+    private val teamHighlight = ContextCompat.getColor(context, R.color.teamHighlight)
 
     var highlightTeam = 0
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val itemView = if (convertView is LinearLayout)
-            convertView else layoutInflater.inflate(R.layout.list_item_match_info, parent, false)
+        val itemView = if (convertView is LinearLayout) {
+            convertView
+        } else {
+            layoutInflater.inflate(R.layout.list_item_match_info, parent, false)
+        }
         val item = getItem(position) ?: return itemView
 
         // update the match number
@@ -38,16 +41,16 @@ class EntryListAdapter(
         }
 
         // set the icon on top of the match number
-        val iconDrawable =  if (item.isComplete) {
+        val iconDrawable = if (item.isComplete) {
             if (item.isScheduled) {
-                R.drawable.ic_done_ablack_small
+                R.drawable.ic_done_small
             } else {
-                R.drawable.ic_add_ablack
+                R.drawable.ic_add
             }
-        } else R.drawable.ic_layers_ablack_small
+        } else R.drawable.ic_layers_small
 
         matchNumber.setCompoundDrawablesWithIntrinsicBounds(
-            0, iconDrawable, 0, 0)
+                0, iconDrawable, 0, 0)
 
         // set the background of the list item
         if (item.isComplete) {
@@ -65,7 +68,7 @@ class EntryListAdapter(
 
         // reset team colors
         val teamsArray = arrayOf(red1, red2, red3, blue1, blue2, blue3)
-        teamsArray.forEach { it.setTextColor(gray) }
+        teamsArray.forEach { it.setTextColor(unselected) }
 
         // set the correct color for board
         when (item.board) {
@@ -88,7 +91,7 @@ class EntryListAdapter(
                 if (number > 0) {
                     textView.text = number.toString()
                     if (number == highlightTeam) {
-                        textView.setBackgroundColor(almostYellow)
+                        textView.setBackgroundColor(teamHighlight)
                     }
                 } else {
                     textView.text = "- - -"

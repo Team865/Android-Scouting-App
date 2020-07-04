@@ -2,9 +2,11 @@ package ca.warp7.android.scouting
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.text.Html
 import android.text.Spanned
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import ca.warp7.android.scouting.entry.Board
 import ca.warp7.android.scouting.entry.RelativeBoard
 import ca.warp7.android.scouting.ui.EntryInMatch
@@ -66,4 +68,17 @@ fun modifyNameForDisplay(eim: EntryInMatch?, name: String): String {
         }
     }
     return varName.split("_".toRegex()).joinToString(" ") { it.capitalize() }
+}
+
+fun setDarkTheme(darkTheme: String?) {
+    val newState = when (darkTheme) {
+        "Light" -> AppCompatDelegate.MODE_NIGHT_NO
+        "Dark" -> AppCompatDelegate.MODE_NIGHT_YES
+        else -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        } else {
+            AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+        }
+    }
+    AppCompatDelegate.setDefaultNightMode(newState)
 }

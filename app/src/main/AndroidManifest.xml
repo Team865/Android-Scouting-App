@@ -34,10 +34,6 @@
         <activity android:name=".SettingsActivity"/>
         <activity android:name=".LicensesActivity"/>
         <activity android:name=".EventSelectionActivity"/>
-
-        <meta-data
-                android:name="preloaded_fonts"
-                android:resource="@array/preloaded_fonts"/>
     </application>
 
 </manifest>

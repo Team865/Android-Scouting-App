@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="8dp"
+    android:paddingTop="4dp"
+    android:paddingRight="8dp"
+    android:paddingBottom="0dp">
+    <EditText
+        android:id="@+id/dialog_match"
+        android:inputType="number"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:drawablePadding="6dp"
+        android:textSize="17sp"
+        android:drawableStart="@drawable/ic_layers_small"
+        android:autofillHints="@string/hint_match"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_match"
+        />
+    <EditText
+        android:id="@+id/dialog_team"
+        android:inputType="number"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:drawablePadding="6dp"
+        android:textSize="17sp"
+        android:drawableStart="@drawable/ic_people_small"
+        android:autofillHints="@string/hint_team"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_team"
+        />
+</LinearLayout>

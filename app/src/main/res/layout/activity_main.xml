@@ -18,7 +18,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorDarkAlmostWhite"/>
+        android:background="@color/horizontalDivider"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,9 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:textStyle="normal"
-            android:drawableStart="@drawable/ic_book_ablack_small"
+            android:drawableStart="@drawable/ic_book_small"
             android:background="@drawable/ripple_transparent"
             android:focusable="true"
             android:drawablePadding="4dp"
@@ -48,10 +48,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:textStyle="normal"
-            android:textColor="@color/colorAlmostBlack"
-            android:drawableStart="@drawable/ic_account_box_ablack_small"
+            android:textColor="@color/primaryDark"
+            android:drawableStart="@drawable/ic_account_box_small"
             android:background="@drawable/ripple_transparent"
             android:drawablePadding="4dp"
             android:paddingStart="20dp"
@@ -66,7 +66,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorDarkAlmostWhite"/>
+        android:background="@color/horizontalDivider"/>
 
     <ListView
         android:id="@+id/entries_list"

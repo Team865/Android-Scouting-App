@@ -2,19 +2,22 @@
 <resources>
     <color name="ic_launcher_background">#3c5c94</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAlmostBlack">#404040</color>
-    <color name="colorDarkAccent">#304976</color>
-    <color name="colorAccent">#3c5c94</color>
-    <color name="colorGray">#808080</color>
-    <color name="colorBlue">#0000ff</color>
-    <color name="colorRed">#ff0000</color>
-    <color name="colorLightGreen">#009933</color>
-    <color name="colorTeleOpGreen">#006633</color>
-    <color name="colorEntryCompleted">#6066ff88</color>
-    <color name="colorAlmostYellow">#ffee88</color>
-    <color name="colorAutoYellow">#cc9900</color>
-    <color name="colorDarkAlmostWhite">#d4d4d4</color>
-    <color name="colorAlmostWhite">#e0e0e0</color>
     <color name="colorPrimary">#ffffff</color>
-    <color name="colorWhite">#ffffff</color>
+    <color name="primaryDark">#404040</color>
+    <color name="iconColor">#404040</color>
+    <color name="darkAccent">#304976</color>
+    <color name="accent">#3c5c94</color>
+    <color name="buttonDisabled">#808080</color>
+    <color name="unselectedTeam">#808080</color>
+    <color name="blueAlliance">#0000ff</color>
+    <color name="redAlliance">#ff0000</color>
+    <color name="switchButtonSelected">#ff0000</color>
+    <color name="switchButtonText">#009933</color>
+    <color name="timerOperatorControl">#006633</color>
+    <color name="entryCompleted">#6066ff88</color>
+    <color name="teamHighlight">#ffee88</color>
+    <color name="timerAutonomous">#cc9900</color>
+    <color name="horizontalDivider">#d4d4d4</color>
+    <color name="buttonBackground">#e0e0e0</color>
+    <color name="invertedButtonText">#ffffff</color>
 </resources>

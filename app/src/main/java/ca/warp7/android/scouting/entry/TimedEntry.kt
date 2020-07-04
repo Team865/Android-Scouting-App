@@ -7,22 +7,21 @@ import kotlin.math.abs
 
 class TimedEntry(
 
-    override val match: String,
+        override val match: String,
 
-    override val team: String,
+        override val team: String,
 
-    override val scout: String,
+        override val scout: String,
 
-    override val board: Board,
+        override val board: Board,
 
-    override var timestamp: Int,
+        override var timestamp: Int,
 
-    val getTime: () -> Double
+        private val getTime: () -> Double
 
 ) : MutableEntry {
 
     override val dataPoints: MutableList<DataPoint> = mutableListOf()
-
     override var comments: String = ""
 
     override fun getEncoded(): String {
@@ -64,27 +63,9 @@ class TimedEntry(
     }
 
     override fun isFocused(type: Int, time: Double): Boolean {
-
-        return dataPoints.any { it.type == type && abs(time - it.time) < 0.5 }
-
-        /*if (dataPoints.isEmpty()) {
-            return false
+        return dataPoints.any { dp ->
+            dp.type == type && abs(time - dp.time) < 0.5
         }
-
-        var low = 0
-        var high = dataPoints.size - 1
-
-        while (low != high) {
-            val mid = (high + low) / 2
-            val midPoint = dataPoints[mid]
-
-            when {
-                (time - midPoint.time) > 0.5 -> low = mid
-                (midPoint.time - time) > 0.5 -> high = mid
-                midPoint.type == type -> return true
-            }
-        }
-        return false*/
     }
 
     override fun isFocused(type: Int): Boolean {

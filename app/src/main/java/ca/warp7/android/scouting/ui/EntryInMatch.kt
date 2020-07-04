@@ -3,12 +3,12 @@ package ca.warp7.android.scouting.ui
 import ca.warp7.android.scouting.entry.Board
 
 class EntryInMatch(
-    val match: String,
-    val teams: List<Int>,
-    val board: Board,
-    val isComplete: Boolean,
-    val isScheduled: Boolean,
-    val data: String = ""
+        val match: String,
+        val teams: List<Int>,
+        val board: Board,
+        val isComplete: Boolean,
+        val isScheduled: Boolean,
+        val data: String = ""
 ) {
 
     fun toCSV(): String {
@@ -26,12 +26,12 @@ class EntryInMatch(
         fun fromCSV(s: String): EntryInMatch {
             val sp = s.split(",")
             return EntryInMatch(
-                sp[0],
-                sp.subList(1, 7).map { it.toInt() },
-                Board.valueOf(sp[7]),
-                sp[8].toBoolean(),
-                sp[9].toBoolean(),
-                sp[10]
+                    sp[0],
+                    sp.subList(1, 7).map { it.toInt() },
+                    Board.valueOf(sp[7]),
+                    sp[8].toBoolean(),
+                    sp[9].toBoolean(),
+                    sp[10]
             )
         }
     }

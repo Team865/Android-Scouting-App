@@ -12,13 +12,13 @@
         android:id="@+id/match_number"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:drawableTop="@drawable/ic_layers_ablack_small"
+        android:drawableTop="@drawable/ic_layers_small"
         android:gravity="center_vertical|center_horizontal"
         android:lineSpacingExtra="0dp"
         android:paddingTop="6dp"
         android:paddingBottom="6dp"
-        android:textColor="@color/colorAlmostBlack"
-        android:textSize="18sp"/>
+        android:textColor="@color/primaryDark"
+        android:textSize="@dimen/alliance_view_text_size"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/redAlliance"
                 android:textStyle="normal"
                 android:gravity="center"
                 android:textSize="@dimen/alliance_view_text_size"/>
@@ -50,7 +50,7 @@
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/redAlliance"
                 android:textStyle="normal"
                 android:textSize="@dimen/alliance_view_text_size"
                 android:gravity="center"/>
@@ -61,7 +61,7 @@
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/redAlliance"
                 android:textStyle="normal"
                 android:textSize="@dimen/alliance_view_text_size"
                 android:gravity="center"/>
@@ -80,7 +80,7 @@
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/blueAlliance"
                 android:textStyle="normal"
                 android:gravity="center"
                 android:textSize="@dimen/alliance_view_text_size"/>
@@ -91,7 +91,7 @@
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/blueAlliance"
                 android:textStyle="normal"
                 android:textSize="@dimen/alliance_view_text_size"
                 android:gravity="center"/>
@@ -102,7 +102,7 @@
                 android:layout_height="match_parent"
                 android:minWidth="@dimen/alliance_view_min_width"
                 android:textAlignment="center"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/blueAlliance"
                 android:textStyle="normal"
                 android:textSize="@dimen/alliance_view_text_size"
                 android:gravity="center"/>

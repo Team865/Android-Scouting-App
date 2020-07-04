@@ -1,7 +1,6 @@
 package ca.warp7.android.scouting.ui.field
 
 import android.annotation.SuppressLint
-import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.widget.Button
 import android.widget.FrameLayout
@@ -14,17 +13,22 @@ import ca.warp7.android.scouting.entry.DataPoint
 class ButtonField internal constructor(private val data: FieldData) :
         FrameLayout(data.context), BaseFieldWidget {
 
-    private val white = ContextCompat.getColor(context, R.color.colorWhite)
-    private val almostBlack = ContextCompat.getColor(context, R.color.colorAlmostBlack)
-    private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
-    private val accent = ContextCompat.getColor(context, R.color.colorAccent)
+    private val invertedText = ContextCompat.getColor(context, R.color.invertedButtonText)
+    private val primaryDark = ContextCompat.getColor(context, R.color.primaryDark)
+    private val buttonBack = ContextCompat.getColor(context, R.color.buttonBackground)
+    private val accent = ContextCompat.getColor(context, R.color.accent)
+    private val disabled = ContextCompat.getColor(context, R.color.buttonDisabled)
+
+    private val almostWhiteFilter = colorFilter(buttonBack)
+    private val accentFilter = colorFilter(accent)
 
     private val button: Button = Button(data.context).apply {
         isAllCaps = false
-        textSize = 18f
+        textSize = 17f
         typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
         stateListAnimator = null
         text = data.modifiedName
+        setPadding(4, 4, 4, 4)
         setLines(2)
         setBackgroundResource(R.drawable.ripple_button)
         this.background.mutate()
@@ -36,7 +40,7 @@ class ButtonField internal constructor(private val data: FieldData) :
         text = "0"
         textSize = 15f
         elevation = 10f
-        setTextColor(almostBlack)
+        setTextColor(primaryDark)
         layoutParams = LayoutParams(
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT
@@ -72,19 +76,19 @@ class ButtonField internal constructor(private val data: FieldData) :
                 counter.text = count.toString()
 
                 if (entry.isFocused(data.typeIndex)) {
-                    button.setTextColor(white)
-                    button.background.setColorFilter(accent, PorterDuff.Mode.SRC)
-                    counter.setTextColor(white)
+                    button.setTextColor(invertedText)
+                    button.background.colorFilter = accentFilter
+                    counter.setTextColor(invertedText)
                 } else {
                     button.setTextColor(accent)
-                    button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
-                    counter.setTextColor(almostBlack)
+                    button.background.colorFilter = almostWhiteFilter
+                    counter.setTextColor(primaryDark)
                 }
             }
         } else {
             button.isEnabled = false
-            button.setTextColor(ContextCompat.getColor(context, R.color.colorGray))
-            button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+            button.setTextColor(disabled)
+            button.background.colorFilter = almostWhiteFilter
         }
     }
 }

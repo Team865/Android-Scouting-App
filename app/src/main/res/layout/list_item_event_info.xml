@@ -13,12 +13,12 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:textSize="18sp"
-              android:textColor="@color/colorAlmostBlack"/>
+              android:textColor="@color/primaryDark"/>
 
     <TextView android:id="@+id/text2"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:textColor="@color/colorAccent"
+              android:textColor="@color/accent"
               android:textSize="14sp"/>
 
 </LinearLayout>

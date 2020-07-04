@@ -18,41 +18,41 @@
         android:paddingBottom="0dp">
 
         <TextView
-            android:drawableStart="@drawable/ic_layers_ablack_small"
+            android:drawableStart="@drawable/ic_layers_small"
             android:drawablePadding="4dp"
             android:id="@+id/toolbar_match"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="12dp"
             android:paddingStart="0dp"
-            android:textColor="@color/colorAlmostBlack"
-            android:textSize="18sp"/>
+            android:textColor="@color/primaryDark"
+            android:textSize="17sp"/>
 
         <TextView
-            android:drawableStart="@drawable/ic_book_ablack_small"
+            android:drawableStart="@drawable/ic_book_small"
             android:drawablePadding="4dp"
             android:id="@+id/toolbar_board"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:paddingEnd="12dp"
             android:paddingStart="0dp"/>
 
         <TextView
-            android:drawableStart="@drawable/ic_people_ablack_small"
+            android:drawableStart="@drawable/ic_people_small"
             android:drawablePadding="4dp"
             android:id="@+id/toolbar_team"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="18sp"
-            android:textColor="@color/colorAlmostBlack"
+            android:textSize="17sp"
+            android:textColor="@color/primaryDark"
             android:paddingEnd="12dp"
             android:paddingStart="0dp"/>
 
         <TextView
-            android:drawableStart="@drawable/ic_timer_ablack_small"
+            android:drawableStart="@drawable/ic_timer_small"
             android:drawablePadding="4dp"
             android:id="@+id/timer_status"
             android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:paddingEnd="12dp"
             android:paddingStart="0dp"/>
 
@@ -106,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
-            android:textColor="@color/colorAlmostBlack"
+            android:textColor="@color/primaryDark"
             android:textSize="24sp"
             tools:text="Tab Title"/>
 
@@ -125,7 +125,7 @@
                 android:padding="8dp"
                 android:minWidth="56dp"
                 android:visibility="gone"
-                android:src="@drawable/ic_pause_ablack"/>
+                android:src="@drawable/ic_pause"/>
 
             <ImageButton
                 android:id="@+id/undo_now_image"
@@ -135,7 +135,7 @@
                 android:contentDescription="@string/btn_undo"
                 android:padding="8dp"
                 android:minWidth="56dp"
-                android:src="@drawable/ic_undo_ablack"/>
+                android:src="@drawable/ic_undo"/>
 
             <TextView
                 android:id="@+id/start_timer"
@@ -145,12 +145,11 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="7dp"
                 android:paddingRight="16dp"
-                android:layout_marginEnd="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/start_timer"
                 android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp"/>
+                android:textColor="@color/invertedButtonText"
+                android:textSize="17sp"/>
 
             <ImageButton
                 android:id="@+id/comment_button"
@@ -160,7 +159,7 @@
                 android:contentDescription="@string/btn_pause"
                 android:padding="8dp"
                 android:minWidth="56dp"
-                android:src="@drawable/ic_comment_ablack"/>
+                android:src="@drawable/ic_comment"/>
         </LinearLayout>
     </LinearLayout>
 

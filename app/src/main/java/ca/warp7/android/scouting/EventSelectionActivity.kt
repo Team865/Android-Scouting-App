@@ -2,7 +2,6 @@ package ca.warp7.android.scouting
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -10,6 +9,7 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import ca.warp7.android.scouting.tba.EventSimple
 import ca.warp7.android.scouting.tba.createCachedTBAInstance
 import ca.warp7.android.scouting.tba.getEventMatchesSimple
@@ -43,16 +43,17 @@ class EventSelectionActivity : AppCompatActivity() {
         eventListView.adapter = adapter
         eventListView.setOnItemClickListener { _, _, position, _ ->
             onEventListItemClicked(adapter, position,
-                teamSearch.text.toString().toInt(),
-                yearEdit.text.toString().toInt()
+                    teamSearch.text.toString().toInt(),
+                    yearEdit.text.toString().toInt()
             )
         }
 
-        val year = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString(PreferenceKeys.kYear, "2020")
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+
+        val year = sharedPref.getString(PreferenceKeys.kYear, "2020")
         yearEdit.setText(year, TextView.BufferType.EDITABLE)
-        val teamNumber = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString(PreferenceKeys.kTeam, "")!!
+
+        val teamNumber = sharedPref.getString(PreferenceKeys.kTeam, "")!!
         teamSearch.setText(teamNumber, TextView.BufferType.EDITABLE)
 
         if (teamNumber.isNotEmpty()) {
@@ -62,43 +63,47 @@ class EventSelectionActivity : AppCompatActivity() {
     }
 
     private fun onEventListItemClicked(
-        adapter: EventListAdapter,
-        position: Int,
-        teamNumber: Int,
-        year: Int
+            adapter: EventListAdapter,
+            position: Int,
+            teamNumber: Int,
+            year: Int
     ) {
         val event = adapter.getItem(position) ?: return
         AlertDialog.Builder(this)
-            .setTitle(getString(R.string.team_template, teamNumber))
-            .setMessage(getString(R.string.override_message_template, event.year, event.name))
-            .setPositiveButton(getString(R.string.button_continue)) { dialog, _ ->
-                val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-                preferences
-                    .edit()
-                    .putString(PreferenceKeys.kTeam, teamNumber.toString())
-                    .putString(PreferenceKeys.kEventKey, event.key!!)
-                    .putString(PreferenceKeys.kEventName, event.name)
-                    .putString(PreferenceKeys.kYear, year.toString())
-                    .apply()
-                thread {
-                    // pre-fetch the event matches so it's cached
-                    // we don't process anything here. Make sure to catch errors
-                    try {
-                        createCachedTBAInstance(this, cacheFirst = false)
-                            .getEventMatchesSimple(event.key)
-                    } catch (ignored: Exception) {
-                    }
+                .setTitle(getString(R.string.team_template, teamNumber))
+                .setMessage(getString(R.string.override_message_template, event.year, event.name))
+                .setPositiveButton(getString(R.string.button_continue)) { dialog, _ ->
+                    dialog.dismiss()
+                    onContinueSetEvent(teamNumber, event, year)
                 }
-                dialog.dismiss()
+                .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.dismiss() }
+                .create().show()
+    }
 
-                val intent = Intent(this, MainActivity::class.java)
-
-                // this make so that we go back instead of restarting the activity
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                startActivity(intent)
+    private fun onContinueSetEvent(teamNumber: Int, event: EventSimple, year: Int) {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        preferences
+                .edit()
+                .putString(PreferenceKeys.kTeam, teamNumber.toString())
+                .putString(PreferenceKeys.kEventKey, event.key!!)
+                .putString(PreferenceKeys.kEventName, event.name)
+                .putString(PreferenceKeys.kYear, year.toString())
+                .apply()
+        thread {
+            // pre-fetch the event matches so it's cached
+            // we don't process anything here. Make sure to catch errors
+            try {
+                createCachedTBAInstance(this, cacheFirst = false)
+                        .getEventMatchesSimple(event.key)
+            } catch (ignored: Exception) {
             }
-            .setNegativeButton(getString(R.string.button_cancel)) {dialog, _ -> dialog.dismiss() }
-            .create().show()
+        }
+
+        val intent = Intent(this, MainActivity::class.java)
+
+        // this make so that we go back instead of restarting the activity
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
     }
 
     private fun onSearch(textView: TextView, yearEdit: EditText, cacheFirst: Boolean) {
@@ -106,12 +111,12 @@ class EventSelectionActivity : AppCompatActivity() {
 
         // https://stackoverflow.com/questions/1109022/close-hide-android-soft-keyboard
         val inputManager: InputMethodManager =
-            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         val focus = currentFocus
         if (focus != null) {
             inputManager.hideSoftInputFromWindow(
-                focus.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
+                    focus.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS
             )
         }
         textView.clearFocus()
@@ -120,8 +125,8 @@ class EventSelectionActivity : AppCompatActivity() {
         thread {
             try {
                 val result = createCachedTBAInstance(this, cacheFirst)
-                    .getTeamEventsByYearSimple("frc$teamNumber", year)
-                    .sortedBy { it.start_date }
+                        .getTeamEventsByYearSimple("frc$teamNumber", year)
+                        .sortedBy { it.start_date }
                 // update the events on the UI thread
                 runOnUiThread {
                     updateListView(result)
@@ -129,9 +134,9 @@ class EventSelectionActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 runOnUiThread {
                     AlertDialog.Builder(this)
-                        .setTitle(getString(R.string.error_retrieving_data))
-                        .setMessage(getString(R.string.check_connection))
-                        .create().show()
+                            .setTitle(getString(R.string.error_retrieving_data))
+                            .setMessage(getString(R.string.check_connection))
+                            .create().show()
                 }
             }
         }

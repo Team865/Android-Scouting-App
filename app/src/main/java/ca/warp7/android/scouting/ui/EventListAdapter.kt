@@ -11,8 +11,8 @@ import ca.warp7.android.scouting.R
 import ca.warp7.android.scouting.tba.EventSimple
 
 class EventListAdapter(
-    context: Context,
-    items: List<EventSimple>
+        context: Context,
+        items: List<EventSimple>
 ) : ArrayAdapter<EventSimple>(context, 0, items) {
 
     private val layoutInflater = LayoutInflater.from(context)
@@ -20,7 +20,7 @@ class EventListAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val itemView = if (convertView is RelativeLayout)
             convertView else layoutInflater.inflate(
-            R.layout.list_item_event_info, parent, false)
+                R.layout.list_item_event_info, parent, false)
         val item = getItem(position) ?: return itemView
 
         val text1 = itemView.findViewById<TextView>(R.id.text1)

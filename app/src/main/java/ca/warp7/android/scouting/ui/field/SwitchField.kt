@@ -1,7 +1,6 @@
 package ca.warp7.android.scouting.ui.field
 
 import android.annotation.SuppressLint
-import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.widget.Button
 import android.widget.FrameLayout
@@ -13,21 +12,26 @@ import ca.warp7.android.scouting.entry.DataPoint
 class SwitchField internal constructor(private val data: FieldData) :
         FrameLayout(data.context), BaseFieldWidget {
 
-    private val white = ContextCompat.getColor(context, R.color.colorWhite)
-    private val gray = ContextCompat.getColor(context, R.color.colorGray)
-    private val red = ContextCompat.getColor(context, R.color.colorRed)
-    private val lightGreen = ContextCompat.getColor(context, R.color.colorLightGreen)
-    private val almostWhite = ContextCompat.getColor(context, R.color.colorAlmostWhite)
-    private val accent = ContextCompat.getColor(context, R.color.colorAccent)
+    private val invertedText = ContextCompat.getColor(context, R.color.invertedButtonText)
+    private val disabled = ContextCompat.getColor(context, R.color.buttonDisabled)
+    private val selected = ContextCompat.getColor(context, R.color.switchButtonSelected)
+    private val buttonTextColor = ContextCompat.getColor(context, R.color.switchButtonText)
+    private val buttonBack = ContextCompat.getColor(context, R.color.buttonBackground)
+    private val accent = ContextCompat.getColor(context, R.color.accent)
+
+    private val almostWhiteFilter = colorFilter(buttonBack)
+    private val accentFilter = colorFilter(accent)
+    private val redFilter = colorFilter(selected)
 
     private var isChecked = false
 
     private val button: Button = Button(data.context).apply {
         isAllCaps = false
-        textSize = 18f
+        textSize = 17f
         typeface = Typeface.SANS_SERIF
         stateListAnimator = null
         text = data.modifiedName
+        setPadding(4, 4, 4, 4)
         setLines(2)
         setBackgroundResource(R.drawable.ripple_button)
         background.mutate()
@@ -64,21 +68,21 @@ class SwitchField internal constructor(private val data: FieldData) :
                 isChecked = if (lastDP != null) lastDP.value == 1 else false
 
                 if (isChecked) {
-                    button.setTextColor(white)
+                    button.setTextColor(invertedText)
                     if (isLite) {
-                        button.background.setColorFilter(accent, PorterDuff.Mode.SRC)
+                        button.background.colorFilter = accentFilter
                     } else {
-                        button.background.setColorFilter(red, PorterDuff.Mode.SRC)
+                        button.background.colorFilter = redFilter
                     }
                 } else {
-                    button.setTextColor(lightGreen)
-                    button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+                    button.setTextColor(buttonTextColor)
+                    button.background.colorFilter = almostWhiteFilter
                 }
             }
         } else {
             button.isEnabled = false
-            button.setTextColor(gray)
-            button.background.setColorFilter(almostWhite, PorterDuff.Mode.SRC)
+            button.setTextColor(disabled)
+            button.background.colorFilter = almostWhiteFilter
         }
     }
 }

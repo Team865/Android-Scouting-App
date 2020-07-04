@@ -2,9 +2,10 @@ package ca.warp7.android.scouting.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import ca.warp7.android.scouting.*
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -24,8 +25,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     BuildConfig.VERSION_NAME + "-" + BuildConfig.BUILD_TYPE
         }
 
-        findPreference<Preference>(getString(R.string.pref_event_selection))?.setOnPreferenceClickListener {
+        val eventSelect = findPreference<Preference>(getString(R.string.pref_event_selection))
+        eventSelect?.setOnPreferenceClickListener {
             startActivity(Intent(context, EventSelectionActivity::class.java))
+            true
+        }
+
+        val darkTheme = findPreference<ListPreference>(getString(R.string.pref_dark_theme_key))
+        darkTheme?.setOnPreferenceChangeListener { _, newValue ->
+            setDarkTheme(newValue as? String)
             true
         }
     }
@@ -33,8 +41,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
         val eventSelector = findPreference<Preference>(getString(R.string.pref_event_selection))
-        val preferences =  PreferenceManager
-            .getDefaultSharedPreferences(context)
+        val preferences = PreferenceManager
+                .getDefaultSharedPreferences(context)
         val event = preferences.getString(PreferenceKeys.kEventName, "No Event")
         val year = preferences.getString(PreferenceKeys.kYear, "")
         if (eventSelector != null) {

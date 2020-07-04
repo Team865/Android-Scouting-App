@@ -5,9 +5,9 @@ import ca.warp7.android.scouting.BaseScoutingActivity
 import ca.warp7.android.scouting.boardfile.TemplateField
 
 class FieldData(
-    val context: Context,
-    val templateField: TemplateField,
-    val scoutingActivity: BaseScoutingActivity,
-    val modifiedName: String,
-    val typeIndex: Int
+        val context: Context,
+        val templateField: TemplateField,
+        val scoutingActivity: BaseScoutingActivity,
+        val modifiedName: String,
+        val typeIndex: Int
 )

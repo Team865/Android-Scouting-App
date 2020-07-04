@@ -5,20 +5,22 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.preference.PreferenceManager
-import android.text.InputType
-import android.util.TypedValue
+import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import androidx.viewpager.widget.ViewPager
 import ca.warp7.android.scouting.ScoutingActivity.State.*
 import ca.warp7.android.scouting.boardfile.ScoutTemplate
 import ca.warp7.android.scouting.boardfile.createBoardfileFromAssets
-import ca.warp7.android.scouting.entry.*
+import ca.warp7.android.scouting.entry.Alliance
 import ca.warp7.android.scouting.entry.Board.*
+import ca.warp7.android.scouting.entry.DataPoint
+import ca.warp7.android.scouting.entry.MutableEntry
+import ca.warp7.android.scouting.entry.TimedEntry
 import ca.warp7.android.scouting.ui.ActionVibrator
 import ca.warp7.android.scouting.ui.EntryInMatch
 import ca.warp7.android.scouting.ui.TabPagerAdapter
@@ -68,7 +70,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
     private val vibrator by lazy {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         ActionVibrator(
-            this, sharedPreferences.getBoolean(this.getString(R.string.pref_use_vibration_key), true)
+                this, sharedPreferences.getBoolean(this.getString(R.string.pref_use_vibration_key), true)
         )
     }
 
@@ -128,54 +130,37 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         val template = template ?: return
         val tags = template.tags
 
-        val layout = LinearLayout(this)
-        layout.orientation = LinearLayout.VERTICAL
-        layout.setPadding(16, 16, 16, 0)
+        val layout = View.inflate(this, R.layout.dialog_comment, null) as LinearLayout
+        val commentInput = layout.findViewById<EditText>(R.id.dialog_comment)
 
         for ((index, tag) in tags.withIndex()) {
-            layout.addView(CheckBox(this).also { cb ->
-                cb.text = modifyName(tag)
-                cb.textSize = 18f
-                val typeIndex = template.lookupForTag(index)
-                val lastValue = entry.lastValue(typeIndex)?.value ?: 0
-                cb.isChecked = lastValue != 0
-                cb.setOnCheckedChangeListener { _, isChecked ->
-                    vibrateAction()
-                    entry.add(DataPoint(typeIndex, if (isChecked) 1 else 0, getRelativeTime()))
-                    updateAdjacentTabState()
-                }
-            })
-        }
+            val cb = CheckBox(this)
+            cb.text = modifyName(tag)
+            cb.textSize = 17f
+            val typeIndex = template.lookupForTag(index)
+            val lastValue = entry.lastValue(typeIndex)?.value ?: 0
+            cb.isChecked = lastValue != 0
+            cb.setOnCheckedChangeListener { _, isChecked ->
+                vibrateAction()
+                entry.add(DataPoint(typeIndex, if (isChecked) 1 else 0, getRelativeTime()))
+                updateAdjacentTabState()
+            }
 
-        // Create the comments EditText
-        val commentInput = EditText(this).apply {
-            inputType = InputType.TYPE_CLASS_TEXT or
-                    InputType.TYPE_TEXT_FLAG_MULTI_LINE or
-                    InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-            setText(entry.comments)
-            setSelection(entry.comments.length)
-            compoundDrawablePadding = 16
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            setHint(R.string.comments_hint)
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_comment_ablack_small, 0, 0, 0)
+            // add it right before the comment input
+            layout.addView(cb, layout.childCount - 1)
         }
-        layout.addView(commentInput)
 
         // Create the alert
         AlertDialog.Builder(this)
-            .setTitle(getString(R.string.additional_info))
-            .setView(layout)
-            .setPositiveButton(getString(R.string.button_ok)) { _, _ ->
-                entry.comments = commentInput.text.toString()
-                updateAdjacentTabState()
-            }
-            .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.cancel() }
-            .create()
-            .show()
+                .setTitle(getString(R.string.additional_info))
+                .setView(layout)
+                .setPositiveButton(getString(R.string.button_ok)) { _, _ ->
+                    entry.comments = commentInput.text.toString()
+                    updateAdjacentTabState()
+                }
+                .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ -> dialog.cancel() }
+                .create()
+                .show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -237,8 +222,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             })
         }
 
-        val scout = intent.getStringExtra(kScoutIntent)
-        val entryInMatch = EntryInMatch.fromCSV(intent.getStringExtra(kEntryInMatchIntent))
+        val scout = intent.getStringExtra(kScoutIntent)!!
+        val entryInMatch = EntryInMatch.fromCSV(intent.getStringExtra(kEntryInMatchIntent)!!)
         val match = entryInMatch.match
         val board = entryInMatch.board
         val teams = entryInMatch.teams
@@ -274,8 +259,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         findViewById<TextView>(R.id.toolbar_board).also {
             it.text = board.name
             val color = when (board.alliance) {
-                Alliance.Red -> R.color.colorRed
-                Alliance.Blue -> R.color.colorBlue
+                Alliance.Red -> R.color.redAlliance
+                Alliance.Blue -> R.color.blueAlliance
             }
             it.setTextColor(ContextCompat.getColor(this, color))
         }
@@ -319,17 +304,17 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
             setResult(Activity.RESULT_CANCELED, null)
         } else {
             val resultData = EntryInMatch(
-                eim.match,
-                eim.teams,
-                eim.board,
-                true,
-                eim.isScheduled,
-                entry.getEncoded()
+                    eim.match,
+                    eim.teams,
+                    eim.board,
+                    true,
+                    eim.isScheduled,
+                    entry.getEncoded()
             ).toCSV()
 
             setResult(
-                Activity.RESULT_OK,
-                Intent().putExtra(kEntryInMatchIntent, resultData)
+                    Activity.RESULT_OK,
+                    Intent().putExtra(kEntryInMatchIntent, resultData)
             )
         }
         super.onBackPressed()
@@ -347,8 +332,8 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
         val filledStatus = String(placeholder).replace("\u0000", "0") + status
         timerStatus.text = filledStatus
         val statusColor = when {
-            matchTime <= kAutonomousTime -> R.color.colorAutoYellow
-            else -> R.color.colorTeleOpGreen
+            matchTime <= kAutonomousTime -> R.color.timerAutonomous
+            else -> R.color.timerOperatorControl
         }
         timerStatus.setTextColor(ContextCompat.getColor(this, statusColor))
         timeProgress.progress = matchTime
@@ -416,7 +401,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 startButton.hide()
                 timeSeeker.hide()
                 timeProgress.show()
-                playAndPauseImage.setImageResource(R.drawable.ic_pause_ablack)
+                playAndPauseImage.setImageResource(R.drawable.ic_pause)
                 vibrator.vibrateStart()
                 // restore the absolute time
                 startTime = getCurrentTime() - relativeTimeAtPause
@@ -426,7 +411,7 @@ class ScoutingActivity : AppCompatActivity(), BaseScoutingActivity {
                 playAndPauseImage.show()
                 undoButton.show()
                 startButton.hide()
-                playAndPauseImage.setImageResource(R.drawable.ic_play_arrow_ablack)
+                playAndPauseImage.setImageResource(R.drawable.ic_play_arrow)
                 timeSeeker.show()
                 timeProgress.hide()
                 // save the relative time
